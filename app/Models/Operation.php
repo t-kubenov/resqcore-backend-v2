@@ -5,26 +5,48 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Operation extends Model
+class Operation extends BaseOperation
 {
     use HasFactory;
 
-    /*
-        <option id="01" value="Пожар">Пожар</option>
-								<option id="02" value="Травма">Травма</option>
-								<option id="03" value="Отключение электроэнергии">Отключение электроэнергии</option>
-								<option id="04" value="Обрушение">Обрушение</option>
-								<option id="05" value="Несчастный случай">Несчастный случай</option>
-								<option id="06" value="Застревание">Застревание</option>
-								<option id="07" value="Заболевание">Заболевание</option>
-								<option id="08" value="Затопление">Затопление</option>
-								<option id="09" value="ДТП">ДТП</option>
-								<option id="10" value="Загазованность">Загазованность</option>
-								<option id="11" value="Взрыв">Взрыв</option>
-								<option id="12" value="Обеспечение">Обеспечение</option>
-								<option id="13" value="Поиск людей">Поиск людей</option>
-								<option id="14" value="Открытый фонтан">Открытый фонтан</option>
-								<option id="15" value="Розлив">Розлив</option>
-								<option id="16" value="Иное">Иное</option>
-    */
+
+    const EMERGENCY_TYPE_FIRE = 1;
+    const EMERGENCY_TYPE_INJURY = 2;
+    const EMERGENCY_TYPE_BLACKOUT = 3;
+    const EMERGENCY_TYPE_COLLAPSE = 4;
+    const EMERGENCY_TYPE_ACCIDENT = 5;
+    const EMERGENCY_TYPE_STUCK = 6;
+    const EMERGENCY_TYPE_DISEASE = 7;
+    const EMERGENCY_TYPE_FLOOD = 8;
+    const EMERGENCY_TYPE_TRAFFIC_ACCIDENT = 9;
+    const EMERGENCY_TYPE_GAS = 10;
+    const EMERGENCY_TYPE_EXPLOSION = 11;
+    const EMERGENCY_TYPE_PROVISION = 12;
+    const EMERGENCY_TYPE_PEOPLE_SEARCH = 13;
+    const EMERGENCY_TYPE_OPEN_FOUNTAIN = 14;
+    const EMERGENCY_TYPE_SPILL = 15;
+    const EMERGENCY_TYPE_OTHER = 16;
+
+
+    protected $fillable = [
+        'branch_id', // ex branch
+        'object_id', // if it's on the emergency line
+        'reported_by', // ex reporting_id
+        'report_code', // code of the report , i.e. 10-4
+        'caller', // ex who_call
+        'accident_location', // ex location_accident; if the object is not from the emergency line,..
+        'emergency_info', // ex object_data Данные по аварии
+        'call_date',
+        'work_start_date',
+        'emergency_type', // enum basically
+        'is_emergency_line', // ex line_emergency
+        'close_date', // ex finish_work_date
+        'is_closed', // ex status
+    ];
+
+
+    public function updates()
+    {
+        return $this->hasMany(OperationUpdate::class);
+    }
 }

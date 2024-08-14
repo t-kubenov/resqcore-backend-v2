@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreTransportRequest;
-use App\Http\Requests\UpdateTransportRequest;
-use App\Models\Transport;
+use App\Http\Requests\StoreOperationUpdateRequest;
+use App\Http\Requests\UpdateOperationUpdateRequest;
+use App\Models\OperationUpdate;
 
-class TransportController extends Controller
+class OperationUpdateController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -19,7 +19,7 @@ class TransportController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreTransportRequest $request)
+    public function store(StoreOperationUpdateRequest $request)
     {
         //
     }
@@ -27,7 +27,7 @@ class TransportController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Transport $transport)
+    public function show(OperationUpdate $operationUpdate)
     {
         //
     }
@@ -35,7 +35,7 @@ class TransportController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateTransportRequest $request, Transport $transport)
+    public function update(UpdateOperationUpdateRequest $request, OperationUpdate $operationUpdate)
     {
         //
     }
@@ -43,7 +43,7 @@ class TransportController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Transport $transport)
+    public function destroy(OperationUpdate $operationUpdate)
     {
         //
     }

@@ -13,13 +13,32 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->string('first_name');
+            $table->string('last_name');
+            $table->string('patronymic')->nullable();
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+            $table->foreignId('company_id')->nullable()->index();
+            $table->foreignId('branch_id')->nullable()->index();
+            $table->foreignId('role_id')->index();
             $table->rememberToken();
             $table->timestamps();
         });
+
+        /*
+
+Table users {
+  id bigint [pk, increment]
+  first_name string
+  last_name string
+  patronymic string
+  company bigint [ref:>companies.id] // only if company employee
+  branch bigint [ref:>branch.id] // only if branch operator
+  role bigint [ref:>roles.id] // branch operator, company BiOT, etc.
+}
+
+        */
 
         Schema::create('password_reset_tokens', function (Blueprint $table) {
             $table->string('email')->primary();
