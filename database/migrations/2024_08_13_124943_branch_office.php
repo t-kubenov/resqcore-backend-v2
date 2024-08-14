@@ -11,19 +11,23 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('operation_transports', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('operation_id')->index();
-            $table->foreignId('transport_id')->index();
-            $table->timestamps();
-        });
+
     }
+
+    /*
+
+
+Table branch_office {
+    id bigint [pk, increment]
+    name string
+}
+         */
 
     /**
      * Reverse the migrations.
      */
     public function down(): void
     {
-        Schema::dropIfExists('operation_transports');
+        //
     }
 };

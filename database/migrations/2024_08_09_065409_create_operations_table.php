@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('operations', function (Blueprint $table) {
             $table->id();
             $table->foreignId('branch_office_id')->index();
-            $table->foreignId('object_id')->nullable()->index();
+            $table->foreignId('facility_id')->nullable()->index();
             $table->foreignId('reported_by')->index();
             $table->string('report_code');
             $table->string('caller');
