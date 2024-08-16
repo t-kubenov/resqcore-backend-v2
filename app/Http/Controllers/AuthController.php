@@ -29,16 +29,26 @@ class AuthController extends Controller
 
     public function login(Request $request)
     {
+
+        $messages = [
+            'email.required' => 'The provided credentials are incorrect.',
+            'email.email' => 'The provided credentials are incorrect.',
+            'email.exists' => 'The provided credentials are incorrect.',
+            'password.required' => 'The provided credentials are incorrect.',
+        ];
+
         $request->validate([
             "email" => "required|email|exists:users",
             "password" => "required"
-        ]);
+        ], $messages);
 
         $user = User::where("email", $request->email)->first();
 
         if (!$user || !Hash::check($request->password, $user->password))
         {
-            return ["message" => "The provided credentials are incorrect."];
+            return response()->json([
+                "error" => "The provided credentials are incorrect."
+            ], 422); // 401 Unauthorized
         }
 
         $token = $user->createToken($user->name);
