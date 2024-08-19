@@ -13,7 +13,25 @@ class OperationalReportController extends Controller
      */
     public function index()
     {
-        //
+        $operationalReports = OperationalReports::all();
+
+        $data = [];
+        foreach ($operationalReports as $departure) {
+            $data[] = [
+                'id' => $departure->id,
+                'type' => 'report',
+                'attributes' => [
+                    'report_code' => $departure->report_code,
+                    'caller' => $departure->caller,
+                    'facility_name' => $departure->facility->location?? $departure->line_facility_location,
+                    'call_date' => $departure->call_date->toIso8601String(),
+                    'emergency_name' => $departure->emergency_type, // Derive from energency type
+                    'is_closed' => $departure->is_closed,
+                ],
+            ];
+        }
+
+        return response()->json(['data' => $data]);
     }
 
     /**
