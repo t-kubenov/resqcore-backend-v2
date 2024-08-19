@@ -6,6 +6,12 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
+use App\Models\BranchOffice;
+use App\Models\Company;
+
+use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
+
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\User>
  */
@@ -23,8 +29,15 @@ class UserFactory extends Factory
      */
     public function definition(): array
     {
+        // $is_company = fake()->boolean();
+
         return [
-            'name' => fake()->name(),
+            'first_name' => fake()->firstName(),
+            'last_name' => fake()->lastName(),
+            'patronymic' => fake()->lastName(),
+            // 'company' => $is_company? Company::factory(): null,
+            // 'branch' => $is_company? null: BranchOffice::inRandomOrder()->first()->id,
+            // 'role_id' => Role::random()->id,
             'email' => fake()->unique()->safeEmail(),
             'email_verified_at' => now(),
             'password' => static::$password ??= Hash::make('password'),
@@ -39,6 +52,40 @@ class UserFactory extends Factory
     {
         return $this->state(fn (array $attributes) => [
             'email_verified_at' => null,
+        ]);
+    }
+
+    // create admin user
+    public function admin(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'first_name' => 'John',
+            'last_name' => 'ResQ',
+            'patronymic' => 'Adminovich',
+            'email' => 'admin@resq.kz',
+            'role_id' => 1,
+            'password' => Hash::make('123'),
+        ]);
+    }
+
+    // create company user
+    public function company_employee(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'company_id' => Company::factory(),
+            'branch_id' => null,
+            'role_id' => Role::where('name', 'company_user')->first()->id,
+        ]);
+    }
+
+    // branch office employee
+
+    public function branch_office_employee(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'company_id' => null,
+            'branch_id' => BranchOffice::inRandomOrder()->first()->id,
+            'role_id' => Role::where('name', 'branch_office_user')->first()->id,
         ]);
     }
 }
