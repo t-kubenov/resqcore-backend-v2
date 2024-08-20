@@ -9,18 +9,6 @@ class Transport extends Model
 {
     use HasFactory;
 
-    /*
-        <option value="АЦ">АЦ</option>
-        <option value="Оперативный а/м">Оперативный а/м</option>
-        <option value="Автолестница">Автолестница</option>
-        <option value="Автомобиль РПГ">Автомобиль РПГ</option>
-        <option value="Вахтовка">Вахтовка</option>
-        <option value="Легковой а/м">Легковой а/м</option>
-        <option value="Легковой а/м  повышенной проходимости">Легковой а/м  повышенной проходимости</option>
-        <option value="а/м АСА">а/м АСА</option>
-    */
-
-
     const TRANSPORT_TYPE_AC = 1;
     const TRANSPORT_TYPE_OPERATIONAL_VEHICLE = 2;
     const TRANSPORT_TYPE_CAR_LADDER = 3;
@@ -29,4 +17,18 @@ class Transport extends Model
     const TRANSPORT_TYPE_LIGHT_CAR = 6;
     const TRANSPORT_TYPE_LIGHT_CAR_HIGH_CROSS_COUNTY = 7;
     const TRANSPORT_TYPE_ASA_CAR = 8;
+
+    public static function getTransportTypes()
+    {
+        return [
+            self::TRANSPORT_TYPE_AC => 'АЦ',
+            self::TRANSPORT_TYPE_OPERATIONAL_VEHICLE => 'Оперативный а/м',
+            self::TRANSPORT_TYPE_CAR_LADDER => 'Автолестница',
+            self::TRANSPORT_TYPE_RPG_CAR => 'Автомобиль РПГ',
+            self::TRANSPORT_TYPE_SHIFT_CAR => 'Вахтовка',
+            self::TRANSPORT_TYPE_LIGHT_CAR => 'Легковой а/м',
+            self::TRANSPORT_TYPE_LIGHT_CAR_HIGH_CROSS_COUNTY => 'Легковой а/м повышенной проходимости',
+            self::TRANSPORT_TYPE_ASA_CAR => 'а/м АСА',
+        ];
+    }
 }

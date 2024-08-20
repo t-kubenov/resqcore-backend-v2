@@ -51,7 +51,7 @@ class AuthController extends Controller
         {
             return response()->json([
                 "error" => "The provided credentials are incorrect.",
-            ], 422); // 401 Unauthorized
+            ], 422); // 422 is the status code for unprocessable entity
         }
 
         $token = $user->createToken($user->first_name);

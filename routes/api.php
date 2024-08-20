@@ -5,6 +5,8 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\OperationController;
+use App\Http\Controllers\AuxiliaryDataController;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -17,3 +19,8 @@ Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanc
 
 
 Route::get('/reports', [OperationController::class, 'reports']);
+Route::get('/reports/{id}', [OperationController::class, 'showReport']);
+Route::post('/reports', [OperationController::class, 'storeReport']);
+
+Route::get('/auxiliary-data', [AuxiliaryDataController::class, 'getAuxiliaryData']);
+
