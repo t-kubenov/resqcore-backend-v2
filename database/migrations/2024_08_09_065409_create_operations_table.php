@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('caller');
             $table->string('line_facility_location')->nullable();
             $table->string('line_facility_owner')->nullable();
+            $table->string('emergency_location')->nullable();
             $table->string('emergency_info')->nullable();
             $table->datetime('call_date');
             $table->datetime('work_start_date');

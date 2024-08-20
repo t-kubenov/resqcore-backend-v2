@@ -28,6 +28,7 @@ class OperationFactory extends Factory
             'caller' => $this->faker->name,
             'line_facility_location' => $this->faker->address,
             'line_facility_owner' => $this->faker->name,
+            'emergency_location' => $this->faker->address,
             'emergency_info' => $this->faker->sentence,
             'call_date' => $this->faker->dateTime,
             'work_start_date' => $this->faker->dateTime,
@@ -58,6 +59,7 @@ class OperationFactory extends Factory
             'facility_id' => null,
             'line_facility_location' => $this->faker->address,
             'line_facility_owner' => $this->faker->name,
+            'emergency_location' => null,
             'is_emergency_line' => true,
         ]);
     }
@@ -68,6 +70,7 @@ class OperationFactory extends Factory
             'facility_id' => Facility::factory(),
             'line_facility_location' => null,
             'line_facility_owner' => null,
+            'emergency_location' => $this->faker->address,
             'is_emergency_line' => false,
         ]);
     }
