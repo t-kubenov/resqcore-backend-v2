@@ -10,9 +10,9 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 use App\Models\Operation;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\OperationUpdate>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Update>
  */
-class OperationUpdateFactory extends Factory
+class UpdateFactory extends Factory
 {
     /**
      * Define the model's default state.

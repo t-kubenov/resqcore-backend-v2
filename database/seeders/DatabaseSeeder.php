@@ -22,7 +22,7 @@ class DatabaseSeeder extends Seeder
             RolePermissionSeeder::class,
             UserSeeder::class,
             OperationSeeder::class,
-            OperationUpdateSeeder::class,
+            UpdateSeeder::class,
             TransportSeeder::class,
         ]);
     }

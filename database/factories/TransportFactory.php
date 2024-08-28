@@ -5,7 +5,7 @@ namespace Database\Factories;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 use App\Models\Operation;
-use App\Models\OperationUpdate;
+use App\Models\Update;
 // use App\Models\Transport;
 
 /**
@@ -21,11 +21,11 @@ class TransportFactory extends Factory
     public function definition(): array
     {
         $operation = Operation::inRandomOrder()->first();
-        $operationUpdate = $operation->updates()->inRandomOrder()->first();
+        $Update = $operation->updates()->inRandomOrder()->first();
 
         return [
             'operation_id' =>  $operation->id,
-            'operation_update_id' =>  $operationUpdate->id?? null,
+            'operation_update_id' =>  $Update->id?? null,
             'type' => $this->faker->numberBetween(1, 8),
             'count' => $this->faker->numberBetween(1, 10),
         ];

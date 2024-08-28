@@ -27,29 +27,4 @@ class BaseOperation extends Model
         'third_parties_count', // ex party_authority other organizations involved
         'close_date', // ex finish_work_date
     ];
-
-    /*  version from query
-        'branch_id',
-        'accident_id',
-        'reporting_id',
-        'who_call',
-        'location_accident',
-        'call_date',
-        'arrival_date',
-        'emergency_type',
-        'object_owner',
-        'branch_workers',
-        'object_data',
-        'minor_injury',
-        'severe_injury',
-        'fatal_injury',
-        'people_evacuated',
-        'provided_medical',
-        'scope_work',
-        'situation_filing',
-        'customer_technology',
-        'party_authority',
-        'other_data',
-        'line_emergency',
-    */
 }

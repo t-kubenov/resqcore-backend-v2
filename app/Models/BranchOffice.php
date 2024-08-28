@@ -5,6 +5,10 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+use App\Models\Facility;
+use App\Models\Operation;
+use App\Models\User;
+
 class BranchOffice extends Model
 {
     use HasFactory;
@@ -12,4 +16,19 @@ class BranchOffice extends Model
     protected $fillable = [
         'name',
     ];
+
+    public function facilities()
+    {
+        return $this->hasMany(Facility::class);
+    }
+
+    public function operations()
+    {
+        return $this->hasMany(Operation::class);
+    }
+
+    public function users()
+    {
+        return $this->hasMany(User::class);
+    }
 }

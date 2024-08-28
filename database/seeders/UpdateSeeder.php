@@ -5,16 +5,16 @@ namespace Database\Seeders;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
-use App\Models\OperationUpdate;
+use App\Models\Update;
 
-class OperationUpdateSeeder extends Seeder
+class UpdateSeeder extends Seeder
 {
     /**
      * Run the database seeds.
      */
     public function run(): void
     {
-        OperationUpdate::factory()->count(5)->create();
-        OperationUpdate::factory()->isClosingUpdate()->count(5)->create();
+        Update::factory()->count(5)->create();
+        Update::factory()->isClosingUpdate()->count(5)->create();
     }
 }

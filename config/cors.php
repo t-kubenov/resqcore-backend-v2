@@ -19,7 +19,10 @@ return [
 
     'allowed_methods' => ['*'],
 
-    'allowed_origins' => ['http://resqcore.d:3000'],
+    'allowed_origins' => [
+        'http://resqcore.d:3000',
+        'http://192.168.1.16:3000',
+    ],
 
     'allowed_origins_patterns' => [],
 

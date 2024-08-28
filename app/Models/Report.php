@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class OperationalDepartures extends Model
+class lReport extends Model
 {
     use HasFactory;
 }
