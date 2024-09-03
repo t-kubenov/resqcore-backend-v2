@@ -29,7 +29,7 @@ class StoreReportRequest extends FormRequest
             'data.attributes.caller' => ['required'],
             'data.attributes.call_date' => ['required', 'date'],
             'data.attributes.work_start_date' => ['required', 'date'],
-            'data.attributes.emergency_type' => ['required', 'integer'],
+            'data.attributes.emergency_type' => ['required', 'array'],
             'data.attributes.is_emergency_line' => ['required', 'boolean'],
             'data.attributes.work_scope' => ['required'],
             'data.attributes.emergency_location' => ['required'],

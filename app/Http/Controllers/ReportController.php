@@ -39,6 +39,8 @@ class ReportController extends Controller
         // report code is branch office id and the order of the report from that branch office
         $attributes['report_code'] = $attributes['branch_office_id'] . ' - ' . Operation::where('branch_office_id', $attributes['branch_office_id'])->count()+1;
 
+        $attributes['emergency_type'] = $attributes['emergency_type']['id'];
+
         $report = Operation::create($attributes);
 
         if ($transport) {
