@@ -48,6 +48,7 @@ class StoreReportRequest extends FormRequest
             'data.attributes.other_info' => ['nullable'],
             'data.attributes.close_date' => ['nullable', 'date'],
             'data.attributes.is_closed' => ['required', 'boolean'],
+            'data.attributes.transport' => ['nullable'],
         ];
     }
 }

@@ -13,6 +13,13 @@ class Transport extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'operation_id',
+        'operation_update_id',
+        'type',
+        'count',
+    ];
+
     const TRANSPORT_TYPE_AC = 1;
     const TRANSPORT_TYPE_OPERATIONAL_VEHICLE = 2;
     const TRANSPORT_TYPE_CAR_LADDER = 3;

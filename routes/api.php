@@ -8,6 +8,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\OperationController;
 use App\Http\Controllers\AuxiliaryDataController;
 use App\Http\Controllers\ReportController;
+use App\Http\Controllers\DepartureController;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -22,11 +23,10 @@ Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanc
 Route::get('/reports', [ReportController::class, 'index'])->name('reports.index');
 Route::get('/reports/{id}', [ReportController::class, 'show'])->name('reports.show');
 Route::post('/reports', [ReportController::class, 'store'])->name('reports.store');
-Route::put('/reports/{id}', [OperationController::class, 'updateReport']);
 Route::delete('/reports/{id}', [OperationController::class, 'deleteReport']);
 
 
-Route::get('/departures', [OperationController::class, 'departures']);
+Route::get('/departures', [DepartureController::class, 'index'])->name('departures.index');
 
 Route::get('/auxiliary-data', [AuxiliaryDataController::class, 'getAuxiliaryData']);
 
