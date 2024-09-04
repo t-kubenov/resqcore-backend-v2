@@ -25,7 +25,6 @@ class StoreReportRequest extends FormRequest
         return [
             'data.attributes.branch_office_id' => ['required', 'integer'],
             'data.attributes.reported_by' => ['required'],
-            // 'data.attributes.report_code' => ['required'],
             'data.attributes.caller' => ['required'],
             'data.attributes.call_date' => ['required', 'date'],
             'data.attributes.work_start_date' => ['required', 'date'],
@@ -47,7 +46,7 @@ class StoreReportRequest extends FormRequest
             'data.attributes.situation_during_filing' => ['nullable'],
             'data.attributes.other_info' => ['nullable'],
             'data.attributes.close_date' => ['nullable', 'date'],
-            'data.attributes.is_closed' => ['required', 'boolean'],
+            'data.attributes.is_closed' => ['nullable', 'boolean'],
             'data.attributes.transport' => ['nullable'],
         ];
     }

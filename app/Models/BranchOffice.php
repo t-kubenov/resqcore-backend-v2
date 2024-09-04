@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 use App\Models\Facility;
-use App\Models\Operation;
+use App\Models\Report;
 use App\Models\User;
 
 class BranchOffice extends Model
@@ -22,9 +22,9 @@ class BranchOffice extends Model
         return $this->hasMany(Facility::class);
     }
 
-    public function operations()
+    public function reports()
     {
-        return $this->hasMany(Operation::class);
+        return $this->hasMany(Report::class);
     }
 
     public function users()

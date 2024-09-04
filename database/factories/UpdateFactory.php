@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 // use App\Models\BranchOffice;
 // use App\Models\Facility;
 // use App\Models\User;
-use App\Models\Operation;
+use App\Models\Report;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Update>
@@ -21,10 +21,10 @@ class UpdateFactory extends Factory
      */
     public function definition()
     {
-        $operation = Operation::inRandomOrder()->first();
+        $report = Report::inRandomOrder()->first();
 
         return [
-            'operation_id' => $operation->id,
+            'report_id' => $report->id,
             'minor_injury_count' => $this->faker->numberBetween(0, 10),
             'severe_injury_count' => $this->faker->numberBetween(0, 10),
             'fatal_injury_count' => $this->faker->numberBetween(0, 10),

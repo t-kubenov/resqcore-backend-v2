@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Models\Transport;
 use App\Models\BranchOffice;
-use App\Models\Operation;
+use App\Models\Report;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -14,7 +14,7 @@ class AuxiliaryDataController extends Controller
     public function getAuxiliaryData(): JsonResponse
     {
         $branchOffices = BranchOffice::all();
-        $emergencyTypes = Operation::getEmergencyTypes();
+        $emergencyTypes = Report::getEmergencyTypes();
         $transportTypes = Transport::getTransportTypes();
 
 
@@ -25,7 +25,7 @@ class AuxiliaryDataController extends Controller
         ];
 
         $data[] = [
-            'operationTypes' => $emergencyTypes
+            'emergencyTypes' => $emergencyTypes
         ];
 
         $data[] = [

@@ -12,7 +12,7 @@ use Spatie\Permission\Traits\HasRoles;
 
 use App\Models\BranchOffice;
 use App\Models\Company;
-use App\Models\Operation;
+use App\Models\Report;
 
 class User extends Authenticatable
 {
@@ -65,9 +65,9 @@ class User extends Authenticatable
         return $this->belongsTo(Company::class);
     }
 
-    public function operations()
+    public function reports()
     {
-        return $this->hasMany(Operation::class);
+        return $this->hasMany(Report::class);
     }
 
     public function roles()

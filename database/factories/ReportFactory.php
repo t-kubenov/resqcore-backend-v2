@@ -9,9 +9,9 @@ use App\Models\Facility;
 use App\Models\User;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Operation>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Report>
  */
-class OperationFactory extends Factory
+class ReportFactory extends Factory
 {
     /**
      * Define the model's default state.

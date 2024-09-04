@@ -32,6 +32,7 @@ class ReportResource extends JsonResource
             'id' => $this->id,
             'type' => 'report',
             'attributes' => $attributes,
+            'updates' => UpdateResource::collection($this->whenLoaded('updates')),
         ];
     }
 }

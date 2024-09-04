@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 use App\Models\Company;
 use App\Models\BranchOffice;
-use App\Models\Operation;
+use App\Models\Report;
 
 
 class Facility extends Model
@@ -30,8 +30,8 @@ class Facility extends Model
         return $this->belongsTo(BranchOffice::class, 'overseeing_branch');
     }
 
-    public function operations()
+    public function reports()
     {
-        return $this->hasMany(Operation::class);
+        return $this->hasMany(Report::class);
     }
 }

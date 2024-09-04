@@ -5,7 +5,6 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\OperationController;
 use App\Http\Controllers\AuxiliaryDataController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\DepartureController;
@@ -23,7 +22,7 @@ Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanc
 Route::get('/reports', [ReportController::class, 'index'])->name('reports.index');
 Route::get('/reports/{id}', [ReportController::class, 'show'])->name('reports.show');
 Route::post('/reports', [ReportController::class, 'store'])->name('reports.store');
-Route::delete('/reports/{id}', [OperationController::class, 'deleteReport']);
+// Route::delete('/reports/{id}', [ReportController::class, 'destroy'])->name('reports.destroy');
 
 
 Route::get('/departures', [DepartureController::class, 'index'])->name('departures.index');

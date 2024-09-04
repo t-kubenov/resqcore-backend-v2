@@ -11,9 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('operation_updates', function (Blueprint $table) {
+        Schema::create('updates', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('operation_id')->references('id')->on('operations');
+            $table->foreignId('report_id')->references('id')->on('reports');
             $table->integer('minor_injury_count')->nullable();
             $table->integer('severe_injury_count')->nullable();
             $table->integer('fatal_injury_count')->nullable();
@@ -31,32 +31,11 @@ return new class extends Migration
     }
 
 
-    /*
-
-        Table operation_updates {
-    id bigint [pk, increment]
-    operation_id bigint [ref: > operations.id]
-    minor_injury_count int
-    severe_injury_count int
-    fatal_injury_count int
-    evacuated_people_count int // ex people_evacuated
-    provided_medical_count int
-    work_scope text // ex scope_work
-    situation_during_filing text // ex situation_filing
-    client_equipment_count int // ex customer_technology
-    third_parties_count int // ex party_authority other organizations involved
-    branch_worker_count int // ex branch_workers varchar
-    worker_man_hours float // used to be merged with branch worker count
-    close_date datetime // ex finish_work_date
-}
-
-     */
-
     /**
      * Reverse the migrations.
      */
     public function down(): void
     {
-        Schema::dropIfExists('operation_updates');
+        Schema::dropIfExists('updates');
     }
 };

@@ -13,25 +13,14 @@ return new class extends Migration
     {
         Schema::create('transports', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('operation_id');
-            $table->foreignId('operation_update_id')->nullable();
+            $table->foreignId('report_id');
+            $table->foreignId('update_id')->nullable();
             $table->integer('type');
             $table->integer('count');
             $table->timestamps();
         });
     }
 
-    /*
-
-  id bigint [pk, increment]
-  branch_id bigint [ref: > branch_office.id]
-  operation_id bigint [ref:> operations.id]
-  operation_update_id bigint [ref:> operation_updates.id]
-  type int //enum or maybe another table
-} // should write the table as a preparation for the company information?
-
-
-    */
 
     /**
      * Reverse the migrations.

@@ -26,19 +26,6 @@ return new class extends Migration
             $table->timestamps();
         });
 
-        /*
-
-Table users {
-  id bigint [pk, increment]
-  first_name string
-  last_name string
-  patronymic string
-  company bigint [ref:>companies.id] // only if company employee
-  branch bigint [ref:>branch.id] // only if branch operator
-  role bigint [ref:>roles.id] // branch operator, company BiOT, etc.
-}
-
-        */
 
         Schema::create('password_reset_tokens', function (Blueprint $table) {
             $table->string('email')->primary();

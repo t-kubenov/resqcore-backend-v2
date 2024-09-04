@@ -10,21 +10,27 @@ use App\Http\Resources\ReportCollection;
 use App\Http\Requests\StoreReportRequest;
 use Illuminate\Support\Facades\Log;
 
-use App\Models\Operation;
+use App\Models\Report;
 
 class ReportController extends Controller
 {
     public function index()
     {
-        return new ReportCollection(Operation::paginate());
+        return new ReportCollection(Report::paginate());
     }
 
-    public function show($id)
+    public function show(Request $request, $id)
     {
-        $operation = Operation::find($id);
+        $include_updates = $request->query('include_updates');
 
-        if ($operation) {
-            return new ReportResource($operation);
+        $report = Report::find($id);
+
+        if ($report) {
+            if ($include_updates) {
+                $report->load('updates');
+            }
+
+            return new ReportResource($report);
         }
 
         return response()->json(['message' => 'Report not found'], 404);
@@ -37,20 +43,15 @@ class ReportController extends Controller
         $transport = $attributes['transport'];
 
         // report code is branch office id and the order of the report from that branch office
-        $attributes['report_code'] = $attributes['branch_office_id'] . ' - ' . Operation::where('branch_office_id', $attributes['branch_office_id'])->count()+1;
+        $attributes['report_code'] = $attributes['branch_office_id'] . ' - ' . Report::where('branch_office_id', $attributes['branch_office_id'])->count()+1;
 
         $attributes['emergency_type'] = $attributes['emergency_type']['id'];
 
-        $report = Operation::create($attributes);
+        $report = Report::create($attributes);
 
         if ($transport) {
             $this->parse_transport($report, $transport);
         }
-
-        $data = [];
-        $data['id'] = $report->id;
-        $data['type'] = 'report';
-        $data['attributes'] = $report->toArray();
 
         return new ReportResource($report, $transport);
     }
@@ -61,17 +62,17 @@ class ReportController extends Controller
 
     public function destroy($id)
     {
-        $operation = Operation::find($id);
-        if ($operation) {
-            $operation->delete();
-            return response()->json(['message' => 'Operation deleted successfully'], 200);
+        $report = Report::find($id);
+        if ($report) {
+            $report->delete();
+            return response()->json(['message' => 'Report deleted successfully'], 200);
         }
 
-        return response()->json(['message' => 'Operation not found'], 404);
+        return response()->json(['message' => 'Report not found'], 404);
 
     }
 
-    private function parse_transport(Operation $report, array $transport)
+    private function parse_transport(Report $report, array $transport)
     {
         try {
             foreach ($transport as $vehicle) {

@@ -5,17 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-use App\Models\Operation;
-use App\Models\Update;
-
 
 class Transport extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'operation_id',
-        'operation_update_id',
+        'report_id',
+        'update_id',
         'type',
         'count',
     ];
@@ -26,7 +23,7 @@ class Transport extends Model
     const TRANSPORT_TYPE_RPG_CAR = 4;
     const TRANSPORT_TYPE_SHIFT_CAR = 5;
     const TRANSPORT_TYPE_LIGHT_CAR = 6;
-    const TRANSPORT_TYPE_LIGHT_CAR_HIGH_CROSS_COUNTY = 7;
+    const TRANSPORT_TYPE_LIGHT_CAR_HIGH_CROSS_COUNTRY = 7;
     const TRANSPORT_TYPE_ASA_CAR = 8;
 
     private static $transportTypes = [
@@ -36,7 +33,7 @@ class Transport extends Model
         self::TRANSPORT_TYPE_RPG_CAR => 'Автомобиль РПГ',
         self::TRANSPORT_TYPE_SHIFT_CAR => 'Вахтовка',
         self::TRANSPORT_TYPE_LIGHT_CAR => 'Легковой а/м',
-        self::TRANSPORT_TYPE_LIGHT_CAR_HIGH_CROSS_COUNTY => 'Легковой а/м повышенной проходимости',
+        self::TRANSPORT_TYPE_LIGHT_CAR_HIGH_CROSS_COUNTRY => 'Легковой а/м повышенной проходимости',
         self::TRANSPORT_TYPE_ASA_CAR => 'а/м АСА',
     ];
 
@@ -50,12 +47,12 @@ class Transport extends Model
         return self::$transportTypes[$value]?? null;
     }
 
-    public function operation()
+    public function report()
     {
-        return $this->belongsTo(Operation::class);
+        return $this->belongsTo(Report::class);
     }
 
-    public function operation_update()
+    public function report_update()
     {
         return $this->belongsTo(Update::class);
     }

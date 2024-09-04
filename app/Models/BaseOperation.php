@@ -5,15 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class BaseOperation extends Model
+abstract class BaseOperation extends Model
 {
-    use HasFactory;
-
-    // this is the base operation model, it should not be used directly
-    // it contains the fields that are stored in operation updates, but not in the main operation
-
-
-    protected $fillable = [
+        protected $fillable = [
         'minor_injury_count',
         'severe_injury_count',
         'fatal_injury_count',
