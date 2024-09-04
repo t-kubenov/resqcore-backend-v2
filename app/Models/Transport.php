@@ -42,9 +42,9 @@ class Transport extends Model
         return self::$transportTypes;
     }
 
-    public function getTransportTypeAttribute($value)
+    public function getTransportTypeAttribute()
     {
-        return self::$transportTypes[$value]?? null;
+        return self::$transportTypes[$this->type]?? null;
     }
 
     public function report()

@@ -9,11 +9,11 @@ class ReportResource extends JsonResource
 {
     protected $transport;
 
-    public function __construct($resource, $transport = null)
-    {
-        parent::__construct($resource);
-        $this->transport = $transport;
-    }
+    // public function __construct($resource, $transport = null)
+    // {
+    //     parent::__construct($resource);
+    //     $this->transport = $transport;
+    // }
 
     /**
      * Transform the resource into an array.
@@ -22,17 +22,19 @@ class ReportResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        $attributes = $this->getAttributes();
-
-        if ($this->transport !== null) {
-            $attributes['transport'] = $this->transport;
-        }
-
         return [
             'id' => $this->id,
             'type' => 'report',
-            'attributes' => $attributes,
+            'attributes' => $this->getAttributes(),
+            'relationships' => $this->getRelationships(),
+        ];
+    }
+
+    protected function getRelationships(): array
+    {
+        return [
             'updates' => UpdateResource::collection($this->whenLoaded('updates')),
+            'transport' => TransportResource::collection($this->whenLoaded('transport')),
         ];
     }
 }
