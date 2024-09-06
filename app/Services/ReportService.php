@@ -33,15 +33,6 @@ class ReportService
         $attributes['report_code'] = $this->generateReportCode($attributes['branch_office_id']);
         $attributes['emergency_type'] = $attributes['emergency_type']['id'];
 
-        // Check if specific fields have data to set is_closed to true
-        $fieldsToCheck = ['field1', 'field2', 'field3']; // Replace with actual field names
-        foreach ($fieldsToCheck as $field) {
-            if (!empty($attributes[$field])) {
-                $attributes['is_closed'] = true;
-                break;
-            }
-        }
-
         $report = Report::create($attributes);
 
         if (isset($attributes['transport'])) {

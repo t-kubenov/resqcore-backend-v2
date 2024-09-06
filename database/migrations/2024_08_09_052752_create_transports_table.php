@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('transports', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('report_id');
+            $table->foreignId('report_id')->nullable();
             $table->foreignId('update_id')->nullable();
             $table->integer('type');
             $table->integer('count');

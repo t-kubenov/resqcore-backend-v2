@@ -1,14 +1,24 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreUpdateRequest;
 use App\Http\Requests\UpdateUpdateRequest;
 use App\Models\Update;
+use App\Models\Report;
+use App\Http\Resources\UpdateResource;
+use App\Services\UpdateService;
 
 class UpdateController extends Controller
 {
+    protected $updateService;
+
+    public function __construct(UpdateService $updateService)
+    {
+        $this->updateService = $updateService;
+    }
+
     /**
      * Display a listing of the resource.
      */
@@ -22,7 +32,16 @@ class UpdateController extends Controller
      */
     public function store(StoreUpdateRequest $request)
     {
-        //
+        $attributes = $request['data']['attributes'];
+        $report = Report::find($request->id);
+
+        if (!$report) {
+            return response()->json(['message' => 'Report not found'], 404);
+        }
+
+        $update = $this->updateService->createUpdate($report, $attributes);
+
+        return new UpdateResource($update);
     }
 
     /**
