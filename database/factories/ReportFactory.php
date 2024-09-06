@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 use App\Models\BranchOffice;
 use App\Models\Facility;
 use App\Models\User;
+use App\Models\EmergencyType;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Report>
@@ -32,7 +33,7 @@ class ReportFactory extends Factory
             'emergency_info' => $this->faker->sentence,
             'call_date' => $this->faker->dateTime,
             'work_start_date' => $this->faker->dateTime,
-            'emergency_type' => $this->faker->numberBetween(1, 5),
+            'emergency_type' => EmergencyType::inRandomOrder()->first()->id,
             'minor_injury_count' => $this->faker->numberBetween(0, 10),
             'severe_injury_count' => $this->faker->numberBetween(0, 10),
             'fatal_injury_count' => $this->faker->numberBetween(0, 10),

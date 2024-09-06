@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 
 use App\Models\Report;
 use App\Models\Update;
-// use App\Models\Transport;
+use App\Models\TransportType;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Transport>
@@ -26,7 +26,7 @@ class TransportFactory extends Factory
         return [
             'report_id' =>  $report->id,
             'update_id' =>  $Update->id?? null,
-            'type' => $this->faker->numberBetween(1, 8),
+            'type' => TransportType::inRandomOrder()->first()->id,
             'count' => $this->faker->numberBetween(1, 10),
         ];
     }
