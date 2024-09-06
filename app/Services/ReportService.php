@@ -35,6 +35,8 @@ class ReportService
 
         $report = Report::create($attributes);
 
+        $this->calculateTotals($report);
+
         if (isset($attributes['transport'])) {
             $this->parseTransport($report, $attributes['transport']);
         }
@@ -81,5 +83,18 @@ class ReportService
                 'count' => $vehicle->count,
             ];
         });
+    }
+
+    private function calculateTotals($report)
+    {
+        $report->minor_injury_total = $report->minor_injury_count;
+        $report->severe_injury_total = $report->severe_injury_count;
+        $report->fatal_injury_total = $report->fatal_injury_count;
+        $report->evacuated_people_total = $report->evacuated_people_count;
+        $report->provided_medical_total = $report->provided_medical_count;
+        $report->client_equipment_total = $report->client_equipment_count;
+        $report->third_parties_total = $report->third_parties_count;
+
+        $report->save();
     }
 }
