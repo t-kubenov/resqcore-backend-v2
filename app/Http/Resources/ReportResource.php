@@ -14,16 +14,20 @@ class ReportResource extends JsonResource
      *
      * @return array<string, mixed>
      */
-    public function toArray(Request $request): array
+    public function toArray(Request $request)
     {
         $attributes = $this->getAttributes();
 
-        if ($this->relationLoaded('transport')) {
-            $attributes['transport'] = TransportResource::collection($this->transport);
+        $transportResource = TransportResource::collection($this->whenLoaded('transport'));
+        $updateResource = UpdateResource::collection($this->whenLoaded('updates'));
+
+        if ($transportResource) {
+            $attributes['transport'] = $transportResource;
+
         }
 
-        if ($this->relationLoaded('updates')) {
-            $attributes['updates'] = UpdateResource::collection($this->updates);
+        if ($updateResource) {
+            $attributes['updates'] = $updateResource;
         }
 
         return [

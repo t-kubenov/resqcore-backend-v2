@@ -15,9 +15,10 @@ class UpdateService extends ReportService
 
         if (isset($attributes['transport'])) {
             $this->parseTransport($update, $attributes['transport']);
+            $update->load('transport');
         }
 
-        return $update->load('transport');
+        return $update;
     }
 
     private function parseTransport(Update $update, array $transport)

@@ -17,34 +17,14 @@ class Transport extends Model
         'count',
     ];
 
-    const TRANSPORT_TYPE_AC = 1;
-    const TRANSPORT_TYPE_OPERATIONAL_VEHICLE = 2;
-    const TRANSPORT_TYPE_CAR_LADDER = 3;
-    const TRANSPORT_TYPE_RPG_CAR = 4;
-    const TRANSPORT_TYPE_SHIFT_CAR = 5;
-    const TRANSPORT_TYPE_LIGHT_CAR = 6;
-    const TRANSPORT_TYPE_LIGHT_CAR_HIGH_CROSS_COUNTRY = 7;
-    const TRANSPORT_TYPE_ASA_CAR = 8;
-
-    private static $transportTypes = [
-        self::TRANSPORT_TYPE_AC => 'АЦ',
-        self::TRANSPORT_TYPE_OPERATIONAL_VEHICLE => 'Оперативный а/м',
-        self::TRANSPORT_TYPE_CAR_LADDER => 'Автолестница',
-        self::TRANSPORT_TYPE_RPG_CAR => 'Автомобиль РПГ',
-        self::TRANSPORT_TYPE_SHIFT_CAR => 'Вахтовка',
-        self::TRANSPORT_TYPE_LIGHT_CAR => 'Легковой а/м',
-        self::TRANSPORT_TYPE_LIGHT_CAR_HIGH_CROSS_COUNTRY => 'Легковой а/м повышенной проходимости',
-        self::TRANSPORT_TYPE_ASA_CAR => 'а/м АСА',
-    ];
-
-    public static function getTransportTypes()
+    public function transport_type()
     {
-        return self::$transportTypes;
+        return $this->belongsTo(TransportType::class, 'type');
     }
 
-    public function getTransportTypeAttribute()
+    public function getNameAttribute()
     {
-        return self::$transportTypes[$this->type]?? null;
+        return $this->transport_type->name ?? null;
     }
 
     public function report()

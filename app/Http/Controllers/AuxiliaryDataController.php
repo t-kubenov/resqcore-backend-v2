@@ -3,19 +3,19 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use App\Models\Transport;
 use App\Models\BranchOffice;
-use App\Models\Report;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use App\Models\EmergencyType;
+use App\Models\TransportType;
 
 class AuxiliaryDataController extends Controller
 {
     public function getAuxiliaryData(): JsonResponse
     {
         $branchOffices = BranchOffice::all();
-        $emergencyTypes = Report::getEmergencyTypes();
-        $transportTypes = Transport::getTransportTypes();
+        $emergencyTypes = EmergencyType::all();
+        $transportTypes = TransportType::all();
 
 
         $data = [];
@@ -25,11 +25,11 @@ class AuxiliaryDataController extends Controller
         ];
 
         $data[] = [
-            'emergencyTypes' => $emergencyTypes
+            'emergencyTypes' => $emergencyTypes->pluck('name', 'id')
         ];
 
         $data[] = [
-            'transportTypes' => $transportTypes
+            'transportTypes' => $transportTypes->pluck('name', 'id')
         ];
 
         return response()->json(['data' => $data], 200);

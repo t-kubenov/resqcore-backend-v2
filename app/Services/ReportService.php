@@ -23,9 +23,12 @@ class ReportService
             if ($includeTransport) {
                 $report->load('transport');
             }
+
+            return $report;
         }
 
-        return $report;
+        return null;
+
     }
 
     public function createReport($attributes)
@@ -39,6 +42,7 @@ class ReportService
 
         if (isset($attributes['transport'])) {
             $this->parseTransport($report, $attributes['transport']);
+            $report->load('transport');
         }
 
         return $report;
@@ -72,17 +76,6 @@ class ReportService
         } catch (\Exception $e) {
             Log::error($e->getMessage());
         }
-    }
-
-    private function getReportTransport($report)
-    {
-        return $report->transport->map(function ($vehicle) {
-            return [
-                'id' => $vehicle->type,
-                'name' => $vehicle->type->name,
-                'count' => $vehicle->count,
-            ];
-        });
     }
 
     private function calculateTotals($report)

@@ -16,7 +16,7 @@ class TransportResource extends JsonResource
     {
         return [
             'id' => $this->type,
-            'name' => $this->transport_type,
+            'name' => $this->name,
             'count' => $this->count,
         ];
     }
