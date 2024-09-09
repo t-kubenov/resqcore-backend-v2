@@ -52,11 +52,17 @@ class StoreReportRequest extends FormRequest
             'data.attributes.call_date'                         => ['required', 'date'],
             'data.attributes.work_start_date'                   => ['required', 'date'],
             'data.attributes.emergency_type'                    => ['required', 'array'],
-            'data.attributes.is_emergency_line'                 => ['required', 'boolean'],
             'data.attributes.work_scope'                        => ['required'],
-            'data.attributes.emergency_location'                => ['required'],
+
+            'data.attributes.is_emergency_line'                 => ['required', 'boolean'],
+            'data.attributes.line_facility_owner'               => ['required_if:data.attributes.is_emergency_line,true', 'string'],
+            'data.attributes.facility_owner_id'                 => ['required_if:data.attributes.is_emergency_line,false', 'integer', 'min:0'],
+            // 'data.attributes.facility_id'                       => ['nullable', 'integer', 'min:0'],
+            // 'data.attributes.line_facility_location'            => ['required'],
+
+            'data.attributes.emergency_location'                => ['required', 'string'],
             'data.attributes.emergency_info'                    => ['nullable', 'string'],
-            'data.attributes.facility_id'                       => ['nullable', 'integer', 'min:0'],
+
             'data.attributes.minor_injury_count'                => ['required', 'integer', 'min:0'],
             'data.attributes.severe_injury_count'               => ['required', 'integer', 'min:0'],
             'data.attributes.fatal_injury_count'                => ['required', 'integer', 'min:0'],
@@ -73,6 +79,17 @@ class StoreReportRequest extends FormRequest
             'data.attributes.transport'                         => ['nullable'],
             // 'data.attributes.transport.*.id'                    => ['required', 'integer', 'min:0', 'exists:transports,id'],
             // 'data.attributes.transport.*.count'                 => ['required', 'integer', 'min:0'],
+        ];
+    }
+
+        /**
+     * Get custom messages for validator errors.
+     */
+    public function messages(): array
+    {
+        return [
+            'line_facility_owner.required_if' => 'The line facility location is required when the emergency line is true.',
+            'facility_owner_id.required_unless' => 'The facility owner ID is required when the emergency line is false.',
         ];
     }
 }

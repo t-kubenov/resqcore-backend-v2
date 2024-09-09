@@ -9,6 +9,7 @@ use App\Http\Controllers\AuxiliaryDataController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\UpdateController;
 use App\Http\Controllers\DepartureController;
+use App\Http\Controllers\CompanyController;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -29,6 +30,7 @@ Route::post('/reports/update/{id}', [UpdateController::class, 'store'])->name('u
 Route::get('/departures', [DepartureController::class, 'index'])->name('departures.index');
 
 Route::get('/auxiliary-data', [AuxiliaryDataController::class, 'getAuxiliaryData']);
+Route::get('/companies', [CompanyController::class, 'index'])->name('companies.index');
 
 
 

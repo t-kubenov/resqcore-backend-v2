@@ -33,11 +33,12 @@ class ReportService
 
     public function createReport($attributes)
     {
+
         $attributes['report_code'] = $this->generateReportCode($attributes['branch_office_id']);
         $attributes['emergency_type'] = $attributes['emergency_type']['id'];
 
         $report = Report::create($attributes);
-
+        // $this->checkReportForClosing($report);
         $this->calculateTotals($report);
 
         if (isset($attributes['transport'])) {
@@ -90,4 +91,42 @@ class ReportService
 
         $report->save();
     }
+
+    // private function checkReportForClosing($report)
+    // {
+    //     if ($report->is_closed) {
+    //         return;
+    //     }
+
+    //     $fields = [
+    //         'branch_worker_count',
+    //         'worker_man_hours',
+    //         'close_date',
+    //     ];
+
+    //     $field_count = 0;
+
+    //     foreach ($fields as $field) {
+    //         if ($report->$field) {
+    //             $field_count++;
+    //             continue;
+    //         }
+    //         break;
+    //     }
+
+    //     if ($field_count === 0) {
+    //         return;
+    //     }
+    //     elseif ($field_count === count($fields)) {
+    //         $report->is_closed = false;
+    //         $report->save();
+    //         return;
+    //     }
+    //     else {
+    //         return;
+    //     }
+
+    //     // $report->is_closed = true;
+    //     // $report->save();
+    // }
 }

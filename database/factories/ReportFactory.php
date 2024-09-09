@@ -8,6 +8,7 @@ use App\Models\BranchOffice;
 use App\Models\Facility;
 use App\Models\User;
 use App\Models\EmergencyType;
+use App\Models\Company;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Report>
@@ -24,6 +25,7 @@ class ReportFactory extends Factory
         return [
             'branch_office_id' => BranchOffice::inRandomOrder()->first()->id,
             'facility_id' => Facility::factory(), // Create a related Facility
+            'facility_owner_id' => Company::inRandomOrder()->first()->id,
             'reported_by' => User::where('role_id', 3)->inRandomOrder()->first()->id,
             'report_code' => $this->faker->unique()->bothify('##-##'),
             'caller' => $this->faker->name,

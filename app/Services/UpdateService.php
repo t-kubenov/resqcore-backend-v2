@@ -9,6 +9,8 @@ class UpdateService extends ReportService
 {
     public function createUpdate($report, $attributes)
     {
+        //TODO: forbid updating if report is closed
+
         $update = $report->updates()->create($attributes);
 
         $this->calculateTotals($update);
