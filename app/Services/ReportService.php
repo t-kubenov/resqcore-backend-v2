@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\Report;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
 
 class ReportService
 {
@@ -33,9 +34,12 @@ class ReportService
 
     public function createReport($attributes)
     {
+        $attributes['reported_by'] = Auth::user()->id;
+        $attributes['branch_office_id'] = Auth::user()->branch_office_id ?? 1;
 
         $attributes['report_code'] = $this->generateReportCode($attributes['branch_office_id']);
         $attributes['emergency_type'] = $attributes['emergency_type']['id'];
+
 
         $report = Report::create($attributes);
         // $this->checkReportForClosing($report);

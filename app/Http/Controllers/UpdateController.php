@@ -39,6 +39,12 @@ class UpdateController extends Controller
             return response()->json(['message' => 'Report not found'], 404);
         }
 
+        if ($report->is_closed) {
+            return response()->json(['message' => 'Report is closed'], 400);
+        }
+
+        //TODO: forbid updating if report is from different branch or user
+
         $update = $this->updateService->createUpdate($report, $attributes);
 
         return new UpdateResource($update);

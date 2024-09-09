@@ -4,12 +4,20 @@ namespace App\Services;
 
 use App\Models\Update;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
 
 class UpdateService extends ReportService
 {
     public function createUpdate($report, $attributes)
     {
-        //TODO: forbid updating if report is closed
+        $user = Auth::user();
+
+        $attributes['reported_by'] = $user->id;
+        $attributes['branch_office_id'] = $user->branch_office_id ?? 1; //TODO: remove default value and iron this out
+
+        if ($report->is_closed) {
+            return response()->json(['message' => 'Report is closed'], 400);
+        }
 
         $update = $report->updates()->create($attributes);
 

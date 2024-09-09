@@ -33,6 +33,7 @@ class StoreReportRequest extends FormRequest
                     'provided_medical_count' => $attributes['provided_medical_count'] ?? 0,
                     'client_equipment_count' => $attributes['client_equipment_count'] ?? 0,
                     'third_parties_count' => $attributes['third_parties_count'] ?? 0,
+                    'is_closed' => false,
                 ]),
             ],
         ]);
@@ -46,8 +47,8 @@ class StoreReportRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'data.attributes.branch_office_id'                  => ['required', 'integer'],
-            'data.attributes.reported_by'                       => ['required'],
+            // 'data.attributes.branch_office_id'                  => ['required', 'integer'],
+            // 'data.attributes.reported_by'                       => ['required'],
             'data.attributes.caller'                            => ['required'],
             'data.attributes.call_date'                         => ['required', 'date'],
             'data.attributes.work_start_date'                   => ['required', 'date'],
@@ -57,8 +58,6 @@ class StoreReportRequest extends FormRequest
             'data.attributes.is_emergency_line'                 => ['required', 'boolean'],
             'data.attributes.line_facility_owner'               => ['required_if:data.attributes.is_emergency_line,true', 'string'],
             'data.attributes.facility_owner_id'                 => ['required_if:data.attributes.is_emergency_line,false', 'integer', 'min:0'],
-            // 'data.attributes.facility_id'                       => ['nullable', 'integer', 'min:0'],
-            // 'data.attributes.line_facility_location'            => ['required'],
 
             'data.attributes.emergency_location'                => ['required', 'string'],
             'data.attributes.emergency_info'                    => ['nullable', 'string'],
@@ -75,7 +74,6 @@ class StoreReportRequest extends FormRequest
             'data.attributes.situation_during_filing'           => ['nullable'],
             'data.attributes.other_info'                        => ['nullable'],
             'data.attributes.close_date'                        => ['nullable', 'date'],
-            'data.attributes.is_closed'                         => ['nullable', 'boolean'],
             'data.attributes.transport'                         => ['nullable'],
             // 'data.attributes.transport.*.id'                    => ['required', 'integer', 'min:0', 'exists:transports,id'],
             // 'data.attributes.transport.*.count'                 => ['required', 'integer', 'min:0'],
