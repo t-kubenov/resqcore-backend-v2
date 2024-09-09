@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('updates', function (Blueprint $table) {
             $table->id();
             $table->foreignId('report_id')->references('id')->on('reports');
-            $table->integer('minor_injury_count')->nullable();
+            $table->integer('minor_injury_count')->nullable(); //TODO: remove nullable, default to 0
             $table->integer('severe_injury_count')->nullable();
             $table->integer('fatal_injury_count')->nullable();
             $table->integer('evacuated_people_count')->nullable();

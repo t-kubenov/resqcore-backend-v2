@@ -42,7 +42,8 @@ class ReportService
 
 
         $report = Report::create($attributes);
-        // $this->checkReportForClosing($report);
+
+        $this->checkReportForClosing($report);
         $this->calculateTotals($report);
 
         if (isset($attributes['transport'])) {
@@ -96,41 +97,13 @@ class ReportService
         $report->save();
     }
 
-    // private function checkReportForClosing($report)
-    // {
-    //     if ($report->is_closed) {
-    //         return;
-    //     }
-
-    //     $fields = [
-    //         'branch_worker_count',
-    //         'worker_man_hours',
-    //         'close_date',
-    //     ];
-
-    //     $field_count = 0;
-
-    //     foreach ($fields as $field) {
-    //         if ($report->$field) {
-    //             $field_count++;
-    //             continue;
-    //         }
-    //         break;
-    //     }
-
-    //     if ($field_count === 0) {
-    //         return;
-    //     }
-    //     elseif ($field_count === count($fields)) {
-    //         $report->is_closed = false;
-    //         $report->save();
-    //         return;
-    //     }
-    //     else {
-    //         return;
-    //     }
-
-    //     // $report->is_closed = true;
-    //     // $report->save();
-    // }
+    private function checkReportForClosing($report)
+    {
+        if ($report->close_date
+            && $report->branch_worker_count > 0
+            && $report->worker_man_hours > 0) {
+            $report->is_closed = true;
+            $report->save();
+        }
+    }
 }

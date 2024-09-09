@@ -26,7 +26,7 @@ return new class extends Migration
             $table->datetime('call_date');
             $table->datetime('work_start_date');
             $table->integer('emergency_type');
-            $table->integer('minor_injury_count')->nullable();
+            $table->integer('minor_injury_count')->nullable(); //TODO: remove nullable, default to 0
             $table->integer('severe_injury_count')->nullable();
             $table->integer('fatal_injury_count')->nullable();
             $table->integer('evacuated_people_count')->nullable();

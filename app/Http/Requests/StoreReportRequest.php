@@ -47,17 +47,15 @@ class StoreReportRequest extends FormRequest
     public function rules(): array
     {
         return [
-            // 'data.attributes.branch_office_id'                  => ['required', 'integer'],
-            // 'data.attributes.reported_by'                       => ['required'],
             'data.attributes.caller'                            => ['required'],
-            'data.attributes.call_date'                         => ['required', 'date'],
-            'data.attributes.work_start_date'                   => ['required', 'date'],
-            'data.attributes.emergency_type'                    => ['required', 'array'],
+            'data.attributes.call_date'                         => ['required', 'date', 'before_or_equal:data.attributes.work_start_date', 'before_or_equal:today'],
+            'data.attributes.work_start_date'                   => ['required', 'date', 'after_or_equal:data.attributes.call_date', 'before_or_equal:today'],
+            'data.attributes.emergency_type.id'                 => ['required', 'integer', 'exists:emergency_types,id'],
             'data.attributes.work_scope'                        => ['required'],
 
             'data.attributes.is_emergency_line'                 => ['required', 'boolean'],
             'data.attributes.line_facility_owner'               => ['required_if:data.attributes.is_emergency_line,true', 'string'],
-            'data.attributes.facility_owner_id'                 => ['required_if:data.attributes.is_emergency_line,false', 'integer', 'min:0'],
+            'data.attributes.facility_owner_id'                 => ['required_if:data.attributes.is_emergency_line,false', 'integer', 'min:0', 'exists:companies,id'],
 
             'data.attributes.emergency_location'                => ['required', 'string'],
             'data.attributes.emergency_info'                    => ['nullable', 'string'],
@@ -69,14 +67,19 @@ class StoreReportRequest extends FormRequest
             'data.attributes.provided_medical_count'            => ['required', 'integer', 'min:0'],
             'data.attributes.client_equipment_count'            => ['required', 'integer', 'min:0'],
             'data.attributes.third_parties_count'               => ['required', 'integer', 'min:0'],
-            'data.attributes.branch_worker_count'               => ['nullable', 'integer', 'min:0'],
-            'data.attributes.worker_man_hours'                  => ['nullable', 'numeric', 'min:0'],
+            'data.attributes.branch_worker_count'               => ['required_with:data.attributes.worker_man_hours,data.attributes.close_date', 'integer', 'min:0'],
+            'data.attributes.worker_man_hours'                  => ['required_with:data.attributes.branch_worker_count,data.attributes.close_date', 'numeric', 'min:0'],
             'data.attributes.situation_during_filing'           => ['nullable'],
             'data.attributes.other_info'                        => ['nullable'],
-            'data.attributes.close_date'                        => ['nullable', 'date'],
+            'data.attributes.close_date'                        => [
+                                                                        'required_with:data.attributes.branch_worker_count,data.attributes.worker_man_hours',
+                                                                        'date',
+                                                                        'after_or_equal:data.attributes.work_start_date',
+                                                                        'before_or_equal:today'
+                                                                    ],
             'data.attributes.transport'                         => ['nullable'],
-            // 'data.attributes.transport.*.id'                    => ['required', 'integer', 'min:0', 'exists:transports,id'],
-            // 'data.attributes.transport.*.count'                 => ['required', 'integer', 'min:0'],
+            'data.attributes.transport.*.id'                    => ['required', 'integer', 'exists:transports,id'],
+            'data.attributes.transport.*.count'                 => ['required', 'integer', 'min:0'],
         ];
     }
 
@@ -87,7 +90,7 @@ class StoreReportRequest extends FormRequest
     {
         return [
             'line_facility_owner.required_if' => 'The line facility location is required when the emergency line is true.',
-            'facility_owner_id.required_unless' => 'The facility owner ID is required when the emergency line is false.',
+            'facility_owner_id.required_if' => 'The facility owner ID is required when the emergency line is false.',
         ];
     }
 }

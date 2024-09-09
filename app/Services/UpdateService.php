@@ -21,6 +21,7 @@ class UpdateService extends ReportService
 
         $update = $report->updates()->create($attributes);
 
+        $this->checkUpdateForClosing($update);
         $this->calculateTotals($update);
 
         if (isset($attributes['transport'])) {
@@ -58,5 +59,17 @@ class UpdateService extends ReportService
         $report->third_parties_total += $update->third_parties_count;
 
         $report->save();
+    }
+
+    private function checkUpdateForClosing($update)
+    {
+        $report = $update->report;
+
+        if ($update->close_date
+            && $update->branch_worker_count > 0
+            && $update->worker_man_hours > 0) {
+                $report->is_closed = true;
+                $report->save();
+        }
     }
 }
