@@ -27,6 +27,11 @@ class AuthController extends Controller
 
         $token = $user->createToken($request->first_name);
 
+        $user->load(['role', 'branch_office']);
+
+        $user->role->makeHidden(['created_at', 'updated_at']);
+        $user->branch_office->makeHidden(['created_at', 'updated_at']);
+
         return [
             "user" => $user,
             "token" => $token->plainTextToken
@@ -58,6 +63,11 @@ class AuthController extends Controller
         }
 
         $token = $user->createToken($user->first_name);
+
+        $user->load(['role', 'branch_office']);
+
+        $user->role->makeHidden(['created_at', 'updated_at']);
+        $user->branch_office->makeHidden(['created_at', 'updated_at']);
 
         return [
             "user" => $user,

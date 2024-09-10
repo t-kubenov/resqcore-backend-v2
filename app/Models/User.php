@@ -9,6 +9,7 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Spatie\Permission\Traits\HasRoles;
+use Spatie\Permission\Models\Role;
 
 use App\Models\BranchOffice;
 use App\Models\Company;
@@ -57,7 +58,7 @@ class User extends Authenticatable
 
     public function branch_office()
     {
-        return $this->belongsTo(BranchOffice::class);
+        return $this->belongsTo(BranchOffice::class, 'branch_id');
     }
 
     public function company()
@@ -70,7 +71,7 @@ class User extends Authenticatable
         return $this->hasMany(Report::class);
     }
 
-    public function roles()
+    public function role()
     {
         return $this->belongsTo(Role::class);
     }
