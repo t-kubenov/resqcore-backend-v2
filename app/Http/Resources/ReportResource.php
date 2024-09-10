@@ -23,17 +23,13 @@ class ReportResource extends JsonResource
 
         if ($transportResource) {
             $attributes['transport'] = $transportResource;
-
-        }
-
-        if ($updateResource) {
-            $attributes['updates'] = $updateResource;
         }
 
         return [
             'id' => $this->id,
             'type' => 'report',
-            'attributes' => $attributes
+            'attributes' => $attributes,
+            'updates' => $updateResource,
         ];
     }
 }

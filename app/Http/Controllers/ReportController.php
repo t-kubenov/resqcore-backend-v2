@@ -32,9 +32,7 @@ class ReportController extends Controller
 
     public function show(Request $request, $id)
     {
-        $includeUpdates = $request->query('include_updates');
-        $includeTransport = $request->query('include_transport');
-        $report = $this->reportService->findReportWithDetails($id, $includeUpdates, $includeTransport);
+        $report = $this->reportService->findReportWithDetails($id);
 
         if ($report) {
             return new ReportResource($report);

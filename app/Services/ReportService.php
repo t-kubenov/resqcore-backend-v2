@@ -13,17 +13,15 @@ class ReportService
         return Report::paginate();
     }
 
-    public function findReportWithDetails($id, $includeUpdates, $includeTransport)
+    public function findReportWithDetails($id)
     {
         $report = Report::find($id);
 
         if ($report) {
-            if ($includeUpdates) {
-                $report->load('updates');
-            }
-            if ($includeTransport) {
-                $report->load('transport');
-            }
+            $report->load(['updates' => function ($query) {
+                $query->with('transport')->orderBy('created_at');
+            }]);
+            $report->load('transport');
 
             return $report;
         }
