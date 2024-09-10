@@ -26,7 +26,7 @@ class ReportController extends Controller
 
     public function index()
     {
-        $reports = $this->reportService->paginateReports();
+        $reports = $this->reportService->getReports();
         return new ReportCollection($reports);
     }
 

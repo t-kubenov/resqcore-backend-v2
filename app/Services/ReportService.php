@@ -8,9 +8,11 @@ use Illuminate\Support\Facades\Auth;
 
 class ReportService
 {
-    public function paginateReports()
+    public function getReports()
     {
-        return Report::paginate();
+        $user = Auth::user();
+
+        return Report::where('branch_office_id', $user->branch_id)->paginate();
     }
 
     public function findReportWithDetails($id)
