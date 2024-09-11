@@ -2,17 +2,33 @@
 
 namespace App\Services;
 
+use Illuminate\Http\Request;
+
 use App\Models\Report;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 
 class ReportService
 {
-    public function getReports()
+    public function getReports(array $validated)
     {
         $user = Auth::user();
+        $query = Report::where('branch_office_id', $user->branch_id)->orderBy('call_date', 'desc');
 
-        return Report::where('branch_office_id', $user->branch_id)->paginate();
+
+        if (isset($validated['is_emergency_line'])) {
+            $query->where('is_emergency_line', $validated['is_emergency_line']);
+        }
+
+        if (isset($validated['date_start'])) {
+            $query->where('call_date', '>=', $validated['date_start']);
+        }
+
+        if (isset($validated['date_end'])) {
+            $query->where('call_date', '<=', $validated['date_end']);
+        }
+
+        return $query->paginate();
     }
 
     public function findReportWithDetails($id)
@@ -21,7 +37,7 @@ class ReportService
 
         if ($report) {
             $report->load(['updates' => function ($query) {
-                $query->with('transport')->orderBy('created_at');
+                $query->with('transport')->orderBy('call_date');
             }]);
             $report->load('transport');
 

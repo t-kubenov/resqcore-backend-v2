@@ -11,27 +11,24 @@ use App\Models\TransportType;
 
 class AuxiliaryDataController extends Controller
 {
-    public function getAuxiliaryData(): JsonResponse
+    public function getBranchOffices(): JsonResponse
     {
-        $branchOffices = BranchOffice::all();
+        $branchOffices = BranchOffice::select('id', 'name')->get();
+
+        return response()->json(['data' => $branchOffices], 200);
+    }
+
+    public function getEmergencyTypes(): JsonResponse
+    {
         $emergencyTypes = EmergencyType::all();
+
+        return response()->json(['data' => $emergencyTypes], 200);
+    }
+
+    public function getTransportTypes(): JsonResponse
+    {
         $transportTypes = TransportType::all();
 
-
-        $data = [];
-
-        $data[] = [
-            'branchOffices' => $branchOffices->pluck('name', 'id')
-        ];
-
-        $data[] = [
-            'emergencyTypes' => $emergencyTypes->pluck('name', 'id')
-        ];
-
-        $data[] = [
-            'transportTypes' => $transportTypes->pluck('name', 'id')
-        ];
-
-        return response()->json(['data' => $data], 200);
+        return response()->json(['data' => $transportTypes], 200);
     }
 }

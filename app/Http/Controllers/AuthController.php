@@ -4,13 +4,16 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\User;
-use Illuminate\Support\Facades\Hash;
-
-
+use App\Services\AuthService;
 
 class AuthController extends Controller
 {
+    protected $authService;
+
+    public function __construct(AuthService $authService)
+    {
+        $this->authService = $authService;
+    }
 
     public function register(Request $request)
     {
@@ -23,62 +26,26 @@ class AuthController extends Controller
             "role_id" => "required|exists:roles,id"
         ]);
 
-        $user = User::create($fields);
-
-        $token = $user->createToken($request->first_name);
-
-        $user->load(['role', 'branch_office']);
-
-        $user->role->makeHidden(['created_at', 'updated_at']);
-        $user->branch_office->makeHidden(['created_at', 'updated_at']);
-
-        return [
-            "user" => $user,
-            "token" => $token->plainTextToken
-        ];
+        return $this->authService->register($fields);
     }
 
     public function login(Request $request)
     {
-
-        // $messages = [
-        //     'email.required' => 'The provided credentials are incorrect.',
-        //     'email.email' => 'The provided credentials are incorrect.',
-        //     'email.exists' => 'The provided credentials are incorrect.',
-        //     'password.required' => 'The provided credentials are incorrect.',
-        // ];
-
-        $request->validate([
+        $credentials = $request->validate([
             "email" => "required|email",
             "password" => "required"
         ]);
 
-        $user = User::where("email", $request->email)->first();
+        return $this->authService->login($credentials);
+    }
 
-        if (!$user || !Hash::check($request->password, $user->password))
-        {
-            return response()->json([
-                "error" => "The provided credentials are incorrect.",
-            ], 422); // 422 is the status code for unprocessable entity
-        }
-
-        $token = $user->createToken($user->first_name);
-
-        $user->load(['role', 'branch_office']);
-
-        $user->role->makeHidden(['created_at', 'updated_at']);
-        $user->branch_office->makeHidden(['created_at', 'updated_at']);
-
-        return [
-            "user" => $user,
-            "token" => $token->plainTextToken
-        ];
+    public function user(Request $request)
+    {
+        return $this->authService->getUser($request->user());
     }
 
     public function logout(Request $request)
     {
-        $request->user()->tokens()->delete();
-
-        return ["message" => "You are logged out."];
+        return $this->authService->logout($request->user());
     }
 }
