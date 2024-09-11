@@ -10,11 +10,12 @@ use Illuminate\Support\Facades\Auth;
 
 class ReportService
 {
-    public function getReports(array $validated)
+    public function getReports(Request $request)
     {
         $user = Auth::user();
         $query = Report::where('branch_office_id', $user->branch_id)->orderBy('call_date', 'desc');
 
+        $validated = $this->validateRequest($request);
 
         if (isset($validated['is_emergency_line'])) {
             $query->where('is_emergency_line', $validated['is_emergency_line']);
@@ -46,6 +47,23 @@ class ReportService
 
         return null;
 
+    }
+
+    public function validateRequest(Request $request){
+        $validated = $request->validate([
+            'is_emergency_line' => 'sometimes|boolean',
+            'date_start' => 'sometimes|date',
+            'date_end' => 'sometimes|date',
+        ]);
+
+        if (isset($validated['date_start']) && isset($validated['date_end'])) {
+            $request->validate([
+                'date_start' => 'before_or_equal:date_end',
+                'date_end' => 'after_or_equal:date_start',
+            ]);
+        }
+
+        return $validated;
     }
 
     public function createReport($attributes)

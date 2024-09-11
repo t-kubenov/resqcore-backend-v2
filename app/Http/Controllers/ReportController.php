@@ -26,20 +26,7 @@ class ReportController extends Controller
 
     public function index(Request $request)
     {
-        $validated = $request->validate([
-            'is_emergency_line' => 'sometimes|boolean',
-            'date_start' => 'sometimes|date',
-            'date_end' => 'sometimes|date',
-        ]);
-
-        if (isset($validated['date_start']) && isset($validated['date_end'])) {
-            $request->validate([
-                'date_start' => 'before_or_equal:date_end',
-                'date_end' => 'after_or_equal:date_start',
-            ]);
-        }
-
-        $reports = $this->reportService->getReports($validated);
+        $reports = $this->reportService->getReports($request);
         return new ReportCollection($reports);
     }
 
