@@ -38,8 +38,8 @@ class ReportService
 
         if ($report) {
             $report->load(['updates' => function ($query) {
-                $query->with('transport')->orderBy('call_date');
-            }]);
+                $query->with('transport');
+            }])->orderBy('created_at');
             $report->load('transport');
 
             return $report;

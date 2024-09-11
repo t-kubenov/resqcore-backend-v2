@@ -54,12 +54,12 @@ class StoreUpdateRequest extends FormRequest
             'data.attributes.third_parties_count'               => ['required', 'integer', 'min:0'],
             'data.attributes.work_scope'                        => ['required'],
             'data.attributes.situation_during_filing'           => ['nullable'],
-            'data.attributes.branch_worker_count'               => ['required_with:data.attributes.worker_man_hours,data.attributes.close_date', 'integer', 'min:0'],
-            'data.attributes.worker_man_hours'                  => ['required_with:data.attributes.branch_worker_count,data.attributes.close_date', 'numeric', 'min:0'],
+            'data.attributes.branch_worker_count'               => ['required_with:data.attributes.worker_man_hours,data.attributes.close_date', 'integer', 'min:1'],
+            'data.attributes.worker_man_hours'                  => ['required_with:data.attributes.branch_worker_count,data.attributes.close_date', 'numeric', 'min:0.1'],
             'data.attributes.close_date'                        => ['required_with:data.attributes.branch_worker_count,data.attributes.worker_man_hours', 'date'],
             'data.attributes.transport'                         => ['nullable'],
             'data.attributes.transport.*.id'                    => ['required', 'integer', 'exists:transports,id'],
-            'data.attributes.transport.*.count'                 => ['required', 'integer', 'min:0'],
+            'data.attributes.transport.*.count'                 => ['required', 'integer', 'min:1'],
         ];
     }
 }
