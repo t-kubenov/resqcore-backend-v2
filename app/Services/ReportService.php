@@ -3,10 +3,11 @@
 namespace App\Services;
 
 use Illuminate\Http\Request;
-
-use App\Models\Report;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
+
+use App\Models\Report;
+use App\Http\Resources\ReportResource;
 
 class ReportService
 {
@@ -36,17 +37,22 @@ class ReportService
     {
         $report = Report::find($id);
 
-        if ($report) {
-            $report->load(['updates' => function ($query) {
-                $query->with('transport');
-            }])->orderBy('created_at');
-            $report->load('transport');
-
-            return $report;
+        if (!$report) {
+            return response()->json(['message' => 'Report not found'], 404);
         }
 
-        return null;
+        if ($report->branch_office_id != Auth::user()->branch_id) {
+            Log::error([$report->branch_office_id, Auth::user()->branch_office_id]);
+            return response()->json(['message' => 'Unauthorized.'], 403);
+        }
 
+        $report->load(['updates' => function ($query) {
+            $query->with('transport');
+        }])->orderBy('created_at');
+
+        $report->load('transport');
+
+        return new ReportResource($report);
     }
 
     public function validateRequest(Request $request){

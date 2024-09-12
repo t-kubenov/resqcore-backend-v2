@@ -2,16 +2,20 @@
 
 namespace App\Services;
 
-use App\Models\User;
 use Illuminate\Support\Facades\Hash;
+
+use App\Models\User;
+use App\Http\Resources\UserResource;
 
 class AuthService
 {
-    public function getUser($user)
+    public function getUser()
     {
+        $user = auth()->user();
+
         $this->loadRelationships($user);
 
-        return $user;
+        return new UserResource($user);
     }
 
     public function register(array $fields)
@@ -22,10 +26,7 @@ class AuthService
 
         $this->loadRelationships($user);
 
-        return [
-            "user" => $user,
-            "token" => $token->plainTextToken
-        ];
+        return new UserResource($user, $token->plainTextToken);
     }
 
     public function login(array $credentials)
@@ -42,10 +43,7 @@ class AuthService
 
         $this->loadRelationships($user);
 
-        return [
-            "user" => $user,
-            "token" => $token->plainTextToken
-        ];
+        return new UserResource($user, $token->plainTextToken);
     }
 
     public function loadRelationships($user)

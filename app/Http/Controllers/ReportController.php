@@ -32,13 +32,7 @@ class ReportController extends Controller
 
     public function show(Request $request, $id)
     {
-        $report = $this->reportService->findReportWithDetails($id);
-
-        if ($report) {
-            return new ReportResource($report);
-        }
-
-        return response()->json(['message' => 'Report not found'], 404);
+        return $this->reportService->findReportWithDetails($id);
     }
 
     public function store(StoreReportRequest $request)
