@@ -107,7 +107,7 @@ class ReportService
     private function generateReportCode($branchOfficeId)
     {
         $reportCount = Report::where('branch_office_id', $branchOfficeId)->count() + 1;
-        return $branchOfficeId . ' - ' . $reportCount;
+        return $branchOfficeId . '-' . $reportCount;
     }
 
     private function parseTransport(Report $report, array $transport)

@@ -18,8 +18,7 @@ class DepartureController extends Controller
 
     public function show($id)
     {
-        $departure = Report::find($id);
-        return new DepartureResource($departure);
+        //
     }
 
     public function store(){

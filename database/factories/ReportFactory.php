@@ -29,7 +29,7 @@ class ReportFactory extends Factory
             'reported_by' => User::where('role_id', 3)->inRandomOrder()->first()->id,
             'report_code' => $this->faker->unique()->bothify('##-##'),
             'caller' => $this->faker->name,
-            'line_facility_location' => $this->faker->address,
+            // 'line_facility_location' => $this->faker->address,
             'line_facility_owner' => $this->faker->name,
             'emergency_location' => $this->faker->address,
             'emergency_info' => $this->faker->sentence,
@@ -60,9 +60,8 @@ class ReportFactory extends Factory
     {
         return $this->state(fn (array $attributes) => [
             'facility_id' => null,
-            'line_facility_location' => $this->faker->address,
+            'emergency_location' => $this->faker->address,
             'line_facility_owner' => $this->faker->name,
-            'emergency_location' => null,
             'is_emergency_line' => true,
         ]);
     }
@@ -71,9 +70,8 @@ class ReportFactory extends Factory
     {
         return $this->state(fn (array $attributes) => [
             'facility_id' => Facility::factory(),
-            'line_facility_location' => null,
-            'line_facility_owner' => null,
             'emergency_location' => $this->faker->address,
+            'line_facility_owner' => null,
             'is_emergency_line' => false,
         ]);
     }

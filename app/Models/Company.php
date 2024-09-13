@@ -16,6 +16,8 @@ class Company extends Model
         'name',
     ];
 
+    public $timestamps = false;
+
     public function facilities()
     {
         return $this->hasMany(Facility::class);

@@ -11,11 +11,11 @@ class Report extends BaseOperation
 
     protected $fillable = [
         'branch_office_id',
-        'facility_id',
+        'facility_owner_id',
         'reported_by',
         'report_code',
         'caller',
-        'line_facility_location',
+
         'line_facility_owner',
         'emergency_location',
         'emergency_info',
@@ -63,9 +63,14 @@ class Report extends BaseOperation
         return $this->hasMany(Update::class, 'report_id');
     }
 
-    public function facility()
+    // public function facility()
+    // {
+    //     return $this->belongsTo(Facility::class);
+    // }
+
+    public function facility_owner()
     {
-        return $this->belongsTo(Facility::class);
+        return $this->belongsTo(Company::class, 'facility_owner_id');
     }
 
     public function branch_office()
