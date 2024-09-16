@@ -34,6 +34,17 @@ class DepartureService
             $query->where('call_date', '<=', $validated['date_end']);
         }
 
+        if (isset($validated['search'])) {
+            $search = $validated['search'];
+            $query->where(function ($q) use ($search) {
+                $q->where('line_facility_owner', 'ILIKE', "%{$search}%")
+                  ->orWhere('emergency_location', 'ILIKE', "%{$search}%")
+                  ->orWhereHas('facility_owner', function ($q) use ($search) {
+                      $q->where('name', 'ILIKE', "%{$search}%");
+                  });
+            });
+        }
+
         return $query->paginate();
     }
 
@@ -44,6 +55,7 @@ class DepartureService
             'is_emergency_line' => 'sometimes|boolean',
             'date_start' => 'sometimes|date',
             'date_end' => 'sometimes|date',
+            'search' => 'sometimes|string|max:255', // Add search parameter
         ]);
 
         if (isset($validated['date_start']) && isset($validated['date_end'])) {
@@ -55,14 +67,4 @@ class DepartureService
 
         return $validated;
     }
-
-    public function canViewDepartures($user)
-    {
-        if ($user->can('departure_view')) {
-            return true;
-        }
-
-        return false;
-    }
-
 }
