@@ -13,10 +13,10 @@ class ReportService
 {
     public function getReports(Request $request)
     {
+        $validated = $this->validateRequest($request);
+
         $user = Auth::user();
         $query = Report::where('branch_office_id', $user->branch_id)->orderBy('call_date', 'desc');
-
-        $validated = $this->validateRequest($request);
 
         if (isset($validated['is_emergency_line'])) {
             $query->where('is_emergency_line', $validated['is_emergency_line']);

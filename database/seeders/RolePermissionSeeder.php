@@ -16,19 +16,20 @@ class RolePermissionSeeder extends Seeder
     {
         $rolePermissions = [
             'admin' => [
-                'is_admin',
+                'departure_view',
+                'branch_report_view',
+                'branch_report_create',
+                'branch_update_create',
             ],
+
             'central_office_user' => [
-                'is_central_office_user',
+                'departure_view',
             ],
+
             'branch_office_user' => [
-                'is_branch_office_user',
-            ],
-            'company_user' => [
-                'is_company_user',
-            ],
-            'ministry_user' => [
-                'is_ministry_user',
+                'branch_report_view',
+                'branch_report_create',
+                'branch_update_create',
             ],
         ];
 

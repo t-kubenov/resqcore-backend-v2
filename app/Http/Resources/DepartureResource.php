@@ -24,7 +24,7 @@ class DepartureResource extends JsonResource
         $this->branch_office?->makeHidden(['created_at', 'updated_at']);
 
         return [
-            "id" => 1,
+            "id" => $this->id,
             "type" => "departure",
             "attributes" => [
                 'report_code' => $this->report_code,
@@ -38,6 +38,7 @@ class DepartureResource extends JsonResource
                 'worker_man_hours' => $this->worker_man_hours,
                 'branch_office' => $this->branch_office,
                 'transport' => $transportResource,
+                'is_closed' => $this->is_closed,
             ]
         ];
     }

@@ -24,16 +24,19 @@ class ReportController extends Controller
         $this->reportService = $reportService;
     }
 
+
     public function index(Request $request)
     {
         $reports = $this->reportService->getReports($request);
         return new ReportCollection($reports);
     }
 
+
     public function show(Request $request, $id)
     {
         return $this->reportService->findReportWithDetails($id);
     }
+
 
     public function store(StoreReportRequest $request)
     {
@@ -42,6 +45,7 @@ class ReportController extends Controller
 
         return new ReportResource($report);
     }
+
 
     public function update()
     {

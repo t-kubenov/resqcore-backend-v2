@@ -26,22 +26,10 @@ class PermissionSeeder extends Seeder
 // Сотрудник МЧС (просмотр, все объекты, подпись по мере ознакомления)
 
         $permissions = [
-            // 'view_all_operations' => 'central_office',
-            // 'edit_all_operations' => 'admin',
-            // 'view_own_operation' => 'branch_office',
-            // 'edit_own_operation' => 'branch_office',
-            // 'view_all_facilities' => 'the_ministry',
-            // 'edit_all_facilities' => 'admin',
-            // 'sign_all_facilities' => 'the_ministry',
-            // 'view_own_facility' => 'company',
-            // 'edit_own_facility' => 'company',
-            // 'sign_own_facility' => 'company',
-
-            'is_admin' => 'admin',
-            'is_central_office_user' => 'central_office_user',
-            'is_branch_office_user' => 'branch_office_user',
-            'is_company_user' => 'company_user',
-            'is_ministry_user' => 'ministry_user',
+            'departure_view' => 'central_office',
+            'branch_report_view' => 'branch_office',
+            'branch_report_create' => 'branch_office',
+            'branch_update_create' => 'branch_office',
         ];
 
         foreach ($permissions as $permission => $guard) {
