@@ -32,6 +32,17 @@ class DepartureController extends Controller
         return new DepartureCollection($this->departureService->getDepartures($request));
     }
 
+    public function countTable(Request $request)
+    {
+        $user = Auth::user();
+
+        if ($user->can('departure_view')) {
+            return response()->json(['error' => 'Unauthorized'], 403); //todo: move to middleware
+        }
+
+        return response()->json($this->departureService->getCountTable($request));
+    }
+
     public function show($id)
     {
         //

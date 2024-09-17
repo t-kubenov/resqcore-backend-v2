@@ -48,6 +48,37 @@ class DepartureService
         return $query->paginate();
     }
 
+    public function getCountTable(Request $request)
+    {
+        $query = Report::selectRaw('emergency_type, branch_office_id, COUNT(*) as count')
+            ->groupBy('emergency_type', 'branch_office_id')
+            ->orderBy('emergency_type')
+            ->orderBy('branch_office_id')
+            ->get();
+
+        // Calculate the total count for each emergency type
+        $totalPerType = Report::selectRaw('emergency_type, COUNT(*) as total_count')
+            ->groupBy('emergency_type')
+            ->pluck('total_count', 'emergency_type');
+
+        // Calculate the total count for each branch office
+        $totalPerBranchOffice = Report::selectRaw('branch_office_id, COUNT(*) as total_count')
+            ->groupBy('branch_office_id')
+            ->pluck('total_count', 'branch_office_id');
+
+        // Calculate the overall total count
+        $overallTotal = Report::count();
+
+        return [
+            'data' => [
+                'cells' => $query,
+                'total_per_type' => $totalPerType,
+                'total_per_branch_office' => $totalPerBranchOffice,
+                'overall_total' => $overallTotal,
+            ]
+        ];
+    }
+
 
     public function validateRequest(Request $request){ //todo: create separate validation class
         $validated = $request->validate([
