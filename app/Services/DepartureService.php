@@ -18,6 +18,46 @@ class DepartureService
 
         $query = Report::orderBy('call_date', 'desc');
 
+        $query = $this->filterQuery($query, $validated);
+
+        return $query->paginate();
+    }
+
+    public function getCountTable(Request $request)
+    {
+        $validated = $this->validateRequest($request);
+
+        $filteredQuery = $this->filterQuery(Report::query(), $validated);
+
+        $queryResults = (clone $filteredQuery)->selectRaw('emergency_type, branch_office_id, COUNT(*) as count')
+            ->groupBy('emergency_type', 'branch_office_id')
+            ->orderBy('emergency_type')
+            ->orderBy('branch_office_id')
+            ->get();
+
+        $totalPerType = (clone $filteredQuery)->selectRaw('emergency_type, COUNT(*) as total_count')
+            ->groupBy('emergency_type')
+            ->pluck('total_count', 'emergency_type');
+
+        $totalPerBranchOffice = (clone $filteredQuery)->selectRaw('branch_office_id, COUNT(*) as total_count')
+            ->groupBy('branch_office_id')
+            ->pluck('total_count', 'branch_office_id');
+
+        $overallTotal = (clone $filteredQuery)->count();
+
+
+        return [
+            'data' => [
+                'cells' => $queryResults,
+                'total_per_type' => $totalPerType,
+                'total_per_branch_office' => $totalPerBranchOffice,
+                'overall_total' => $overallTotal,
+            ]
+        ];
+    }
+
+    public function filterQuery($query, $validated)
+    {
         if (isset($validated['branch_office_id'])) {
             $query->where('branch_office_id', $validated['branch_office_id']);
         }
@@ -45,38 +85,7 @@ class DepartureService
             });
         }
 
-        return $query->paginate();
-    }
-
-    public function getCountTable(Request $request)
-    {
-        $query = Report::selectRaw('emergency_type, branch_office_id, COUNT(*) as count')
-            ->groupBy('emergency_type', 'branch_office_id')
-            ->orderBy('emergency_type')
-            ->orderBy('branch_office_id')
-            ->get();
-
-        // Calculate the total count for each emergency type
-        $totalPerType = Report::selectRaw('emergency_type, COUNT(*) as total_count')
-            ->groupBy('emergency_type')
-            ->pluck('total_count', 'emergency_type');
-
-        // Calculate the total count for each branch office
-        $totalPerBranchOffice = Report::selectRaw('branch_office_id, COUNT(*) as total_count')
-            ->groupBy('branch_office_id')
-            ->pluck('total_count', 'branch_office_id');
-
-        // Calculate the overall total count
-        $overallTotal = Report::count();
-
-        return [
-            'data' => [
-                'cells' => $query,
-                'total_per_type' => $totalPerType,
-                'total_per_branch_office' => $totalPerBranchOffice,
-                'overall_total' => $overallTotal,
-            ]
-        ];
+        return $query;
     }
 
 
