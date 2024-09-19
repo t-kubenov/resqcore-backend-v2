@@ -17,8 +17,6 @@ class DatabaseSeeder extends Seeder
             BranchOfficeSeeder::class,
             EmergencyTypeSeeder::class,
             TransportTypeSeeder::class,
-            RoleSeeder::class,
-            PermissionSeeder::class,
             RolePermissionSeeder::class,
             UserSeeder::class,
             ReportSeeder::class,

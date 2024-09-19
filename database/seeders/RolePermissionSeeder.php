@@ -2,44 +2,41 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 
 class RolePermissionSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
     public function run(): void
     {
-        $rolePermissions = [
-            'admin' => [
-                'departure_view',
-                'branch_report_view',
-                'branch_report_create',
-                'branch_update_create',
-            ],
+        // Reset cached roles and permissions
+        app()[\Spatie\Permission\PermissionRegistrar::class]->forgetCachedPermissions();
 
-            'central_office_user' => [
-                'departure_view',
-            ],
+        // create permissions
+        Permission::create(['name' => 'departure_view']);
+        Permission::create(['name' => 'branch_update_create']);
+        Permission::create(['name' => 'branch_report_view']);
+        Permission::create(['name' => 'branch_report_create']);
 
-            'branch_office_user' => [
-                'branch_report_view',
-                'branch_report_create',
-                'branch_update_create',
-            ],
-        ];
+        // update cache to know about the newly created permissions (required if using WithoutModelEvents in seeders)
+        app()[\Spatie\Permission\PermissionRegistrar::class]->forgetCachedPermissions();
 
-        foreach ($rolePermissions as $role => $permissions) {
-            $role = Role::where('name', $role)->first();
 
-            foreach ($permissions as $permission) {
-                $permission = Permission::where('name', $permission)->first();
-                $role->permissions()->attach($permission);
-            }
-        }
+        // create roles and assign created permissions
+
+
+        $role = Role::create(['name' => 'admin']);
+        $role->givePermissionTo(Permission::all());
+
+        $role = Role::create(['name' => 'central_office_user']);
+        $role->givePermissionTo('departure_view');
+
+        $role = Role::create(['name' => 'branch_office_user'])
+            ->givePermissionTo(['branch_update_create', 'branch_report_view', 'branch_report_create']);
+
+        $role = Role::create(['name' => 'company_user']);
+
+        $role = Role::create(['name' => 'ministry_user']);
     }
 }

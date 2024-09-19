@@ -8,6 +8,7 @@ use Illuminate\Support\Str;
 
 use App\Models\BranchOffice;
 use App\Models\Company;
+use App\Models\User;
 
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
@@ -63,9 +64,12 @@ class UserFactory extends Factory
             'last_name' => 'ResQ',
             'patronymic' => 'Adminovich',
             'email' => 'admin@resq.kz',
-            'role_id' => 1,
             'password' => Hash::make('123'),
-        ]);
+            'role_id' => 1,
+        ])
+        ->afterCreating(function (User $user) {
+            $user->assignRole('admin');
+        });
     }
 
     // create company user
@@ -74,8 +78,11 @@ class UserFactory extends Factory
         return $this->state(fn (array $attributes) => [
             'company_id' => Company::factory(),
             'branch_id' => null,
-            'role_id' => Role::where('name', 'company_user')->first()->id,
-        ]);
+            'role_id' => 4,
+        ])
+        ->afterCreating(function (User $user) {
+            $user->assignRole('company_user');
+        });
     }
 
     // branch office employee
@@ -85,7 +92,24 @@ class UserFactory extends Factory
         return $this->state(fn (array $attributes) => [
             'company_id' => null,
             'branch_id' => BranchOffice::inRandomOrder()->first()->id,
-            'role_id' => Role::where('name', 'branch_office_user')->first()->id,
-        ]);
+            'role_id' => 3,
+        ])
+        ->afterCreating(function (User $user) {
+            $user->assignRole('branch_office_user');
+        });
+    }
+
+    // central office user
+
+    public function central_office_user(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'company_id' => null,
+            'branch_id' => null,
+            'role_id' => 2,
+        ])
+        ->afterCreating(function (User $user) {
+            $user->assignRole('central_office_user');
+        });
     }
 }
