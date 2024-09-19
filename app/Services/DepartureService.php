@@ -20,7 +20,20 @@ class DepartureService
 
         $query = $this->filterQuery($query, $validated);
 
-        return $query->paginate();
+        $reports = $query->with(['transport', 'updates.transport'])->paginate();
+
+        // Merge the updates' transports into the parent report's transport object
+        $reports->getCollection()->transform(function ($report) {
+            $updateTransports = $report->updates->flatMap(function ($update) {
+                return $update->transport;
+            });
+
+            $report->transport = $report->transport->merge($updateTransports);
+
+            return $report;
+        });
+
+        return $reports;
     }
 
     public function getCountTable(Request $request)

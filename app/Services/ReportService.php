@@ -42,7 +42,6 @@ class ReportService
         }
 
         if ($report->branch_office_id != Auth::user()->branch_id) {
-            Log::error([$report->branch_office_id, Auth::user()->branch_office_id]);
             return response()->json(['message' => 'Unauthorized.'], 403);
         }
 
@@ -75,7 +74,7 @@ class ReportService
     public function createReport($attributes)
     {
         $attributes['reported_by'] = Auth::user()->id;
-        $attributes['branch_office_id'] = Auth::user()->branch_office_id ?? 1;
+        $attributes['branch_office_id'] = Auth::user()->branch_id;
 
         $attributes['report_code'] = $this->generateReportCode($attributes['branch_office_id']);
         $attributes['emergency_type'] = $attributes['emergency_type']['id'];
