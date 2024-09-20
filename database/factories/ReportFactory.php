@@ -29,7 +29,7 @@ class ReportFactory extends Factory
             'reported_by' => User::where('role_id', 3)->inRandomOrder()->first()->id,
             'report_code' => $this->faker->unique()->bothify('##-##'),
             'caller' => $this->faker->name,
-            // 'line_facility_location' => $this->faker->address,
+            // 'line_facility_location' => $this->faker->address,    // This is not used in the model
             'line_facility_owner' => $this->faker->name,
             'emergency_location' => $this->faker->address,
             'emergency_info' => $this->faker->sentence,
@@ -43,14 +43,14 @@ class ReportFactory extends Factory
             'provided_medical_count' => $this->faker->numberBetween(0, 100),
             'client_equipment_count' => $this->faker->numberBetween(0, 50),
             'third_parties_count' => $this->faker->numberBetween(0, 50),
-            'branch_worker_count' => $this->faker->numberBetween(0, 50),
-            'worker_man_hours' => $this->faker->randomFloat(2, 0, 1000),
+            // 'branch_worker_count' => $this->faker->numberBetween(0, 50),
+            // 'worker_man_hours' => $this->faker->randomFloat(2, 0, 1000),
             'work_scope' => $this->faker->paragraph,
             'situation_during_filing' => $this->faker->paragraph,
             'other_info' => $this->faker->paragraph,
             'is_emergency_line' => $this->faker->boolean,
             'close_date' => $this->faker->optional()->dateTime,
-            'is_closed' => $this->faker->boolean,
+            // 'is_closed' => $this->faker->boolean,
         ];
     }
 
@@ -81,6 +81,8 @@ class ReportFactory extends Factory
         return $this->state(fn (array $attributes) => [
             'is_closed' => true,
             'close_date' => $this->faker->dateTime,
+            'branch_worker_count' => $this->faker->numberBetween(0, 50),
+            'worker_man_hours' => $this->faker->randomFloat(2, 0, 1000),
         ]);
     }
 

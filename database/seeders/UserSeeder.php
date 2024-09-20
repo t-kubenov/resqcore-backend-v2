@@ -6,6 +6,7 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 use App\Models\User;
+use App\Models\BranchOffice;
 
 class UserSeeder extends Seeder
 {
@@ -15,7 +16,16 @@ class UserSeeder extends Seeder
     public function run(): void
     {
         User::factory()->admin()->create();
+
+        User::factory()->central_office_user()->count(3)->create();
+
+        foreach (BranchOffice::all() as $branch_office) {
+            User::factory()->branch_office_employee()->create([
+                'branch_id' => $branch_office->id,
+            ]);
+        }
+
         User::factory()->company_employee()->count(10)->create();
-        User::factory()->branch_office_employee()->count(10)->create();
+        // User::factory()->branch_office_employee()->count(10)->create();
     }
 }

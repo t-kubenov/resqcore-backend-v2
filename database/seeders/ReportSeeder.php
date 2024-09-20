@@ -6,6 +6,7 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 use App\Models\Report;
+use App\Models\BranchOffice;
 
 class ReportSeeder extends Seeder
 {
@@ -14,7 +15,13 @@ class ReportSeeder extends Seeder
      */
     public function run(): void
     {
-        Report::factory()->isEmergencyLineOperation()->count(5)->create();
-        Report::factory()->isContractOperation()->count(5)->create();
+        foreach (BranchOffice::all() as $branch_office) {
+            Report::factory()->isEmergencyLineOperation()->count(5)->create([
+                'branch_office_id' => $branch_office->id,
+            ]);
+            Report::factory()->isContractOperation()->count(5)->create([
+                'branch_office_id' => $branch_office->id,
+            ]);
+        }
     }
 }
