@@ -9,6 +9,7 @@ use App\Models\Update;
 use App\Models\Report;
 use App\Http\Resources\UpdateResource;
 use App\Services\UpdateService;
+use Illuminate\Support\Facades\Auth;
 
 class UpdateController extends Controller
 {
@@ -32,8 +33,12 @@ class UpdateController extends Controller
      */
     public function store(StoreUpdateRequest $request)
     {
-        $attributes = $request['data']['attributes'];
+        $user = Auth::user();
         $report = Report::find($request->id);
+
+        if (!($user->id == $report->reported_by || $user->hasRole('admin'))) {
+            return response()->json(['message' => 'You are not allowed to update this report'], 403);
+        }
 
         if (!$report) {
             return response()->json(['message' => 'Report not found'], 404);
@@ -43,8 +48,7 @@ class UpdateController extends Controller
             return response()->json(['message' => 'Report is closed'], 400);
         }
 
-        //TODO: forbid updating if report is from different branch or user
-
+        $attributes = $request['data']['attributes'];
         $update = $this->updateService->createUpdate($report, $attributes);
 
         return new UpdateResource($update);

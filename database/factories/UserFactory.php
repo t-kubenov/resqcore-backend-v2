@@ -66,6 +66,8 @@ class UserFactory extends Factory
             'email' => 'admin@resq.kz',
             'password' => Hash::make('123'),
             'role_id' => 1,
+            'branch_id' => 1,
+            'company_id' => 1,
         ])
         ->afterCreating(function (User $user) {
             $user->assignRole('admin');

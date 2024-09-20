@@ -16,7 +16,13 @@ class ReportService
         $validated = $this->validateRequest($request);
 
         $user = Auth::user();
-        $query = Report::where('branch_office_id', $user->branch_id)->orderBy('call_date', 'desc');
+
+        $query = Report::orderBy('call_date', 'desc');
+
+
+        if (!$user->hasRole('admin')) {
+            $query->where('branch_office_id', $user->branch_id);
+        }
 
         if (isset($validated['is_emergency_line'])) {
             $query->where('is_emergency_line', $validated['is_emergency_line']);
@@ -41,8 +47,10 @@ class ReportService
             return response()->json(['message' => 'Report not found'], 404);
         }
 
-        if ($report->branch_office_id != Auth::user()->branch_id) {
-            return response()->json(['message' => 'Unauthorized.'], 403);
+        $user = Auth::user();
+
+        if (!($report->branch_office_id == $user->branch_id || $user->hasRole('admin'))) {
+            return response()->json(['message' => 'Report does not belong to your branch.'], 403);
         }
 
         $report->load(['updates' => function ($query) {

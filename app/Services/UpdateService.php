@@ -10,15 +10,6 @@ class UpdateService extends ReportService
 {
     public function createUpdate($report, $attributes)
     {
-        $user = Auth::user();
-
-        $attributes['reported_by'] = $user->id;
-        $attributes['branch_office_id'] = $user->branch_office_id ?? 1; //TODO: remove default value and iron this out
-
-        if ($report->is_closed) {
-            return response()->json(['message' => 'Report is closed'], 400);
-        }
-
         $update = $report->updates()->create($attributes);
 
         $this->checkUpdateForClosing($update);

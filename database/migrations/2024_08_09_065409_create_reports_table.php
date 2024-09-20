@@ -26,23 +26,23 @@ return new class extends Migration
             $table->datetime('call_date');
             $table->datetime('work_start_date');
             $table->integer('emergency_type');
-            $table->integer('minor_injury_count')->nullable(); //TODO: remove nullable, default to 0
-            $table->integer('severe_injury_count')->nullable();
-            $table->integer('fatal_injury_count')->nullable();
-            $table->integer('evacuated_people_count')->nullable();
-            $table->integer('provided_medical_count')->nullable();
-            $table->integer('client_equipment_count')->nullable();
-            $table->integer('third_parties_count')->nullable();
+            $table->integer('minor_injury_count')->default(0);
+            $table->integer('severe_injury_count')->default(0);
+            $table->integer('fatal_injury_count')->default(0);
+            $table->integer('evacuated_people_count')->default(0);
+            $table->integer('provided_medical_count')->default(0);
+            $table->integer('client_equipment_count')->default(0);
+            $table->integer('third_parties_count')->default(0);
             $table->integer('branch_worker_count')->nullable();
             $table->float('worker_man_hours')->nullable();
 
-            $table->integer('minor_injury_total')->nullable();
-            $table->integer('severe_injury_total')->nullable();
-            $table->integer('fatal_injury_total')->nullable();
-            $table->integer('evacuated_people_total')->nullable();
-            $table->integer('provided_medical_total')->nullable();
-            $table->integer('client_equipment_total')->nullable();
-            $table->integer('third_parties_total')->nullable();
+            $table->integer('minor_injury_total')->default(0);
+            $table->integer('severe_injury_total')->default(0);
+            $table->integer('fatal_injury_total')->default(0);
+            $table->integer('evacuated_people_total')->default(0);
+            $table->integer('provided_medical_total')->default(0);
+            $table->integer('client_equipment_total')->default(0);
+            $table->integer('third_parties_total')->default(0);
 
             $table->text('work_scope');
             $table->text('situation_during_filing')->nullable();
