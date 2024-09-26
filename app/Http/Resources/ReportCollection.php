@@ -27,7 +27,7 @@ class ReportCollection extends ResourceCollection
                         'facility_name' => $report->facility->location ?? $report->line_facility_location,
                         'emergency_location' => $report->emergency_location ?? 'Н/Д',
                         'call_date' => $report->call_date,
-                        'emergency_name' => $report->emergency_type, // Derive from emergency type
+                        'emergency_name' => $report->emergency, // Derive from emergency type
                         'is_closed' => $report->is_closed,
                     ],
                 ];
