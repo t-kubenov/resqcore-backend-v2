@@ -30,6 +30,7 @@ class DepartureResource extends JsonResource
                 'report_code' => $this->report_code,
                 'work_start_date' => $this->work_start_date,
                 'close_date' => $this->close_date,
+                'is_emergency_line' => $this->is_emergency_line,
                 'facility_owner' => $this->facility_owner,
                 'line_facility_owner' => $this->line_facility_owner,
                 'emergency_type' => $this->emergency, // Derive from emergency type
