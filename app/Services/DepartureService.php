@@ -4,7 +4,6 @@ namespace App\Services;
 
 use App\Models\Report;
 use App\Http\Resources\DepartureResource;
-use App\Services\DepartureService;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;

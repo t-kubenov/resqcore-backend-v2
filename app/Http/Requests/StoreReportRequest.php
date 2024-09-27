@@ -2,8 +2,12 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\Rule;
+use Carbon\Carbon;
 
 class StoreReportRequest extends FormRequest
 {
@@ -39,6 +43,17 @@ class StoreReportRequest extends FormRequest
         ]);
     }
 
+    protected function failedValidation(Validator $validator) //todo:remove
+    {
+        Log::info('Validation Errors', [
+            'errors' => $validator->errors(),
+        ]);
+
+        throw new HttpResponseException(
+            response()->json(['errors' => $validator->errors()], 422)
+        );
+    }
+
     /**
      * Get the validation rules that apply to the request.
      *
@@ -46,10 +61,24 @@ class StoreReportRequest extends FormRequest
      */
     public function rules(): array
     {
+
+
         return [
             'data.attributes.caller'                            => ['required'],
-            'data.attributes.call_date'                         => ['required', 'date', 'before_or_equal:data.attributes.work_start_date', 'before_or_equal:today'],
-            'data.attributes.work_start_date'                   => ['required', 'date', 'after_or_equal:data.attributes.call_date', 'before_or_equal:today'],
+            'data.attributes.call_date'                         => [
+                                                                        'required',
+                                                                        'date',
+//                                                                        'date_format:Y-m-d\TH:i',
+                                                                        'before_or_equal:data.attributes.work_start_date',
+                                                                        'before_or_equal:tomorrow' //should be before or equal to today but it is not working
+                                                                    ],
+            'data.attributes.work_start_date'                   => [
+                                                                        'required',
+                                                                        'date',
+//                                                                        'date_format:Y-m-d\TH:i',
+                                                                        'after_or_equal:data.attributes.call_date',
+                                                                        'before_or_equal:tomorrow'
+                                                                    ],
             'data.attributes.emergency_type.id'                 => ['required', 'integer', 'exists:emergency_types,id'],
             'data.attributes.work_scope'                        => ['required'],
 
@@ -75,7 +104,7 @@ class StoreReportRequest extends FormRequest
                                                                         'required_with:data.attributes.branch_worker_count,data.attributes.worker_man_hours',
                                                                         'date',
                                                                         'after_or_equal:data.attributes.work_start_date',
-                                                                        'before_or_equal:today'
+                                                                        'before_or_equal:tomorrow'
                                                                     ],
             'data.attributes.transport'                         => ['nullable'],
             'data.attributes.transport.*.id'                    => ['required', 'integer', 'exists:transports,id'],
@@ -92,5 +121,15 @@ class StoreReportRequest extends FormRequest
             'line_facility_owner.required_if' => 'The line facility location is required when the emergency line is true.',
             'facility_owner_id.required_if' => 'The facility owner ID is required when the emergency line is false.',
         ];
+    }
+
+    public function beforeOrEqualToday($attribute, $value, $fail)
+    {
+
+        $date = Carbon::createFromFormat('Y-m-d', $value);
+
+        if ($date->gt(Carbon::today())) {
+            $fail($attribute.' must be a date before or equal to today.');
+        }
     }
 }
