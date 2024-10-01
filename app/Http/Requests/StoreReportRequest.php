@@ -27,6 +27,14 @@ class StoreReportRequest extends FormRequest
     {
         $attributes = $this->input('data.attributes', []);
 
+        if (isset($attributes['branch_worker_count']) && $attributes['branch_worker_count'] == 0) {
+            unset($attributes['branch_worker_count']);
+        }
+
+        if (isset($attributes['worker_man_hours']) && $attributes['worker_man_hours'] == 0) {
+            unset($attributes['worker_man_hours']);
+        }
+
         $this->merge([
             'data' => [
                 'attributes' => array_merge($attributes, [
@@ -66,19 +74,17 @@ class StoreReportRequest extends FormRequest
         return [
             'data.attributes.caller'                            => ['required'],
             'data.attributes.call_date'                         => [
-                                                                        'required',
-                                                                        'date',
-//                                                                        'date_format:Y-m-d\TH:i',
-                                                                        'before_or_equal:data.attributes.work_start_date',
-                                                                        'before_or_equal:tomorrow' //should be before or equal to today but it is not working
-                                                                    ],
+                'required',
+                'date',
+                'before_or_equal:data.attributes.work_start_date',
+                'before_or_equal:tomorrow' //should be before or equal to today, but it is not working
+            ],
             'data.attributes.work_start_date'                   => [
-                                                                        'required',
-                                                                        'date',
-//                                                                        'date_format:Y-m-d\TH:i',
-                                                                        'after_or_equal:data.attributes.call_date',
-                                                                        'before_or_equal:tomorrow'
-                                                                    ],
+                'required',
+                'date',
+                'after_or_equal:data.attributes.call_date',
+                'before_or_equal:tomorrow'
+            ],
             'data.attributes.emergency_type.id'                 => ['required', 'integer', 'exists:emergency_types,id'],
             'data.attributes.work_scope'                        => ['required'],
 
@@ -96,16 +102,27 @@ class StoreReportRequest extends FormRequest
             'data.attributes.provided_medical_count'            => ['required', 'integer', 'min:0'],
             'data.attributes.client_equipment_count'            => ['required', 'integer', 'min:0'],
             'data.attributes.third_parties_count'               => ['required', 'integer', 'min:0'],
-            'data.attributes.branch_worker_count'               => ['required_with:data.attributes.worker_man_hours,data.attributes.close_date', 'integer', 'min:1'],
-            'data.attributes.worker_man_hours'                  => ['required_with:data.attributes.branch_worker_count,data.attributes.close_date', 'numeric', 'min:0.1'],
+            'data.attributes.branch_worker_count'               => [
+                'nullable',
+                'required_with:data.attributes.worker_man_hours,data.attributes.close_date',
+                'integer',
+                'min:0'
+            ],
+            'data.attributes.worker_man_hours'                  => [
+                'nullable',
+                'required_with:data.attributes.branch_worker_count,data.attributes.close_date',
+                'numeric',
+                'min:0'
+            ],
             'data.attributes.situation_during_filing'           => ['nullable'],
             'data.attributes.other_info'                        => ['nullable'],
             'data.attributes.close_date'                        => [
-                                                                        'required_with:data.attributes.branch_worker_count,data.attributes.worker_man_hours',
-                                                                        'date',
-                                                                        'after_or_equal:data.attributes.work_start_date',
-                                                                        'before_or_equal:tomorrow'
-                                                                    ],
+                'nullable',
+                'required_with:data.attributes.branch_worker_count,data.attributes.worker_man_hours',
+                'date',
+                'after_or_equal:data.attributes.work_start_date',
+                'before_or_equal:tomorrow'
+            ],
             'data.attributes.transport'                         => ['nullable'],
             'data.attributes.transport.*.id'                    => ['required', 'integer', 'exists:transports,id'],
             'data.attributes.transport.*.count'                 => ['required', 'integer', 'min:1'],

@@ -48,11 +48,22 @@ class AuthService
 
     public function loadRelationships($user)
     {
-        $user->load(['role', 'branch_office', 'company']);
+        $user->load([
+            'role' => function ($query) {
+                $query->select('id', 'name');
+            },
+            'branch_office' => function ($query) {
+                $query->select('id', 'name');
+            },
+            'company' => function ($query) {
+                $query->select('id', 'name');
+            },
+            'role.permissions' => function ($query) {
+                $query->select('id', 'name');
+            },
+        ]);
 
-        $user->role?->makeHidden(['created_at', 'updated_at']);
-        $user->company?->makeHidden(['created_at', 'updated_at']);
-        $user->branch_office?->makeHidden(['created_at', 'updated_at']);
+        $user->role?->permissions->makeHidden('pivot');
     }
 
     public function logout($user)
