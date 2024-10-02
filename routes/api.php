@@ -2,7 +2,6 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\PostController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AuxiliaryDataController;
 use App\Http\Controllers\ReportController;
@@ -39,7 +38,11 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/auxiliary/transport-types', [AuxiliaryDataController::class, 'getTransportTypes'])->name('auxiliary.transport-types');
     Route::get('/auxiliary/emergency-types', [AuxiliaryDataController::class, 'getEmergencyTypes'])->name('auxiliary.emergency-types');
     Route::get('/auxiliary/branch-offices', [AuxiliaryDataController::class, 'getBranchOffices'])->name('auxiliary.branch-offices');
+    Route::get('/auxiliary/mineral-fields', [AuxiliaryDataController::class, 'getMineralFields'])->name('auxiliary.mineral-fields');
+    Route::get('/auxiliary/oil-fields', [AuxiliaryDataController::class, 'getOilFields'])->name('auxiliary.oil-fields');
+    Route::get('/auxiliary/subsoil-contracts', [AuxiliaryDataController::class, 'getSubsoilContracts'])->name('auxiliary.subsoil-contracts');
     Route::get('/auxiliary/companies', [CompanyController::class, 'index'])->name('companies.index');
+
 });
 
 Route::post('/register', [AuthController::class, 'register']);
