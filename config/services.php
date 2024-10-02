@@ -35,4 +35,8 @@ return [
         ],
     ],
 
+    'egov' => [
+        'api_key' => env('EGOV_API_KEY'),
+    ],
+
 ];
