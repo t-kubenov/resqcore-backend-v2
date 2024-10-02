@@ -51,17 +51,6 @@ class StoreReportRequest extends FormRequest
         ]);
     }
 
-    protected function failedValidation(Validator $validator) //todo:remove
-    {
-        Log::info('Validation Errors', [
-            'errors' => $validator->errors(),
-        ]);
-
-        throw new HttpResponseException(
-            response()->json(['errors' => $validator->errors()], 422)
-        );
-    }
-
     /**
      * Get the validation rules that apply to the request.
      *
