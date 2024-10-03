@@ -59,7 +59,40 @@ class ReportService
 
         $report->load('transport');
 
+        $report = $this->countUpdateTrack($report);
+
         return new ReportResource($report);
+    }
+
+    private function countUpdateTrack($report) {
+        $fields = [
+            'minor_injury_count' => [],
+            'severe_injury_count' => [],
+            'fatal_injury_count' => [],
+            'evacuated_people_count' => [],
+            'provided_medical_count' => [],
+            'work_scope' => [],
+            'situation_during_filing' => [],
+            'client_equipment_count' => [],
+            'third_parties_count' => [],
+        ];
+
+        $items = array_merge([$report], $report->updates->all() ?? []);
+
+        // Loop through each report item and store the field data with timestamp
+        foreach ($items as $index => $item) {
+            foreach ($fields as $field => &$values) {
+                $values[] = [
+                    "time" => $item->created_at->format('Y-m-d H:i'),
+                    "data" => $item->{$field} ?? null
+                ];
+            }
+        }
+
+        // Update the report's track field and save
+        $report->update_track = $fields;
+
+        return $report;
     }
 
     public function validateRequest(Request $request){
