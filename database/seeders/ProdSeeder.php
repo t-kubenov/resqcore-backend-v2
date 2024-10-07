@@ -18,9 +18,11 @@ class ProdSeeder extends Seeder
             TransportTypeSeeder::class,
             RolePermissionSeeder::class,
             UserSeeder::class,
+
             Egov\SubsoilContractSeeder::class,
             Egov\MineralFieldSeeder::class,
             Egov\OilFieldSeeder::class,
+
             ClientCompanySeeder::class,
         ]);
     }

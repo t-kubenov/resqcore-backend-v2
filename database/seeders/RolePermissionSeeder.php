@@ -18,6 +18,7 @@ class RolePermissionSeeder extends Seeder
         Permission::create(['name' => 'branch_update_create']);
         Permission::create(['name' => 'branch_report_view']);
         Permission::create(['name' => 'branch_report_create']);
+        Permission::create(['name' => 'user_register']);
 
         // update cache to know about the newly created permissions (required if using WithoutModelEvents in seeders)
         app()[\Spatie\Permission\PermissionRegistrar::class]->forgetCachedPermissions();
