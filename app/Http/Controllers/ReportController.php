@@ -41,9 +41,8 @@ class ReportController extends Controller
     public function store(StoreReportRequest $request)
     {
         $attributes = $request['data']['attributes'];
-        $report = $this->reportService->createReport($attributes);
 
-        return new ReportResource($report);
+        return $this->reportService->createReport($attributes);
     }
 
 

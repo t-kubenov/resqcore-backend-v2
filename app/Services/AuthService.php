@@ -22,6 +22,8 @@ class AuthService
     {
         $user = User::create($fields);
 
+        $user->assignRole($fields['role_id']);
+
         $token = $user->createToken($fields['first_name']);
 
         $this->loadRelationships($user);

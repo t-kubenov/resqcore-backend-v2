@@ -61,6 +61,8 @@ class StoreReportRequest extends FormRequest
 
 
         return [
+            'data.attributes.branch_office_id'                  => ['sometimes', 'integer', 'exists:branch_offices,id'],
+
             'data.attributes.caller'                            => ['required'],
             'data.attributes.call_date'                         => [
                 'required',

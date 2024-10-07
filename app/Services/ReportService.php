@@ -118,8 +118,20 @@ class ReportService
 
     public function createReport($attributes)
     {
-        $attributes['reported_by'] = Auth::user()->id;
-        $attributes['branch_office_id'] = Auth::user()->branch_id;
+        $user = Auth::user();
+
+        $attributes['reported_by'] = $user->id;
+
+
+        if (!$user->branch_id && !$user->hasRole('admin')) {
+            return response()->json(['message' => 'Branch office ID is required.'], 422);
+        }
+
+        if ($user->hasRole('admin') && !$user->branch_id && !isset($attributes['branch_office_id'])) {
+            return response()->json(['message' => 'Branch office ID is required for admins without a branch.'], 422);
+        }
+
+        $attributes['branch_office_id'] = $user->branch_id ?? $attributes['branch_office_id']; //todo: move this to separate function
 
         $attributes['report_code'] = $this->generateReportCode($attributes['branch_office_id']);
         $attributes['emergency_type'] = $attributes['emergency_type']['id'];
@@ -135,7 +147,7 @@ class ReportService
             $report->load('transport');
         }
 
-        return $report;
+        return new ReportResource($report);
     }
 
     public function deleteReport($id)
@@ -146,6 +158,10 @@ class ReportService
             return true;
         }
         return false;
+    }
+
+    private function validateBranchId (){
+        //
     }
 
     private function generateReportCode($branchOfficeId)
