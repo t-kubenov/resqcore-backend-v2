@@ -112,7 +112,7 @@ class StoreReportRequest extends FormRequest
                 'after_or_equal:data.attributes.work_start_date',
                 'before_or_equal:tomorrow'
             ],
-            'data.attributes.transport'                         => ['nullable'],
+            'data.attributes.transport'                         => ['required', 'array', 'min:1'],
             'data.attributes.transport.*.id'                    => ['required', 'integer', 'exists:transports,id'],
             'data.attributes.transport.*.count'                 => ['required', 'integer', 'min:1'],
         ];

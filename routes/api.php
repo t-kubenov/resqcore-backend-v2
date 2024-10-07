@@ -16,6 +16,9 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
 
 
+    Route::group(['middleware' => ['role:admin']], function () {
+        Route::post('/register', [AuthController::class, 'register']);
+    });
 
     Route::group(['middleware' => ['permission:branch_report_view']], function () {
         Route::get('/reports', [ReportController::class, 'index'])->name('reports.index');
@@ -43,7 +46,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/auxiliary/subsoil-contracts', [AuxiliaryDataController::class, 'getSubsoilContracts'])->name('auxiliary.subsoil-contracts');
     Route::get('/auxiliary/companies', [CompanyController::class, 'index'])->name('companies.index');
 
+
 });
 
-Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);

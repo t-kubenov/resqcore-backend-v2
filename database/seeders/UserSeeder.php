@@ -26,6 +26,5 @@ class UserSeeder extends Seeder
         }
 
         User::factory()->company_employee()->count(10)->create();
-        // User::factory()->branch_office_employee()->count(10)->create();
     }
 }
