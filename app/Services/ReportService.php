@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Http\Resources\TransportResource;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
@@ -75,6 +76,7 @@ class ReportService
             'situation_during_filing' => [],
             'client_equipment_count' => [],
             'third_parties_count' => [],
+            'transport' => [],
         ];
 
         $items = array_merge([$report], $report->updates->all() ?? []);
@@ -84,7 +86,9 @@ class ReportService
             foreach ($fields as $field => &$values) {
                 $values[] = [
                     "time" => $item->created_at->format('Y-m-d H:i'),
-                    "data" => $item->{$field} ?? null
+                    "data" => $field === 'transport'
+                        ? TransportResource::collection($item->transport)
+                        : $item->{$field} ?? null
                 ];
             }
         }
