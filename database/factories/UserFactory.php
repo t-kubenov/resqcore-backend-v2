@@ -56,24 +56,6 @@ class UserFactory extends Factory
         ]);
     }
 
-    // create admin user
-    public function admin(): static
-    {
-        return $this->state(fn (array $attributes) => [
-            'first_name' => 'John',
-            'last_name' => 'ResQ',
-            'patronymic' => 'Adminovich',
-            'email' => 'admin@resq.kz',
-            'password' => Hash::make('123'),
-            'role_id' => 1,
-            'branch_id' => 1,
-            'company_id' => 1,
-        ])
-        ->afterCreating(function (User $user) {
-            $user->assignRole('admin');
-        });
-    }
-
     // create company user
     public function company_employee(): static
     {

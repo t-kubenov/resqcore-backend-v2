@@ -128,4 +128,9 @@ return [
     //     Spatie\Permission\PermissionServiceProvider::class,
     // ],
 
+
+    'etc' => [
+        'admin_password' => env('ADMIN_PASSWORD', 'password'),
+    ],
+
 ];

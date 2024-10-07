@@ -15,7 +15,7 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        User::factory()->admin()->create();
+        $this->call(AdminSeeder::class);
 
         User::factory()->central_office_user()->count(3)->create();
 

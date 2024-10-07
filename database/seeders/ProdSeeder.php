@@ -17,7 +17,7 @@ class ProdSeeder extends Seeder
             EmergencyTypeSeeder::class,
             TransportTypeSeeder::class,
             RolePermissionSeeder::class,
-            UserSeeder::class,
+            AdminSeeder::class,
 
             Egov\SubsoilContractSeeder::class,
             Egov\MineralFieldSeeder::class,
