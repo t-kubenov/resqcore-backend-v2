@@ -80,8 +80,10 @@ class StoreReportRequest extends FormRequest
             'data.attributes.work_scope'                        => ['required'],
 
             'data.attributes.is_emergency_line'                 => ['required', 'boolean'],
-            'data.attributes.line_facility_owner'               => ['required_if:data.attributes.is_emergency_line,true', 'string'],
-            'data.attributes.facility_owner_id'                 => ['required_if:data.attributes.is_emergency_line,false', 'integer', 'exists:companies,id'],
+
+            'data.attributes.line_facility_owner'               => ['required', 'string'],
+//            'data.attributes.line_facility_owner'               => ['required_if:data.attributes.is_emergency_line,true', 'string'],
+//            'data.attributes.facility_owner_id'                 => ['required_if:data.attributes.is_emergency_line,false', 'integer', 'exists:companies,id'],
 
             'data.attributes.emergency_location'                => ['required', 'string'],
             'data.attributes.emergency_info'                    => ['nullable', 'string'],

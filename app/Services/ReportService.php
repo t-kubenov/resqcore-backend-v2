@@ -54,11 +54,15 @@ class ReportService
             return response()->json(['message' => 'Report does not belong to your branch.'], 403);
         }
 
-        $report->load(['updates' => function ($query) {
-            $query->with('transport');
-        }])->orderBy('created_at');
+        $report->load([
+            'updates' => function ($query) {
+                $query->with('transport')->orderBy('created_at');
+            },
+            'reporter:id,first_name,last_name,patronymic,email'
+        ]);
 
-        $report->load('transport');
+        $report['emergency_type'] = $report->emergency;
+        $report['reported_by'] = $report->reporter;
 
         $report = $this->countUpdateTrack($report);
 
