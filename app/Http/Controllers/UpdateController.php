@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreUpdateRequest;
-use App\Http\Requests\UpdateUpdateRequest;
 use App\Models\Update;
 use App\Models\Report;
 use App\Http\Resources\UpdateResource;
@@ -36,16 +35,16 @@ class UpdateController extends Controller
         $user = Auth::user();
         $report = Report::find($request->id);
 
-        if (!($user->id == $report->reported_by || $user->hasRole('admin'))) {
-            return response()->json(['message' => 'You are not allowed to update this report'], 403);
-        }
-
         if (!$report) {
             return response()->json(['message' => 'Report not found'], 404);
         }
 
         if ($report->is_closed) {
             return response()->json(['message' => 'Report is closed'], 400);
+        }
+
+        if (!($user->id == $report->reported_by || $user->hasRole('admin'))) {
+            return response()->json(['message' => 'You are not allowed to update this report'], 403);
         }
 
         $attributes = $request['data']['attributes'];
@@ -65,10 +64,10 @@ class UpdateController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateUpdateRequest $request, Update $Update)
-    {
-        //
-    }
+//    public function update(UpdateUpdateRequest $request, Update $Update)
+//    {
+//        //
+//    }
 
     /**
      * Remove the specified resource from storage.

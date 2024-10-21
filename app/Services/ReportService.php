@@ -71,33 +71,51 @@ class ReportService
 
     private function countUpdateTrack($report) {
         $fields = [
-            'minor_injury_count' => [],
-            'severe_injury_count' => [],
-            'fatal_injury_count' => [],
             'evacuated_people_count' => [],
             'provided_medical_count' => [],
             'work_scope' => [],
             'situation_during_filing' => [],
             'client_equipment_count' => [],
             'third_parties_count' => [],
-            'transport' => [],
         ];
 
         $items = array_merge([$report], $report->updates->all() ?? []);
 
-        // Loop through each report item and store the field data with timestamp
-        foreach ($items as $index => $item) {
-            foreach ($fields as $field => &$values) {
-                $values[] = [
+        foreach ($items as $item) {
+            $fields['injuries'][] = [
+                "time" => $item->created_at->format('Y-m-d H:i'),
+                "minor_injury_count" => $item->minor_injury_count ?? 0,
+                "severe_injury_count" => $item->severe_injury_count ?? 0,
+                "fatal_injury_count" => $item->fatal_injury_count ?? 0
+            ];
+        }
+
+        foreach ($items as $item) {
+            $fields['transport'][] = [
+                "time" => $item->created_at->format('Y-m-d H:i'),
+                "data" => TransportResource::collection($item->transport)
+            ];
+        }
+
+        $other_fields = [
+            'evacuated_people_count',
+            'provided_medical_count',
+            'work_scope',
+            'situation_during_filing',
+            'client_equipment_count',
+            'third_parties_count'
+        ];
+
+        foreach ($items as $item) {
+            foreach ($other_fields as $field) {
+                $fields[$field][] = [
                     "time" => $item->created_at->format('Y-m-d H:i'),
-                    "data" => $field === 'transport'
-                        ? TransportResource::collection($item->transport)
-                        : $item->{$field} ?? null
+                    "data" => $item->{$field} ?? ($field === 'work_scope' || $field === 'situation_during_filing' ? null : 0)
                 ];
             }
         }
 
-        // Update the report's track field and save
+// Update the report's track field and save
         $report->update_track = $fields;
 
         return $report;
