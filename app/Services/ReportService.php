@@ -50,7 +50,7 @@ class ReportService
 
         $user = Auth::user();
 
-        if (!($report->branch_office_id == $user->branch_id || $user->hasRole('admin'))) {
+        if ($user->hasRole('branch_office_user') && $user->branch_id !== $report->branch_office_id) {
             return response()->json(['message' => 'Report does not belong to your branch.'], 403);
         }
 

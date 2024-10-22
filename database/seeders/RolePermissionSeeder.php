@@ -31,7 +31,7 @@ class RolePermissionSeeder extends Seeder
             ->givePermissionTo(Permission::all());
 
         Role::create(['name' => 'central_office_user'])
-            ->givePermissionTo('departure_view', 'branch_report_view');
+            ->givePermissionTo(['departure_view', 'branch_report_view']);
 
         Role::create(['name' => 'branch_office_user'])
             ->givePermissionTo(['branch_update_create', 'branch_report_view', 'branch_report_create']);
