@@ -23,12 +23,8 @@ class DepartureService
 
         // Merge the updates' transports into the parent report's transport object
         $reports->getCollection()->transform(function ($report) {
-            $updateTransports = $report->updates->flatMap(function ($update) {
-                return $update->transport;
-            });
-
-            $report->transport = $report->transport->merge($updateTransports);
-
+            // Call the new group and sum function for transport
+            $report->transport = $this->groupAndSumTransport($report);
             return $report;
         });
 
@@ -118,5 +114,27 @@ class DepartureService
         }
 
         return $validated;
+    }
+
+    protected function groupAndSumTransport($report)
+    {
+        // Step 1: Merge transport from the report and its updates
+        $updateTransports = $report->updates->flatMap(function ($update) {
+            return $update->transport;
+        });
+
+        // Combine both report transport and update transports
+        $mergedTransports = $report->transport->merge($updateTransports);
+
+        // Step 2: Group transports by 'name' (or 'id') and sum their 'count'
+        $groupedTransports = $mergedTransports->groupBy('name')->map(function ($group) {
+            return [
+                'id' => $group->first()->type,  // Keep the first id (or group by 'id' if necessary)
+                'name' => $group->first()->name,  // Transport type name
+                'count' => $group->sum('count')  // Sum all counts for this type
+            ];
+        })->values(); // Convert the grouped collection back to an array of values
+
+        return $groupedTransports;
     }
 }

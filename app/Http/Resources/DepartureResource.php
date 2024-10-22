@@ -15,10 +15,6 @@ class DepartureResource extends JsonResource
     public function toArray(Request $request): array
     {
         $this->load('transport');
-        // $this->load('branch_office');
-        // $this->load('emergency');
-
-        $transportResource = TransportResource::collection($this->whenLoaded('transport'));
 
         $this->facility_owner?->makeHidden(['created_at', 'updated_at']);
         $this->branch_office?->makeHidden(['created_at', 'updated_at']);
@@ -38,7 +34,7 @@ class DepartureResource extends JsonResource
                 'branch_worker_count' => $this->branch_worker_count,
                 'worker_man_hours' => $this->worker_man_hours,
                 'branch_office' => $this->branch_office,
-                'transport' => $transportResource,
+                'transport' => $this->transport,
                 'is_closed' => $this->is_closed,
             ]
         ];
