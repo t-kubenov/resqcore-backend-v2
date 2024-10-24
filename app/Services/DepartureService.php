@@ -66,6 +66,10 @@ class DepartureService
 
     public function filterQuery($query, $validated)
     {
+        if (isset($validated['emergency_type'])) {
+            $query->where('emergency_type', $validated['emergency_type']);
+        }
+
         if (isset($validated['branch_office_id'])) {
             $query->where('branch_office_id', $validated['branch_office_id']);
         }
@@ -99,6 +103,7 @@ class DepartureService
 
     public function validateRequest(Request $request){ //todo: create separate validation class
         $validated = $request->validate([
+            'emergency_type' => 'sometimes|integer',
             'branch_office_id' => 'sometimes|integer',
             'is_emergency_line' => 'sometimes|boolean',
             'date_start' => 'sometimes|date',
