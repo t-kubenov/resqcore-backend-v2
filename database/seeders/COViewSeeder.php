@@ -13,7 +13,7 @@ class COViewSeeder extends Seeder
      */
     public function run(): void
     {
-        Role::create(['name' => 'central_office_user'])
+        Role::findByName('central_office_user')
             ->givePermissionTo('branch_report_view');
     }
 }
