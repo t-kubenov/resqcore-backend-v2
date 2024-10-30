@@ -23,7 +23,8 @@ class AuthController extends Controller
             "patronymic" => "max:255",
             "email" => "required|email|unique:users",
             "password" => "required|confirmed",
-            "role_id" => "required|exists:roles,id"
+            "role_id" => "required|exists:roles,id",
+            "branch_id" => "required_if:role_id,3|exists:branch_offices,id"
         ]);
 
         return $this->authService->register($fields);
