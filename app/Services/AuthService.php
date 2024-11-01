@@ -70,8 +70,9 @@ class AuthService
 
     public function logout($user)
     {
-        $user->tokens()->delete();
+        $user->currentAccessToken()->delete();
 
         return ["message" => "You are logged out."];
     }
+
 }
