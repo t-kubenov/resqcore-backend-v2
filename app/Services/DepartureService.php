@@ -15,7 +15,7 @@ class DepartureService
     {
         $validated = $this->validateRequest($request);
 
-        $query = Report::orderBy('call_date', 'desc');
+        $query = Report::orderByRaw("COALESCE(last_update_created_at, created_at) DESC");
 
         $query = $this->filterQuery($query, $validated);
 
