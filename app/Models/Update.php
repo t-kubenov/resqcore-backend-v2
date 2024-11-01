@@ -23,11 +23,17 @@ class Update extends BaseOperation
         'branch_worker_count',
         'worker_man_hours',
         'close_date',
+        'reported_by'
     ];
 
     public function report()
     {
         return $this->belongsTo(Report::class, 'report_id');
+    }
+
+    public function reporter()
+    {
+        return $this->belongsTo(User::class, 'reported_by');
     }
 
     public function transport()

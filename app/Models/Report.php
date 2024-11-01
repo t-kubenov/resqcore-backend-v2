@@ -45,7 +45,9 @@ class Report extends BaseOperation
         'other_info',
         'is_emergency_line',
         'close_date',
-        'is_closed'
+        'is_closed',
+
+        'last_update_created_at'
     ];
 
     public function emergency()

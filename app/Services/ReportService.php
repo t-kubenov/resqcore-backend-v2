@@ -18,8 +18,7 @@ class ReportService
 
         $user = Auth::user();
 
-        $query = Report::orderBy('call_date', 'desc');
-
+        $query = Report::orderByRaw("COALESCE(last_update_created_at, created_at) DESC");
 
         if (!$user->hasRole('admin')) {
             $query->where('branch_office_id', $user->branch_id);

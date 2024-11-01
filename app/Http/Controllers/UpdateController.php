@@ -43,7 +43,7 @@ class UpdateController extends Controller
             return response()->json(['message' => 'Report is closed'], 400);
         }
 
-        if (!($user->id == $report->reported_by || $user->hasRole('admin'))) {
+        if (!($user->branch_id == $report->branch_office_id || $user->hasRole('admin'))) {
             return response()->json(['message' => 'You are not allowed to update this report'], 403);
         }
 

@@ -10,10 +10,14 @@ class UpdateService extends ReportService
 {
     public function createUpdate($report, $attributes)
     {
+        $user = Auth::user();
+
+        $attributes['reported_by'] = $user->id;
+
         $update = $report->updates()->create($attributes);
 
         $this->checkUpdateForClosing($update);
-        $this->calculateTotals($update);
+        $this->calculateTotalsAndUpdateTimestamp($update);
 
         if (isset($attributes['transport'])) {
             $this->parseTransport($update, $attributes['transport']);
@@ -37,7 +41,7 @@ class UpdateService extends ReportService
         }
     }
 
-    private function calculateTotals(Update $update)
+    private function calculateTotalsAndUpdateTimestamp(Update $update)
     {
         $report = $update->report;
 
@@ -48,6 +52,8 @@ class UpdateService extends ReportService
         $report->provided_medical_total += $update->provided_medical_count;
         $report->client_equipment_total += $update->client_equipment_count;
         $report->third_parties_total += $update->third_parties_count;
+
+        $report->last_update_created_at = $update->created_at;
 
         $report->save();
     }
