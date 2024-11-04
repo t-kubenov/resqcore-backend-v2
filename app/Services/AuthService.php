@@ -48,6 +48,25 @@ class AuthService
         return new UserResource($user, $token->plainTextToken);
     }
 
+    public function changePassword($validated)
+    {
+        $user = auth()->user();
+
+        if (!Hash::check($validated['old_password'], $user->password)) {
+            return response()->json([
+                "error" => "The provided old password is incorrect.",
+            ], 422);
+        }
+
+        $user->password = Hash::make($validated['new_password']);
+
+        $user->save();
+
+        return ["message" => "Password changed successfully."];
+
+    }
+
+
     public function loadRelationships($user)
     {
         $user->load([

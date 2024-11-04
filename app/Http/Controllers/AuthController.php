@@ -31,6 +31,17 @@ class AuthController extends Controller
         return $this->authService->register($fields);
     }
 
+
+    public function changePassword(Request $request)
+    {
+        $fields = $request->validate([
+            "old_password" => "required",
+            "new_password" => "required|confirmed",
+        ]);
+
+        return $this->authService->changePassword($fields);
+    }
+
     public function login(Request $request)
     {
         $credentials = $request->validate([
