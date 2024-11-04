@@ -17,7 +17,7 @@ class AuthController extends Controller
 
     public function register(Request $request)
     {
-        $fields = $request->validate([
+        $validated = $request->validate([
             "first_name" => "required|max:255",
             "last_name" => "required|max:255",
             "patronymic" => "max:255",
@@ -28,18 +28,22 @@ class AuthController extends Controller
             "position" => "sometimes|max:255"
         ]);
 
-        return $this->authService->register($fields);
+        $validated['password'] = $this->authService->validatePassword($validated['password']);
+
+        return $this->authService->register($validated);
     }
 
 
     public function changePassword(Request $request)
     {
-        $fields = $request->validate([
+        $validated = $request->validate([
             "old_password" => "required",
             "new_password" => "required|confirmed",
         ]);
 
-        return $this->authService->changePassword($fields);
+        $validated['new_password'] = $this->authService->validatePassword($validated['new_password']);
+
+        return $this->authService->changePassword($validated);
     }
 
     public function login(Request $request)

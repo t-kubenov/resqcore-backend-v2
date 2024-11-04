@@ -6,6 +6,8 @@ use Illuminate\Support\Facades\Hash;
 
 use App\Models\User;
 use App\Http\Resources\UserResource;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rules\Password;
 
 class AuthService
 {
@@ -66,6 +68,14 @@ class AuthService
 
     }
 
+    public function validatePassword($password)
+    {
+        $password = Validator::make(["password" => $password], [
+            'password' => ['required', Password::min(8)->numbers()->letters()->mixedCase()->symbols()],
+        ]);
+
+        return $password->validated()['password'];
+    }
 
     public function loadRelationships($user)
     {
