@@ -46,6 +46,15 @@ class AuthController extends Controller
         return $this->authService->changePassword($validated);
     }
 
+    public function uploadAvatar(Request $request)
+    {
+        $request->validate([
+            "avatar" => "nullable|image|mimes:jpeg,png,jpg,svg,webp|max:2048"
+        ]);
+
+        return $this->authService->uploadAvatar($request->file('avatar'));
+    }
+
     public function login(Request $request)
     {
         $credentials = $request->validate([

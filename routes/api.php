@@ -14,7 +14,20 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::get('/user', [AuthController::class, 'user']);
     Route::post('/change-password', [AuthController::class, 'changePassword']);
+    Route::post('/upload-avatar', [AuthController::class, 'uploadAvatar']);
     Route::post('/logout', [AuthController::class, 'logout']);
+
+
+    Route::get('/image', function (Request $request) {
+//        return $request->query('path');
+        $filePath = public_path('storage/' . $request->query('path'));
+
+        if (!file_exists($filePath)) {
+            return response()->json(['message' => 'File not found'], 404);
+        }
+
+        return response()->file($filePath);
+    });
 
 
     Route::group(['middleware' => ['permission:user_register']], function () {
@@ -46,7 +59,6 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/auxiliary/oil-fields', [AuxiliaryDataController::class, 'getOilFields'])->name('auxiliary.oil-fields');
     Route::get('/auxiliary/subsoil-contracts', [AuxiliaryDataController::class, 'getSubsoilContracts'])->name('auxiliary.subsoil-contracts');
     Route::get('/auxiliary/companies', [CompanyController::class, 'index'])->name('companies.index');
-
 
 });
 

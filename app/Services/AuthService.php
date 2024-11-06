@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Hash;
 
 use App\Models\User;
 use App\Http\Resources\UserResource;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rules\Password;
 
@@ -68,7 +69,24 @@ class AuthService
 
     }
 
-    public function validatePassword($password)
+    //TODO: move this stuff to a separate service and controller
+
+    public function uploadAvatar($avatar)
+    {
+        $user = auth()->user();
+
+        if ($user->avatar) {
+            Storage::disk('public')->delete($user->avatar);
+        }
+
+        $user->avatar = $avatar? $avatar->store('avatars', 'public'): null;
+
+        $user->save();
+
+        return ["message" => "Avatar saved successfully."];
+    }
+
+    public function validatePassword($password) // used in the controller
     {
         $password = Validator::make(["password" => $password], [
             'password' => ['required', Password::min(8)->numbers()->letters()->mixedCase()->symbols()],
