@@ -8,6 +8,7 @@ use App\Http\Controllers\ReportController;
 use App\Http\Controllers\UpdateController;
 use App\Http\Controllers\DepartureController;
 use App\Http\Controllers\CompanyController;
+use App\Http\Controllers\EmailController;
 
 
 Route::middleware('auth:sanctum')->group(function () {
@@ -19,7 +20,6 @@ Route::middleware('auth:sanctum')->group(function () {
 
 
     Route::get('/image', function (Request $request) {
-//        return $request->query('path');
         $filePath = public_path('storage/' . $request->query('path'));
 
         if (!file_exists($filePath)) {
@@ -29,6 +29,7 @@ Route::middleware('auth:sanctum')->group(function () {
         return response()->file($filePath);
     });
 
+    Route::post('/send-feedback', [EmailController::class, 'send']);
 
     Route::group(['middleware' => ['permission:user_register']], function () {
         Route::post('/register', [AuthController::class, 'register']);

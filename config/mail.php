@@ -113,4 +113,9 @@ return [
         'name' => env('MAIL_FROM_NAME', 'Example'),
     ],
 
+    'to' => [
+        'address' => env('MAIL_TO_ADDRESS', 'tk@resq.kz'),
+        'name' => env('MAIL_TO_NAME', 'ResQ'),
+    ],
+
 ];
