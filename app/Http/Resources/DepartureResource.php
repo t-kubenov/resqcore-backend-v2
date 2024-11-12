@@ -16,9 +16,6 @@ class DepartureResource extends JsonResource
     {
         $this->load('transport');
 
-        $this->facility_owner?->makeHidden(['created_at', 'updated_at']);
-        $this->branch_office?->makeHidden(['created_at', 'updated_at']);
-
         return [
             "id" => $this->id,
             "type" => "departure",

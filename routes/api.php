@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\StatisticsController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
@@ -51,6 +52,25 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::group(['middleware' => ['permission:departure_view']], function () {
         Route::get('/departures', [DepartureController::class, 'index'])->name('departures.index');
         Route::get('/departures/count-table/', [DepartureController::class, 'countTable'])->name('departures.count-table');
+
+        Route::get('/statistics/emergency-types-distribution', [StatisticsController::class, 'getEmergencyTypesDistribution'])
+            ->name('statistics.emergency-types-distribution');
+        Route::get('/statistics/emergencies-per-branch-office', [StatisticsController::class, 'getEmergenciesPerBranchOffice'])
+            ->name('statistics.emergencies-per-branch-office');
+        Route::get('/statistics/injury-counts-per-emergency-type', [StatisticsController::class, 'getInjuryCountsPerEmergencyType'])
+            ->name('statistics.injury-counts-per-emergency-type');
+        // Evacuated People & Medical Aid
+        Route::get('/statistics/evacuated-people-medical-aid', [StatisticsController::class, 'getEvacuatedPeopleMedicalAid'])
+            ->name('statistics.evacuated-people-medical-aid');
+        //Response Time per Emergency Type
+        Route::get('/statistics/response-time-per-emergency-type', [StatisticsController::class, 'getResponseTimePerEmergencyType'])
+            ->name('statistics.response-time-per-emergency-type');
+        // Worker Involvement per Emergency
+        Route::get('/statistics/worker-man-hours-per-emergency', [StatisticsController::class, 'getWorkerManHoursPerEmergency'])
+            ->name('statistics.worker-man-hours-per-emergency');
+        // Total Injuries and Impact Over Time
+        Route::get('/statistics/total-injuries-impact-over-time', [StatisticsController::class, 'getTotalInjuriesImpactOverTime'])
+            ->name('statistics.total-injuries-impact-over-time');
     });
 
     Route::get('/auxiliary/transport-types', [AuxiliaryDataController::class, 'getTransportTypes'])->name('auxiliary.transport-types');

@@ -16,7 +16,7 @@ class Company extends Model
         'name',
     ];
 
-    public $timestamps = false;
+    protected $hidden = ['created_at', 'updated_at'];
 
     public function facilities()
     {

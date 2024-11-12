@@ -43,6 +43,16 @@ class ReportFactory extends Factory
             'provided_medical_count' => $this->faker->numberBetween(0, 100),
             'client_equipment_count' => $this->faker->numberBetween(0, 50),
             'third_parties_count' => $this->faker->numberBetween(0, 50),
+
+            'minor_injury_total' => $this->faker->numberBetween(0, 10),
+            'severe_injury_total' => $this->faker->numberBetween(0, 10),
+            'fatal_injury_total' => $this->faker->numberBetween(0, 10),
+            'evacuated_people_total' => $this->faker->numberBetween(0, 100),
+            'provided_medical_total' => $this->faker->numberBetween(0, 100),
+            'client_equipment_total' => $this->faker->numberBetween(0, 50),
+            'third_parties_total' => $this->faker->numberBetween(0, 50),
+
+            // 'branch_worker_count' => $this->faker->numb
             // 'branch_worker_count' => $this->faker->numberBetween(0, 50),
             // 'worker_man_hours' => $this->faker->randomFloat(2, 0, 1000),
             'work_scope' => $this->faker->paragraph,
