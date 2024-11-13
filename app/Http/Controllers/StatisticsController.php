@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\DB;
 
 class StatisticsController extends Controller
 {
-    public function getEmergencyTypesDistriubtion()
+    public function getEmergencyTypesDistribution()
     {
         $emergencyTypes = EmergencyType::withCount('reports')->get();
 
