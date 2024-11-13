@@ -44,13 +44,13 @@ class ReportService
         $report = Report::find($id);
 
         if (!$report) {
-            return response()->json(['message' => 'Report not found'], 404);
+            return response()->json(['message' => __('reports.show.not-found')], 404);
         }
 
         $user = Auth::user();
 
         if ($user->hasRole('branch_office_user') && $user->branch_id !== $report->branch_office_id) {
-            return response()->json(['message' => 'Report does not belong to your branch.'], 403);
+            return response()->json(['message' => __('reports.show.not-allowed')], 403);
         }
 
         $report->load([
@@ -145,11 +145,11 @@ class ReportService
 
 
         if (!$user->branch_id && !$user->hasRole('admin')) {
-            return response()->json(['message' => 'Branch office ID is required.'], 422);
+            return response()->json(['message' => __('reports.create.branch-id-required')], 422);
         }
 
         if ($user->hasRole('admin') && !$user->branch_id && !isset($attributes['branch_office_id'])) {
-            return response()->json(['message' => 'Branch office ID is required for admins without a branch.'], 422);
+            return response()->json(['message' => __('reports.create.branch-id-required-admin')], 422); //todo: not ideal, need to fix sometime
         }
 
         $attributes['branch_office_id'] = $user->branch_id ?? $attributes['branch_office_id']; //todo: move this to separate function

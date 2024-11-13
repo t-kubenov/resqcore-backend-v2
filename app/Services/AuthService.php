@@ -40,7 +40,7 @@ class AuthService
 
         if (!$user || !Hash::check($credentials['password'], $user->password)) {
             return response()->json([
-                "error" => "The provided credentials are incorrect.",
+                "message" => __("auth.password"),
             ], 422); // 422 is the status code for unprocessable entity
         }
 
@@ -57,7 +57,7 @@ class AuthService
 
         if (!Hash::check($validated['old_password'], $user->password)) {
             return response()->json([
-                "error" => "The provided old password is incorrect.",
+                "message" => __("passwords.old"),
             ], 422);
         }
 
@@ -65,7 +65,7 @@ class AuthService
 
         $user->save();
 
-        return ["message" => "Password changed successfully."];
+        return ["message" => __("passwords.changed")];
 
     }
 
@@ -83,7 +83,7 @@ class AuthService
 
         $user->save();
 
-        return ["message" => "Avatar saved successfully."];
+        return ["message" => __("auth.avatar")];
     }
 
     public function validatePassword($password) // used in the controller
@@ -119,7 +119,7 @@ class AuthService
     {
         $user->currentAccessToken()->delete();
 
-        return ["message" => "You are logged out."];
+        return ["message" => __("auth.logout")];
     }
 
 }

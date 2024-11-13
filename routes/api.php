@@ -23,6 +23,14 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/send-feedback', [EmailController::class, 'send']);
     Route::get('/companies', [CompanyController::class, 'index'])->name('companies.index');
 
+    Route::prefix('auxiliary')->name('auxiliary.')->controller(AuxiliaryDataController::class)->group(function () {
+        Route::get('/transport-types', 'getTransportTypes')->name('transport-types');
+        Route::get('/emergency-types', 'getEmergencyTypes')->name('emergency-types');
+        Route::get('/branch-offices', 'getBranchOffices')->name('branch-offices');
+        Route::get('/mineral-fields', 'getMineralFields')->name('mineral-fields');
+        Route::get('/oil-fields', 'getOilFields')->name('oil-fields');
+        Route::get('/subsoil-contracts', 'getSubsoilContracts')->name('subsoil-contracts');
+    });
 
     Route::group(['middleware' => ['permission:user_register']], function () {
         Route::post('/register', [AuthController::class, 'register']);
@@ -58,15 +66,6 @@ Route::middleware('auth:sanctum')->group(function () {
             Route::get('/worker-man-hours-per-emergency', 'getWorkerManHoursPerEmergency')->name('worker-man-hours-per-emergency');
             Route::get('/total-injuries-impact-over-time', 'getTotalInjuriesImpactOverTime')->name('total-injuries-impact-over-time');
         });
-    });
-
-    Route::prefix('auxiliary')->name('auxiliary.')->controller(AuxiliaryDataController::class)->group(function () {
-        Route::get('/transport-types', 'getTransportTypes')->name('transport-types');
-        Route::get('/emergency-types', 'getEmergencyTypes')->name('emergency-types');
-        Route::get('/branch-offices', 'getBranchOffices')->name('branch-offices');
-        Route::get('/mineral-fields', 'getMineralFields')->name('mineral-fields');
-        Route::get('/oil-fields', 'getOilFields')->name('oil-fields');
-        Route::get('/subsoil-contracts', 'getSubsoilContracts')->name('subsoil-contracts');
     });
 
 });

@@ -30,9 +30,9 @@ class EmailController extends Controller
             } catch (\Exception $e) {
                 Log::error($e->getMessage());
 
-                return response()->json(['message' => 'Произошла ошибка. Сообщение не было отправлено.'], 500);
+                return response()->json(['message' => __('etc.email.send.error')], 500);
             }
 
-        return response()->json(['message' => 'Сообщение отправлено успешно.'], 200);
+        return response()->json(['message' => __('etc.email.send.success')], 200);
     }
 }

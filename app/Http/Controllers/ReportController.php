@@ -56,9 +56,9 @@ class ReportController extends Controller
         $deleted = $this->reportService->deleteReport($id);
 
         if ($deleted) {
-            return response()->json(['message' => 'Report deleted successfully'], 200);
+            return response()->json(['message' => __('reports.delete.success')], 200);
         }
 
-        return response()->json(['message' => 'Report not found'], 404);
+        return response()->json(['message' => __('reports.delete.not-found')], 404);
     }
 }

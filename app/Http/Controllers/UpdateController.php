@@ -36,15 +36,15 @@ class UpdateController extends Controller
         $report = Report::find($request->id);
 
         if (!$report) {
-            return response()->json(['message' => 'Report not found'], 404);
+            return response()->json(['message' => __('reports.show.not-found')], 404);
         }
 
         if ($report->is_closed) {
-            return response()->json(['message' => 'Report is closed'], 400);
+            return response()->json(['message' => __('reports.update.closed')], 400);
         }
 
         if (!($user->branch_id == $report->branch_office_id || $user->hasRole('admin'))) {
-            return response()->json(['message' => 'You are not allowed to update this report'], 403);
+            return response()->json(['message' => __('reports.update.not-allowed')], 403);
         }
 
         $attributes = $request['data']['attributes'];
