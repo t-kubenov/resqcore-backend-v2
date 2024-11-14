@@ -45,7 +45,7 @@ class StatisticsController extends Controller
                 ];
             });
 
-        return response()->json($injuryCounts);
+        return response()->json(['data' => $injuryCounts]);
     }
 
     public function getEvacuatedPeopleMedicalAid()
@@ -53,9 +53,10 @@ class StatisticsController extends Controller
         $evacuated_people_total = Report::sum('evacuated_people_total');
         $provided_medical_total = Report::sum('provided_medical_total');
 
-        return response()->json([
+        return response()->json(['data' => [
             'evacuated_people_total' => $evacuated_people_total,
             'provided_medical_total' => $provided_medical_total,
+            ]
         ]);
 
     }
@@ -75,7 +76,7 @@ class StatisticsController extends Controller
                 ];
             });
 
-        return response()->json($responseTimes);
+        return response()->json(['data' => $responseTimes]);
     }
 
     public function getWorkerManHoursPerEmergency()
@@ -92,7 +93,7 @@ class StatisticsController extends Controller
                 ];
             });
 
-        return response()->json($workerManHours);
+        return response()->json(['data' => $workerManHours]);
     }
 
     public function getTotalInjuriesImpactOverTime()
@@ -108,6 +109,6 @@ class StatisticsController extends Controller
             ->groupBy('call_date')
             ->orderBy('call_date')
             ->get();
-        return response()->json($totalInjuries);
+        return response()->json(['data' => $totalInjuries]);
     }
 }
