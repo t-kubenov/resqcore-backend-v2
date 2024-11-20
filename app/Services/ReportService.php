@@ -18,7 +18,7 @@ class ReportService
 
         $user = Auth::user();
 
-        $query = Report::orderByRaw("COALESCE(last_update_created_at, created_at) DESC");
+        $query = Report::orderByRaw("is_closed, COALESCE(last_update_created_at, created_at) DESC");
 
         if (!$user->hasRole('admin')) {
             $query->where('branch_office_id', $user->branch_id);
