@@ -21,13 +21,27 @@ class TransportFactory extends Factory
     public function definition(): array
     {
         $report = Report::inRandomOrder()->first();
-        $Update = $report->updates()->inRandomOrder()->first();
+        $update = Update::inRandomOrder()->first();
 
         return [
-            'report_id' =>  $report->id,
-            'update_id' =>  $Update->id?? null,
+            'report_id' => $report->id,
+            'update_id' => $update->id,
             'type' => TransportType::inRandomOrder()->first()->id,
             'count' => $this->faker->numberBetween(1, 10),
         ];
+    }
+
+    public function isReportTransport(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'update_id' => null,
+        ]);
+    }
+
+    public function isUpdateTransport(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'report_id' => null,
+        ]);
     }
 }

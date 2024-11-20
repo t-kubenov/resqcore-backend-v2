@@ -14,7 +14,7 @@ class UpdateSeeder extends Seeder
      */
     public function run(): void
     {
-        Update::factory()->count(5)->create();
-        Update::factory()->isClosingUpdate()->count(5)->create();
+        Update::factory()->count(50)->create();
+        Update::factory()->isClosingUpdate()->count(50)->create();
     }
 }
