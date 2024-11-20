@@ -24,6 +24,6 @@ class BranchOffice extends Model
 
     public function users()
     {
-        return $this->hasMany(User::class);
+        return $this->hasMany(User::class, 'branch_id');
     }
 }

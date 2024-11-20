@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\BranchOffice;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -13,23 +14,65 @@ class BranchOfficeSeeder extends Seeder
     public function run(): void
     {
         $branchOffices = [
-            'Актюбинский',
-            'Атырауский',
-            'Восточно-Казахстанкий',
-            'Западно-Казахстанский',
-            'Карагандинкский',
-            'Кызылординский',
-            'Мангистауский',
-            'Павлодарский',
-            'Северо-Казахстанский',
-            'Южно-Казахстанский',
-            'Акмолинский',
+            [
+                'name' => 'Актюбинский',
+                'key' => 'aktobe',
+            ],
+            [
+                'name' => 'Атырауский',
+                'key' => 'atyrau',
+            ],
+            [
+                'name' => 'Восточно-Казахстанкий',
+                'alias' => 'ВКФ',
+                'key' => 'vkf',
+            ],
+            [
+                'name' => 'Западно-Казахстанский',
+                'alias' => 'ЗКФ',
+                'key' => 'zkf',
+            ],
+            [
+                'name' => 'Карагандинкский',
+                'key' => 'karaganda',
+            ],
+            [
+                'name' => 'Кызылординский',
+                'key' => 'kyzylorda',
+            ],
+            [
+                'name' => 'Мангистауский',
+                'key' => 'mangystau',
+            ],
+            [
+                'name' => 'Павлодарский',
+                'key' => 'pavlodar',
+            ],
+            [
+                'name' => 'Северо-Казахстанский',
+                'alias' => 'СКФ',
+                'key' => 'skf',
+            ],
+            [
+                'name' => 'Южно-Казахстанский',
+                'alias' => 'ЮКФ',
+                'key' => 'yukf',
+            ],
+            [
+                'name' => 'Акмолинский',
+                'key' => 'akmolinsk',
+            ],
+
         ];
 
         foreach ($branchOffices as $branchOffice) {
-            \App\Models\BranchOffice::create([
-                'name' => $branchOffice,
-            ]);
+            BranchOffice::updateOrCreate(
+                ['name' => $branchOffice['name']], // Matching condition
+                [
+                    'key' => $branchOffice['key'] ?? null,
+                    'alias' => $branchOffice['alias'] ?? null, // Use null if alias is not set
+                ]
+            );
         }
     }
 }

@@ -65,7 +65,7 @@ class StatisticsController extends Controller
     {
         $responseTimes = Report::with('emergency') // Load the emergency type relationship
             ->select('emergency_type') // Assuming emergency_type_id is the foreign key
-            ->selectRaw('AVG(work_start_date - call_date) as avg_response_time')
+            ->selectRaw('ROUND(AVG(EXTRACT(EPOCH FROM (work_start_date - call_date)) / 3600), 2) as avg_response_time')
             ->orderBy('emergency_type')
             ->groupBy('emergency_type')
             ->get()
