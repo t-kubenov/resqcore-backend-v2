@@ -62,9 +62,10 @@ class UpdateService extends ReportService
     {
         $report = $update->report;
 
-        if ($update->close_date
-            && $update->branch_worker_count > 0
-            && $update->worker_man_hours > 0) {
+        if ($update->close_date &&
+            $update->branch_worker_count > 0 &&
+            $update->worker_man_hours > 0
+        ){
                 $report->close_date = $update->close_date;
                 $report->branch_worker_count = $update->branch_worker_count;
                 $report->worker_man_hours = $update->worker_man_hours;

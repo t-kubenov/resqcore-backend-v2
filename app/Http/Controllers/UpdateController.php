@@ -47,6 +47,10 @@ class UpdateController extends Controller
             return response()->json(['message' => __('reports.update.not-allowed')], 403);
         }
 
+        if ($report->work_start_date > $request['data']['attributes']['close_date']) {
+            return response()->json(['message' => __('reports.update.invalid-close-date')], 422);
+        }
+
         $attributes = $request['data']['attributes'];
         $update = $this->updateService->createUpdate($report, $attributes);
 
