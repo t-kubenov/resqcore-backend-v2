@@ -3,7 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+//use Illuminate\Database\Eloquent\Model;
 
 class Update extends BaseOperation
 {
@@ -25,6 +25,13 @@ class Update extends BaseOperation
         'close_date',
         'reported_by'
     ];
+
+    protected function casts(): array
+    {
+        return [
+            'close_date' => 'datetime',
+        ];
+    }
 
     public function report()
     {

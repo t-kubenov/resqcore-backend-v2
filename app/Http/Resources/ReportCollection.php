@@ -14,8 +14,6 @@ class ReportCollection extends ResourceCollection
      */
     public function toArray(Request $request): array
     {
-        // return parent::toArray($request);
-
         return [
             'data' => $this->collection->transform(function ($report) {
                 return [
@@ -26,7 +24,7 @@ class ReportCollection extends ResourceCollection
                         'caller' => $report->caller,
                         'facility_name' => $report->facility->location ?? $report->line_facility_location,
                         'emergency_location' => $report->emergency_location ?? 'Н/Д',
-                        'call_date' => $report->call_date,
+                        'call_date' => $report->call_date->format(config('app.date_format')),
                         'emergency_name' => $report->emergency, // Derive from emergency type
                         'is_closed' => $report->is_closed,
                     ],

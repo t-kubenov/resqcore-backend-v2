@@ -15,14 +15,15 @@ class DepartureResource extends JsonResource
     public function toArray(Request $request): array
     {
         $this->load('transport');
+        $attributes = $this->attributesToArray();
 
         return [
             "id" => $this->id,
             "type" => "departure",
             "attributes" => [
                 'report_code' => $this->report_code,
-                'work_start_date' => $this->work_start_date,
-                'close_date' => $this->close_date,
+                'work_start_date' => $attributes['work_start_date'],
+                'close_date' => $attributes['close_date'],
                 'is_emergency_line' => $this->is_emergency_line,
                 'facility_owner' => $this->facility_owner,
                 'line_facility_owner' => $this->line_facility_owner,

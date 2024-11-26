@@ -84,6 +84,8 @@ return [
 
     'faker_locale' => env('APP_FAKER_LOCALE', 'ru_RU'),
 
+    'date_format' => env('APP_DATE_FORMAT', 'd.m.Y H:i'),
+
     /*
     |--------------------------------------------------------------------------
     | Encryption Key

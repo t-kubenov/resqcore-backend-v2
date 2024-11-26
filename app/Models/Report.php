@@ -2,8 +2,11 @@
 
 namespace App\Models;
 
+use App\Traits\AltersDisplayedDates;
+use Carbon\Carbon;
+use DateTimeInterface;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+//use Illuminate\Database\Eloquent\Model;
 
 class Report extends BaseOperation
 {
@@ -49,6 +52,16 @@ class Report extends BaseOperation
 
         'last_update_created_at'
     ];
+
+    protected function casts(): array
+    {
+        return [
+            'call_date' => 'datetime',
+            'work_start_date' => 'datetime',
+            'last_update_created_at' => 'datetime',
+            'close_date' => 'datetime',
+        ];
+    }
 
     public function emergency()
     {

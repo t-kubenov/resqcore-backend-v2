@@ -16,7 +16,7 @@ class ReportResource extends JsonResource
      */
     public function toArray(Request $request)
     {
-        $attributes = $this->getAttributes();
+        $attributes = $this->attributesToArray();
 
         $transportResource = TransportResource::collection($this->whenLoaded('transport'));
         $updateResource = UpdateResource::collection($this->whenLoaded('updates'));

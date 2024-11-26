@@ -14,7 +14,7 @@ class UpdateResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        $attributes = $this->getAttributes();
+        $attributes = $this->attributesToArray();
 
         if ($this->relationLoaded('transport')) {
             $attributes['transport'] = TransportResource::collection($this->transport);

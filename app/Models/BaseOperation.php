@@ -2,12 +2,15 @@
 
 namespace App\Models;
 
+use App\Traits\AltersDisplayedDates;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+//use Illuminate\Database\Eloquent\Model;
 
 abstract class BaseOperation extends Model
 {
-        protected $fillable = [
+    use AltersDisplayedDates;
+
+    protected $fillable = [
         'minor_injury_count',
         'severe_injury_count',
         'fatal_injury_count',
@@ -21,4 +24,11 @@ abstract class BaseOperation extends Model
         'third_parties_count', // ex party_authority other organizations involved
         'close_date', // ex finish_work_date
     ];
+
+    protected function casts(): array
+    {
+        return [
+            'close_date' => 'datetime',
+        ];
+    }
 }
