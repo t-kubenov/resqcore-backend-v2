@@ -82,7 +82,7 @@ class ReportService
 
         foreach ($items as $item) {
             $fields['injuries'][] = [
-                "time" => $item->created_at->format('Y-m-d H:i'),
+                "time" => $item->created_at->format(config('app.date_format')),
                 "minor_injury_count" => $item->minor_injury_count ?? 0,
                 "severe_injury_count" => $item->severe_injury_count ?? 0,
                 "fatal_injury_count" => $item->fatal_injury_count ?? 0
@@ -91,7 +91,7 @@ class ReportService
 
         foreach ($items as $item) {
             $fields['transport'][] = [
-                "time" => $item->created_at->format('Y-m-d H:i'),
+                "time" => $item->created_at->format(config('app.date_format')),
                 "data" => TransportResource::collection($item->transport)
             ];
         }
@@ -108,7 +108,7 @@ class ReportService
         foreach ($items as $item) {
             foreach ($other_fields as $field) {
                 $fields[$field][] = [
-                    "time" => $item->created_at->format('Y-m-d H:i'),
+                    "time" => $item->created_at->format(config('app.date_format')),
                     "data" => $item->{$field} ?? ($field === 'work_scope' || $field === 'situation_during_filing' ? null : 0)
                 ];
             }
