@@ -75,6 +75,10 @@ class AuthService
     {
         $user = auth()->user();
 
+        if (!$avatar) {
+            return ["message" => __("auth.avatar.upload_failure")];
+        }
+
         if ($user->avatar) {
             Storage::disk('public')->delete($user->avatar);
         }
@@ -83,7 +87,7 @@ class AuthService
 
         $user->save();
 
-        return ["message" => __("auth.avatar")];
+        return ["message" => __("auth.avatar.upload_success")];
     }
 
     public function validatePassword($password) // used in the controller
