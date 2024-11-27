@@ -58,6 +58,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
         // Statistics Routes
         Route::prefix('statistics')->name('statistics.')->controller(StatisticsController::class)->group(function () {
+            Route::get('/card-statistics', 'getCardStatistics')->name('card-statistics');
             Route::get('/emergency-types-distribution', 'getEmergencyTypesDistribution')->name('emergency-types-distribution');
             Route::get('/emergencies-per-branch-office', 'getEmergenciesPerBranchOffice')->name('emergencies-per-branch-office');
             Route::get('/injury-counts-per-emergency-type', 'getInjuryCountsPerEmergencyType')->name('injury-counts-per-emergency-type');

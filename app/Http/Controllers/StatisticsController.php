@@ -10,6 +10,29 @@ use Illuminate\Support\Facades\DB;
 
 class StatisticsController extends Controller
 {
+    public function getCardStatistics()
+    {
+        $totalReports = Report::count();
+        $closedReports = Report::where('is_closed', 'true')->count();
+        $openReports = $totalReports - $closedReports;
+        $workerHoursTotal = Report::sum('worker_man_hours');
+        $workersTotal = Report::sum('branch_worker_count');
+        $emergencyLineReports = Report::where('is_emergency_line', 'true')->count();
+        $contractReports = $totalReports - $emergencyLineReports;
+
+        return response()->json([
+            'data' => [
+                'total_reports' => $totalReports,
+                'closed_reports' => $closedReports,
+                'open_reports' => $openReports,
+                'worker_hours_total' => number_format((float)$workerHoursTotal, 2, '.', ''),
+                'workers_total' => $workersTotal,
+                'emergency_line_reports' => $emergencyLineReports,
+                'contract_reports' => $contractReports,
+            ]
+        ]);
+    }
+
     public function getEmergencyTypesDistribution()
     {
         $emergencyTypes = EmergencyType::withCount('reports')->get();
