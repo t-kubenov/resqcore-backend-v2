@@ -19,14 +19,25 @@ class DepartureService
 
         $query = $this->filterQuery($query, $validated);
 
-        $reports = $query->with(['transport', 'updates.transport'])->paginate();
+        if (isset($validated['no_pagination']) && $validated['no_pagination']) {
+            $reports = $query->with(['transport', 'updates.transport'])->get();
 
-        // Merge the updates' transports into the parent report's transport object
-        $reports->getCollection()->transform(function ($report) {
-            // Call the new group and sum function for transport
-            $report->transport = $this->groupAndSumTransport($report);
-            return $report;
-        });
+            // Merge the updates' transports into the parent report's transport object
+            $reports->transform(function ($report) {
+                // Call the new group and sum function for transport
+                $report->transport = $this->groupAndSumTransport($report);
+                return $report;
+            });
+        }
+
+        else {
+            $reports = $query->with(['transport', 'updates.transport'])->paginate();
+
+            $reports->getCollection()->transform(function ($report) {
+                $report->transport = $this->groupAndSumTransport($report);
+                return $report;
+            });
+        }
 
         return $reports;
     }
@@ -109,6 +120,7 @@ class DepartureService
             'date_start' => 'sometimes|date',
             'date_end' => 'sometimes|date',
             'search' => 'sometimes|string|max:255', // Add search parameter
+            'no_pagination' => 'sometimes|boolean', // Only for all departures
         ]);
 
         if (isset($validated['date_start']) && isset($validated['date_end'])) {
