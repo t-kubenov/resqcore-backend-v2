@@ -29,13 +29,14 @@ class EmergencyTypeSeeder extends Seeder
             'open_fountain' => 'Открытый фонтан',
             'spill' => 'Розлив',
             'other' => 'Иное',
+            'fall' => 'Падение с высоты',
         ];
 
         foreach ($emergencyTypes as $key => $name) {
-            \App\Models\EmergencyType::create([
-                'key' => $key,
-                'name' => $name,
-            ]);
+            \App\Models\EmergencyType::updateOrCreate(
+                ['key' => $key,],
+                ['name' => $name,]
+            );
         }
     }
 }
