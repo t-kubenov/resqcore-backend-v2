@@ -179,11 +179,11 @@ class StatisticsController extends Controller
     public function filterQuery($query, $validated) // todo: this is a truplicate at this point, create a separate validation class pls
     {
         if (isset($validated['emergency_type'])) {
-            $query->where('emergency_type', $validated['emergency_type']);
+            $query->whereIn('emergency_type', $validated['emergency_type']);
         }
 
         if (isset($validated['branch_office_id'])) {
-            $query->where('branch_office_id', $validated['branch_office_id']);
+            $query->whereIn('branch_office_id', $validated['branch_office_id']);
         }
 
         if (isset($validated['is_emergency_line'])) {
@@ -198,25 +198,16 @@ class StatisticsController extends Controller
             $query->where('call_date', '<=', $validated['date_end']);
         }
 
-        if (isset($validated['search'])) {
-            $search = $validated['search'];
-            $query->where(function ($q) use ($search) {
-                $q->where('line_facility_owner', 'ILIKE', "%{$search}%")
-                    ->orWhere('emergency_location', 'ILIKE', "%{$search}%")
-                    ->orWhereHas('facility_owner', function ($q) use ($search) {
-                        $q->where('name', 'ILIKE', "%{$search}%");
-                    });
-            });
-        }
-
         return $query;
     }
 
 
     public function validateRequest(Request $request){ //todo: create separate validation class, and not reuse code like this ;-;
         $validated = $request->validate([
-            'emergency_type' => 'sometimes|integer',
-            'branch_office_id' => 'sometimes|integer',
+            'emergency_type' => 'sometimes|array|min:1',
+            'emergency_type.*' => 'integer',
+            'branch_office_id' => 'sometimes|array|min:1',
+            'branch_office_id.*' => 'integer',
             'is_emergency_line' => 'sometimes|boolean',
             'date_start' => 'sometimes|date',
             'date_end' => 'sometimes|date',
