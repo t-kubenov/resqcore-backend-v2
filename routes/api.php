@@ -17,7 +17,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::get('/user', [AuthController::class, 'user']);
     Route::get('/image', [ImageController::class, 'show']);
-    Route::patch('/change-password', [AuthController::class, 'changePassword']);
+    Route::post('/change-password', [AuthController::class, 'changePassword']);
     Route::post('/upload-avatar', [AuthController::class, 'uploadAvatar']);
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::post('/send-feedback', [EmailController::class, 'send']);
