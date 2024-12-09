@@ -12,9 +12,6 @@ use App\Http\Resources\ReportResource;
 
 class ReportService
 {
-
-
-
     public function getReports(Request $request)
     {
         $validated = $this->validateRequest($request);
@@ -47,9 +44,9 @@ class ReportService
 
         $query = $this->filterQuery($query, $validated);
 
-        $reports = $query->with(['transport', 'updates.transport'])->get();
+        $reports = $query->with(['transport', 'updates.transport'])->paginate();
 
-        $reports->transform(function ($report) {
+        $reports->getCollection()->transform(function ($report) {
             $report->transport = $this->groupAndSumTransport($report);
             return $report;
         });
