@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\DepartureCollection;
 use Illuminate\Http\Request;
 
 use App\Http\Resources\ReportResource;
@@ -43,6 +44,11 @@ class ReportController extends Controller
         $attributes = $request['data']['attributes'];
 
         return $this->reportService->createReport($attributes);
+    }
+
+    public function export(Request $request)
+    {
+        return new DepartureCollection($this->reportService->export($request));
     }
 
 

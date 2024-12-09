@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('report_code');
             $table->string('caller');
             $table->string('line_facility_location')->nullable();
-            $table->string('line_facility_owner')->nullable();
+            $table->string('line_facility_owner')->nullable(); // Переименовали в "Наименование объекта"
             $table->string('emergency_location')->nullable();
             $table->string('emergency_info')->nullable();
             $table->datetime('call_date');

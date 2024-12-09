@@ -122,7 +122,7 @@ class DepartureService
             'date_start' => 'sometimes|date',
             'date_end' => 'sometimes|date',
             'search' => 'sometimes|string|max:255', // Add search parameter
-            'no_pagination' => 'sometimes|boolean', // Only for all departures
+//            'no_pagination' => 'sometimes|boolean', // Only for all departures
         ]);
 
         if (isset($validated['date_start']) && isset($validated['date_end'])) {

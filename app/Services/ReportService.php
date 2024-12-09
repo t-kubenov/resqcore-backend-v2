@@ -12,6 +12,9 @@ use App\Http\Resources\ReportResource;
 
 class ReportService
 {
+
+
+
     public function getReports(Request $request)
     {
         $validated = $this->validateRequest($request);
@@ -20,8 +23,70 @@ class ReportService
 
         $query = Report::orderByRaw("is_closed, COALESCE(last_update_created_at, created_at) DESC");
 
+        $query = $this->filterQuery($query, $validated);
+
         if (!$user->hasRole('admin')) {
             $query->where('branch_office_id', $user->branch_id);
+        }
+
+        return $query->paginate();
+    }
+
+    public function export(Request $request)
+    {
+
+        $user = Auth::user();
+
+        $query = Report::orderByRaw("is_closed, COALESCE(last_update_created_at, created_at) DESC");
+
+        if ($user->hasRole('branch_office_user')) {
+            $request->merge(['branch_office_id' => [$user->branch_id]]);
+        }
+
+        $validated = $this->validateRequest($request);
+
+        $query = $this->filterQuery($query, $validated);
+
+        $reports = $query->with(['transport', 'updates.transport'])->get();
+
+        $reports->transform(function ($report) {
+            $report->transport = $this->groupAndSumTransport($report);
+            return $report;
+        });
+
+        return $reports;
+    }
+
+    protected function groupAndSumTransport($report)
+    {
+        // Step 1: Merge transport from the report and its updates
+        $updateTransports = $report->updates->flatMap(function ($update) {
+            return $update->transport;
+        });
+
+        // Combine both report transport and update transports
+        $mergedTransports = $report->transport->merge($updateTransports);
+
+        // Step 2: Group transports by 'name' (or 'id') and sum their 'count'
+        $groupedTransports = $mergedTransports->groupBy('name')->map(function ($group) {
+            return [
+                'id' => $group->first()->type,  // Keep the first id (or group by 'id' if necessary)
+                'name' => $group->first()->name,  // Transport type name
+                'count' => $group->sum('count')  // Sum all counts for this type
+            ];
+        })->values(); // Convert the grouped collection back to an array of values
+
+        return $groupedTransports;
+    }
+
+    public function filterQuery($query, $validated)
+    {
+        if (isset($validated['emergency_type'])) {
+            $query->whereIn('emergency_type', $validated['emergency_type']);
+        }
+
+        if (isset($validated['branch_office_id'])) {
+            $query->whereIn('branch_office_id', $validated['branch_office_id']);
         }
 
         if (isset($validated['is_emergency_line'])) {
@@ -36,8 +101,44 @@ class ReportService
             $query->where('call_date', '<=', $validated['date_end']);
         }
 
-        return $query->paginate();
+        if (isset($validated['search'])) {
+            $search = $validated['search'];
+            $query->where(function ($q) use ($search) {
+                $q->where('line_facility_owner', 'ILIKE', "%{$search}%")
+                    ->orWhere('emergency_location', 'ILIKE', "%{$search}%")
+                    ->orWhereHas('facility_owner', function ($q) use ($search) {
+                        $q->where('name', 'ILIKE', "%{$search}%");
+                    });
+            });
+        }
+
+        return $query;
     }
+
+
+    public function validateRequest(Request $request){
+        $validated = $request->validate([
+            'emergency_type' => 'sometimes|array|min:1',
+            'emergency_type.*' => 'integer',
+            'branch_office_id' => 'sometimes|array|min:1',
+            'branch_office_id.*' => 'integer',
+            'is_emergency_line' => 'sometimes|boolean',
+            'date_start' => 'sometimes|date',
+            'date_end' => 'sometimes|date',
+            'search' => 'sometimes|string|max:255', // Add search parameter
+//            'no_pagination' => 'sometimes|boolean', // Only for all departures
+        ]);
+
+        if (isset($validated['date_start']) && isset($validated['date_end'])) {
+            $request->validate([
+                'date_start' => 'before_or_equal:date_end',
+                'date_end' => 'after_or_equal:date_start',
+            ]);
+        }
+
+        return $validated;
+    }
+
 
     public function findReportWithDetails($id)
     {
@@ -120,23 +221,6 @@ class ReportService
         return $report;
     }
 
-    public function validateRequest(Request $request){
-        $validated = $request->validate([
-            'is_emergency_line' => 'sometimes|boolean',
-            'date_start' => 'sometimes|date',
-            'date_end' => 'sometimes|date',
-        ]);
-
-        if (isset($validated['date_start']) && isset($validated['date_end'])) {
-            $request->validate([
-                'date_start' => 'before_or_equal:date_end',
-                'date_end' => 'after_or_equal:date_start',
-            ]);
-        }
-
-        return $validated;
-    }
-
     public function createReport($attributes)
     {
         $user = Auth::user();
@@ -179,10 +263,6 @@ class ReportService
             return true;
         }
         return false;
-    }
-
-    private function validateBranchId (){
-        //
     }
 
     private function generateReportCode($branchOfficeId)
