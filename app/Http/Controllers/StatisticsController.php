@@ -176,6 +176,24 @@ class StatisticsController extends Controller
         return response()->json(['data' => $totalInjuries]);
     }
 
+    public function getTransportUsage(Request $request)
+    {
+        // Filter Reports
+        $validated = $this->validateRequest($request);
+
+        $filterQuery = $this->filterQuery(Report::query(), $validated);
+
+        $data = $filterQuery->join('transports', 'reports.id', '=', 'transports.report_id')
+            ->join('transport_types', 'transports.type', '=', 'transport_types.id')
+            ->selectRaw('transports.type, transport_types.name as name, SUM(transports.count) as total_count')
+            ->groupBy('transports.type', 'transport_types.name')
+            ->orderBy('type')
+            ->get();
+
+        return response()->json(['data' => $data], 200);
+
+    }
+
     public function filterQuery($query, $validated) // todo: this is a truplicate at this point, create a separate validation class pls
     {
         if (isset($validated['emergency_type'])) {

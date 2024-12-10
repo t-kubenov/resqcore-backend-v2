@@ -67,6 +67,7 @@ Route::middleware('auth:sanctum')->group(function () {
             Route::get('/response-time-per-emergency-type', 'getResponseTimePerEmergencyType')->name('response-time-per-emergency-type');
             Route::get('/worker-man-hours-per-emergency', 'getWorkerManHoursPerEmergency')->name('worker-man-hours-per-emergency');
             Route::get('/total-injuries-impact-over-time', 'getTotalInjuriesImpactOverTime')->name('total-injuries-impact-over-time');
+            Route::get('/transport-usage', 'getTransportUsage')->name('transport-usage');
         });
     });
 
