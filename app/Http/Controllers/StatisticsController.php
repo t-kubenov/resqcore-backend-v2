@@ -6,6 +6,7 @@ use App\Models\BranchOffice;
 use App\Models\EmergencyType;
 use App\Models\Report;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class StatisticsController extends Controller
@@ -221,6 +222,11 @@ class StatisticsController extends Controller
 
 
     public function validateRequest(Request $request){ //todo: create separate validation class, and not reuse code like this ;-;
+        $user = Auth::user();
+        if ($user->hasRole('branch_office_user')) {
+            $request->merge(['branch_office_id' => [$user->branch_id]]);
+        }
+
         $validated = $request->validate([
             'emergency_type' => 'sometimes|array|min:1',
             'emergency_type.*' => 'integer',

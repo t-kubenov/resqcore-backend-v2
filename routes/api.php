@@ -40,6 +40,19 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/reports', [ReportController::class, 'index'])->name('reports.index');
         Route::get('/reports/{id}', [ReportController::class, 'show'])->name('reports.show');
         Route::get('/export', [ReportController::class, 'export'])->name('reports.export');
+
+        // Statistics Routes
+        Route::prefix('statistics')->name('statistics.')->controller(StatisticsController::class)->group(function () {
+            Route::get('/card-statistics', 'getCardStatistics')->name('card-statistics');
+            Route::get('/emergency-types-distribution', 'getEmergencyTypesDistribution')->name('emergency-types-distribution');
+            Route::get('/emergencies-per-branch-office', 'getEmergenciesPerBranchOffice')->name('emergencies-per-branch-office');
+            Route::get('/injury-counts-per-emergency-type', 'getInjuryCountsPerEmergencyType')->name('injury-counts-per-emergency-type');
+            Route::get('/evacuated-people-medical-aid', 'getEvacuatedPeopleMedicalAid')->name('evacuated-people-medical-aid');
+            Route::get('/response-time-per-emergency-type', 'getResponseTimePerEmergencyType')->name('response-time-per-emergency-type');
+            Route::get('/worker-man-hours-per-emergency', 'getWorkerManHoursPerEmergency')->name('worker-man-hours-per-emergency');
+            Route::get('/total-injuries-impact-over-time', 'getTotalInjuriesImpactOverTime')->name('total-injuries-impact-over-time');
+            Route::get('/transport-usage', 'getTransportUsage')->name('transport-usage');
+        });
     });
 
     Route::group(['middleware' => ['permission:branch_report_create']], function () {
@@ -57,18 +70,6 @@ Route::middleware('auth:sanctum')->group(function () {
             Route::get('/count-table', 'countTable')->name('count-table');
         });
 
-        // Statistics Routes
-        Route::prefix('statistics')->name('statistics.')->controller(StatisticsController::class)->group(function () {
-            Route::get('/card-statistics', 'getCardStatistics')->name('card-statistics');
-            Route::get('/emergency-types-distribution', 'getEmergencyTypesDistribution')->name('emergency-types-distribution');
-            Route::get('/emergencies-per-branch-office', 'getEmergenciesPerBranchOffice')->name('emergencies-per-branch-office');
-            Route::get('/injury-counts-per-emergency-type', 'getInjuryCountsPerEmergencyType')->name('injury-counts-per-emergency-type');
-            Route::get('/evacuated-people-medical-aid', 'getEvacuatedPeopleMedicalAid')->name('evacuated-people-medical-aid');
-            Route::get('/response-time-per-emergency-type', 'getResponseTimePerEmergencyType')->name('response-time-per-emergency-type');
-            Route::get('/worker-man-hours-per-emergency', 'getWorkerManHoursPerEmergency')->name('worker-man-hours-per-emergency');
-            Route::get('/total-injuries-impact-over-time', 'getTotalInjuriesImpactOverTime')->name('total-injuries-impact-over-time');
-            Route::get('/transport-usage', 'getTransportUsage')->name('transport-usage');
-        });
     });
 
 });
