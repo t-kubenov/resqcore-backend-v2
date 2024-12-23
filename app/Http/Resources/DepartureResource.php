@@ -22,6 +22,7 @@ class DepartureResource extends JsonResource
             "type" => "departure",
             "attributes" => [
                 'report_code' => $this->report_code,
+                'call_date' => $attributes['call_date'],
                 'work_start_date' => $attributes['work_start_date'],
                 'close_date' => $attributes['close_date'],
                 'is_emergency_line' => $this->is_emergency_line,

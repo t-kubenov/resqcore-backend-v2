@@ -13,10 +13,7 @@ beforeEach(function () {
     $this->user = User::where('role_id', 3)->inRandomOrder()->first();
 });
 
-
-afterEach(function () {
-});
-
+// todo: verify the accuracy of the data
 
 test('can view all reports of own branch', function () {
     $this->actingAs($this->user)
@@ -276,4 +273,15 @@ test('cannot create updates for reports from other branches', function () {
             ])
         ->assertStatus(403);
 
+});
+
+
+test('cannot access central office endpoints', function (){
+    $this->actingAs($this->user)
+        ->get('/api/departures')
+        ->assertStatus(403);
+
+    $this->actingAs($this->user)
+        ->get('/api/departures/count-table')
+        ->assertStatus(403);
 });
