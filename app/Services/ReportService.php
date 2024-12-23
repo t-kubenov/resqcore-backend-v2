@@ -82,7 +82,7 @@ class ReportService
             $query->whereIn('emergency_type', $validated['emergency_type']);
         }
 
-        if (isset($validated['branch_office_id'])) {
+        if (isset($validated['branch_office_id']) && auth()->user()->hasRole('admin')) {
             $query->whereIn('branch_office_id', $validated['branch_office_id']);
         }
 
@@ -123,6 +123,7 @@ class ReportService
             'date_start' => 'sometimes|date',
             'date_end' => 'sometimes|date',
             'search' => 'sometimes|string|max:255', // Add search parameter
+            // todo: add is_closed filter
 //            'no_pagination' => 'sometimes|boolean', // Only for all departures
         ]);
 
