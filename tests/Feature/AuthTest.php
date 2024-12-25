@@ -96,7 +96,5 @@ test('normal user register', function () {
         ]);
 
     $response->assertStatus(403);
-
-    User::find($response->json('data.id'))->delete();
 });
 

@@ -16,7 +16,7 @@ class AuxiliaryDataController extends Controller
 {
     public function getBranchOffices(): JsonResponse
     {
-        $branchOffices = BranchOffice::all();
+        $branchOffices = BranchOffice::select('id', 'name')->get();
 
         return response()->json(['data' => $branchOffices], 200);
     }
