@@ -51,6 +51,7 @@ class StatisticsController extends Controller
                 'id' => $report->emergency_type,
                 'key' => $report->emergency->key ?? null,
                 'name' => $report->emergency->name ?? null,
+                'alias' => $report->emergency->alias ?? null,
                 'count' => $report->count,
             ];
         });
@@ -186,8 +187,8 @@ class StatisticsController extends Controller
 
         $data = $filterQuery->join('transports', 'reports.id', '=', 'transports.report_id')
             ->join('transport_types', 'transports.type', '=', 'transport_types.id')
-            ->selectRaw('transports.type, transport_types.name as name, SUM(transports.count) as total_count')
-            ->groupBy('transports.type', 'transport_types.name')
+            ->selectRaw('transports.type, transport_types.name as name, transport_types.alias as alias, SUM(transports.count) as total_count')
+            ->groupBy('transports.type', 'name', 'alias')
             ->orderBy('type')
             ->get();
 
