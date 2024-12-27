@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\TransportType;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -13,21 +14,49 @@ class TransportTypeSeeder extends Seeder
     public function run(): void
     {
         $transportTypes = [
-            'ac' => 'АЦ',
-            'operational_vehicle' => 'Оперативный а/м',
-            'car_ladder' => 'Автолестница',
-            'rpg_car' => 'Автомобиль РПГ',
-            'shift_car' => 'Вахтовка',
-            'light_car' => 'Легковой а/м',
-            'light_car_high_cross_country' => 'Легковой а/м повышенной проходимости',
-            'asa_car' => 'а/м АСА',
+            [
+                'key' => 'ac',
+                'name' => 'АЦ',
+            ],
+            [
+                'key' => 'operational_vehicle',
+                'name' => 'Оперативный а/м',
+            ],
+            [
+                'key' => 'car_ladder',
+                'name' => 'Автолестница',
+            ],
+            [
+                'key' => 'rpg_car',
+                'name' => 'Автомобиль РПГ',
+            ],
+            [
+                'key' => 'shift_car',
+                'name' => 'Вахтовка',
+            ],
+            [
+                'key' => 'light_car',
+                'name' => 'Легковой а/м',
+            ],
+            [
+                'key' => 'light_car_high_cross_country',
+                'name' => 'Легковой а/м повышенной проходимости',
+                'alias' => 'Легковой а/м ПП',
+            ],
+            [
+                'key' => 'asa_car',
+                'name' => 'а/м АСА',
+            ],
         ];
 
-        foreach ($transportTypes as $key => $name) {
-            \App\Models\TransportType::create([
-                'key' => $key,
-                'name' => $name,
-            ]);
+        foreach ($transportTypes as $transportType) {
+            TransportType::updateOrCreate(
+                ['name' => $transportType['name']], // Matching condition
+                [
+                    'key' => $transportType['key'] ?? null,
+                    'alias' => $transportType['alias'] ?? null, // Use null if alias is not set
+                ]
+            );
         }
     }
 }
