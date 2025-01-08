@@ -5,7 +5,7 @@ namespace App\Http\Resources;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 
-class DepartureCollection extends ResourceCollection
+class ExportCollection extends ResourceCollection
 {
     /**
      * Transform the resource collection into an array.

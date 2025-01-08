@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use App\Http\Resources\DepartureCollection;
+use App\Http\Resources\ExportCollection;
 use Illuminate\Http\Request;
 
 use App\Http\Resources\ReportResource;
@@ -48,7 +48,13 @@ class ReportController extends Controller
 
     public function export(Request $request)
     {
-        return new DepartureCollection($this->reportService->export($request));
+        return new ExportCollection($this->reportService->export($request));
+    }
+
+
+    public function countTable(Request $request)
+    {
+        return response()->json($this->reportService->getCountTable($request));
     }
 
 

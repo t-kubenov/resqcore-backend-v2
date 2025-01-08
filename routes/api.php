@@ -40,6 +40,19 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/reports', [ReportController::class, 'index'])->name('reports.index');
         Route::get('/reports/{id}', [ReportController::class, 'show'])->name('reports.show');
         Route::get('/export', [ReportController::class, 'export'])->name('reports.export');
+        Route::get('/count-table/', [ReportController::class, 'countTable'])->name('count-table');
+
+
+
+        Route::group(['middleware' => ['permission:branch_report_create']], function () {
+            Route::post('/reports', [ReportController::class, 'store'])->name('reports.store');
+        });
+
+        Route::group(['middleware' => ['permission:branch_update_create']], function () {
+            Route::post('/reports/update/{id}', [UpdateController::class, 'store'])->name('updates.store');
+        });
+        //todo: group reports routes?
+
 
         // Statistics Routes
         Route::prefix('statistics')->name('statistics.')->controller(StatisticsController::class)->group(function () {
@@ -52,22 +65,6 @@ Route::middleware('auth:sanctum')->group(function () {
             Route::get('/worker-man-hours-per-emergency', 'getWorkerManHoursPerEmergency')->name('worker-man-hours-per-emergency');
             Route::get('/total-injuries-impact-over-time', 'getTotalInjuriesImpactOverTime')->name('total-injuries-impact-over-time');
             Route::get('/transport-usage', 'getTransportUsage')->name('transport-usage');
-        });
-    });
-
-    Route::group(['middleware' => ['permission:branch_report_create']], function () {
-        Route::post('/reports', [ReportController::class, 'store'])->name('reports.store');
-    });
-
-    Route::group(['middleware' => ['permission:branch_update_create']], function () {
-        Route::post('/reports/update/{id}', [UpdateController::class, 'store'])->name('updates.store');
-    });
-
-    Route::group(['middleware' => ['permission:departure_view']], function () {
-        // Departures Routes
-        Route::prefix('departures')->name('departures.')->controller(DepartureController::class)->group(function () {
-            Route::get('/', 'index')->name('index');
-            Route::get('/count-table', 'countTable')->name('count-table');
         });
 
     });

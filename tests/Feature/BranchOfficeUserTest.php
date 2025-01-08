@@ -16,7 +16,7 @@ beforeEach(function () {
 // todo: verify the accuracy of the data
 
 test('can view all reports of own branch', function () {
-    $this->actingAs($this->user)
+    $response = $this->actingAs($this->user)
         ->get('/api/reports')
         ->assertStatus(200)
         ->assertJsonStructure([
@@ -31,26 +31,13 @@ test('can view all reports of own branch', function () {
                     ]
                 ],
             ],
-        ])
-        ->assertJsonFragment([
-            'branch_office_id' => $this->user->branch_id,
         ]);
 
-});
+    expect($response->json('data'))->each(function ($report) {
+        $attributes = $report->value['attributes'];
+        expect($attributes['branch_office']['id'])->toBe($this->user->branch_id);
+    });
 
-
-test('cannot view reports of other branches', function () {
-    $other_branch = User::where('branch_id', '!=', $this->user->branch_id)
-        ->where('role_id', 3)
-        ->inRandomOrder()
-        ->first();
-
-    $this->actingAs($this->user)
-        ->get('/api/reports')
-        ->assertStatus(200)
-        ->assertJsonMissing([
-            'branch_office_id' => $other_branch->branch_id,
-        ]);
 
 });
 
@@ -99,7 +86,7 @@ test('can view all reports with filters', function () {
         // Ensure call_date is valid and parse it
         $call_date = Carbon::parse($attributes['call_date']);
 
-        expect($attributes['emergency_name']['id'])->toBeIn($emergency_type)
+        expect($attributes['emergency_type']['id'])->toBeIn($emergency_type)
             ->and($attributes['is_emergency_line'])->toBe($is_emergency_line)
             ->and($call_date->format('Y-m-d H:i:s'))
                 ->toBeGreaterThanOrEqual($date_start)
@@ -275,13 +262,28 @@ test('cannot create updates for reports from other branches', function () {
 
 });
 
+test('can access count table with own branch', function () {
+    $response = $this->actingAs($this->user)
+        ->get('/api/count-table')
+        ->assertStatus(200)
+        ->assertJsonStructure([
+            'data' => [
+                'cells' => [
+                    '*' => [
+                        'emergency_type',
+                        'branch_office_id',
+                        'count',
+                    ],
+                ],
+                'total_per_type',
+                'total_per_branch_office',
+                'overall_total',
+            ]
+        ]);
 
-test('cannot access central office endpoints', function (){
-    $this->actingAs($this->user)
-        ->get('/api/departures')
-        ->assertStatus(403);
+    expect($response->json('data.cells'))->each(function ($cell) {
+        $branch_id = $cell->value['branch_office_id'];
+        expect($branch_id)->toBe($this->user->branch_id);
+    });
 
-    $this->actingAs($this->user)
-        ->get('/api/departures/count-table')
-        ->assertStatus(403);
 });

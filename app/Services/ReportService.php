@@ -26,7 +26,48 @@ class ReportService
             $query->where('branch_office_id', $user->branch_id);
         }
 
-        return $query->paginate();
+
+        $reports = $query->with(['transport', 'updates.transport'])->paginate(); //todo: move logic to resources
+
+        $reports->getCollection()->transform(function ($report) {
+            $report->transport = $this->groupAndSumTransport($report);
+            return $report;
+        });
+
+        return $reports;
+    }
+
+    public function getCountTable(Request $request)
+    {
+        $validated = $this->validateRequest($request);
+
+        $filteredQuery = $this->filterQuery(Report::query(), $validated);
+
+        $queryResults = (clone $filteredQuery)->selectRaw('emergency_type, branch_office_id, COUNT(*) as count')
+            ->groupBy('emergency_type', 'branch_office_id')
+            ->orderBy('emergency_type')
+            ->orderBy('branch_office_id')
+            ->get();
+
+        $totalPerType = (clone $filteredQuery)->selectRaw('emergency_type, COUNT(*) as total_count')
+            ->groupBy('emergency_type')
+            ->pluck('total_count', 'emergency_type');
+
+        $totalPerBranchOffice = (clone $filteredQuery)->selectRaw('branch_office_id, COUNT(*) as total_count')
+            ->groupBy('branch_office_id')
+            ->pluck('total_count', 'branch_office_id');
+
+        $overallTotal = (clone $filteredQuery)->count();
+
+
+        return [
+            'data' => [
+                'cells' => $queryResults,
+                'total_per_type' => $totalPerType,
+                'total_per_branch_office' => $totalPerBranchOffice,
+                'overall_total' => $overallTotal,
+            ]
+        ];
     }
 
     public function export(Request $request)
@@ -78,11 +119,13 @@ class ReportService
 
     public function filterQuery($query, $validated)
     {
+        $query = $this->filterBranchOffice($query, $validated);
+
         if (isset($validated['emergency_type'])) {
             $query->whereIn('emergency_type', $validated['emergency_type']);
         }
 
-        if (isset($validated['branch_office_id']) && auth()->user()->hasRole('admin')) {
+        if (isset($validated['branch_office_id']) && auth()->user()->can('departure_view')) {
             $query->whereIn('branch_office_id', $validated['branch_office_id']);
         }
 
@@ -113,6 +156,17 @@ class ReportService
     }
 
 
+    private function filterBranchOffice($query, $validated)
+    {
+        $user = Auth::user();
+
+        if ($user->hasRole('branch_office_user')) {
+            $query->where('branch_office_id', $user->branch_id);
+        }
+        return $query;
+    }
+
+
     public function validateRequest(Request $request){
         $validated = $request->validate([
             'emergency_type' => 'sometimes|array|min:1',
@@ -124,7 +178,6 @@ class ReportService
             'date_end' => 'sometimes|date',
             'search' => 'sometimes|string|max:255', // Add search parameter
             // todo: add is_closed filter
-//            'no_pagination' => 'sometimes|boolean', // Only for all departures
         ]);
 
         if (isset($validated['date_start']) && isset($validated['date_end'])) {
