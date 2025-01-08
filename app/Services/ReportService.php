@@ -14,13 +14,11 @@ class ReportService
 {
     public function getReports(Request $request)
     {
-        $validated = $this->validateRequest($request);
-
         $user = Auth::user();
 
         $query = Report::orderByRaw("is_closed, COALESCE(last_update_created_at, created_at) DESC");
 
-        $query = $this->filterQuery($query, $validated);
+        $query = $this->filterQuery($query, $request);
 
         if (!$user->hasRole('admin')) {
             $query->where('branch_office_id', $user->branch_id);
@@ -39,9 +37,7 @@ class ReportService
 
     public function getCountTable(Request $request)
     {
-        $validated = $this->validateRequest($request);
-
-        $filteredQuery = $this->filterQuery(Report::query(), $validated);
+        $filteredQuery = $this->filterQuery(Report::query(), $request);
 
         $queryResults = (clone $filteredQuery)->selectRaw('emergency_type, branch_office_id, COUNT(*) as count')
             ->groupBy('emergency_type', 'branch_office_id')
@@ -72,18 +68,9 @@ class ReportService
 
     public function export(Request $request)
     {
-
-        $user = Auth::user();
-
         $query = Report::orderByRaw("is_closed, COALESCE(last_update_created_at, created_at) DESC");
 
-        if ($user->hasRole('branch_office_user')) {
-            $request->merge(['branch_office_id' => [$user->branch_id]]);
-        }
-
-        $validated = $this->validateRequest($request);
-
-        $query = $this->filterQuery($query, $validated);
+        $query = $this->filterQuery($query, $request);
 
         $reports = $query->with(['transport', 'updates.transport'])->paginate();
 
@@ -117,32 +104,36 @@ class ReportService
         return $groupedTransports;
     }
 
-    public function filterQuery($query, $validated)
+    public function filterQuery($query, $request)
     {
-        $query = $this->filterBranchOffice($query, $validated);
+        $query = $this->filterBranchOffice($query, $request);
 
-        if (isset($validated['emergency_type'])) {
-            $query->whereIn('emergency_type', $validated['emergency_type']);
+        if (isset($request['emergency_type'])) {
+            $query->whereIn('emergency_type', $request['emergency_type']);
         }
 
-        if (isset($validated['branch_office_id']) && auth()->user()->can('departure_view')) {
-            $query->whereIn('branch_office_id', $validated['branch_office_id']);
+        if (isset($request['branch_office_id']) && auth()->user()->can('departure_view')) {
+            $query->whereIn('branch_office_id', $request['branch_office_id']);
         }
 
-        if (isset($validated['is_emergency_line'])) {
-            $query->where('is_emergency_line', $validated['is_emergency_line']);
+        if (isset($request['is_emergency_line'])) {
+            $query->where('is_emergency_line', $request['is_emergency_line']);
         }
 
-        if (isset($validated['date_start'])) {
-            $query->where('call_date', '>=', $validated['date_start']);
+        if (isset($request['date_start'])) {
+            $query->where('call_date', '>=', $request['date_start']);
         }
 
-        if (isset($validated['date_end'])) {
-            $query->where('call_date', '<=', $validated['date_end']);
+        if (isset($request['date_end'])) {
+            $query->where('call_date', '<=', $request['date_end']);
         }
 
-        if (isset($validated['search'])) {
-            $search = $validated['search'];
+        if (isset($request['is_closed'])) {
+            $query->where('is_closed', $request['is_closed']);
+        }
+
+        if (isset($request['search'])) {
+            $search = $request['search'];
             $query->where(function ($q) use ($search) {
                 $q->where('line_facility_owner', 'ILIKE', "%{$search}%")
                     ->orWhere('emergency_location', 'ILIKE', "%{$search}%")
@@ -156,7 +147,7 @@ class ReportService
     }
 
 
-    private function filterBranchOffice($query, $validated)
+    private function filterBranchOffice($query, $request)
     {
         $user = Auth::user();
 
@@ -164,30 +155,6 @@ class ReportService
             $query->where('branch_office_id', $user->branch_id);
         }
         return $query;
-    }
-
-
-    public function validateRequest(Request $request){
-        $validated = $request->validate([
-            'emergency_type' => 'sometimes|array|min:1',
-            'emergency_type.*' => 'integer',
-            'branch_office_id' => 'sometimes|array|min:1',
-            'branch_office_id.*' => 'integer',
-            'is_emergency_line' => 'sometimes|boolean',
-            'date_start' => 'sometimes|date',
-            'date_end' => 'sometimes|date',
-            'search' => 'sometimes|string|max:255', // Add search parameter
-            // todo: add is_closed filter
-        ]);
-
-        if (isset($validated['date_start']) && isset($validated['date_end'])) {
-            $request->validate([
-                'date_start' => 'before_or_equal:date_end',
-                'date_end' => 'after_or_equal:date_start',
-            ]);
-        }
-
-        return $validated;
     }
 
 
@@ -276,7 +243,7 @@ class ReportService
     {
         $user = Auth::user();
 
-        $attributes['reported_by'] = $user->id;
+        $attributes['reported_by'] = $user->id; //todo:move to request?
 
 
         if (!$user->branch_id && !$user->hasRole('admin')) {

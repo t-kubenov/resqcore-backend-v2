@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\FilterReportRequest;
 use App\Http\Resources\ExportCollection;
 use Illuminate\Http\Request;
 
@@ -26,10 +27,22 @@ class ReportController extends Controller
     }
 
 
-    public function index(Request $request)
+    public function index(FilterReportRequest $request)
     {
         $reports = $this->reportService->getReports($request);
         return new ReportCollection($reports);
+    }
+
+
+    public function export(FilterReportRequest $request)
+    {
+        return new ExportCollection($this->reportService->export($request));
+    }
+
+
+    public function countTable(FilterReportRequest $request)
+    {
+        return response()->json($this->reportService->getCountTable($request));
     }
 
 
@@ -46,22 +59,6 @@ class ReportController extends Controller
         return $this->reportService->createReport($attributes);
     }
 
-    public function export(Request $request)
-    {
-        return new ExportCollection($this->reportService->export($request));
-    }
-
-
-    public function countTable(Request $request)
-    {
-        return response()->json($this->reportService->getCountTable($request));
-    }
-
-
-    public function update()
-    {
-        // Update logic here
-    }
 
     public function destroy($id)
     {
