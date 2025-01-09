@@ -69,8 +69,6 @@ class AuthService
 
     }
 
-    //TODO: move this stuff to a separate service and controller
-
     public function uploadAvatar($avatar)
     {
         $user = auth()->user();

@@ -35,7 +35,7 @@ class AuxiliaryDataController extends Controller
         return response()->json(['data' => $transportTypes], 200);
     }
 
-    public function getMineralFields(): JsonResponse //todo: maybe move to separate controller if i were to implement search
+    public function getMineralFields(): JsonResponse
     {
         $mineralFields = MineralField::orderBy('id')->paginate(15);
 

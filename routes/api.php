@@ -8,7 +8,6 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AuxiliaryDataController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\UpdateController;
-use App\Http\Controllers\DepartureController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\EmailController;
 
@@ -37,12 +36,10 @@ Route::middleware('auth:sanctum')->group(function () {
     });
 
     Route::group(['middleware' => ['permission:branch_report_view']], function () {
+
         Route::get('/reports', [ReportController::class, 'index'])->name('reports.index');
         Route::get('/reports/{id}', [ReportController::class, 'show'])->name('reports.show');
         Route::get('/export', [ReportController::class, 'export'])->name('reports.export');
-        Route::get('/count-table/', [ReportController::class, 'countTable'])->name('count-table');
-
-
 
         Route::group(['middleware' => ['permission:branch_report_create']], function () {
             Route::post('/reports', [ReportController::class, 'store'])->name('reports.store');
@@ -51,11 +48,11 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::group(['middleware' => ['permission:branch_update_create']], function () {
             Route::post('/reports/update/{id}', [UpdateController::class, 'store'])->name('updates.store');
         });
-        //todo: group reports routes?
 
 
         // Statistics Routes
         Route::prefix('statistics')->name('statistics.')->controller(StatisticsController::class)->group(function () {
+            Route::get('/count-table/', 'getCountTable')->name('count-table');
             Route::get('/card-statistics', 'getCardStatistics')->name('card-statistics');
             Route::get('/emergency-types-distribution', 'getEmergencyTypesDistribution')->name('emergency-types-distribution');
             Route::get('/emergencies-per-branch-office', 'getEmergenciesPerBranchOffice')->name('emergencies-per-branch-office');

@@ -20,6 +20,37 @@ class StatisticsController extends Controller
         $this->reportService = $reportService;
     }
 
+    public function getCountTable(Request $request)
+    {
+        $filteredQuery = $this->reportService->filterQuery(Report::query(), $request);
+
+        $queryResults = (clone $filteredQuery)->selectRaw('emergency_type, branch_office_id, COUNT(*) as count')
+            ->groupBy('emergency_type', 'branch_office_id')
+            ->orderBy('emergency_type')
+            ->orderBy('branch_office_id')
+            ->get();
+
+        $totalPerType = (clone $filteredQuery)->selectRaw('emergency_type, COUNT(*) as total_count')
+            ->groupBy('emergency_type')
+            ->pluck('total_count', 'emergency_type');
+
+        $totalPerBranchOffice = (clone $filteredQuery)->selectRaw('branch_office_id, COUNT(*) as total_count')
+            ->groupBy('branch_office_id')
+            ->pluck('total_count', 'branch_office_id');
+
+        $overallTotal = (clone $filteredQuery)->count();
+
+
+        return [
+            'data' => [
+                'cells' => $queryResults,
+                'total_per_type' => $totalPerType,
+                'total_per_branch_office' => $totalPerBranchOffice,
+                'overall_total' => $overallTotal,
+            ]
+        ];
+    }
+
     public function getCardStatistics(FilterReportRequest $request)
     {
         $filterQuery = $this->reportService->filterQuery(Report::query(), $request);
