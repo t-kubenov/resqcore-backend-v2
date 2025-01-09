@@ -264,7 +264,7 @@ test('cannot create updates for reports from other branches', function () {
 
 test('can access count table with own branch', function () {
     $response = $this->actingAs($this->user)
-        ->get('/api/count-table')
+        ->get('/api/statistics/count-table')
         ->assertStatus(200)
         ->assertJsonStructure([
             'data' => [

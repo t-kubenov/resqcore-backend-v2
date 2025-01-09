@@ -34,7 +34,7 @@ test('can see reports by id', function () {
 
 test('can access count table endpoint', function () {
     $this->actingAs($this->user)
-        ->get('/api/count-table')
+        ->get('/api/statistics/count-table')
         ->assertStatus(200)
         ->assertJsonStructure([
             'data' => [

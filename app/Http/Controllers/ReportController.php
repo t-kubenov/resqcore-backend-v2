@@ -39,13 +39,6 @@ class ReportController extends Controller
         return new ExportCollection($this->reportService->export($request));
     }
 
-
-    public function countTable(FilterReportRequest $request)
-    {
-        return response()->json($this->reportService->getCountTable($request));
-    }
-
-
     public function show(Request $request, $id)
     {
         return $this->reportService->findReportWithDetails($id);
