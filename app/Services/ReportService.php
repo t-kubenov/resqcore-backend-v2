@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Http\Resources\ReportCollection;
 use App\Http\Resources\TransportResource;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -12,18 +13,11 @@ use App\Http\Resources\ReportResource;
 
 class ReportService
 {
-    public function getReports(Request $request)
+    public function index(Request $request)
     {
-        $user = Auth::user();
-
         $query = Report::orderByRaw("is_closed, COALESCE(last_update_created_at, created_at) DESC");
 
         $query = $this->filterQuery($query, $request);
-
-        if (!$user->hasRole('admin')) {
-            $query->where('branch_office_id', $user->branch_id);
-        }
-
 
         $reports = $query->with(['transport', 'updates.transport'])->paginate(); //todo: move data manipulation logic to resources
 
@@ -35,6 +29,55 @@ class ReportService
         return $reports;
     }
 
+    public function show($report)
+    {
+        $report->load([
+            'updates' => function ($query) {
+                $query->with('transport')->orderBy('created_at');
+            },
+            'reporter:id,first_name,last_name,patronymic,email'
+        ]);
+
+        $report['emergency_type'] = $report->emergency;
+        $report['reported_by'] = $report->reporter;
+
+        $this->countUpdateTrack($report);
+
+        return $report;
+    }
+
+    public function store($request)
+    {
+        $user = Auth::user();
+        $attributes = $request['data']['attributes'];
+
+        $attributes['reported_by'] = $user->id;
+        $attributes['branch_office_id'] = $user->branch_id ?? $attributes['branch_office_id']; //todo: move this to separate function
+        $attributes['report_code'] = $this->generateReportCode($attributes['branch_office_id']);
+        $attributes['emergency_type'] = $attributes['emergency_type']['id'];
+
+        $report = Report::create($attributes);
+
+        $this->checkReportForClosing($report);
+        $this->calculateTotals($report);
+
+        if (isset($attributes['transport'])) {
+            $this->parseTransport($report, $attributes['transport']);
+            $report->load('transport');
+        }
+
+        return $report;
+    }
+
+    public function destroy($id)
+    {
+        $report = Report::find($id);
+        if ($report) {
+            $report->delete();
+            return true;
+        }
+        return false;
+    }
 
     public function export(Request $request)
     {
@@ -128,36 +171,10 @@ class ReportService
     }
 
 
-    public function findReportWithDetails($id)
-    {
-        $report = Report::find($id);
-
-        if (!$report) {
-            return response()->json(['message' => __('reports.show.not-found')], 404);
-        }
-
-        $user = Auth::user();
-
-        if ($user->hasRole('branch_office_user') && $user->branch_id !== $report->branch_office_id) {
-            return response()->json(['message' => __('reports.show.not-allowed')], 403);
-        }
-
-        $report->load([
-            'updates' => function ($query) {
-                $query->with('transport')->orderBy('created_at');
-            },
-            'reporter:id,first_name,last_name,patronymic,email'
-        ]);
-
-        $report['emergency_type'] = $report->emergency;
-        $report['reported_by'] = $report->reporter;
-
-        $report = $this->countUpdateTrack($report);
-
-        return new ReportResource($report);
-    }
 
     private function countUpdateTrack($report) {
+        // todo: move out of controller somehow..?
+
         $fields = [
             'evacuated_people_count' => [],
             'provided_medical_count' => [],
@@ -203,54 +220,9 @@ class ReportService
             }
         }
 
-// Update the report's track field and save
         $report->update_track = $fields;
 
         return $report;
-    }
-
-    public function createReport($attributes)
-    {
-        $user = Auth::user();
-
-        $attributes['reported_by'] = $user->id; //todo:move to request?
-
-
-        if (!$user->branch_id && !$user->hasRole('admin')) {
-            return response()->json(['message' => __('reports.create.branch-id-required')], 422);
-        }
-
-        if ($user->hasRole('admin') && !$user->branch_id && !isset($attributes['branch_office_id'])) {
-            return response()->json(['message' => __('reports.create.branch-id-required-admin')], 422); //todo: not ideal, need to fix sometime
-        }
-
-        $attributes['branch_office_id'] = $user->branch_id ?? $attributes['branch_office_id']; //todo: move this to separate function
-
-        $attributes['report_code'] = $this->generateReportCode($attributes['branch_office_id']);
-        $attributes['emergency_type'] = $attributes['emergency_type']['id'];
-
-
-        $report = Report::create($attributes);
-
-        $this->checkReportForClosing($report);
-        $this->calculateTotals($report);
-
-        if (isset($attributes['transport'])) {
-            $this->parseTransport($report, $attributes['transport']);
-            $report->load('transport');
-        }
-
-        return new ReportResource($report);
-    }
-
-    public function deleteReport($id)
-    {
-        $report = Report::find($id);
-        if ($report) {
-            $report->delete();
-            return true;
-        }
-        return false;
     }
 
     private function generateReportCode($branchOfficeId)
