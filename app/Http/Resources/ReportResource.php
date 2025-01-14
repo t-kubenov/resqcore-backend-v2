@@ -16,20 +16,31 @@ class ReportResource extends JsonResource
      */
     public function toArray(Request $request)
     {
-        $attributes = $this->attributesToArray();
-
-        $transportResource = TransportResource::collection($this->whenLoaded('transport'));
-        $updateResource = UpdateResource::collection($this->whenLoaded('updates'));
-
-        if ($transportResource) {
-            $attributes['transport'] = $transportResource;
-        }
-
         return [
-            'id' => $this->id,
-            'type' => 'report',
-            'attributes' => $attributes,
-            'updates' => $updateResource,
+            'columns' => $this->getColumns(),
+            'data' =>
+            [
+                'id' => $this->id,
+                'type' => 'report',
+                'attributes' => $this->getAttributes($request),
+            ],
+
         ];
     }
+
+    public function getColumns(){
+        $attributes = array_keys($this->getAttributes());
+
+        return collect($attributes)->map(fn($attribute) => [
+            'key' => $attribute,
+            'name' => __('reports.fields.' . $attribute . '.name'),
+            'alias' => __('reports.fields.' . $attribute . '.alias'),
+        ])->toArray();
+
+
+    }
+
+//    public function getAttributes($request){
+//        $this->getAttributes();
+//    }
 }

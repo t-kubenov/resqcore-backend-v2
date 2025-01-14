@@ -173,7 +173,7 @@ class ReportService
 
 
     private function countUpdateTrack($report) {
-        // todo: move out of controller somehow..?
+        // todo: move to a resource
 
         $fields = [
             'evacuated_people_count' => [],
