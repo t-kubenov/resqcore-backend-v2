@@ -25,7 +25,7 @@ class UpdateResource extends JsonResource
     protected function getRelationships()
     {
         return [
-            'transport' => $this->transport,
+            'transport' => new TransportCollection($this->transport??[]),
         ];
     }
 }

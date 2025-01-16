@@ -93,10 +93,10 @@ class ReportCollection extends ResourceCollection
     protected function getRelationships($report): array
     {
         return [
-            'branch_office' => $report->branch_office,
-            'facility_owner' => $report->facility_owner,
-            'emergency' => $report->emergency,
-            'transport' => $report->transport,
+            'branch_office' => new GenericRelationshipResource($report->branch_office),
+            'facility_owner' => new GenericRelationshipResource($report->facility_owner),
+            'emergency_type' => new GenericRelationshipResource($report->emergency),
+            'transport' => new TransportCollection($report->transport??[]),
         ];
     }
 }

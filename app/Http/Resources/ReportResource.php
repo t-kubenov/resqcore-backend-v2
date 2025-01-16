@@ -43,12 +43,12 @@ class ReportResource extends JsonResource
     public function getRelationships()
     {
         return [
-            'branch_office' => $this->branch_office,
-            'facility' => $this->facility,
-            'reporter' => $this->reporter,
-            'updates' => new UpdateCollection($this->updates),
-            'emergency_type' => $this->emergency,
-            'reported_by' => $this->reporter,
+            'branch_office' => new GenericRelationshipResource($this->branch_office),
+            'facility' => new GenericRelationshipResource($this->facility),
+            'emergency_type' => new GenericRelationshipResource($this->emergency),
+            'transport' => new TransportCollection($this->transport??[]),
+            'reported_by' => new UserResource($this->reporter),
+            'updates' => new UpdateCollection($this->updates?? []),
         ];
     }
 

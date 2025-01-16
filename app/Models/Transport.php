@@ -24,7 +24,7 @@ class Transport extends Model
 
     public function getNameAttribute()
     {
-        return $this->transport_type->name ?? null;
+        return $this->transport_type?->name;
     }
 
     public function report()
