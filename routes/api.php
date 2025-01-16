@@ -39,7 +39,6 @@ Route::middleware('auth:sanctum')->group(function () {
 
         Route::get('/reports', [ReportController::class, 'index'])->name('reports.index');
         Route::get('/reports/{id}', [ReportController::class, 'show'])->name('reports.show');
-        Route::get('/export', [ReportController::class, 'export'])->name('reports.export');
 
         Route::group(['middleware' => ['permission:branch_report_create']], function () {
             Route::post('/reports', [ReportController::class, 'store'])->name('reports.store');

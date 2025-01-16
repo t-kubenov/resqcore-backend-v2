@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\FilterReportRequest;
-use App\Http\Resources\ExportCollection;
 use Illuminate\Http\Request;
 
 use App\Http\Resources\ReportResource;
@@ -69,10 +68,5 @@ class ReportController extends Controller
         }
 
         return response()->json(['message' => __('reports.delete.not-found')], 404);
-    }
-
-    public function export(FilterReportRequest $request)
-    {
-        return new ExportCollection($this->reportService->export($request));
     }
 }
