@@ -1,11 +1,10 @@
 <?php
 
-namespace App\Services;
+namespace App\Services\V2;
 
-use Illuminate\Support\Facades\Hash;
-
+use App\Http\Resources\V2\UserResource;
 use App\Models\User;
-use App\Http\Resources\UserResource;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rules\Password;

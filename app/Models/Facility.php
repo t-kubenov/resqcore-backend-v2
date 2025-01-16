@@ -3,11 +3,8 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-//use Illuminate\Database\Eloquent\Model;
 
-use App\Models\Company;
-use App\Models\BranchOffice;
-use App\Models\Report;
+//use Illuminate\Database\Eloquent\Model;
 
 
 class Facility extends Model

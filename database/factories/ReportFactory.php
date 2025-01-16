@@ -2,14 +2,11 @@
 
 namespace Database\Factories;
 
+use App\Models\BranchOffice;
+use App\Models\EmergencyType;
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\Factory;
-
-use App\Models\BranchOffice;
-use App\Models\Facility;
-use App\Models\User;
-use App\Models\EmergencyType;
-use App\Models\Company;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Report>

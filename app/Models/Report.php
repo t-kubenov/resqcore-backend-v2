@@ -2,10 +2,8 @@
 
 namespace App\Models;
 
-use App\Traits\AltersDisplayedDates;
-use Carbon\Carbon;
-use DateTimeInterface;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+
 //use Illuminate\Database\Eloquent\Model;
 
 class Report extends BaseOperation

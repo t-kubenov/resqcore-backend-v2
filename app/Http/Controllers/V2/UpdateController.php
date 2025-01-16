@@ -1,13 +1,12 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\V2;
 
-use App\Http\Controllers\Controller;
-use App\Http\Requests\StoreUpdateRequest;
-use App\Models\Update;
+use App\Http\Requests\V2\StoreUpdateRequest;
+use App\Http\Resources\V2\UpdateResource;
 use App\Models\Report;
-use App\Http\Resources\UpdateResource;
-use App\Services\UpdateService;
+use App\Models\Update;
+use App\Services\V2\UpdateService;
 use Illuminate\Support\Facades\Auth;
 
 class UpdateController extends Controller

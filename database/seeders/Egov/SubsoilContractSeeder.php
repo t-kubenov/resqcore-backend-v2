@@ -2,11 +2,9 @@
 
 namespace Database\Seeders\Egov;
 
-use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\Log;
-
 use App\Models\Egov\SubsoilContract;
-use App\Services\ApiDataService;
+use App\Services\V2\ApiDataService;
+use Illuminate\Database\Seeder;
 
 class SubsoilContractSeeder extends Seeder
 {

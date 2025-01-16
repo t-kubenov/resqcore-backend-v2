@@ -2,11 +2,8 @@
 
 namespace Database\Seeders;
 
-use Database\Factories\TransportFactory;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
-use Illuminate\Database\Seeder;
-
 use App\Models\Transport;
+use Illuminate\Database\Seeder;
 
 class TransportSeeder extends Seeder
 {

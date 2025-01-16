@@ -3,10 +3,8 @@
 namespace Database\Seeders\Egov;
 
 use App\Models\Egov\OilField;
-use App\Services\ApiDataService;
-
+use App\Services\V2\ApiDataService;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\Log;
 
 class OilFieldSeeder extends Seeder
 {

@@ -1,10 +1,9 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\V2;
 
-use App\Http\Controllers\Controller;
+use App\Services\V2\AuthService;
 use Illuminate\Http\Request;
-use App\Services\AuthService;
 
 class AuthController extends Controller
 {

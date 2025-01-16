@@ -1,21 +1,16 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\V2;
 
-use App\Http\Controllers\Controller;
-use App\Http\Requests\FilterReportRequest;
-use Illuminate\Http\Request;
-
-use App\Http\Resources\ReportResource;
-use App\Http\Resources\ReportCollection;
-use App\Http\Requests\StoreReportRequest;
-use App\Services\ReportService;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Log;
-
-
-
+use App\Http\Requests\V2\FilterReportRequest;
+use App\Http\Requests\V2\StoreReportRequest;
+use App\Http\Resources\V2\ReportCollection;
+use App\Http\Resources\V2\ReportResource;
 use App\Models\Report;
+use App\Services\V2\ReportService;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+
 
 class ReportController extends Controller
 {

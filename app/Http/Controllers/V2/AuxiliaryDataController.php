@@ -1,16 +1,14 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\V2;
 
-use App\Http\Controllers\Controller;
 use App\Models\BranchOffice;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
-use App\Models\EmergencyType;
-use App\Models\TransportType;
 use App\Models\Egov\MineralField;
 use App\Models\Egov\OilField;
 use App\Models\Egov\SubsoilContract;
+use App\Models\EmergencyType;
+use App\Models\TransportType;
+use Illuminate\Http\JsonResponse;
 
 class AuxiliaryDataController extends Controller
 {

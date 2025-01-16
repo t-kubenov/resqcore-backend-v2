@@ -2,10 +2,8 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
-use Illuminate\Database\Seeder;
-
 use App\Models\Update;
+use Illuminate\Database\Seeder;
 
 class UpdateSeeder extends Seeder
 {

@@ -1,6 +1,8 @@
 <?php
 
-namespace App\Services;
+namespace App\Services\V2;
+
+use App\Models\Transport;
 
 class TransportService
 {

@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Services;
+namespace App\Services\V2;
 
 use App\Models\Update;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class UpdateService extends ReportService
 {
@@ -66,11 +66,11 @@ class UpdateService extends ReportService
             $update->branch_worker_count > 0 &&
             $update->worker_man_hours > 0
         ){
-                $report->close_date = $update->close_date;
-                $report->branch_worker_count = $update->branch_worker_count;
-                $report->worker_man_hours = $update->worker_man_hours;
-                $report->is_closed = true;
-                $report->save();
+            $report->close_date = $update->close_date;
+            $report->branch_worker_count = $update->branch_worker_count;
+            $report->worker_man_hours = $update->worker_man_hours;
+            $report->is_closed = true;
+            $report->save();
         }
     }
 }

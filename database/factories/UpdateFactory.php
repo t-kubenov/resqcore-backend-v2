@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Report;
 use App\Models\Update;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -9,7 +10,6 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 // use App\Models\BranchOffice;
 // use App\Models\Facility;
 // use App\Models\User;
-use App\Models\Report;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Update>

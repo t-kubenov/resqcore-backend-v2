@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\V2;
 
 use App\Mail\UserFeedback;
 use Illuminate\Http\Request;

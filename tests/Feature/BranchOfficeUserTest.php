@@ -2,9 +2,8 @@
 
 
 use App\Models\Report;
-use App\Models\Update;
 use App\Models\Transport;
-
+use App\Models\Update;
 use App\Models\User;
 use Carbon\Carbon;
 

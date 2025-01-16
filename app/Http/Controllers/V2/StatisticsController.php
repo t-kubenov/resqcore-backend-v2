@@ -1,15 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\V2;
 
-use App\Http\Requests\FilterReportRequest;
-use App\Models\BranchOffice;
-use App\Models\EmergencyType;
+use App\Http\Requests\V2\FilterReportRequest;
 use App\Models\Report;
-use App\Services\ReportService;
+use App\Services\V2\ReportService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 
 class StatisticsController extends Controller
 {

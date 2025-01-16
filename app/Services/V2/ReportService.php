@@ -1,15 +1,11 @@
 <?php
 
-namespace App\Services;
-
-use App\Http\Resources\ReportCollection;
-use App\Http\Resources\TransportResource;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Auth;
+namespace App\Services\V2;
 
 use App\Models\Report;
-use App\Http\Resources\ReportResource;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class ReportService
 {

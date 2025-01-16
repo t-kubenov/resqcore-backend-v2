@@ -1,8 +1,6 @@
 <?php
 
-use App\Models\User;
-
-use function Tests\Helpers\{loadUsers, assertEndpoint};
+use function Tests\Helpers\{assertEndpoint, loadUsers};
 
 // todo: unit test for the statistics, reports, and departures filters
 
