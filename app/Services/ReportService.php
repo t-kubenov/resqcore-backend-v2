@@ -19,14 +19,7 @@ class ReportService
 
         $query = $this->filterQuery($query, $request);
 
-        $reports = $query->with(['transport', 'updates.transport'])->paginate(); //todo: move data manipulation logic to resources
-
-        $reports->getCollection()->transform(function ($report) {
-            $report->transport = $this->groupAndSumTransport($report);
-            return $report;
-        });
-
-        return $reports;
+        return $query->with(['transport', 'updates.transport'])->paginate();
     }
 
     public function show($report)
@@ -37,11 +30,6 @@ class ReportService
             },
             'reporter:id,first_name,last_name,patronymic,email'
         ]);
-
-        $report['emergency_type'] = $report->emergency;
-        $report['reported_by'] = $report->reporter;
-
-        $this->countUpdateTrack($report);
 
         return $report;
     }
@@ -159,7 +147,6 @@ class ReportService
         return $query;
     }
 
-
     private function filterBranchOffice($query, $request)
     {
         $user = Auth::user();
@@ -170,62 +157,7 @@ class ReportService
         return $query;
     }
 
-
-
-    private function countUpdateTrack($report) {
-        // todo: move to a resource
-
-        $fields = [
-            'evacuated_people_count' => [],
-            'provided_medical_count' => [],
-            'work_scope' => [],
-            'situation_during_filing' => [],
-            'client_equipment_count' => [],
-            'third_parties_count' => [],
-        ];
-
-        $items = array_merge([$report], $report->updates->all() ?? []);
-
-        foreach ($items as $item) {
-            $fields['injuries'][] = [
-                "time" => $item->created_at->format(config('app.date_format')),
-                "minor_injury_count" => $item->minor_injury_count ?? 0,
-                "severe_injury_count" => $item->severe_injury_count ?? 0,
-                "fatal_injury_count" => $item->fatal_injury_count ?? 0
-            ];
-        }
-
-        foreach ($items as $item) {
-            $fields['transport'][] = [
-                "time" => $item->created_at->format(config('app.date_format')),
-                "data" => TransportResource::collection($item->transport)
-            ];
-        }
-
-        $other_fields = [
-            'evacuated_people_count',
-            'provided_medical_count',
-            'work_scope',
-            'situation_during_filing',
-            'client_equipment_count',
-            'third_parties_count'
-        ];
-
-        foreach ($items as $item) {
-            foreach ($other_fields as $field) {
-                $fields[$field][] = [
-                    "time" => $item->created_at->format(config('app.date_format')),
-                    "data" => $item->{$field} ?? ($field === 'work_scope' || $field === 'situation_during_filing' ? null : 0)
-                ];
-            }
-        }
-
-        $report->update_track = $fields;
-
-        return $report;
-    }
-
-    private function generateReportCode($branchOfficeId)
+    private function generateReportCode($branchOfficeId) // to mutator
     {
         $reportCount = Report::where('branch_office_id', $branchOfficeId)->count() + 1;
         return $branchOfficeId . '-' . $reportCount;
@@ -245,7 +177,7 @@ class ReportService
         }
     }
 
-    private function calculateTotals($report)
+    private function calculateTotals($report) // to mutator
     {
         $report->minor_injury_total = $report->minor_injury_count;
         $report->severe_injury_total = $report->severe_injury_count;

@@ -98,7 +98,5 @@ class ReportCollection extends ResourceCollection
             'emergency' => $report->emergency,
             'transport' => $report->transport,
         ];
-
-//        return $report->getRelations();
     }
 }
