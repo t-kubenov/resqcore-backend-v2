@@ -46,7 +46,7 @@ class ReportResource extends JsonResource
             'branch_office' => $this->branch_office,
             'facility' => $this->facility,
             'reporter' => $this->reporter,
-            'updates' => $this->updates,
+            'updates' => new UpdateCollection($this->updates),
             'emergency_type' => $this->emergency,
             'reported_by' => $this->reporter,
         ];
