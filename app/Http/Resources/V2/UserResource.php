@@ -22,13 +22,11 @@ class UserResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'data' => [
-                'id' => $this->id,
-                'type' => 'user',
-                'attributes' => $this->getAttributes(),
-                'relationships' => $this->getRelations(),
-                'token' => $this->when($this->token, $this->token),
-            ]
+            'id' => $this->id,
+            'type' => 'user',
+            'attributes' => $this->getAttributes(),
+            'relationships' => $this->getRelations(),
+            'token' => $this->when($this->token, $this->token),
         ];
     }
 }

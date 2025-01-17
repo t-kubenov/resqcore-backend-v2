@@ -14,8 +14,6 @@ class UpdateCollection extends ResourceCollection
      */
     public function toArray(Request $request): array
     {
-        return [
-            'data' => parent::toArray($request),
-        ];
+        return parent::toArray($request);
     }
 }
