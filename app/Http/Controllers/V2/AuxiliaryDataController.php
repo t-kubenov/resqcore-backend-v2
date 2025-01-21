@@ -9,6 +9,7 @@ use App\Models\Egov\SubsoilContract;
 use App\Models\EmergencyType;
 use App\Models\Report;
 use App\Models\TransportType;
+use App\Models\Update;
 use Illuminate\Http\JsonResponse;
 
 class AuxiliaryDataController extends Controller
@@ -16,6 +17,11 @@ class AuxiliaryDataController extends Controller
     public function getReportFields(): JsonResponse
     {
         return response()->json(['data' => Report::fieldDefinitions()]);
+    }
+
+    public function getUpdateFields(): JsonResponse
+    {
+        return response()->json(['data' => Update::fieldDefinitions()]);
     }
 
     public function getBranchOffices(): JsonResponse

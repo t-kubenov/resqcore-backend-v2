@@ -2,6 +2,8 @@
 
 namespace App\Http\Requests\V2;
 
+use App\Models\Report;
+use App\Models\Update;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreUpdateRequest extends FormRequest
@@ -53,38 +55,8 @@ class StoreUpdateRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
-            'data.attributes.minor_injury_count'                => ['required', 'integer', 'min:0'],
-            'data.attributes.severe_injury_count'               => ['required', 'integer', 'min:0'],
-            'data.attributes.fatal_injury_count'                => ['required', 'integer', 'min:0'],
-            'data.attributes.evacuated_people_count'            => ['required', 'integer', 'min:0'],
-            'data.attributes.provided_medical_count'            => ['required', 'integer', 'min:0'],
-            'data.attributes.client_equipment_count'            => ['required', 'integer', 'min:0'],
-            'data.attributes.third_parties_count'               => ['required', 'integer', 'min:0'],
-            'data.attributes.work_scope'                        => ['required'],
-            'data.attributes.situation_during_filing'           => ['nullable'],
-            'data.attributes.branch_worker_count'               => [
-                'nullable',
-                'required_with:data.attributes.worker_man_hours,data.attributes.close_date',
-                'integer',
-                'min:0'
-            ],
-            'data.attributes.worker_man_hours'                  => [
-                'nullable',
-                'required_with:data.attributes.branch_worker_count,data.attributes.close_date',
-                'numeric',
-                'min:0'
-            ],
-            'data.attributes.close_date'                        => [
-                'nullable',
-                'required_with:data.attributes.branch_worker_count,data.attributes.worker_man_hours',
-                'date',
-                'after_or_equal:data.attributes.work_start_date',
-                'before_or_equal:tomorrow'
-            ],
-            'data.attributes.transport'                         => ['nullable'],
-            'data.attributes.transport.*.id'                    => ['required', 'integer', 'exists:transport_types,id'],
-            'data.attributes.transport.*.count'                 => ['required', 'integer', 'min:1'],
-        ];
+        return collect(Update::fieldDefinitions())
+            ->mapWithKeys(fn($field) => [$field['key'] => $field['rules']])
+            ->toArray();
     }
 }

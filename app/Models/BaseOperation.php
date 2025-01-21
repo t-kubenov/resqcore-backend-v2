@@ -33,7 +33,7 @@ abstract class BaseOperation extends Model
     }
 
 
-    protected static function fieldDefinitions(): array
+    public static function fieldDefinitions(): array
     {
         return [
             'minor_injury_count' => [
