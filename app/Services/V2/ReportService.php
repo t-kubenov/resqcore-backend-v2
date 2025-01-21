@@ -63,6 +63,44 @@ class ReportService
         return false;
     }
 
+    public function export(Request $request)
+    {
+        $query = Report::orderByRaw("is_closed, COALESCE(last_update_created_at, created_at) DESC");
+
+        $query = $this->filterQuery($query, $request);
+
+        $reports = $query->with(['transport', 'updates.transport'])->paginate();
+
+        $reports->getCollection()->transform(function ($report) {
+            $report->transport = $this->groupAndSumTransport($report);
+            return $report;
+        });
+
+        return $reports;
+    }
+
+    protected function groupAndSumTransport($report)
+    {
+        // Step 1: Merge transport from the report and its updates
+        $updateTransports = $report->updates->flatMap(function ($update) {
+            return $update->transport;
+        });
+
+        // Combine both report transport and update transports
+        $mergedTransports = $report->transport->merge($updateTransports);
+
+        // Step 2: Group transports by 'name' (or 'id') and sum their 'count'
+        $groupedTransports = $mergedTransports->groupBy('name')->map(function ($group) {
+            return [
+                'id' => $group->first()->type,  // Keep the first id (or group by 'id' if necessary)
+                'name' => $group->first()->name,  // Transport type name
+                'count' => $group->sum('count')  // Sum all counts for this type
+            ];
+        })->values(); // Convert the grouped collection back to an array of values
+
+        return $groupedTransports;
+    }
+
     public function filterQuery($query, $request)
     {
         $query = $this->filterBranchOffice($query, $request);

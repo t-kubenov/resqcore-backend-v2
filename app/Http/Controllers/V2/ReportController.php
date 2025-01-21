@@ -6,6 +6,7 @@ use App\Http\Requests\V2\FilterReportRequest;
 use App\Http\Requests\V2\StoreReportRequest;
 use App\Http\Resources\V2\ReportCollection;
 use App\Http\Resources\V2\ReportResource;
+use App\Http\Resources\ExportCollection;
 use App\Models\Report;
 use App\Services\V2\ReportService;
 use Illuminate\Http\Request;
@@ -63,5 +64,10 @@ class ReportController extends Controller
         }
 
         return response()->json(['message' => __('reports.delete.not-found')], 404);
+    }
+
+    public function export(FilterReportRequest $request)
+    {
+        return new ExportCollection($this->reportService->export($request));
     }
 }
