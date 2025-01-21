@@ -22,6 +22,7 @@ Route::prefix('v2/')->group(function () {
         Route::get('/companies', [CompanyController::class, 'index'])->name('companies.index');
 
         Route::prefix('auxiliary')->name('auxiliary.')->controller(AuxiliaryDataController::class)->group(function () {
+            Route::get('/report-fields', 'getReportFields')->name('report-fields');
             Route::get('/transport-types', 'getTransportTypes')->name('transport-types');
             Route::get('/emergency-types', 'getEmergencyTypes')->name('emergency-types');
             Route::get('/branch-offices', 'getBranchOffices')->name('branch-offices');

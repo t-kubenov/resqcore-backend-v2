@@ -31,4 +31,124 @@ abstract class BaseOperation extends Model
             'close_date' => 'datetime',
         ];
     }
+
+
+    protected static function fieldDefinitions(): array
+    {
+        return [
+            'minor_injury_count' => [
+                'key' => 'data.attributes.minor_injury_count',
+                'name' => trans('reports.fields.minor_injury_count.name'),
+                'alias' => trans('reports.fields.minor_injury_count.alias'),
+                'type' => 'integer',
+                'required' => true,
+                'rules' => ['required', 'integer', 'min:0'],
+            ],
+            'severe_injury_count' => [
+                'key' => 'data.attributes.severe_injury_count',
+                'name' => trans('reports.fields.severe_injury_count.name'),
+                'alias' => trans('reports.fields.severe_injury_count.alias'),
+                'type' => 'integer',
+                'required' => true,
+                'rules' => ['required', 'integer', 'min:0'],
+            ],
+            'fatal_injury_count' => [
+                'key' => 'data.attributes.fatal_injury_count',
+                'name' => trans('reports.fields.fatal_injury_count.name'),
+                'alias' => trans('reports.fields.fatal_injury_count.alias'),
+                'type' => 'integer',
+                'required' => true,
+                'rules' => ['required', 'integer', 'min:0'],
+            ],
+            'evacuated_people_count' => [
+                'key' => 'data.attributes.evacuated_people_count',
+                'name' => trans('reports.fields.evacuated_people_count.name'),
+                'alias' => trans('reports.fields.evacuated_people_count.alias'),
+                'type' => 'integer',
+                'required' => true,
+                'rules' => ['required', 'integer', 'min:0'],
+            ],
+            'provided_medical_count' => [
+                'key' => 'data.attributes.provided_medical_count',
+                'name' => trans('reports.fields.provided_medical_count.name'),
+                'alias' => trans('reports.fields.provided_medical_count.alias'),
+                'type' => 'integer',
+                'required' => true,
+                'rules' => ['required', 'integer', 'min:0'],
+            ],
+            'client_equipment_count' => [
+                'key' => 'data.attributes.client_equipment_count',
+                'name' => trans('reports.fields.client_equipment_count.name'),
+                'alias' => trans('reports.fields.client_equipment_count.alias'),
+                'type' => 'integer',
+                'required' => true,
+                'rules' => ['required', 'integer', 'min:0'],
+            ],
+            'branch_worker_count' => [
+                'key' => 'data.attributes.branch_worker_count',
+                'name' => trans('reports.fields.branch_worker_count.name'),
+                'alias' => trans('reports.fields.branch_worker_count.alias'),
+                'type' => 'integer',
+                'required' => false,
+                'rules' => [
+                    'nullable',
+                    'required_with:data.attributes.worker_man_hours,data.attributes.close_date',
+                    'integer',
+                    'min:0',
+                ],
+            ],
+            'worker_man_hours' => [
+                'key' => 'data.attributes.worker_man_hours',
+                'name' => trans('reports.fields.worker_man_hours.name'),
+                'alias' => trans('reports.fields.worker_man_hours.alias'),
+                'type' => 'numeric',
+                'required' => false,
+                'rules' => [
+                    'nullable',
+                    'required_with:data.attributes.branch_worker_count,data.attributes.close_date',
+                    'numeric',
+                    'min:0',
+                ],
+            ],
+            'close_date' => [
+                'key' => 'data.attributes.close_date',
+                'name' => trans('reports.fields.close_date.name'),
+                'alias' => trans('reports.fields.close_date.alias'),
+                'type' => 'date',
+                'required' => false,
+                'rules' => [
+                    'nullable',
+                    'required_with:data.attributes.branch_worker_count,data.attributes.worker_man_hours',
+                    'date',
+                    'after_or_equal:data.attributes.work_start_date',
+                    'before_or_equal:tomorrow',
+                ],
+            ],
+            'transport' => [
+                'key' => 'data.attributes.transport',
+                'name' => trans('reports.fields.transport.name'),
+                'alias' => trans('reports.fields.transport.alias'),
+                'type' => 'array',
+                'required' => true,
+                'rules' => ['required', 'array', 'min:1'],
+            ],
+            'transport_id' => [
+                'key' => 'data.attributes.transport.*.id',
+                'name' => trans('reports.fields.transport_id.name'),
+                'alias' => trans('reports.fields.transport_id.alias'),
+                'type' => 'integer',
+                'required' => true,
+                'rules' => ['required', 'integer', 'exists:transport_types,id'],
+            ],
+            'transport_count' => [
+                'key' => 'data.attributes.transport.*.count',
+                'name' => trans('reports.fields.transport_count.name'),
+                'alias' => trans('reports.fields.transport_count.alias'),
+                'type' => 'integer',
+                'required' => true,
+                'rules' => ['required', 'integer', 'min:1'],
+            ],
+        ];
+    }
+
 }

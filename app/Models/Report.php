@@ -51,6 +51,103 @@ class Report extends BaseOperation
         'last_update_created_at'
     ];
 
+    public static function fieldDefinitions(): array
+    {
+        return array_merge([
+            'branch_office_id' => [
+                'key' => 'data.attributes.branch_office_id',
+                'name' => trans('reports.fields.branch_office_id.name'),
+                'alias' => trans('reports.fields.branch_office_id.alias'),
+                'type' => 'integer',
+                'required' => false,
+                'rules' => ['sometimes', 'integer', 'exists:branch_offices,id'],
+            ],
+            'caller' => [
+                'key' => 'data.attributes.caller',
+                'name' => trans('reports.fields.caller.name'),
+                'alias' => trans('reports.fields.caller.alias'),
+                'type' => 'string',
+                'required' => true,
+                'rules' => ['required'],
+            ],
+            'call_date' => [
+                'key' => 'data.attributes.call_date',
+                'name' => trans('reports.fields.call_date.name'),
+                'alias' => trans('reports.fields.call_date.alias'),
+                'type' => 'date',
+                'required' => true,
+                'rules' => [
+                    'required',
+                    'date',
+                    'before_or_equal:data.attributes.work_start_date',
+                    'before_or_equal:tomorrow',
+                ],
+            ],
+            'work_start_date' => [
+                'key' => 'data.attributes.work_start_date',
+                'name' => trans('reports.fields.work_start_date.name'),
+                'alias' => trans('reports.fields.work_start_date.alias'),
+                'type' => 'date',
+                'required' => true,
+                'rules' => [
+                    'required',
+                    'date',
+                    'after_or_equal:data.attributes.call_date',
+                    'before_or_equal:tomorrow',
+                ],
+            ],
+            'emergency_type_id' => [
+                'key' => 'data.attributes.emergency_type.id',
+                'name' => trans('reports.fields.emergency_type.name'),
+                'alias' => trans('reports.fields.emergency_type.alias'),
+                'type' => 'integer',
+                'required' => true,
+                'rules' => ['required', 'integer', 'exists:emergency_types,id'],
+            ],
+            'work_scope' => [
+                'key' => 'data.attributes.work_scope',
+                'name' => trans('reports.fields.work_scope.name'),
+                'alias' => trans('reports.fields.work_scope.alias'),
+                'type' => 'string',
+                'required' => true,
+                'rules' => ['required'],
+            ],
+            'is_emergency_line' => [
+                'key' => 'data.attributes.is_emergency_line',
+                'name' => trans('reports.fields.is_emergency_line.name'),
+                'alias' => trans('reports.fields.is_emergency_line.alias'),
+                'type' => 'boolean',
+                'required' => true,
+                'rules' => ['required', 'boolean'],
+            ],
+            'line_facility_owner' => [
+                'key' => 'data.attributes.line_facility_owner',
+                'name' => trans('reports.fields.line_facility_owner.name'),
+                'alias' => trans('reports.fields.line_facility_owner.alias'),
+                'type' => 'string',
+                'required' => true,
+                'rules' => ['required', 'string'],
+            ],
+            'emergency_location' => [
+                'key' => 'data.attributes.emergency_location',
+                'name' => trans('reports.fields.emergency_location.name'),
+                'alias' => trans('reports.fields.emergency_location.alias'),
+                'type' => 'string',
+                'required' => true,
+                'rules' => ['required', 'string'],
+            ],
+            'emergency_info' => [
+                'key' => 'data.attributes.emergency_info',
+                'name' => trans('reports.fields.emergency_info.name'),
+                'alias' => trans('reports.fields.emergency_info.alias'),
+                'type' => 'string',
+                'required' => false,
+                'rules' => ['nullable', 'string'],
+            ],
+        ], parent::fieldDefinitions());
+
+    }
+
     protected function casts(): array
     {
         return [
@@ -75,11 +172,6 @@ class Report extends BaseOperation
     {
         return $this->hasMany(Update::class, 'report_id');
     }
-
-    // public function facility()
-    // {
-    //     return $this->belongsTo(Facility::class);
-    // }
 
     public function facility_owner()
     {

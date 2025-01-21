@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\V2;
 
+use App\Models\Report;
 use Carbon\Carbon;
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -54,71 +55,26 @@ class StoreReportRequest extends FormRequest
      */
     public function rules(): array
     {
-
-
-        return [
-            'data.attributes.branch_office_id'                  => ['sometimes', 'integer', 'exists:branch_offices,id'],
-
-            'data.attributes.caller'                            => ['required'],
-            'data.attributes.call_date'                         => [
-                'required',
-                'date',
-                'before_or_equal:data.attributes.work_start_date',
-                'before_or_equal:tomorrow' //should be before or equal to today, but it is not working
-            ],
-            'data.attributes.work_start_date'                   => [
-                'required',
-                'date',
-                'after_or_equal:data.attributes.call_date',
-                'before_or_equal:tomorrow'
-            ],
-            'data.attributes.emergency_type.id'                 => ['required', 'integer', 'exists:emergency_types,id'],
-            'data.attributes.work_scope'                        => ['required'],
-
-            'data.attributes.is_emergency_line'                 => ['required', 'boolean'],
-
-            'data.attributes.line_facility_owner'               => ['required', 'string'],
-//            'data.attributes.line_facility_owner'               => ['required_if:data.attributes.is_emergency_line,true', 'string'],
-//            'data.attributes.facility_owner_id'                 => ['required_if:data.attributes.is_emergency_line,false', 'integer', 'exists:companies,id'],
-
-            'data.attributes.emergency_location'                => ['required', 'string'],
-            'data.attributes.emergency_info'                    => ['nullable', 'string'],
-
-            'data.attributes.minor_injury_count'                => ['required', 'integer', 'min:0'],
-            'data.attributes.severe_injury_count'               => ['required', 'integer', 'min:0'],
-            'data.attributes.fatal_injury_count'                => ['required', 'integer', 'min:0'],
-            'data.attributes.evacuated_people_count'            => ['required', 'integer', 'min:0'],
-            'data.attributes.provided_medical_count'            => ['required', 'integer', 'min:0'],
-            'data.attributes.client_equipment_count'            => ['required', 'integer', 'min:0'],
-            'data.attributes.third_parties_count'               => ['required', 'integer', 'min:0'],
-            'data.attributes.branch_worker_count'               => [
-                'nullable',
-                'required_with:data.attributes.worker_man_hours,data.attributes.close_date',
-                'integer',
-                'min:0'
-            ],
-            'data.attributes.worker_man_hours'                  => [
-                'nullable',
-                'required_with:data.attributes.branch_worker_count,data.attributes.close_date',
-                'numeric',
-                'min:0'
-            ],
-            'data.attributes.situation_during_filing'           => ['nullable'],
-            'data.attributes.other_info'                        => ['nullable'],
-            'data.attributes.close_date'                        => [
-                'nullable',
-                'required_with:data.attributes.branch_worker_count,data.attributes.worker_man_hours',
-                'date',
-                'after_or_equal:data.attributes.work_start_date',
-                'before_or_equal:tomorrow'
-            ],
-            'data.attributes.transport'                         => ['required', 'array', 'min:1'],
-            'data.attributes.transport.*.id'                    => ['required', 'integer', 'exists:transport_types,id'],
-            'data.attributes.transport.*.count'                 => ['required', 'integer', 'min:1'],
-        ];
+        return collect(Report::fieldDefinitions())
+            ->mapWithKeys(fn($field) => [$field['key'] => $field['rules']])
+            ->toArray();
     }
 
-        /**
+
+    /**
+     * Get custom attribute names for validation errors.
+     *
+     * @return array
+     */
+    public function attributes(): array
+    {
+        // Provide user-friendly field names for validation errors
+        return collect(Report::fieldDefinitions())
+            ->mapWithKeys(fn($field) => [$field['key'] => $field['name']])
+            ->toArray();
+    }
+
+    /**
      * Get custom messages for validator errors.
      */
     public function messages(): array
@@ -131,7 +87,6 @@ class StoreReportRequest extends FormRequest
 
     public function beforeOrEqualToday($attribute, $value, $fail)
     {
-
         $date = Carbon::createFromFormat('Y-m-d', $value);
 
         if ($date->gt(Carbon::today())) {

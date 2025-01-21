@@ -174,6 +174,14 @@ return [
             'name' => 'Транспорт',
             'alias' => '',
         ],
+        'transport_id' => [
+            'name' => 'ID транспорта',
+            'alias' => '',
+        ],
+        'transport_count' => [
+            'name' => 'Количество транспорта',
+            'alias' => 'Кол-во транспорта',
+        ],
         'update_track' => [
             'name' => 'История обновлений',
             'alias' => 'История',

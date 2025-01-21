@@ -7,11 +7,17 @@ use App\Models\Egov\MineralField;
 use App\Models\Egov\OilField;
 use App\Models\Egov\SubsoilContract;
 use App\Models\EmergencyType;
+use App\Models\Report;
 use App\Models\TransportType;
 use Illuminate\Http\JsonResponse;
 
 class AuxiliaryDataController extends Controller
 {
+    public function getReportFields(): JsonResponse
+    {
+        return response()->json(['data' => Report::fieldDefinitions()]);
+    }
+
     public function getBranchOffices(): JsonResponse
     {
         $branchOffices = BranchOffice::all();
