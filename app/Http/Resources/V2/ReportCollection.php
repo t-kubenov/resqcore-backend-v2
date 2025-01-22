@@ -120,6 +120,7 @@ class ReportCollection extends ResourceCollection
             'facility_owner' => new GenericRelationshipResource($report->facility_owner),
             'emergency_type' => new GenericRelationshipResource($report->emergency),
             'transport' => new TransportCollection($report->transport??[]),
+            'grouped_transport' => $report->grouped_transport,
         ];
     }
 }

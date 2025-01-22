@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 //use Illuminate\Database\Eloquent\Model;
@@ -191,5 +192,29 @@ class Report extends BaseOperation
     public function transport()
     {
         return $this->hasMany(Transport::class);
+    }
+
+    public function groupedTransport(): Attribute
+    {
+        return Attribute::make(
+            get: fn() => $this->groupAndSumTransport()
+        );
+    }
+
+    /**
+     * Group and sum transport data by 'name'.
+     *
+     * @return array
+     */
+    protected function groupAndSumTransport(): array
+    {
+        $updateTransports = $this->updates->flatMap(fn($update) => $update->transport);
+        $mergedTransports = $this->transport->merge($updateTransports);
+
+        return $mergedTransports->groupBy('name')->map(fn($group) => [
+            'id' => $group->first()->type,
+            'name' => $group->first()->name,
+            'count' => $group->sum('count'),
+        ])->values()->toArray();
     }
 }

@@ -70,7 +70,7 @@ class StoreReportRequest extends FormRequest
     {
         // Provide user-friendly field names for validation errors
         return collect(Report::fieldDefinitions())
-            ->mapWithKeys(fn($field) => [$field['key'] => $field['name']])
+            ->mapWithKeys(fn($field) => [$field['key'] => $field['rules']])
             ->toArray();
     }
 
