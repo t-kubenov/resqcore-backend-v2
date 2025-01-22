@@ -27,52 +27,29 @@ class ReportCollection extends ResourceCollection
      */
     protected function getColumns(): array
     {
-        $startAttributes = [
-            'report_code',
+        $attributes = [
+            'start' => [
+                'report_code',
+            ],
+            'middle' => [
+                'facility_owner',
+                'emergency_type',
+                'emergency_location',
+                'caller',
+            ],
+            'end' => [
+                'branch_office',
+                'is_closed',
+            ],
         ];
 
-        $middleAttributes = [
-//            'is_emergency_line',
-//            'facility_name',
-            'facility_owner',
-            'emergency_type',
-            'emergency_location',
-//            'branch_worker_count',
-//            'worker_man_hours',
-//            'transport',
-            'caller',
-        ];
-
-        $endAttributes = [
-            'branch_office',
-            'status',
-        ];
-
-        $allAttributes = [
-            'start' => $startAttributes,
-            'middle' => $middleAttributes,
-            'end' => $endAttributes,
-        ];
-
-        return [
-            'start' => collect($startAttributes)->map(fn($attribute) => [
+        return collect($attributes)->mapWithKeys(fn($group, $key) => [
+            $key => collect($group)->map(fn($attribute) => [
                 'key' => $attribute,
                 'name' => __('reports.fields.' . $attribute . '.name'),
                 'alias' => __('reports.fields.' . $attribute . '.alias'),
             ])->toArray(),
-
-            'middle' => collect($middleAttributes)->map(fn($attribute) => [
-                'key' => $attribute,
-                'name' => __('reports.fields.' . $attribute . '.name'),
-                'alias' => __('reports.fields.' . $attribute . '.alias'),
-            ])->toArray(),
-
-            'end' => collect($endAttributes)->map(fn($attribute) => [
-                'key' => $attribute,
-                'name' => __('reports.fields.' . $attribute . '.name'),
-                'alias' => __('reports.fields.' . $attribute . '.alias'),
-            ])->toArray(),
-        ];
+        ])->toArray();
     }
 
     /**
@@ -99,7 +76,7 @@ class ReportCollection extends ResourceCollection
                     'emergency_location' => $report->emergency_location,
                     'branch_worker_count' => $report->branch_worker_count,
                     'worker_man_hours' => $report->worker_man_hours,
-                    'status' => $report->is_closed,
+                    'is_closed' => $report->is_closed,
                     'close_date' => $report->close_date?->format(config('app.date_format')),
                 ],
                 'relationships' => $this->getRelationships($report),

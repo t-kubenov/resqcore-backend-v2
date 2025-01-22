@@ -155,7 +155,7 @@ return [
             'alias' => 'Закрытие',
         ],
         'is_closed' => [
-            'name' => 'Закрыт',
+            'name' => 'Статус',
             'alias' => '',
         ],
         'created_at' => [

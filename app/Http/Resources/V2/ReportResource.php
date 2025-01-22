@@ -17,6 +17,7 @@ class ReportResource extends JsonResource
     public function toArray(Request $request)
     {
         return [
+            'highlighted' => $this->getHighlightedColumns(),
             'columns' => $this->getColumns(),
             'data' =>
             [
@@ -27,6 +28,13 @@ class ReportResource extends JsonResource
                 'update_track' => $this->getUpdateTrack(),
             ],
 
+        ];
+    }
+
+    private function getHighlightedColumns()
+    {
+        return [
+            'report_code',
         ];
     }
 
