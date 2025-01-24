@@ -184,13 +184,13 @@ class Report extends BaseOperation
 
     public function transport()
     {
-        return $this->hasMany(transport::class);
+        return $this->hasMany(Transport::class);
     }
 
-    public function groupedtransport(): Attribute
+    public function groupedTransport(): Attribute
     {
         return Attribute::make(
-            get: fn() => $this->groupAndSumtransport()
+            get: fn() => $this->groupAndSumTransport()
         );
     }
 
@@ -199,12 +199,12 @@ class Report extends BaseOperation
      *
      * @return array
      */
-    protected function groupAndSumtransport(): array
+    protected function groupAndSumTransport(): array
     {
-        $updatetransports = $this->updates->flatMap(fn($update) => $update->transport);
-        $mergedtransports = $this->transport->merge($updatetransports);
+        $updateTransports = $this->updates->flatMap(fn($update) => $update->transport);
+        $mergedTransports = $this->transport->merge($updateTransports);
 
-        return $mergedtransports->groupBy('name')->map(fn($group) => [
+        return $mergedTransports->groupBy('name')->map(fn($group) => [
             'id' => $group->first()->type,
             'name' => $group->first()->name,
             'count' => $group->sum('count'),
