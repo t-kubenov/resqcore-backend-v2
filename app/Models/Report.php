@@ -104,6 +104,7 @@ class Report extends BaseOperation
                 'type' => 'integer',
                 'required' => true,
                 'rules' => ['required', 'integer', 'exists:emergency_types,id'],
+                'options' => EmergencyType::all()->select('id', 'name'),
             ],
             'work_scope' => [
                 'key' => 'data.attributes.work_scope',
