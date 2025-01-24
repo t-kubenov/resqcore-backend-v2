@@ -59,8 +59,6 @@ class ReportResource extends JsonResource
             'provided_medical_total' => $this->provided_medical_total,
             'client_equipment_total' => $this->client_equipment_total,
             'third_parties_total' => $this->third_parties_total,
-            'work_scope' => $this->work_scope,
-            'situation_during_filing' => $this->situation_during_filing,
             'other_info' => $this->other_info,
             'is_emergency_line' => $this->is_emergency_line,
             'last_update_created_at' => $this->last_update_created_at,
