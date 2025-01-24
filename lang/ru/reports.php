@@ -70,6 +70,10 @@ return [
             'name' => 'Тип ЧС',
             'alias' => '',
         ],
+        'emergency_name' => [
+            'name' => 'Название ЧС',
+            'alias' => '',
+        ],
         'minor_injury_count' => [
             'name' => 'Легких травм',
             'alias' => 'Легк. травм',

@@ -71,7 +71,6 @@ class ReportCollection extends ResourceCollection
                     'is_emergency_line' => $report->is_emergency_line,
                     'facility_name' => $report->facility->location ?? $report->line_facility_location,
                     'facility_owner' => $report->facility_owner?->name ?? $report->line_facility_owner,
-//                    'line_facility_owner' => ,
                     'emergency_type' => $report->emergency?->name,
                     'emergency_location' => $report->emergency_location,
                     'branch_worker_count' => $report->branch_worker_count,
