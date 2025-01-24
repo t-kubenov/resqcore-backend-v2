@@ -50,8 +50,8 @@ class ReportResource extends JsonResource
             'facility_owner' => $this->line_facility_owner,
             'emergency_location' => $this->emergency_location,
             'emergency_info' => $this->emergency_info,
-            'call_date' => $this->call_date->format(config('app.date_format')),
-            'work_start_date' => $this->work_start_date->format(config('app.date_format')),
+            'call_date' => $this->call_date?->format(config('app.date_format')),
+            'work_start_date' => $this->work_start_date?->format(config('app.date_format')),
             'emergency_name' => $this->emergency->name,
             'minor_injury_total' => $this->minor_injury_total,
             'severe_injury_total' => $this->severe_injury_total,
@@ -65,7 +65,7 @@ class ReportResource extends JsonResource
             'last_update_created_at' => $this->last_update_created_at,
             'branch_worker_count' => $this->branch_worker_count,
             'worker_man_hours' => $this->worker_man_hours,
-            'close_date' => $this->close_date->format(config('app.date_format')),
+            'close_date' => $this->close_date?->format(config('app.date_format')),
         ];
     }
 
