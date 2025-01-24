@@ -130,24 +130,4 @@ class StoreReportRequest extends FormRequest
             ->mapWithKeys(fn($field) => [$field['key'] => $field['rules']])
             ->toArray();
     }
-
-    /**
-     * Get custom messages for validator errors.
-     */
-    public function messages(): array
-    {
-        return [
-            'line_facility_owner.required_if' => 'The line facility location is required when the emergency line is true.',
-            'facility_owner_id.required_if' => 'The facility owner ID is required when the emergency line is false.',
-        ];
-    }
-
-    public function beforeOrEqualToday($attribute, $value, $fail)
-    {
-        $date = Carbon::createFromFormat('Y-m-d', $value);
-
-        if ($date->gt(Carbon::today())) {
-            $fail($attribute.' must be a date before or equal to today.');
-        }
-    }
 }
