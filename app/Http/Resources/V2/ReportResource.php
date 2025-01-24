@@ -23,10 +23,11 @@ class ReportResource extends JsonResource
             [
                 'id' => $this->id,
                 'type' => 'report',
-                'attributes' => $this->getAttributes($request),
+                'attributes' => $this->getModifiedAttributes(),
                 'relationships' => $this->getRelationships(),
                 'update_track' => $this->getUpdateTrack(),
             ],
+            'original' => $this->getAttributes($request),
 
         ];
     }
@@ -38,8 +39,39 @@ class ReportResource extends JsonResource
         ];
     }
 
+    public function getModifiedAttributes()
+    {
+        return [
+            'branch_office' => $this->branch_office->name,
+            'reported_by' => $this->reporter->full_name,
+            'report_code' => $this->report_code,
+            'caller' => $this->caller,
+            'facility_owner' => $this->line_facility_owner,
+            'emergency_location' => $this->emergency_location,
+            'emergency_info' => $this->emergency_info,
+            'call_date' => $this->call_date,
+            'work_start_date' => $this->work_start_date,
+            'emergency_name' => $this->emergency->name,
+            'minor_injury_total' => $this->minor_injury_total,
+            'severe_injury_total' => $this->severe_injury_total,
+            'fatal_injury_total' => $this->fatal_injury_total,
+            'evacuated_people_total' => $this->evacuated_people_total,
+            'provided_medical_total' => $this->provided_medical_total,
+            'client_equipment_total' => $this->client_equipment_total,
+            'third_parties_total' => $this->third_parties_total,
+            'work_scope' => $this->work_scope,
+            'situation_during_filing' => $this->situation_during_filing,
+            'other_info' => $this->other_info,
+            'is_emergency_line' => $this->is_emergency_line,
+            'last_update_created_at' => $this->last_update_created_at,
+            'branch_worker_count' => $this->branch_worker_count,
+            'worker_man_hours' => $this->worker_man_hours,
+            'close_date' => $this->close_date,
+        ];
+    }
+
     public function getColumns(){
-        $attributes = array_keys($this->getAttributes());
+        $attributes = array_keys($this->getModifiedAttributes());
 
         return collect($attributes)->map(fn($attribute) => [
             'key' => $attribute,

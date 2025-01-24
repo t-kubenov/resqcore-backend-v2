@@ -57,24 +57,24 @@ class Report extends BaseOperation
         return array_merge([
             'branch_office_id' => [
                 'key' => 'data.attributes.branch_office_id',
-                'name' => trans('reports.fields.branch_office_id.name'),
-                'alias' => trans('reports.fields.branch_office_id.alias'),
+                'name' => __('reports.fields.branch_office_id.name'),
+                'alias' => __('reports.fields.branch_office_id.alias'),
                 'type' => 'integer',
                 'required' => false,
                 'rules' => ['sometimes', 'integer', 'exists:branch_offices,id'],
             ],
             'caller' => [
                 'key' => 'data.attributes.caller',
-                'name' => trans('reports.fields.caller.name'),
-                'alias' => trans('reports.fields.caller.alias'),
+                'name' => __('reports.fields.caller.name'),
+                'alias' => __('reports.fields.caller.alias'),
                 'type' => 'string',
                 'required' => true,
                 'rules' => ['required'],
             ],
             'call_date' => [
                 'key' => 'data.attributes.call_date',
-                'name' => trans('reports.fields.call_date.name'),
-                'alias' => trans('reports.fields.call_date.alias'),
+                'name' => __('reports.fields.call_date.name'),
+                'alias' => __('reports.fields.call_date.alias'),
                 'type' => 'date',
                 'required' => true,
                 'rules' => [
@@ -86,8 +86,8 @@ class Report extends BaseOperation
             ],
             'work_start_date' => [
                 'key' => 'data.attributes.work_start_date',
-                'name' => trans('reports.fields.work_start_date.name'),
-                'alias' => trans('reports.fields.work_start_date.alias'),
+                'name' => __('reports.fields.work_start_date.name'),
+                'alias' => __('reports.fields.work_start_date.alias'),
                 'type' => 'date',
                 'required' => true,
                 'rules' => [
@@ -99,49 +99,41 @@ class Report extends BaseOperation
             ],
             'emergency_type_id' => [
                 'key' => 'data.attributes.emergency_type.id',
-                'name' => trans('reports.fields.emergency_type.name'),
-                'alias' => trans('reports.fields.emergency_type.alias'),
+                'name' => __('reports.fields.emergency_type.name'),
+                'alias' => __('reports.fields.emergency_type.alias'),
                 'type' => 'integer',
                 'required' => true,
                 'rules' => ['required', 'integer', 'exists:emergency_types,id'],
                 'options' => EmergencyType::all()->select('id', 'name'),
             ],
-            'work_scope' => [
-                'key' => 'data.attributes.work_scope',
-                'name' => trans('reports.fields.work_scope.name'),
-                'alias' => trans('reports.fields.work_scope.alias'),
-                'type' => 'string',
-                'required' => true,
-                'rules' => ['required'],
-            ],
             'is_emergency_line' => [
                 'key' => 'data.attributes.is_emergency_line',
-                'name' => trans('reports.fields.is_emergency_line.name'),
-                'alias' => trans('reports.fields.is_emergency_line.alias'),
+                'name' => __('reports.fields.is_emergency_line.name'),
+                'alias' => __('reports.fields.is_emergency_line.alias'),
                 'type' => 'boolean',
                 'required' => true,
                 'rules' => ['required', 'boolean'],
             ],
             'line_facility_owner' => [
                 'key' => 'data.attributes.line_facility_owner',
-                'name' => trans('reports.fields.line_facility_owner.name'),
-                'alias' => trans('reports.fields.line_facility_owner.alias'),
+                'name' => __('reports.fields.line_facility_owner.name'),
+                'alias' => __('reports.fields.line_facility_owner.alias'),
                 'type' => 'string',
                 'required' => true,
                 'rules' => ['required', 'string'],
             ],
             'emergency_location' => [
                 'key' => 'data.attributes.emergency_location',
-                'name' => trans('reports.fields.emergency_location.name'),
-                'alias' => trans('reports.fields.emergency_location.alias'),
+                'name' => __('reports.fields.emergency_location.name'),
+                'alias' => __('reports.fields.emergency_location.alias'),
                 'type' => 'string',
                 'required' => true,
                 'rules' => ['required', 'string'],
             ],
             'emergency_info' => [
                 'key' => 'data.attributes.emergency_info',
-                'name' => trans('reports.fields.emergency_info.name'),
-                'alias' => trans('reports.fields.emergency_info.alias'),
+                'name' => __('reports.fields.emergency_info.name'),
+                'alias' => __('reports.fields.emergency_info.alias'),
                 'type' => 'string',
                 'required' => false,
                 'rules' => ['nullable', 'string'],
@@ -192,13 +184,13 @@ class Report extends BaseOperation
 
     public function transport()
     {
-        return $this->hasMany(Transport::class);
+        return $this->hasMany(transport::class);
     }
 
-    public function groupedTransport(): Attribute
+    public function groupedtransport(): Attribute
     {
         return Attribute::make(
-            get: fn() => $this->groupAndSumTransport()
+            get: fn() => $this->groupAndSumtransport()
         );
     }
 
@@ -207,12 +199,12 @@ class Report extends BaseOperation
      *
      * @return array
      */
-    protected function groupAndSumTransport(): array
+    protected function groupAndSumtransport(): array
     {
-        $updateTransports = $this->updates->flatMap(fn($update) => $update->transport);
-        $mergedTransports = $this->transport->merge($updateTransports);
+        $updatetransports = $this->updates->flatMap(fn($update) => $update->transport);
+        $mergedtransports = $this->transport->merge($updatetransports);
 
-        return $mergedTransports->groupBy('name')->map(fn($group) => [
+        return $mergedtransports->groupBy('name')->map(fn($group) => [
             'id' => $group->first()->type,
             'name' => $group->first()->name,
             'count' => $group->sum('count'),
