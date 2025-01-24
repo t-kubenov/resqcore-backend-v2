@@ -31,7 +31,7 @@ return [
             'alias' => '',
         ],
         'reported_by' => [
-            'name' => 'Создал донесение',
+            'name' => 'Кто отправил донесение',
             'alias' => '',
         ],
         'report_code' => [
@@ -39,24 +39,24 @@ return [
             'alias' => '',
         ],
         'caller' => [
-            'name' => 'Произвел вызов',
+            'name' => 'Кто произвел вызов',
             'alias' => '',
         ],
         'line_facility_location' => [
             'name' => 'Местоположение объекта',
-            'alias' => 'Место объекта',
+            'alias' => '',
         ],
         'line_facility_owner' => [
-            'name' => 'Владелец объекта',
-            'alias' => 'Владелец объекта',
+            'name' => 'Объект',
+            'alias' => '',
         ],
         'emergency_location' => [
             'name' => 'Место ЧС',
             'alias' => '',
         ],
         'emergency_info' => [
-            'name' => 'Информация о ЧС',
-            'alias' => 'Инфо о ЧС',
+            'name' => 'Данные по аварии',
+            'alias' => '',
         ],
         'call_date' => [
             'name' => 'Дата и время вызова',
@@ -76,15 +76,15 @@ return [
         ],
         'minor_injury_count' => [
             'name' => 'Легких травм',
-            'alias' => 'Легк. травм',
+            'alias' => '',
         ],
         'severe_injury_count' => [
             'name' => 'Тяжелых травм',
-            'alias' => 'Тяж. травм',
+            'alias' => '',
         ],
         'fatal_injury_count' => [
             'name' => 'Смертельных травм',
-            'alias' => 'Смерт. травм',
+            'alias' => '',
         ],
         'evacuated_people_count' => [
             'name' => 'Эвакуировано',
@@ -100,7 +100,7 @@ return [
         ],
         'third_parties_count' => [
             'name' => 'Количество сторонних организаций',
-            'alias' => 'Сторон. орг.',
+            'alias' => 'Сторонних организаций',
         ],
         'branch_worker_count' => [
             'name' => 'Количество работников филиала',
@@ -112,19 +112,19 @@ return [
         ],
         'minor_injury_total' => [
             'name' => 'Всего легких травм',
-            'alias' => 'Всего л. травм',
+            'alias' => '',
         ],
         'severe_injury_total' => [
             'name' => 'Всего тяжелых травм',
-            'alias' => 'Всего т. травм',
+            'alias' => '',
         ],
         'fatal_injury_total' => [
             'name' => 'Всего смертельных травм',
-            'alias' => 'Всего с. травм',
+            'alias' => '',
         ],
         'evacuated_people_total' => [
             'name' => 'Всего эвакуированных',
-            'alias' => 'Всего эвак.',
+            'alias' => '',
         ],
         'provided_medical_total' => [
             'name' => 'Всего оказано мед. помощи',
@@ -132,7 +132,7 @@ return [
         ],
         'client_equipment_total' => [
             'name' => 'Всего иной техники',
-            'alias' => 'Всего иной техн.',
+            'alias' => '',
         ],
         'third_parties_total' => [
             'name' => 'Всего сторонних организаций',
@@ -172,7 +172,7 @@ return [
         ],
         'last_update_created_at' => [
             'name' => 'Дата создания последнего обновления',
-            'alias' => 'Посл. обнов. создано',
+            'alias' => 'Последнее обновление',
         ],
         'transport' => [
             'name' => 'Транспорт',
