@@ -116,18 +116,4 @@ class StoreReportRequest extends FormRequest
             'data.attributes.transport.*.count'                 => ['required', 'integer', 'min:1'],
         ];
     }
-
-
-    /**
-     * Get custom attribute names for validation errors.
-     *
-     * @return array
-     */
-    public function attributes(): array
-    {
-        // Provide user-friendly field names for validation errors
-        return collect(Report::fieldDefinitions())
-            ->mapWithKeys(fn($field) => [$field['key'] => $field['rules']])
-            ->toArray();
-    }
 }
