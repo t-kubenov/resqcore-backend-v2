@@ -43,8 +43,8 @@ class ReportResource extends JsonResource
     public function getModifiedAttributes()
     {
         return [
-            'branch_office' => $this->branch_office->name,
-            'reported_by' => $this->reporter->full_name,
+            'branch_office' => $this->branch_office?->name,
+            'reported_by' => $this->reporter?->full_name,
             'report_code' => $this->report_code,
             'caller' => $this->caller,
             'facility_owner' => $this->line_facility_owner,
