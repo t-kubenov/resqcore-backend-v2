@@ -195,7 +195,7 @@ class Report extends BaseOperation
         return $this->hasMany(Transport::class);
     }
 
-    public function groupedTransport(): Attribute
+    public function transportTotals(): Attribute
     {
         return Attribute::make(
             get: fn() => $this->groupAndSumTransport()

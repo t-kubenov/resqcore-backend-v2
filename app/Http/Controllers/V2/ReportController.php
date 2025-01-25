@@ -4,6 +4,7 @@ namespace App\Http\Controllers\V2;
 
 use App\Http\Requests\V2\FilterReportRequest;
 use App\Http\Requests\V2\StoreReportRequest;
+use App\Http\Resources\V2\ExportCollection;
 use App\Http\Resources\V2\ReportCollection;
 use App\Http\Resources\V2\ReportResource;
 use App\Models\Report;
@@ -67,6 +68,6 @@ class ReportController extends Controller
 
     public function export(FilterReportRequest $request)
     {
-        return $this->index($request);
+        return new ExportCollection($this->reportService->index($request));
     }
 }
