@@ -53,7 +53,7 @@ class ReportResource extends JsonResource
             'third_parties_total' => $this->third_parties_total,
             'other_info' => $this->other_info,
             'is_emergency_line' => $this->is_emergency_line? 'Да': 'По договору',
-            'last_update_created_at' => $this->last_update_created_at->format(config('app.date_format')),
+            'last_update_created_at' => $this->last_update_created_at?->format(config('app.date_format')),
             'branch_worker_count' => $this->branch_worker_count,
             'worker_man_hours' => $this->worker_man_hours,
             'close_date' => $this->close_date?->format(config('app.date_format')),
