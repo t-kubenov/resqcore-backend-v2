@@ -138,6 +138,14 @@ class Report extends BaseOperation
                 'required' => false,
                 'rules' => ['nullable', 'string'],
             ],
+            'transport' => [
+                'key' => 'data.attributes.transport',
+                'name' => __('reports.fields.transport.name'),
+                'alias' => __('reports.fields.transport.alias'),
+                'type' => 'array',
+                'required' => true,
+                'rules' => ['required', 'array', 'min:1'],
+            ],
         ], parent::fieldDefinitions());
 
     }

@@ -148,14 +148,6 @@ abstract class BaseOperation extends Model
                     'before_or_equal:tomorrow',
                 ],
             ],
-            'transport' => [
-                'key' => 'data.attributes.transport',
-                'name' => __('reports.fields.transport.name'),
-                'alias' => __('reports.fields.transport.alias'),
-                'type' => 'array',
-                'required' => true,
-                'rules' => ['required', 'array', 'min:1'],
-            ],
             'transport_id' => [
                 'key' => 'data.attributes.transport.*.id',
                 'name' => __('reports.fields.transport_id.name'),

@@ -34,6 +34,21 @@ class Update extends BaseOperation
         ];
     }
 
+    public static function fieldDefinitions(): array
+    {
+        return array_merge([
+            'transport' => [
+                'key' => 'data.attributes.transport',
+                'name' => __('reports.fields.transport.name'),
+                'alias' => __('reports.fields.transport.alias'),
+                'type' => 'array',
+                'required' => false,
+                'rules' => ['nullable', 'array', 'min:1'],
+            ],
+        ], parent::fieldDefinitions());
+
+    }
+
     public function report()
     {
         return $this->belongsTo(Report::class, 'report_id');
