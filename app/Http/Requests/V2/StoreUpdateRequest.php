@@ -32,6 +32,10 @@ class StoreUpdateRequest extends FormRequest
             unset($attributes['worker_man_hours']);
         }
 
+        if (isset($attributes['transport']) && $attributes['transport'] == []) {
+            unset($attributes['transport']);
+        }
+
 
         $this->merge([
             'data' => [
