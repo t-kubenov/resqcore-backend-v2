@@ -5,7 +5,7 @@ namespace App\Http\Requests\V2;
 use App\Models\BaseOperation;
 use Illuminate\Foundation\Http\FormRequest;
 
-class BaseReportStoreRequest extends FormRequest
+abstract class BaseReportStoreRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -55,10 +55,7 @@ class BaseReportStoreRequest extends FormRequest
      *
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
-    public function rules(): array
-    {
-        return $this->getRules($this->operation);
-    }
+    abstract public function rules(): array;
 
     protected function getRules(BaseOperation $operation){
         return collect($operation::fieldDefinitions())
