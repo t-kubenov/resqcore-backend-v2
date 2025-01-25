@@ -57,6 +57,7 @@ class ReportResource extends JsonResource
             'branch_worker_count' => $this->branch_worker_count,
             'worker_man_hours' => $this->worker_man_hours,
             'close_date' => $this->close_date?->format(config('app.date_format')),
+            'is_closed' => $this->is_closed,
         ];
     }
 
