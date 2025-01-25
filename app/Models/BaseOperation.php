@@ -163,7 +163,7 @@ abstract class BaseOperation extends Model
                 'type' => 'integer',
                 'required' => true,
                 'rules' => ['required', 'integer', 'exists:transport_types,id'],
-                'options' => transportType::all()->select('id', 'name'),
+                'options' => TransportType::all()->select('id', 'name'),
             ],
             'transport_count' => [
                 'key' => 'data.attributes.transport.*.count',

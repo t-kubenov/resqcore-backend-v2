@@ -17,7 +17,6 @@ class ReportResource extends JsonResource
     public function toArray(Request $request)
     {
         return [
-            'highlighted' => $this->getHighlightedColumns(),
             'columns' => $this->getColumns(),
             'data' =>
             [
@@ -29,14 +28,6 @@ class ReportResource extends JsonResource
             ],
             'original' => $this->getAttributes($request),
 
-        ];
-    }
-
-    private function getHighlightedColumns()
-    {
-        return [
-            'report_code',
-            'is_closed',
         ];
     }
 
@@ -70,13 +61,27 @@ class ReportResource extends JsonResource
     }
 
     public function getColumns(){
-        $attributes = array_keys($this->getModifiedAttributes());
+        $highlighted = [
+            'report_code',
+            'is_closed',
+        ];
+        $attributes = array_diff(
+            array_keys($this->getModifiedAttributes()),
+            $highlighted
+        );
 
-        return collect($attributes)->map(fn($attribute) => [
-            'key' => $attribute,
-            'name' => __('reports.fields.' . $attribute . '.name'),
-            'alias' => __('reports.fields.' . $attribute . '.alias'),
-        ])->toArray();
+        return [
+            'highlighted' => collect($highlighted)->map(fn($attribute) => [
+                'key' => $attribute,
+                'name' => __('reports.fields.' . $attribute . '.name'),
+                'alias' => __('reports.fields.' . $attribute . '.alias'),
+            ])->toArray(),
+            'attributes' => collect($attributes)->map(fn($attribute) => [
+                'key' => $attribute,
+                'name' => __('reports.fields.' . $attribute . '.name'),
+                'alias' => __('reports.fields.' . $attribute . '.alias'),
+            ])->toArray(),
+        ];
     }
 
     public function getRelationships()
