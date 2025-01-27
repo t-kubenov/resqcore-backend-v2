@@ -23,11 +23,11 @@ return [
             'alias' => '',
         ],
         'facility_owner_id' => [
-            'name' => 'ID владельца объекта',
+            'name' => 'ID объекта',
             'alias' => '',
         ],
         'facility_owner' => [
-            'name' => 'Владелец объекта',
+            'name' => 'Наименование объекта',
             'alias' => '',
         ],
         'reported_by' => [
@@ -47,7 +47,7 @@ return [
             'alias' => '',
         ],
         'line_facility_owner' => [
-            'name' => 'Объект',
+            'name' => 'Наименование объекта',
             'alias' => '',
         ],
         'emergency_location' => [
