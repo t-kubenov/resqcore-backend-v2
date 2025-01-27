@@ -53,14 +53,4 @@ class Update extends BaseOperation
     {
         return $this->belongsTo(Report::class, 'report_id');
     }
-
-    public function reporter()
-    {
-        return $this->belongsTo(User::class, 'reported_by');
-    }
-
-    public function transport()
-    {
-        return $this->hasMany(Transport::class);
-    }
 }

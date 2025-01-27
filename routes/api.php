@@ -40,6 +40,7 @@ Route::prefix('v2/')->group(function () {
 
             Route::get('/reports', [ReportController::class, 'index'])->name('reports.index');
             Route::get('/reports/{id}', [ReportController::class, 'show'])->name('reports.show');
+            Route::get('/reports/{id}/log', [\App\Http\Controllers\V2\UpdateLogController::class, 'show'])->name('reports.id.log');
             Route::get('/export', [ReportController::class, 'export'])->name('reports.export');
 
             Route::group(['middleware' => ['permission:branch_report_create']], function () {

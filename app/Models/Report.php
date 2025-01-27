@@ -185,16 +185,6 @@ class Report extends BaseOperation
         return $this->belongsTo(BranchOffice::class, 'branch_office_id');
     }
 
-    public function reporter()
-    {
-        return $this->belongsTo(User::class, 'reported_by');
-    }
-
-    public function transport()
-    {
-        return $this->hasMany(Transport::class);
-    }
-
     public function transportTotals(): Attribute
     {
         return Attribute::make(

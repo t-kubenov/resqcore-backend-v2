@@ -23,6 +23,7 @@ abstract class BaseOperation extends Model
         'worker_man_hours', // used to be merged with branch worker count
         'third_parties_count', // ex party_authority other organizations involved
         'close_date', // ex finish_work_date
+        'reported_by'
     ];
 
     protected function casts(): array
@@ -168,4 +169,14 @@ abstract class BaseOperation extends Model
         ];
     }
 
+
+    public function reporter()
+    {
+        return $this->belongsTo(User::class, 'reported_by');
+    }
+
+    public function transport()
+    {
+        return $this->hasMany(Transport::class);
+    }
 }
