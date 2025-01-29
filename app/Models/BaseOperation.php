@@ -59,7 +59,7 @@ abstract class BaseOperation extends Model
                 'alias' => __('reports.fields.minor_injury_count.alias'),
                 'type' => 'integer',
                 'required' => true,
-                'rules' => ['required', 'integer', 'min:0'],
+                'rules' => ['required', 'integer', 'min:0', 'max:10000'],
             ],
             'severe_injury_count' => [
                 'key' => 'data.attributes.severe_injury_count',
@@ -67,7 +67,7 @@ abstract class BaseOperation extends Model
                 'alias' => __('reports.fields.severe_injury_count.alias'),
                 'type' => 'integer',
                 'required' => true,
-                'rules' => ['required', 'integer', 'min:0'],
+                'rules' => ['required', 'integer', 'min:0', 'max:10000'],
             ],
             'fatal_injury_count' => [
                 'key' => 'data.attributes.fatal_injury_count',
@@ -75,7 +75,7 @@ abstract class BaseOperation extends Model
                 'alias' => __('reports.fields.fatal_injury_count.alias'),
                 'type' => 'integer',
                 'required' => true,
-                'rules' => ['required', 'integer', 'min:0'],
+                'rules' => ['required', 'integer', 'min:0', 'max:10000'],
             ],
             'evacuated_people_count' => [
                 'key' => 'data.attributes.evacuated_people_count',
@@ -83,7 +83,7 @@ abstract class BaseOperation extends Model
                 'alias' => __('reports.fields.evacuated_people_count.alias'),
                 'type' => 'integer',
                 'required' => true,
-                'rules' => ['required', 'integer', 'min:0'],
+                'rules' => ['required', 'integer', 'min:0', 'max:10000'],
             ],
             'provided_medical_count' => [
                 'key' => 'data.attributes.provided_medical_count',
@@ -91,7 +91,7 @@ abstract class BaseOperation extends Model
                 'alias' => __('reports.fields.provided_medical_count.alias'),
                 'type' => 'integer',
                 'required' => true,
-                'rules' => ['required', 'integer', 'min:0'],
+                'rules' => ['required', 'integer', 'min:0', 'max:10000'],
             ],
             'client_equipment_count' => [
                 'key' => 'data.attributes.client_equipment_count',
@@ -99,7 +99,7 @@ abstract class BaseOperation extends Model
                 'alias' => __('reports.fields.client_equipment_count.alias'),
                 'type' => 'integer',
                 'required' => true,
-                'rules' => ['required', 'integer', 'min:0'],
+                'rules' => ['required', 'integer', 'min:0', 'max:10000'],
             ],
             'third_parties_count' => [
                 'key' => 'data.attributes.third_parties_count',
@@ -107,7 +107,7 @@ abstract class BaseOperation extends Model
                 'alias' => __('reports.fields.third_parties_count.alias'),
                 'type' => 'integer',
                 'required' => true,
-                'rules' => ['required', 'integer', 'min:0'],
+                'rules' => ['required', 'integer', 'min:0', 'max:10000'],
             ],
             'branch_worker_count' => [
                 'key' => 'data.attributes.branch_worker_count',
@@ -120,6 +120,7 @@ abstract class BaseOperation extends Model
                     'required_with:data.attributes.worker_man_hours,data.attributes.close_date',
                     'integer',
                     'min:0',
+                    'max:10000'
                 ],
             ],
             'worker_man_hours' => [
@@ -133,6 +134,7 @@ abstract class BaseOperation extends Model
                     'required_with:data.attributes.branch_worker_count,data.attributes.close_date',
                     'numeric',
                     'min:0',
+                    'max:1000000'
                 ],
             ],
             'close_date' => [
@@ -164,7 +166,7 @@ abstract class BaseOperation extends Model
                 'alias' => __('reports.fields.transport_count.alias'),
                 'type' => 'integer',
                 'required' => true,
-                'rules' => ['required', 'integer', 'min:1'],
+                'rules' => ['required', 'integer', 'min:1', 'max:10000'],
             ],
         ];
     }
