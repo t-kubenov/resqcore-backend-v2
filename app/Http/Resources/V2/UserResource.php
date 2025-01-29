@@ -29,4 +29,14 @@ class UserResource extends JsonResource
             'token' => $this->when($this->token, $this->token),
         ];
     }
+
+    protected function getAttributes()
+    {
+        $toRemove = ['password', 'remember_token', 'created_at', 'updated_at'];
+
+        $attributes = parent::getAttributes();
+
+        return array_diff_key($attributes, array_flip($toRemove));
+
+    }
 }
