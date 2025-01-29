@@ -14,6 +14,10 @@ class UpdateLogResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        return parent::toArray($request);
+        $log = parent::toArray($request);
+
+        $log['transport'] = new TransportCollection($this['transport']);
+
+        return $log;
     }
 }
