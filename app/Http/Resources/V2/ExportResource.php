@@ -33,7 +33,6 @@ class ExportResource extends JsonResource
                 'worker_man_hours' => $this->worker_man_hours,
                 'branch_office' => $this->branch_office?->name,
                 'transport_totals' => $this->transport_totals,
-//                'transport' => $this->transport,
                 'is_closed' => $this->is_closed,
             ]
         ];

@@ -24,16 +24,18 @@ class ExportCollection extends ReportCollection
     {
         $attributes = [
             'report_code',
+            'call_date',
             'work_start_date',
             'close_date',
-            'facility_owner',
+            'is_emergency_line',
+            'line_facility_owner',
             'emergency_type',
             'emergency_location',
             'branch_worker_count',
             'worker_man_hours',
-            'branch_worker_count',
-            'worker_man_hours',
-            'transport_totals'
+            'branch_office',
+            'transport_totals',
+            'is_closed',
         ];
 
         return
