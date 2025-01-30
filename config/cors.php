@@ -19,21 +19,7 @@ return [
 
     'allowed_methods' => ['*'],
 
-    'allowed_origins' =>
-        function () {
-            if (env('APP_DEBUG')) {
-                return [
-                    'http://resqcore.d:3000',
-                    'http://192.168.1.16:3000',
-                    'http://test.resqcore.kz:8000'
-                ];
-            }
-            else {
-                return [
-                    'https://resqcore.kz',
-                ];
-            }
-    },
+    'allowed_origins' => explode(',', env('ALLOWED_ORIGINS', '')),
 
     'allowed_origins_patterns' => [],
 
