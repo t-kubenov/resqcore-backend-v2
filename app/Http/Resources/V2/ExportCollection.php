@@ -8,6 +8,14 @@ use Illuminate\Http\Resources\Json\ResourceCollection;
 class ExportCollection extends ReportCollection
 {
     /**
+     * The resource that this resource collects.
+     *
+     * @var string
+     */
+    public $collects = ExportResource::class;
+
+
+    /**
      * Generate column definitions for the table.
      *
      * @return array
@@ -34,6 +42,14 @@ class ExportCollection extends ReportCollection
                 'name' => __('reports.fields.' . $attribute . '.name'),
                 'alias' => __('reports.fields.' . $attribute . '.alias'),
             ])->toArray();
+    }
+
+    public function toArray(Request $request): array
+    {
+        return [
+            'columns' => $this->getColumns(),
+            'data' => $this->getCollection(),
+        ];
     }
 
 }

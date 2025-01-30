@@ -26,14 +26,14 @@ class ExportResource extends JsonResource
                 'work_start_date' => $attributes['work_start_date'],
                 'close_date' => $attributes['close_date'],
                 'is_emergency_line' => $this->is_emergency_line,
-                'facility_owner' => $this->facility_owner,
                 'line_facility_owner' => $this->line_facility_owner,
-                'emergency_type' => $this->emergency, // Derive from emergency type
+                'emergency_type' => $this->emergency?->name, // Derive from emergency type
                 'emergency_location' => $this->emergency_location,
                 'branch_worker_count' => $this->branch_worker_count,
                 'worker_man_hours' => $this->worker_man_hours,
-                'branch_office' => $this->branch_office,
-                'transport' => $this->transport,
+                'branch_office' => $this->branch_office?->name,
+                'transport_totals' => $this->transport_totals,
+//                'transport' => $this->transport,
                 'is_closed' => $this->is_closed,
             ]
         ];
