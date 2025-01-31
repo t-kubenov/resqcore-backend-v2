@@ -13,7 +13,7 @@ test('can see reports by id', function () {
     $report = Report::inRandomOrder()->first();
 
     $this->actingAs($this->user)
-        ->get('/api/reports/'.$report->id)
+        ->get(route('reports.show', $report->id))
         ->assertStatus(200)
         ->assertJsonStructure([
             'data' => [
@@ -27,13 +27,22 @@ test('can see reports by id', function () {
                     // etc.
                 ]
             ],
+        ])->assertJsonFragment([
+            'id' => $report->id,
         ]);
+});
+
+
+it('returns 404 for non-existent report', function () {
+    $this->actingAs($this->user)
+        ->getJson(route('reports.show', 9999))
+        ->assertNotFound();
 });
 
 
 test('can access count table endpoint', function () {
     $this->actingAs($this->user)
-        ->get('/api/statistics/count-table')
+        ->get(route('statistics.count-table'))
         ->assertStatus(200)
         ->assertJsonStructure([
             'data' => [
@@ -54,7 +63,7 @@ test('can access count table endpoint', function () {
 
 test('cannot create reports', function () {
     $this->actingAs($this->user)
-        ->post('/api/reports', [])
+        ->post(route('reports.store'), [])
         ->assertStatus(403);
 });
 
@@ -63,6 +72,6 @@ test('cannot create updates', function () {
     $report = Report::where('is_closed', false)->inRandomOrder()->first();
 
     $this->actingAs($this->user)
-        ->post('/api/reports/update/'.$report->id, [])
+        ->post(route('updates.store', $report->id), [])
         ->assertStatus(403);
 });

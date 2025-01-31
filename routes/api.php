@@ -13,12 +13,12 @@ use Illuminate\Support\Facades\Route;
 Route::prefix('v2/')->group(function () {
     Route::middleware('auth:sanctum')->group(function () {
 
-        Route::get('/user', [AuthController::class, 'user']);
-        Route::get('/image', [ImageController::class, 'show']);
-        Route::post('/change-password', [AuthController::class, 'changePassword']);
-        Route::post('/upload-avatar', [AuthController::class, 'uploadAvatar']);
-        Route::post('/logout', [AuthController::class, 'logout']);
-        Route::post('/send-feedback', [EmailController::class, 'send']);
+        Route::get('/user', [AuthController::class, 'user'])->name('profile.show');
+        Route::get('/image', [ImageController::class, 'show'])->name('image.show');
+        Route::post('/change-password', [AuthController::class, 'changePassword'])->name('profile.change-password');
+        Route::post('/upload-avatar', [AuthController::class, 'uploadAvatar'])->name('profile.upload-avatar');
+        Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+        Route::post('/send-feedback', [EmailController::class, 'send'])->name('send-feedback');
         Route::get('/companies', [CompanyController::class, 'index'])->name('companies.index');
 
         Route::prefix('auxiliary')->name('auxiliary.')->controller(AuxiliaryDataController::class)->group(function () {
@@ -33,7 +33,7 @@ Route::prefix('v2/')->group(function () {
         });
 
         Route::group(['middleware' => ['permission:user_register']], function () {
-            Route::post('/register', [AuthController::class, 'register']);
+            Route::post('/register', [AuthController::class, 'register'])->name('register');
         });
 
         Route::group(['middleware' => ['permission:branch_report_view']], function () {
@@ -70,5 +70,5 @@ Route::prefix('v2/')->group(function () {
 
     });
 
-    Route::post('/login', [AuthController::class, 'login']);
+    Route::post('/login', [AuthController::class, 'login'])->name('login');
 });

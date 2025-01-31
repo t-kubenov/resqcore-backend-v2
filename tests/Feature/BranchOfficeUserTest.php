@@ -1,6 +1,5 @@
 <?php
 
-
 use App\Models\Report;
 use App\Models\Transport;
 use App\Models\Update;
@@ -15,8 +14,8 @@ beforeEach(function () {
 // todo: verify the accuracy of the data
 
 test('can view all reports of own branch', function () {
-    $response = $this->actingAs($this->user)
-        ->get('/api/reports')
+    $this->actingAs($this->user)
+        ->get(route('reports.index'))
         ->assertStatus(200)
         ->assertJsonStructure([
             'data' => [
@@ -30,14 +29,10 @@ test('can view all reports of own branch', function () {
                     ]
                 ],
             ],
+        ])
+        ->assertJsonFragment([
+            'total' => Report::where('branch_office_id', $this->user->branch_id)->count(),
         ]);
-
-    expect($response->json('data'))->each(function ($report) {
-        $attributes = $report->value['attributes'];
-        expect($attributes['branch_office']['id'])->toBe($this->user->branch_id);
-    });
-
-
 });
 
 
@@ -55,8 +50,8 @@ test('can view all reports with filters', function () {
 
     $date_end = fake()->dateTimeBetween('-5 years', 'now')->format('Y-m-d H:i:s');
 
-    $response = $this->actingAs($this->user)
-        ->get('/api/reports?'.http_build_query([
+    $this->actingAs($this->user)
+        ->get(route('reports.index').'?'.http_build_query([
             'emergency_type' => $emergency_type,
             'is_emergency_line' => $is_emergency_line,
             'date_start' => $date_start,
@@ -75,38 +70,29 @@ test('can view all reports with filters', function () {
                     ]
                 ],
             ],
+        ])
+        ->assertJsonFragment([
+            'total' => Report::where('branch_office_id', $this->user->branch_id)
+                ->whereIn('emergency_type', $emergency_type)
+                ->where('is_emergency_line', $is_emergency_line)
+                ->whereBetween('call_date', [$date_start, $date_end])
+                ->count(),
         ]);
-
-    expect($response->json('data'))->each(function ($report)
-    use ($emergency_type, $is_emergency_line, $date_start, $date_end) {
-        // Extract the raw value from the Pest expectation
-        $attributes = $report->value['attributes'];
-
-        // Ensure call_date is valid and parse it
-        $call_date = Carbon::parse($attributes['call_date']);
-
-        expect($attributes['emergency_type']['id'])->toBeIn($emergency_type)
-            ->and($attributes['is_emergency_line'])->toBe($is_emergency_line)
-            ->and($call_date->format('Y-m-d H:i:s'))
-                ->toBeGreaterThanOrEqual($date_start)
-                ->toBeLessThanOrEqual($date_end);
-    });
-
 });
 
 
 test('can view single report of own branch', function () {
-    $report = \App\Models\Report::where('branch_office_id', $this->user->branch_id)->inRandomOrder()->first();
+    $report = Report::where('branch_office_id', $this->user->branch_id)->inRandomOrder()->first();
 
     $this->actingAs($this->user)
-        ->get('/api/reports/'.$report->id)
+        ->get(route('reports.show', $report->id))
         ->assertStatus(200)
         ->assertJsonStructure([
             'data' => [
                 'id',
                 'type',
                 'attributes' => [
-                    'branch_office_id',
+                    'branch_office',
                     'caller',
                     // etc.
                 ]
@@ -114,18 +100,18 @@ test('can view single report of own branch', function () {
         ])
         ->assertJsonFragment([
             'id' => $report->id,
+            'branch_office_id' => $this->user->branch_id,
         ]);
 
 });
 
 
 test('cannot view single report of other branches', function () {
-    $report = \App\Models\Report::where('branch_office_id', '!=', $this->user->branch_id)->inRandomOrder()->first();
+    $report = Report::where('branch_office_id', '!=', $this->user->branch_id)->inRandomOrder()->first();
 
     $this->actingAs($this->user)
-        ->get('/api/reports/'.$report->id)
+        ->get(route('reports.show', $report->id))
         ->assertStatus(403);
-
 });
 
 
@@ -145,7 +131,7 @@ test('can create reports', function () {
     ]);
 
     $response = $this->actingAs($this->user)
-        ->postJson('/api/reports', [
+        ->postJson(route('reports.store'), [
                 "data" => [
                     "type" => "report",
                     "attributes" => $attributes,
@@ -157,7 +143,6 @@ test('can create reports', function () {
                 'id',
                 'type',
                 'attributes' => [
-                    'branch_office_id',
                     'caller',
                     // etc.
                 ]
@@ -190,13 +175,13 @@ test('can create updates', function () {
 
     $update = Update::factory()->make()->toArray();
 
-    $response = $this->actingAs($this->user)
-        ->postJson('/api/reports/update/'.$report->id, [
-                "data" => [
-                    "type" => "update",
-                    "attributes" => $update,
-                ]
-            ])
+    $this->actingAs($this->user)
+        ->postJson(route('updates.store', $report->id), [
+            "data" => [
+                "type" => "update",
+                "attributes" => $update,
+            ]
+        ])
         ->assertStatus(201)
         ->assertJsonStructure([
             'data' => [
@@ -215,12 +200,9 @@ test('can create updates', function () {
         'report_id' => $report->id,
         'reported_by' => $this->user->id,
     ]));
-
-    // verify that totals are adding up in the main report - compare reports before and after update
-
-
 });
 
+//todo:create tests for report closing updates and total sums
 
 test('cannot create updates for closed reports', function () {
     $report = Report::where([
@@ -231,7 +213,7 @@ test('cannot create updates for closed reports', function () {
     $update = Update::factory()->make()->toArray();
 
     $this->actingAs($this->user)
-        ->postJson('/api/reports/update/'.$report->id, [
+        ->postJson(route('updates.store', $report->id), [
                 "data" => [
                     "type" => "update",
                     "attributes" => $update,
@@ -251,7 +233,7 @@ test('cannot create updates for reports from other branches', function () {
     $update = Update::factory()->make()->toArray();
 
     $this->actingAs($this->user)
-        ->postJson('/api/reports/update/'.$report->id, [
+        ->postJson(route('updates.store', $report->id), [
                 "data" => [
                     "type" => "update",
                     "attributes" => $update,
@@ -263,7 +245,7 @@ test('cannot create updates for reports from other branches', function () {
 
 test('can access count table with own branch', function () {
     $response = $this->actingAs($this->user)
-        ->get('/api/statistics/count-table')
+        ->get(route('statistics.count-table'))
         ->assertStatus(200)
         ->assertJsonStructure([
             'data' => [

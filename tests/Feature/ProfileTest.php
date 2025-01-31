@@ -14,7 +14,7 @@ afterEach(function () {
 
 test('can change own password', function () {
     $this->actingAs($this->user)
-        ->postJson('/api/change-password', [
+        ->postJson(route('profile.change-password'), [
             'old_password' => 'password',
             'new_password' => 'n3w-p4sswoRd!',
             'new_password_confirmation' => 'n3w-p4sswoRd!',
@@ -25,7 +25,7 @@ test('can change own password', function () {
 
 test('password difficulty', function () {
     $this->actingAs($this->user)
-        ->postJson('/api/change-password', [
+        ->postJson(route('profile.change-password'), [
             'old_password' => 'password',
             'new_password' => 'password',
             'new_password_confirmation' => 'password',
@@ -36,7 +36,7 @@ test('password difficulty', function () {
 
 test('wrong old password', function () {
     $this->actingAs($this->user)
-        ->postJson('/api/change-password', [
+        ->postJson(route('profile.change-password'), [
             'old_password' => 'wrong-password',
             'new_password' => 'n3w-p4sswoRd!',
             'new_password_confirmation' => 'n3w-p4sswoRd!',
@@ -47,7 +47,7 @@ test('wrong old password', function () {
 
 test('passwords do not match', function () {
     $this->actingAs($this->user)
-        ->postJson('/api/change-password', [
+        ->postJson(route('profile.change-password'), [
             'old_password' => 'password',
             'new_password' => 'n3w-p4sswoRd!',
             'new_password_confirmation' => 'n3w-p4sswoRd!!',
@@ -58,7 +58,7 @@ test('passwords do not match', function () {
 
 test('upload avatar', function () {
     $this->actingAs($this->user)
-        ->postJson('/api/upload-avatar', [
+        ->postJson(route('profile.upload-avatar'), [
             'avatar' => UploadedFile::fake()->image('avatar.jpg'),
         ])
         ->assertStatus(200);
@@ -71,7 +71,7 @@ test('upload avatar', function () {
 
 test('upload avatar failure', function () {
     $this->actingAs($this->user)
-        ->postJson('/api/upload-avatar', [
+        ->postJson(route('profile.upload-avatar'), [
             'avatar' => UploadedFile::fake()->image('avatar.bmp'),
         ])
         ->assertStatus(422);
@@ -82,13 +82,13 @@ test('upload avatar failure', function () {
 
 test('view images', function () {
     $this->actingAs($this->user)
-        ->postJson('/api/upload-avatar', [
+        ->postJson(route('profile.upload-avatar'), [
             'avatar' => UploadedFile::fake()->image('avatar.jpg'),
         ]);
 
     $this->assertNotNull($this->user->avatar);
 
     $this->actingAs($this->user)
-        ->get('/api/image?path=' . $this->user->avatar)
+        ->get(route('image.show').'?path='.$this->user->avatar)
         ->assertStatus(200);
 });
