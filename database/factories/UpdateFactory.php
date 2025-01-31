@@ -58,11 +58,7 @@ class UpdateFactory extends Factory
 
     public function isClosingUpdate(): static
     {
-        return $this->state(fn (array $attributes) => [
-            'branch_worker_count' => $this->faker->numberBetween(1, 15),
-            'worker_man_hours' => $this->faker->randomFloat(2, 1, 40),
-            'close_date' => Carbon::parse(Report::find($attributes['report_id'])->work_start_date)->addMinutes(rand(1, 60 * 24 * 3)),
-        ])->afterCreating(function (Update $update) {
+        return $this->isClosingUpdateTemplate()->afterCreating(function (Update $update) {
             $update->report->update([
                 'is_closed' => true,
                 'branch_worker_count' => $update->branch_worker_count,
@@ -70,5 +66,14 @@ class UpdateFactory extends Factory
                 'close_date' => $update->close_date,
             ]);
         });
+    }
+
+    public function isClosingUpdateTemplate(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'branch_worker_count' => $this->faker->numberBetween(1, 15),
+            'worker_man_hours' => $this->faker->randomFloat(2, 1, 40),
+            'close_date' => Carbon::parse(Report::find($attributes['report_id'])->work_start_date)->addMinutes(rand(1, 60 * 24 * 3)),
+        ]);
     }
 }

@@ -202,7 +202,65 @@ test('can create updates', function () {
     ]));
 });
 
-//todo:create tests for report closing updates and total sums
+
+test('report closing updates', function (){
+
+    $report = Report::where([
+        'branch_office_id' => $this->user->branch_id,
+        'is_closed' => false,
+    ])->inRandomOrder()->first();
+
+    $update = Update::factory()->isClosingUpdateTemplate()->make()->toArray();
+    $update['close_date'] = $report->work_start_date->addDays(1)->format('Y-m-d H:i:s');
+
+    $this->actingAs($this->user)
+        ->postJson(route('updates.store', $report->id), [
+            "data" => [
+                "type" => "update",
+                "attributes" => $update,
+            ]
+        ])->assertStatus(201);
+    ;
+
+    $this->assertDatabaseHas('reports', [
+            'id' => $report->id,
+            'is_closed' => true,
+            'branch_worker_count' => $update['branch_worker_count'],
+            'worker_man_hours' => $update['worker_man_hours'],
+            'close_date' => $update['close_date'],
+        ]);
+});
+
+
+test('report update sums', function(){
+    $report = Report::where([
+        'branch_office_id' => $this->user->branch_id,
+        'is_closed' => false,
+    ])->inRandomOrder()->first();
+
+    $update = Update::factory()->make()->toArray();
+
+    $this->actingAs($this->user)
+        ->postJson(route('updates.store', $report->id), [
+            "data" => [
+                "type" => "update",
+                "attributes" => $update,
+            ]
+        ])
+        ->assertStatus(201);
+
+    $this->assertDatabaseHas('reports', [
+        'id' => $report->id,
+        'minor_injury_total' => $report->minor_injury_total + $update['minor_injury_count'],
+        'severe_injury_total' => $report->severe_injury_total + $update['severe_injury_count'],
+        'fatal_injury_total' => $report->fatal_injury_total + $update['fatal_injury_count'],
+        'evacuated_people_total' => $report->evacuated_people_total + $update['evacuated_people_count'],
+        'provided_medical_total' => $report->provided_medical_total + $update['provided_medical_count'],
+        'client_equipment_total' => $report->client_equipment_total + $update['client_equipment_count'],
+        'third_parties_total' => $report->third_parties_total + $update['third_parties_count'],
+    ]);
+});
+
 
 test('cannot create updates for closed reports', function () {
     $report = Report::where([
