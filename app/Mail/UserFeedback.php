@@ -30,7 +30,7 @@ class UserFeedback extends Mailable implements ShouldQueue
     public function envelope(): Envelope
     {
         return new Envelope(
-            from: new Address('tk@resq.kz', 'ResQ'),
+            from: new Address(config('mail.from.address'), 'ResQ'),
             subject: 'ResQ Core – Запрос на техподдержку от ' . $this->details['name'],
         );
     }
