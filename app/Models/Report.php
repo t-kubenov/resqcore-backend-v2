@@ -99,7 +99,7 @@ class Report extends BaseOperation
                 'alias' => __('reports.fields.emergency_type.alias'),
                 'type' => 'integer',
                 'rules' => ['required', 'integer', 'exists:emergency_types,id'],
-                'options' => EmergencyType::all()->select('id', 'name'),
+                'options' => route('auxiliary.emergency-types'),
             ],
             'is_emergency_line' => [
                 'key' => 'data.attributes.is_emergency_line',
