@@ -2,11 +2,9 @@
 
 namespace App\Http\Controllers\V2;
 
-use App\Http\Resources\V2\UpdateLogCollection;
-use App\Http\Resources\V2\UpdateLogResource;
+use App\Http\Resources\V2\Update\UpdateLogCollection;
+use App\Http\Services\V2\UpdateLogService;
 use App\Models\Report;
-use App\Services\V2\UpdateLogService;
-use Illuminate\Http\Request;
 
 class UpdateLogController
 {

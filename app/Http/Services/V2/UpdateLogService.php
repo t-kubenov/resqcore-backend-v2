@@ -1,8 +1,7 @@
 <?php
 
-namespace App\Services\V2;
+namespace App\Http\Services\V2;
 
-use App\Models\BaseOperation;
 use App\Models\Report;
 use App\Models\Update;
 use Illuminate\Database\Eloquent\Collection;

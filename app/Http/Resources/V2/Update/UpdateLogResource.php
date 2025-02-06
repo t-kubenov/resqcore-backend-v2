@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Resources\V2;
+namespace App\Http\Resources\V2\Update;
 
+use App\Http\Resources\V2\TransportCollection;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 

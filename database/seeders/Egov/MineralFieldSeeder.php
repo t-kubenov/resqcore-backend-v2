@@ -2,8 +2,8 @@
 
 namespace Database\Seeders\Egov;
 
+use App\Http\Services\V2\ApiDataService;
 use App\Models\Egov\MineralField;
-use App\Services\V2\ApiDataService;
 use Illuminate\Database\Seeder;
 
 class MineralFieldSeeder extends Seeder
