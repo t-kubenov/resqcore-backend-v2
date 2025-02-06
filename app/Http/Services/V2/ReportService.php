@@ -1,8 +1,7 @@
 <?php
 
-namespace App\Services\V2;
+namespace App\Http\Services\V2;
 
-use App\Http\Requests\V2\FilterReportRequest;
 use App\Models\Report;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;

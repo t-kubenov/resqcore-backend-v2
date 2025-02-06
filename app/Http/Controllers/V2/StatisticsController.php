@@ -3,11 +3,10 @@
 namespace App\Http\Controllers\V2;
 
 use App\Http\Requests\V2\FilterReportRequest;
+use App\Http\Services\V2\ReportService;
 use App\Models\Report;
-use App\Services\V2\ReportService;
 use App\Traits\Cacheable;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Cache;
 
 class StatisticsController extends Controller
 {

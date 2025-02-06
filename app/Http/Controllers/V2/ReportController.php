@@ -4,12 +4,11 @@ namespace App\Http\Controllers\V2;
 
 use App\Http\Requests\V2\FilterReportRequest;
 use App\Http\Requests\V2\StoreReportRequest;
-use App\Http\Resources\V2\ExportCollection;
-use App\Http\Resources\V2\ReportCollection;
-use App\Http\Resources\V2\ReportResource;
+use App\Http\Resources\V2\Report\ExportCollection;
+use App\Http\Resources\V2\Report\ReportCollection;
+use App\Http\Resources\V2\Report\ReportResource;
+use App\Http\Services\V2\ReportService;
 use App\Models\Report;
-use App\Services\V2\ReportService;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 

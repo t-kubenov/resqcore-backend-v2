@@ -1,9 +1,8 @@
 <?php
 
-namespace App\Http\Resources\V2;
+namespace App\Http\Resources\V2\Report;
 
 use Illuminate\Http\Request;
-use Illuminate\Http\Resources\Json\ResourceCollection;
 
 class ExportCollection extends ReportCollection
 {

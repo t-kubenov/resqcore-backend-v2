@@ -60,7 +60,6 @@ class Report extends BaseOperation
                 'name' => __('reports.fields.branch_office_id.name'),
                 'alias' => __('reports.fields.branch_office_id.alias'),
                 'type' => 'integer',
-                'required' => false,
                 'rules' => ['sometimes', 'integer', 'exists:branch_offices,id'],
             ],
             'caller' => [
@@ -68,7 +67,6 @@ class Report extends BaseOperation
                 'name' => __('reports.fields.caller.name'),
                 'alias' => __('reports.fields.caller.alias'),
                 'type' => 'string',
-                'required' => true,
                 'rules' => ['required'],
             ],
             'call_date' => [
@@ -76,7 +74,6 @@ class Report extends BaseOperation
                 'name' => __('reports.fields.call_date.name'),
                 'alias' => __('reports.fields.call_date.alias'),
                 'type' => 'date',
-                'required' => true,
                 'rules' => [
                     'required',
                     'date',
@@ -89,7 +86,6 @@ class Report extends BaseOperation
                 'name' => __('reports.fields.work_start_date.name'),
                 'alias' => __('reports.fields.work_start_date.alias'),
                 'type' => 'date',
-                'required' => true,
                 'rules' => [
                     'required',
                     'date',
@@ -102,7 +98,6 @@ class Report extends BaseOperation
                 'name' => __('reports.fields.emergency_type.name'),
                 'alias' => __('reports.fields.emergency_type.alias'),
                 'type' => 'integer',
-                'required' => true,
                 'rules' => ['required', 'integer', 'exists:emergency_types,id'],
                 'options' => EmergencyType::all()->select('id', 'name'),
             ],
@@ -111,7 +106,6 @@ class Report extends BaseOperation
                 'name' => __('reports.fields.is_emergency_line.name'),
                 'alias' => __('reports.fields.is_emergency_line.alias'),
                 'type' => 'boolean',
-                'required' => true,
                 'rules' => ['required', 'boolean'],
             ],
             'line_facility_owner' => [
@@ -119,7 +113,6 @@ class Report extends BaseOperation
                 'name' => __('reports.fields.line_facility_owner.name'),
                 'alias' => __('reports.fields.line_facility_owner.alias'),
                 'type' => 'string',
-                'required' => true,
                 'rules' => ['required', 'string'],
             ],
             'emergency_location' => [
@@ -127,7 +120,6 @@ class Report extends BaseOperation
                 'name' => __('reports.fields.emergency_location.name'),
                 'alias' => __('reports.fields.emergency_location.alias'),
                 'type' => 'string',
-                'required' => true,
                 'rules' => ['required', 'string'],
             ],
             'emergency_info' => [
@@ -135,7 +127,6 @@ class Report extends BaseOperation
                 'name' => __('reports.fields.emergency_info.name'),
                 'alias' => __('reports.fields.emergency_info.alias'),
                 'type' => 'string',
-                'required' => false,
                 'rules' => ['nullable', 'string'],
             ],
             'transport' => [
@@ -143,7 +134,6 @@ class Report extends BaseOperation
                 'name' => __('reports.fields.transport.name'),
                 'alias' => __('reports.fields.transport.alias'),
                 'type' => 'array',
-                'required' => true,
                 'rules' => ['required', 'array', 'min:1'],
             ],
         ], parent::fieldDefinitions());

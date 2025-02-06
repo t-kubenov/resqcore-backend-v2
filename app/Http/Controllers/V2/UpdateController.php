@@ -3,10 +3,10 @@
 namespace App\Http\Controllers\V2;
 
 use App\Http\Requests\V2\StoreUpdateRequest;
-use App\Http\Resources\V2\UpdateResource;
+use App\Http\Resources\V2\Update\UpdateResource;
+use App\Http\Services\V2\UpdateService;
 use App\Models\Report;
 use App\Models\Update;
-use App\Services\V2\UpdateService;
 use Illuminate\Support\Facades\Auth;
 
 class UpdateController extends Controller

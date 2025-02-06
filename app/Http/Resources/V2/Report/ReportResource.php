@@ -1,7 +1,12 @@
 <?php
 
-namespace App\Http\Resources\V2;
+namespace App\Http\Resources\V2\Report;
 
+use App\Http\Resources\V2\GenericRelationshipResource;
+use App\Http\Resources\V2\TransportCollection;
+use App\Http\Resources\V2\TransportResource;
+use App\Http\Resources\V2\Update\UpdateCollection;
+use App\Http\Resources\V2\UserResource;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
