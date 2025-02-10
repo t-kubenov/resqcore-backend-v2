@@ -10,7 +10,7 @@ use App\Http\Controllers\V2\StatisticsController;
 use App\Http\Controllers\V2\UpdateController;
 use Illuminate\Support\Facades\Route;
 
-Route::prefix('v2/')->group(function () {
+Route::middleware('throttle:global')->prefix('v2/')->group(function () {
     Route::middleware('auth:sanctum')->group(function () {
 
         Route::get('/user', [AuthController::class, 'user'])->name('profile.show');
@@ -54,22 +54,25 @@ Route::prefix('v2/')->group(function () {
 
 
             // Statistics Routes
-            Route::prefix('statistics')->name('statistics.')->controller(StatisticsController::class)->group(function () {
-                Route::get('/count-table/', 'getCountTable')->name('count-table');
-                Route::get('/card-statistics', 'getCardStatistics')->name('card-statistics');
-                Route::get('/emergency-types-distribution', 'getEmergencyTypesDistribution')->name('emergency-types-distribution');
-                Route::get('/emergencies-per-branch-office', 'getEmergenciesPerBranchOffice')->name('emergencies-per-branch-office');
-                Route::get('/injury-counts-per-emergency-type', 'getInjuryCountsPerEmergencyType')->name('injury-counts-per-emergency-type');
-                Route::get('/evacuated-people-medical-aid', 'getEvacuatedPeopleMedicalAid')->name('evacuated-people-medical-aid');
-                Route::get('/response-time-per-emergency-type', 'getResponseTimePerEmergencyType')->name('response-time-per-emergency-type');
-                Route::get('/worker-man-hours-per-emergency', 'getWorkerManHoursPerEmergency')->name('worker-man-hours-per-emergency');
-                Route::get('/total-injuries-impact-over-time', 'getTotalInjuriesImpactOverTime')->name('total-injuries-impact-over-time');
-                Route::get('/transport-usage', 'getTransportUsage')->name('transport-usage');
+            Route::prefix('statistics')
+                ->name('statistics.')
+                ->controller(StatisticsController::class)
+                ->group(function () {
+                    Route::get('/count-table/', 'getCountTable')->name('count-table');
+                    Route::get('/card-statistics', 'getCardStatistics')->name('card-statistics');
+                    Route::get('/emergency-types-distribution', 'getEmergencyTypesDistribution')->name('emergency-types-distribution');
+                    Route::get('/emergencies-per-branch-office', 'getEmergenciesPerBranchOffice')->name('emergencies-per-branch-office');
+                    Route::get('/injury-counts-per-emergency-type', 'getInjuryCountsPerEmergencyType')->name('injury-counts-per-emergency-type');
+                    Route::get('/evacuated-people-medical-aid', 'getEvacuatedPeopleMedicalAid')->name('evacuated-people-medical-aid');
+                    Route::get('/response-time-per-emergency-type', 'getResponseTimePerEmergencyType')->name('response-time-per-emergency-type');
+                    Route::get('/worker-man-hours-per-emergency', 'getWorkerManHoursPerEmergency')->name('worker-man-hours-per-emergency');
+                    Route::get('/total-injuries-impact-over-time', 'getTotalInjuriesImpactOverTime')->name('total-injuries-impact-over-time');
+                    Route::get('/transport-usage', 'getTransportUsage')->name('transport-usage');
             });
 
         });
 
     });
 
-    Route::post('/login', [AuthController::class, 'login'])->name('login');
+    Route::post('/login', [AuthController::class, 'login'])->middleware('throttle:auth')->name('login');
 });
