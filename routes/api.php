@@ -10,7 +10,7 @@ use App\Http\Controllers\V2\StatisticsController;
 use App\Http\Controllers\V2\UpdateController;
 use Illuminate\Support\Facades\Route;
 
-Route::middleware('throttle:global')->prefix('v2/')->group(function () {
+Route::prefix('v2/')->group(function () {
     Route::middleware('auth:sanctum')->group(function () {
 
         Route::get('/user', [AuthController::class, 'user'])->name('profile.show');
