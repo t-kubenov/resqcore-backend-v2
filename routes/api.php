@@ -26,6 +26,7 @@ Route::prefix('v2/')->group(function () {
             Route::get('/update-fields', 'getUpdateFields')->name('update-fields');
             Route::get('/transport-types', 'getTransportTypes')->name('transport-types');
             Route::get('/emergency-types', 'getEmergencyTypes')->name('emergency-types');
+            Route::get('/departure-types', 'getDepartureTypes')->name('departure-types');
             Route::get('/branch-offices', 'getBranchOffices')->name('branch-offices');
             Route::get('/mineral-fields', 'getMineralFields')->name('mineral-fields');
             Route::get('/oil-fields', 'getOilFields')->name('oil-fields');

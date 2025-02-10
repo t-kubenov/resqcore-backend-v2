@@ -14,6 +14,11 @@ use Illuminate\Http\JsonResponse;
 
 class AuxiliaryDataController extends Controller
 {
+    public function getDepartureTypes(): JsonResponse
+    {
+        return response()->json(['data' => Report::departureTypes()]);
+    }
+
     public function getReportFields(): JsonResponse
     {
         return response()->json(['data' => Report::fieldDefinitions()]);

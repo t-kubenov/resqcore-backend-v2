@@ -107,6 +107,7 @@ class Report extends BaseOperation
                 'alias' => __('reports.fields.is_emergency_line.alias'),
                 'type' => 'dropdown',
                 'rules' => ['required', 'boolean'],
+                'options' => route('auxiliary.departure-types'),
             ],
             'line_facility_owner' => [
                 'key' => 'data.attributes.line_facility_owner',
@@ -180,6 +181,20 @@ class Report extends BaseOperation
         return Attribute::make(
             get: fn() => $this->groupAndSumTransport()
         );
+    }
+
+    public static function departureTypes(): array
+    {
+        return [
+            [
+                'id' => 'true',
+                'name' => __('reports.emergency-line.true'),
+            ],
+            [
+                'id' => 'false',
+                'name' => __('reports.emergency-line.false'),
+            ]
+        ];
     }
 
     /**
