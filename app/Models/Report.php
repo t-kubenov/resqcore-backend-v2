@@ -141,6 +141,68 @@ class Report extends BaseOperation
 
     }
 
+    public static function filters(): array
+    {
+        return [
+            [
+                'key' => 'emergency_type',
+                'name' => __('reports.fields.emergency_type.name'),
+                'rules' => ['sometimes', 'array', 'min:1'],
+                'type' => 'multiselect',
+                'options' => route('auxiliary.emergency-types'),
+            ],
+            [
+                'key' => 'branch_office_id',
+                'name' => __('reports.fields.branch_office_id.name'),
+                'rules' => ['sometimes', 'array', 'min:1'],
+                'type' => 'multiselect',
+                'options' => route('auxiliary.branch-offices'),
+                'dont_display_to' => ['branch_office_employee'],
+            ],
+            [
+                'key' => 'is_emergency_line',
+                'name' => __('reports.fields.is_emergency_line.name'),
+                'rules' => ['sometimes', 'boolean'],
+                'type' => 'dropdown',
+                'options' => route('auxiliary.departure-types'),
+            ],
+            [
+                'key' => 'date_start',
+                'name' => 'Начало периода',
+                'rules' => ['sometimes', 'date'],
+                'type' => 'date',
+            ],
+            [
+                'key' => 'date_end',
+                'name' => 'Конец периода',
+                'rules' => ['sometimes', 'date'],
+                'type' => 'date',
+            ],
+            [
+                'key' => 'search',
+                'name' => 'Поиск',
+                'rules' => ['sometimes', 'string', 'max:255'],
+                'type' => 'text',
+            ],
+            [
+                'key' => 'is_closed',
+                'name' => __('reports.fields.is_closed.name'),
+                'rules' => ['sometimes', 'boolean'],
+                'type' => 'dropdown',
+                'options' => [
+                    [
+                        'id' => 'true',
+                        'name' => 'Да',
+                    ],
+                    [
+                        'id' => 'false',
+                        'name' => 'Нет',
+                    ]
+                ]
+            ],
+        ];
+    }
+
     protected function casts(): array
     {
         return [

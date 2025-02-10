@@ -24,6 +24,7 @@ Route::prefix('v2/')->group(function () {
         Route::prefix('auxiliary')->name('auxiliary.')->controller(AuxiliaryDataController::class)->group(function () {
             Route::get('/report-fields', 'getReportFields')->name('report-fields');
             Route::get('/update-fields', 'getUpdateFields')->name('update-fields');
+            Route::get('/report-filters', 'getReportFilters')->name('report-filters');
             Route::get('/transport-types', 'getTransportTypes')->name('transport-types');
             Route::get('/emergency-types', 'getEmergencyTypes')->name('emergency-types');
             Route::get('/departure-types', 'getDepartureTypes')->name('departure-types');
