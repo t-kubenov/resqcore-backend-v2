@@ -41,7 +41,7 @@ class Update extends BaseOperation
                 'key' => 'data.attributes.transport',
                 'name' => __('reports.fields.transport.name'),
                 'alias' => __('reports.fields.transport.alias'),
-                'type' => 'array',
+                'type' => 'multiselect',
                 'required' => false,
                 'rules' => ['nullable', 'array', 'min:1'],
             ],
