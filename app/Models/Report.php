@@ -47,6 +47,13 @@ class Report extends BaseOperation
     public static function fieldDefinitions(): array
     {
         return array_merge([
+            'branch_worker_count' => [
+                'key' => 'data.attributes.branch_worker_count',
+                'name' => __('reports.fields.branch_worker_count.name'),
+                'alias' => __('reports.fields.branch_worker_count.alias'),
+                'type' => 'number',
+                'rules' => ['required', 'integer', 'min:1', 'max:10000'],
+            ],
             'branch_office_id' => [
                 'key' => 'data.attributes.branch_office_id',
                 'name' => __('reports.fields.branch_office_id.name'),

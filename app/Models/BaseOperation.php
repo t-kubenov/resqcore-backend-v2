@@ -110,14 +110,6 @@ abstract class BaseOperation extends Model
                 'required' => true,
                 'rules' => ['required', 'integer', 'min:0', 'max:10000'],
             ],
-            'branch_worker_count' => [
-                'key' => 'data.attributes.branch_worker_count',
-                'name' => __('reports.fields.branch_worker_count.name'),
-                'alias' => __('reports.fields.branch_worker_count.alias'),
-                'type' => 'number',
-                'required' => false,
-                'rules' => ['required', 'integer', 'min:0', 'max:10000'],
-            ],
             'worker_man_hours' => [
                 'key' => 'data.attributes.worker_man_hours',
                 'name' => __('reports.fields.worker_man_hours.name'),
