@@ -10,22 +10,13 @@ class Update extends BaseOperation
 {
     use HasFactory;
 
-    protected $fillable = [
-        'report_id',
-        'minor_injury_count',
-        'severe_injury_count',
-        'fatal_injury_count',
-        'evacuated_people_count',
-        'provided_medical_count',
-        'work_scope',
-        'situation_during_filing',
-        'client_equipment_count',
-        'third_parties_count',
-        'branch_worker_count',
-        'worker_man_hours',
-        'close_date',
-        'reported_by'
-    ];
+    public function __construct(array $attributes = []){
+        parent::__construct($attributes);
+
+        $this->mergeFillable([
+            'report_id',
+        ]);
+    }
 
     protected function casts(): array
     {

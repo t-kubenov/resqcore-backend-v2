@@ -16,12 +16,13 @@ abstract class BaseOperation extends Model
         'fatal_injury_count',
         'evacuated_people_count', // ex people_evacuated
         'provided_medical_count',
+        'client_equipment_count', // ex customer_technology
+        'third_parties_count', // ex party_authority other organizations involved
+        'branch_worker_count', // ex branch_workers varchar
+
         'work_scope', // ex scope_work
         'situation_during_filing', // ex situation_filing
-        'client_equipment_count', // ex customer_technology
-        'branch_worker_count', // ex branch_workers varchar
         'worker_man_hours', // used to be merged with branch worker count
-        'third_parties_count', // ex party_authority other organizations involved
         'close_date', // ex finish_work_date
         'reported_by'
     ];
@@ -115,13 +116,7 @@ abstract class BaseOperation extends Model
                 'alias' => __('reports.fields.branch_worker_count.alias'),
                 'type' => 'number',
                 'required' => false,
-                'rules' => [
-                    'nullable',
-                    'required_with:data.attributes.worker_man_hours,data.attributes.close_date',
-                    'integer',
-                    'min:0',
-                    'max:10000'
-                ],
+                'rules' => ['required', 'integer', 'min:0', 'max:10000'],
             ],
             'worker_man_hours' => [
                 'key' => 'data.attributes.worker_man_hours',
@@ -131,7 +126,7 @@ abstract class BaseOperation extends Model
                 'required' => false,
                 'rules' => [
                     'nullable',
-                    'required_with:data.attributes.branch_worker_count,data.attributes.close_date',
+                    'required_with:data.attributes.close_date',
                     'numeric',
                     'min:0',
                     'max:1000000'
@@ -145,7 +140,7 @@ abstract class BaseOperation extends Model
                 'required' => false,
                 'rules' => [
                     'nullable',
-                    'required_with:data.attributes.branch_worker_count,data.attributes.worker_man_hours',
+                    'required_with:data.attributes.worker_man_hours',
                     'date',
                     'after_or_equal:data.attributes.work_start_date',
                     'before_or_equal:tomorrow',

@@ -144,6 +144,7 @@ class ReportService
         $report->provided_medical_total = $report->provided_medical_count;
         $report->client_equipment_total = $report->client_equipment_count;
         $report->third_parties_total = $report->third_parties_count;
+        $report->branch_worker_total = $report->branch_worker_count;
 
         $report->save();
     }
@@ -151,7 +152,6 @@ class ReportService
     private function checkReportForClosing($report)
     {
         if ($report->close_date
-            && $report->branch_worker_count > 0
             && $report->worker_man_hours > 0) {
             $report->is_closed = true;
             $report->save();

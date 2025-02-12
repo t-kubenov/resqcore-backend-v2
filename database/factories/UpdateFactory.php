@@ -33,10 +33,12 @@ class UpdateFactory extends Factory
             'fatal_injury_count' => $this->faker->numberBetween(0, 10),
             'evacuated_people_count' => $this->faker->numberBetween(0, 10),
             'provided_medical_count' => $this->faker->numberBetween(0, 10),
-            'work_scope' => $this->faker->paragraph,
-            'situation_during_filing' => $this->faker->paragraph,
             'client_equipment_count' => $this->faker->numberBetween(0, 10),
             'third_parties_count' => $this->faker->numberBetween(0, 10),
+            'branch_worker_count' => $this->faker->numberBetween(0, 15),
+
+            'work_scope' => $this->faker->paragraph,
+            'situation_during_filing' => $this->faker->paragraph,
         ];
     }
 
@@ -52,6 +54,7 @@ class UpdateFactory extends Factory
                 'provided_medical_total' => $update->report->provided_medical_total + $update->provided_medical_count,
                 'client_equipment_total' => $update->report->client_equipment_total + $update->client_equipment_count,
                 'third_parties_total' => $update->report->third_parties_total + $update->third_parties_count,
+                'branch_worker_total' => $update->report->branch_worker_total + $update->branch_worker_count,
             ]);
         });
     }
@@ -61,7 +64,6 @@ class UpdateFactory extends Factory
         return $this->isClosingUpdateTemplate()->afterCreating(function (Update $update) {
             $update->report->update([
                 'is_closed' => true,
-                'branch_worker_count' => $update->branch_worker_count,
                 'worker_man_hours' => $update->worker_man_hours,
                 'close_date' => $update->close_date,
             ]);
@@ -71,7 +73,6 @@ class UpdateFactory extends Factory
     public function isClosingUpdateTemplate(): static
     {
         return $this->state(fn (array $attributes) => [
-            'branch_worker_count' => $this->faker->numberBetween(1, 15),
             'worker_man_hours' => $this->faker->randomFloat(2, 1, 40),
             'close_date' => Carbon::parse(Report::find($attributes['report_id'])->work_start_date)->addMinutes(rand(1, 60 * 24 * 3)),
         ]);

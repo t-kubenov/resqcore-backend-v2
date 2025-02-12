@@ -224,7 +224,6 @@ test('report closing updates', function (){
     $this->assertDatabaseHas('reports', [
             'id' => $report->id,
             'is_closed' => true,
-            'branch_worker_count' => $update['branch_worker_count'],
             'worker_man_hours' => $update['worker_man_hours'],
             'close_date' => $update['close_date'],
         ]);
@@ -320,6 +319,7 @@ test('report update sums', function(){
         'provided_medical_total' => $report->provided_medical_total + $update['provided_medical_count'],
         'client_equipment_total' => $report->client_equipment_total + $update['client_equipment_count'],
         'third_parties_total' => $report->third_parties_total + $update['third_parties_count'],
+        'branch_worker_total' => $report->branch_worker_total + $update['branch_worker_count'],
     ]);
 });
 

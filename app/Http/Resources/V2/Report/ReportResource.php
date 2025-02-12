@@ -56,10 +56,10 @@ class ReportResource extends JsonResource
             'provided_medical_total' => $this->provided_medical_total,
             'client_equipment_total' => $this->client_equipment_total,
             'third_parties_total' => $this->third_parties_total,
+            'branch_worker_total' => $this->branch_worker_total,
             'other_info' => $this->other_info,
             'is_emergency_line' => $this->is_emergency_line? 'Да': 'По договору',
             'last_update_created_at' => $this->last_update_created_at?->format(config('app.date_format')),
-            'branch_worker_count' => $this->branch_worker_count,
             'worker_man_hours' => $this->worker_man_hours,
             'close_date' => $this->close_date?->format(config('app.date_format')),
             'is_closed' => $this->is_closed,
@@ -117,6 +117,7 @@ class ReportResource extends JsonResource
             'situation_during_filing' => [],
             'client_equipment_count' => [],
             'third_parties_count' => [],
+            'branch_worker_count' => [],
         ];
 
         // Merge the report and its updates
@@ -148,6 +149,7 @@ class ReportResource extends JsonResource
             'situation_during_filing',
             'client_equipment_count',
             'third_parties_count',
+            'branch_worker_count',
         ];
 
         foreach ($other_fields as $field) {

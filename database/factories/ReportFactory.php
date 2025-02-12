@@ -30,6 +30,7 @@ class ReportFactory extends Factory
         $provided_medical_count = $this->faker->numberBetween(0, 10);
         $client_equipment_count = $this->faker->numberBetween(0, 10);
         $third_parties_count = $this->faker->numberBetween(0, 10);
+        $branch_worker_count = $this->faker->numberBetween(0, 15);
 
 
         return [
@@ -53,6 +54,7 @@ class ReportFactory extends Factory
             'provided_medical_count' => $provided_medical_count,
             'client_equipment_count' => $client_equipment_count,
             'third_parties_count' => $third_parties_count,
+            'branch_worker_count' => $branch_worker_count,
 
             'minor_injury_total' => $minor_injury_count,
             'severe_injury_total' => $severe_injury_count,
@@ -61,11 +63,9 @@ class ReportFactory extends Factory
             'provided_medical_total' => $provided_medical_count,
             'client_equipment_total' => $client_equipment_count,
             'third_parties_total' => $third_parties_count,
+            'branch_worker_total' => $branch_worker_count,
 
-             'is_closed' => false,
-            // 'close_date' => $this->faker->optional()->dateTime,
-            // 'branch_worker_count' => $this->faker->numberBetween(0, 50),
-            // 'worker_man_hours' => $this->faker->randomFloat(2, 0, 1000),
+            'is_closed' => false,
             'work_scope' => $this->faker->paragraph,
             'situation_during_filing' => $this->faker->paragraph,
             'other_info' => $this->faker->paragraph,
@@ -77,7 +77,6 @@ class ReportFactory extends Factory
         return $this->state(fn (array $attributes) => [
             'is_closed' => true,
             'close_date' => Carbon::parse($attributes['work_start_date'])->addMinutes(rand(1, 60 * 24 * 3)),
-            'branch_worker_count' => $this->faker->numberBetween(0, 15),
             'worker_man_hours' => $this->faker->randomFloat(2, 1, 50),
         ]);
     }

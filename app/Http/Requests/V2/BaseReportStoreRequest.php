@@ -22,10 +22,6 @@ abstract class BaseReportStoreRequest extends FormRequest
     {
         $attributes = $this->input('data.attributes', []);
 
-        if (isset($attributes['branch_worker_count']) && $attributes['branch_worker_count'] == 0) {
-            unset($attributes['branch_worker_count']);
-        }
-
         if (isset($attributes['worker_man_hours']) && $attributes['worker_man_hours'] == 0) {
             unset($attributes['worker_man_hours']);
         }
@@ -45,6 +41,7 @@ abstract class BaseReportStoreRequest extends FormRequest
                     'provided_medical_count' => $attributes['provided_medical_count'] ?? 0,
                     'client_equipment_count' => $attributes['client_equipment_count'] ?? 0,
                     'third_parties_count' => $attributes['third_parties_count'] ?? 0,
+                    'branch_worker_count' => $attributes['branch_worker_count'] ?? 0,
                 ]),
             ],
         ]);

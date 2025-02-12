@@ -29,7 +29,7 @@ class ExportResource extends JsonResource
                 'line_facility_owner' => $this->line_facility_owner,
                 'emergency_type' => $this->emergency?->name, // Derive from emergency type
                 'emergency_location' => $this->emergency_location,
-                'branch_worker_count' => $this->branch_worker_count,
+                'branch_worker_total' => $this->branch_worker_total,
                 'worker_man_hours' => $this->worker_man_hours,
                 'branch_office' => $this->branch_office?->name,
                 'transport_totals' => $this->transport_totals,

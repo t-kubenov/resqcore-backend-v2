@@ -11,46 +11,38 @@ class Report extends BaseOperation
 {
     use HasFactory;
 
-    protected $fillable = [
-        'branch_office_id',
-        'facility_owner_id',
-        'reported_by',
-        'report_code',
-        'caller',
+    public function __construct(array $attributes = []){
+        parent::__construct($attributes);
 
-        'line_facility_owner',
-        'emergency_location',
-        'emergency_info',
-        'call_date',
-        'work_start_date',
-        'emergency_type',
-        'minor_injury_count',
-        'severe_injury_count',
-        'fatal_injury_count',
-        'evacuated_people_count',
-        'provided_medical_count',
-        'client_equipment_count',
-        'third_parties_count',
+        $this->mergeFillable([
+            'branch_office_id',
+            'facility_owner_id',
+            'report_code',
+            'caller',
 
-        'minor_injury_total',
-        'severe_injury_total',
-        'fatal_injury_total',
-        'evacuated_people_total',
-        'provided_medical_total',
-        'client_equipment_total',
-        'third_parties_total',
+            'line_facility_owner',
+            'emergency_location',
+            'emergency_info',
+            'call_date',
+            'work_start_date',
+            'emergency_type',
+            'other_info',
 
-        'branch_worker_count',
-        'worker_man_hours',
-        'work_scope',
-        'situation_during_filing',
-        'other_info',
-        'is_emergency_line',
-        'close_date',
-        'is_closed',
+            'minor_injury_total',
+            'severe_injury_total',
+            'fatal_injury_total',
+            'evacuated_people_total',
+            'provided_medical_total',
+            'client_equipment_total',
+            'third_parties_total',
+            'branch_worker_total',
 
-        'last_update_created_at'
-    ];
+            'is_emergency_line',
+            'is_closed',
+
+            'last_update_created_at'
+        ]);
+    }
 
     public static function fieldDefinitions(): array
     {

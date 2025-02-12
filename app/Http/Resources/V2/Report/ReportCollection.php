@@ -75,7 +75,6 @@ class ReportCollection extends ResourceCollection
                     'facility_owner' => $report->facility_owner?->name ?? $report->line_facility_owner,
                     'emergency_type' => $report->emergency?->name,
                     'emergency_location' => $report->emergency_location,
-                    'branch_worker_count' => $report->branch_worker_count,
                     'worker_man_hours' => $report->worker_man_hours,
                     'is_closed' => $report->is_closed,
                     'close_date' => $report->close_date?->format(config('app.date_format')),

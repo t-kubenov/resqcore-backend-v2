@@ -30,7 +30,7 @@ class ExportCollection extends ReportCollection
             'line_facility_owner',
             'emergency_type',
             'emergency_location',
-            'branch_worker_count',
+            'branch_worker_total',
             'worker_man_hours',
             'branch_office',
             'transport_totals',
