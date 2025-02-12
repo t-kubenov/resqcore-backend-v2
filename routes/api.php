@@ -10,16 +10,20 @@ use App\Http\Controllers\V2\StatisticsController;
 use App\Http\Controllers\V2\UpdateController;
 use Illuminate\Support\Facades\Route;
 
-Route::prefix('v2/')->group(function () {
+Route::middleware('throttle:global')->prefix('v2/')->group(function () {
     Route::middleware('auth:sanctum')->group(function () {
 
         Route::get('/user', [AuthController::class, 'user'])->name('profile.show');
         Route::get('/image', [ImageController::class, 'show'])->name('image.show');
-        Route::post('/change-password', [AuthController::class, 'changePassword'])->name('profile.change-password');
         Route::post('/upload-avatar', [AuthController::class, 'uploadAvatar'])->name('profile.upload-avatar');
         Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
-        Route::post('/send-feedback', [EmailController::class, 'send'])->name('send-feedback');
         Route::get('/companies', [CompanyController::class, 'index'])->name('companies.index');
+        Route::post('/send-feedback', [EmailController::class, 'send'])
+            ->middleware('throttle:send-feedback')
+            ->name('send-feedback');
+        Route::post('/change-password', [AuthController::class, 'changePassword'])
+            ->middleware('throttle:password-change')
+            ->name('profile.change-password');
 
         Route::prefix('auxiliary')->name('auxiliary.')->controller(AuxiliaryDataController::class)->group(function () {
             Route::get('/report-fields', 'getReportFields')->name('report-fields');
@@ -45,11 +49,11 @@ Route::prefix('v2/')->group(function () {
             Route::get('/reports/{id}/log', [\App\Http\Controllers\V2\UpdateLogController::class, 'show'])->name('reports.id.log');
             Route::get('/export', [ReportController::class, 'export'])->name('reports.export');
 
-            Route::group(['middleware' => ['permission:branch_report_create']], function () {
+            Route::group(['middleware' => ['permission:branch_report_create', 'throttle:report-create']], function () {
                 Route::post('/reports', [ReportController::class, 'store'])->name('reports.store');
             });
 
-            Route::group(['middleware' => ['permission:branch_update_create']], function () {
+            Route::group(['middleware' => ['permission:branch_update_create', 'throttle:update-create']], function () {
                 Route::post('/reports/update/{id}', [UpdateController::class, 'store'])->name('updates.store');
             });
 

@@ -220,7 +220,6 @@ test('report closing updates', function (){
                 "attributes" => $update,
             ]
         ])->assertStatus(201);
-    ;
 
     $this->assertDatabaseHas('reports', [
             'id' => $report->id,
@@ -229,6 +228,69 @@ test('report closing updates', function (){
             'worker_man_hours' => $update['worker_man_hours'],
             'close_date' => $update['close_date'],
         ]);
+});
+
+
+test('report create rate limits', function (){
+    $report = Report::factory()->make()->toArray();
+    $report['call_date'] = Carbon::parse($report['call_date'])->format('Y-m-d H:i:s');
+    $report['work_start_date'] = Carbon::parse($report['work_start_date'])->format('Y-m-d H:i:s');
+
+    $attributes = array_merge($report, [
+        'emergency_type' => ['id' => $report['emergency_type']],
+        'transport' => [
+            [
+                'id' => \App\Models\TransportType::inRandomOrder()->first()->id,
+                'count' => fake()->numberBetween(1, 10),
+            ]
+        ]
+    ]);
+
+    $this->actingAs($this->user)
+        ->postJson(route('reports.store'), [
+                "data" => [
+                    "type" => "report",
+                    "attributes" => $attributes,
+                ]
+            ])
+        ->assertStatus(201);
+
+    $this->actingAs($this->user)
+        ->postJson(route('reports.store'), [
+                "data" => [
+                    "type" => "report",
+                    "attributes" => $attributes,
+                ]
+            ])
+        ->assertStatus(429);
+});
+
+
+test('report update rate limits', function (){
+    $report = Report::where([
+        'branch_office_id' => $this->user->branch_id,
+        'is_closed' => false,
+    ])->inRandomOrder()->first();
+
+    $update = Update::factory()->make()->toArray();
+
+    $this->actingAs($this->user)
+        ->postJson(route('updates.store', $report->id), [
+            "data" => [
+                "type" => "update",
+                "attributes" => $update,
+            ]
+        ])
+        ->assertStatus(201);
+
+    $this->actingAs($this->user)
+        ->postJson(route('updates.store', $report->id), [
+            "data" => [
+                "type" => "update",
+                "attributes" => $update,
+            ]
+        ])
+        ->assertStatus(429);
 });
 
 

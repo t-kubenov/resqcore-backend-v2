@@ -93,3 +93,12 @@ test('register as a normal user', function () {
         ->assertStatus(403);
 });
 
+test('auth rate limits', function () {
+    $limit = 6;
+
+    for ($i = 0; $i < $limit; $i++) {
+        $this->postJson($this->login_route);
+    }
+
+    $this->postJson($this->login_route)->assertStatus(429);
+});
