@@ -7,6 +7,7 @@ use App\Http\Resources\V2\Update\UpdateResource;
 use App\Http\Services\V2\UpdateService;
 use App\Models\Report;
 use App\Models\Update;
+use Illuminate\Http\Exceptions\ThrottleRequestsException;
 use Illuminate\Support\Facades\Auth;
 
 class UpdateController extends Controller
@@ -52,7 +53,12 @@ class UpdateController extends Controller
         }
 
         $attributes = $request['data']['attributes'];
-        $update = $this->updateService->createUpdate($report, $attributes);
+        try {
+            $update = $this->updateService->updateRequest($request, $report, $attributes);
+        }
+        catch (ThrottleRequestsException $e) {
+            return response()->json(['message' => __('throttle.update-create')], 429);
+        }
 
         return new UpdateResource($update);
     }

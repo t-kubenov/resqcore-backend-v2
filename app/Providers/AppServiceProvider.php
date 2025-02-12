@@ -35,33 +35,5 @@ class AppServiceProvider extends ServiceProvider
                     return response()->json(['message' => __('throttle.auth')], 429);
                 });
         });
-
-        RateLimiter::for('report-create', function (Request $request) {
-            return Limit::perMinute(1)->by($request->user()?->id ?: $request->ip())
-                ->response(function () {
-                    return response()->json(['message' => __('throttle.report-create')], 429);
-                });
-        });
-
-        RateLimiter::for('update-create', function (Request $request) {
-            return Limit::perMinute(1)->by($request->user()?->id ?: $request->ip())
-            ->response(function () {
-                return response()->json(['message' => __('throttle.update-create')], 429);
-            });
-        });
-
-        RateLimiter::for('password-change', function (Request $request) {
-            return Limit::perHour(1)->by($request->user()?->id ?: $request->ip())
-                ->response(function () {
-                    return response()->json(['message' => __('throttle.password-change')], 429);
-            });
-        });
-
-        RateLimiter::for('send-feedback', function (Request $request) {
-            return Limit::perHour(1)->by($request->user()?->id ?: $request->ip())
-                ->response(function () {
-                    return response()->json(['message' => __('throttle.send-feedback')], 429);
-                });
-        });
     }
 }

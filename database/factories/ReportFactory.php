@@ -30,7 +30,7 @@ class ReportFactory extends Factory
         $provided_medical_count = $this->faker->numberBetween(0, 10);
         $client_equipment_count = $this->faker->numberBetween(0, 10);
         $third_parties_count = $this->faker->numberBetween(0, 10);
-        $branch_worker_count = $this->faker->numberBetween(0, 15);
+        $branch_worker_count = $this->faker->numberBetween(1, 15);
 
 
         return [

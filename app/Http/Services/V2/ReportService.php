@@ -2,10 +2,13 @@
 
 namespace App\Http\Services\V2;
 
+use App\Http\Requests\V2\StoreReportRequest;
 use App\Models\Report;
+use Illuminate\Http\Exceptions\ThrottleRequestsException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\RateLimiter;
 
 class ReportService
 {
@@ -30,7 +33,7 @@ class ReportService
         return $report;
     }
 
-    public function store($request)
+    public function store(StoreReportRequest $request): Report
     {
         $user = Auth::user();
         $attributes = $request['data']['attributes'];
@@ -157,4 +160,20 @@ class ReportService
             $report->save();
         }
     }
+
+    public function storeRequest(StoreReportRequest $request): Report
+    {
+        $key = 'report-create:' . (Auth::user()?->id ?: $request->ip());
+
+        if (RateLimiter::tooManyAttempts($key, 1)) {
+            throw new ThrottleRequestsException(__('throttle.report-create'));
+        }
+
+        $report = $this->store($request);
+
+        RateLimiter::hit($key, 60); // 60 seconds cooldown
+
+        return $report;
+    }
+
 }

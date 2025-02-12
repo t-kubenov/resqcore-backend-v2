@@ -9,6 +9,7 @@ use App\Http\Resources\V2\Report\ReportCollection;
 use App\Http\Resources\V2\Report\ReportResource;
 use App\Http\Services\V2\ReportService;
 use App\Models\Report;
+use Illuminate\Http\Exceptions\ThrottleRequestsException;
 use Illuminate\Support\Facades\Auth;
 
 
@@ -49,7 +50,12 @@ class ReportController extends Controller
 
     public function store(StoreReportRequest $request)
     {
-        $report = $this->reportService->store($request);
+        try {
+            $report = $this->reportService->storeRequest($request);
+        }
+        catch (ThrottleRequestsException $e) {
+            return response()->json(['message' => __('throttle.report-create')], 429);
+        }
 
         return new ReportResource($report);
     }

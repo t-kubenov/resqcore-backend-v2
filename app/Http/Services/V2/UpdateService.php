@@ -2,9 +2,12 @@
 
 namespace App\Http\Services\V2;
 
+use App\Http\Requests\V2\StoreUpdateRequest;
 use App\Models\Update;
+use Illuminate\Http\Exceptions\ThrottleRequestsException;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\RateLimiter;
 
 class UpdateService extends ReportService
 {
@@ -71,5 +74,22 @@ class UpdateService extends ReportService
             $report->is_closed = true;
             $report->save();
         }
+    }
+
+    public function updateRequest(StoreUpdateRequest $request, $update, $attributes): Update
+    {
+        $key = 'report-create:' . (Auth::user()?->id ?: $request->ip());
+
+        if (RateLimiter::tooManyAttempts($key, 1)) {
+            throw new ThrottleRequestsException(__('throttle.report-create'));
+        }
+
+        $update = $this->createUpdate($update, $attributes);
+
+        RateLimiter::hit($key, 60); // 60 seconds cooldown
+
+        return $update;
+
+        //todo: same method is in reports, you know what to do
     }
 }
