@@ -7,7 +7,10 @@ namespace App\Models;
 class BranchOffice extends Model
 {
     protected $fillable = [
+        'rescue_company_id',
+        'key',
         'name',
+        'alias',
     ];
 
     protected $hidden = ['created_at', 'updated_at'];

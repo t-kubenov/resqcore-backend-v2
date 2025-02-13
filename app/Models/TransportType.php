@@ -8,5 +8,10 @@ class TransportType extends Model
 {
     public $timestamps = false;
 
-    protected $fillable = ['key', 'name'];
+    protected $fillable = [
+        'rescue_company_id',
+        'key',
+        'name',
+        'alias'
+    ];
 }
