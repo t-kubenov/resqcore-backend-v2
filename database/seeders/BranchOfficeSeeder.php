@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\BranchOffice;
+use App\Models\RescueCompany;
 use Illuminate\Database\Seeder;
 
 class BranchOfficeSeeder extends Seeder
@@ -13,65 +14,100 @@ class BranchOfficeSeeder extends Seeder
     public function run(): void
     {
         $branchOffices = [
-            [
-                'name' => 'Актюбинский',
-                'key' => 'aktobe',
+            'pvass' => [
+                [
+                    'name' => 'Актюбинский',
+                    'key' => 'aktobe',
+                ],
+                [
+                    'name' => 'Атырауский',
+                    'key' => 'atyrau',
+                ],
+                [
+                    'name' => 'Восточно-Казахстанкий',
+                    'alias' => 'ВКФ',
+                    'key' => 'vkf',
+                ],
+                [
+                    'name' => 'Западно-Казахстанский',
+                    'alias' => 'ЗКФ',
+                    'key' => 'zkf',
+                ],
+                [
+                    'name' => 'Карагандинкский',
+                    'key' => 'karaganda',
+                ],
+                [
+                    'name' => 'Кызылординский',
+                    'key' => 'kyzylorda',
+                ],
+                [
+                    'name' => 'Мангистауский',
+                    'key' => 'mangystau',
+                ],
+                [
+                    'name' => 'Павлодарский',
+                    'key' => 'pavlodar',
+                ],
+                [
+                    'name' => 'Северо-Казахстанский',
+                    'alias' => 'СКФ',
+                    'key' => 'skf',
+                ],
+                [
+                    'name' => 'Южно-Казахстанский',
+                    'alias' => 'ЮКФ',
+                    'key' => 'yukf',
+                ],
+                [
+                    'name' => 'Акмолинский',
+                    'key' => 'akmolinsk',
+                ],
             ],
-            [
-                'name' => 'Атырауский',
-                'key' => 'atyrau',
-            ],
-            [
-                'name' => 'Восточно-Казахстанкий',
-                'alias' => 'ВКФ',
-                'key' => 'vkf',
-            ],
-            [
-                'name' => 'Западно-Казахстанский',
-                'alias' => 'ЗКФ',
-                'key' => 'zkf',
-            ],
-            [
-                'name' => 'Карагандинкский',
-                'key' => 'karaganda',
-            ],
-            [
-                'name' => 'Кызылординский',
-                'key' => 'kyzylorda',
-            ],
-            [
-                'name' => 'Мангистауский',
-                'key' => 'mangystau',
-            ],
-            [
-                'name' => 'Павлодарский',
-                'key' => 'pavlodar',
-            ],
-            [
-                'name' => 'Северо-Казахстанский',
-                'alias' => 'СКФ',
-                'key' => 'skf',
-            ],
-            [
-                'name' => 'Южно-Казахстанский',
-                'alias' => 'ЮКФ',
-                'key' => 'yukf',
-            ],
-            [
-                'name' => 'Акмолинский',
-                'key' => 'akmolinsk',
-            ],
-
+            'semser' =>
+                [
+                    [
+                        'name' => 'Семсер',
+                        'key' => 'semser',
+                    ],
+                ],
+            'seriktes' =>
+                [
+                    [
+                        'name' => 'Сериктес',
+                        'key' => 'seriktes',
+                    ],
+                ],
+            'test' =>
+                [
+                    [
+                        'name' => 'Тестовый',
+                        'key' => 'test',
+                    ],
+                    [
+                        'name' => 'Рисовый',
+                        'key' => 'rice',
+                    ],
+                    [
+                        'name' => 'Флисовый',
+                        'key' => 'fleece',
+                    ],
+                ],
         ];
 
-        foreach ($branchOffices as $branchOffice) {
-            BranchOffice::updateOrCreate(
-                ['name' => $branchOffice['name']], // Matching condition
-                [
-                    'key' => $branchOffice['key'] ?? null,
-                    'alias' => $branchOffice['alias'] ?? null, // Use null if alias is not set
-                ]
-            );
+        foreach ($branchOffices as $rescueCompany => $branchOffice) {
+            foreach ($branchOffice as $office) {
+                BranchOffice::updateOrCreate(
+                    [
+                        'rescue_company_id' => RescueCompany::where('key', $rescueCompany)->first()['id'],
+                        'name' => $office['name']
+                    ],
+                    [
+                        'key' => $office['key'] ?? null,
+                        'alias' => $office['alias'] ?? null,
+                    ]
+                );
+            }
         }
     }
 }
