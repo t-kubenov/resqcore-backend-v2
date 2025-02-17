@@ -11,6 +11,7 @@ class BranchOffice extends Model
         'key',
         'name',
         'alias',
+        'is_central_office',
     ];
 
     protected $hidden = ['created_at', 'updated_at'];

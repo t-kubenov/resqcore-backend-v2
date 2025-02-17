@@ -16,6 +16,12 @@ class BranchOfficeSeeder extends Seeder
         $branchOffices = [
             'pvass' => [
                 [
+                    'name' => 'Центральный Аппарат ПВАСС',
+                    'key' => 'pvass-central-office',
+                    'alias' => 'ЦА ПВАСС',
+                    'is_central_office' => true,
+                ],
+                [
                     'name' => 'Актюбинский',
                     'key' => 'aktobe',
                 ],
@@ -105,6 +111,7 @@ class BranchOfficeSeeder extends Seeder
                     [
                         'key' => $office['key'] ?? null,
                         'alias' => $office['alias'] ?? null,
+                        'is_central_office' => $office['is_central_office'] ?? false,
                     ]
                 );
             }

@@ -92,4 +92,5 @@ class UserFactory extends Factory
             $user->assignRole('central_office_user');
         });
     }
+    //todo: block reports created by ca
 }
