@@ -16,6 +16,11 @@ class BranchOffice extends Model
 
     protected $hidden = ['created_at', 'updated_at'];
 
+    public function rescue_company()
+    {
+        return $this->belongsTo(RescueCompany::class);
+    }
+
     public function facilities()
     {
         return $this->hasMany(Facility::class);
@@ -29,5 +34,15 @@ class BranchOffice extends Model
     public function users()
     {
         return $this->hasMany(User::class, 'branch_id');
+    }
+
+    public function getCentralOffices()
+    {
+        return $this->where('is_central_office', true)->get();
+    }
+
+    public function getBranchOffices()
+    {
+        return $this->where('is_central_office', false)->get();
     }
 }

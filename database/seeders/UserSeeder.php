@@ -15,14 +15,15 @@ class UserSeeder extends Seeder
     {
         $this->call(AdminSeeder::class);
 
-        User::factory()->central_office_user()->count(3)->create();
+        $central_offices = BranchOffice::where('is_central_office', true)->get();
+        $branch_offices = BranchOffice::where('is_central_office', false)->get();
 
-        foreach (BranchOffice::all() as $branch_office) {
-            User::factory()->branch_office_employee()->create([
-                'branch_id' => $branch_office->id,
-            ]);
+        foreach ($central_offices as $branch_office) {
+            User::factory()->central_office_user_by_id($branch_office->id)->count(3)->create();
         }
 
-        User::factory()->company_employee()->count(10)->create();
+        foreach ($branch_offices as $branch_office) {
+            User::factory()->branch_office_employee_by_id($branch_office->id)->count(2)->create();
+        }
     }
 }

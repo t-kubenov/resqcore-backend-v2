@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Enums\AccessLevel;
 use App\Traits\AltersDisplayedDates;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -10,10 +10,13 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Traits\HasRoles;
+use Znck\Eloquent\Traits\BelongsToThrough;
+
 
 class User extends Authenticatable
 {
-    use HasFactory, Notifiable, HasApiTokens, HasRoles, AltersDisplayedDates;
+    use HasFactory, Notifiable, HasApiTokens, HasRoles, AltersDisplayedDates,
+        BelongsToThrough;
 
     /**
      * The attributes that are mass assignable.
@@ -65,6 +68,15 @@ class User extends Authenticatable
         return $this->belongsTo(Company::class);
     }
 
+    public function rescue_company()
+    {
+        return $this->belongsToThrough(
+            RescueCompany::class,
+            BranchOffice::class,
+            foreignKeyLookup: [BranchOffice::class => 'branch_id']
+        );
+    }
+
     public function reports()
     {
         return $this->hasMany(Report::class);
@@ -80,4 +92,16 @@ class User extends Authenticatable
         return $this->first_name . ' ' . $this->last_name;
     }
 
+    public function getAccessLevelAttribute(): AccessLevel
+    {
+        if ($this->role->name === 'admin') {
+            return AccessLevel::APP;
+        }
+
+        if ($this->branch_office?->is_central_office) {
+            return AccessLevel::COMPANY;
+        }
+
+        return AccessLevel::BRANCH;
+    }
 }

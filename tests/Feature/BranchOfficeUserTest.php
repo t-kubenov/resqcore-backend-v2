@@ -8,7 +8,11 @@ use Carbon\Carbon;
 
 
 beforeEach(function () {
-    $this->user = User::where('role_id', 3)->inRandomOrder()->first();
+    $this->user = User::where('role_id', 3)
+        ->whereHas('branch_office', function ($query){
+            $query->where('is_central_office', false);
+        })
+        ->inRandomOrder()->first();
 });
 
 // todo: verify the accuracy of the data
@@ -119,12 +123,13 @@ test('can create reports', function () {
     $report = Report::factory()->make()->toArray();
     $report['call_date'] = Carbon::parse($report['call_date'])->format('Y-m-d H:i:s');
     $report['work_start_date'] = Carbon::parse($report['work_start_date'])->format('Y-m-d H:i:s');
+    $report['emergency_type'] = generateEmergencyType($this->user);
 
     $attributes = array_merge($report, [
         'emergency_type' => ['id' => $report['emergency_type']],
         'transport' => [
             [
-                'id' => \App\Models\TransportType::inRandomOrder()->first()->id,
+                'id' => generateTransportType($this->user),
                 'count' => fake()->numberBetween(1, 10),
             ]
         ]
@@ -236,10 +241,10 @@ test('report create rate limits', function (){
     $report['work_start_date'] = Carbon::parse($report['work_start_date'])->format('Y-m-d H:i:s');
 
     $attributes = array_merge($report, [
-        'emergency_type' => ['id' => $report['emergency_type']],
+        'emergency_type' => ['id' => generateEmergencyType($this->user)],
         'transport' => [
             [
-                'id' => \App\Models\TransportType::inRandomOrder()->first()->id,
+                'id' => generateTransportType($this->user),
                 'count' => fake()->numberBetween(1, 10),
             ]
         ]
@@ -265,13 +270,33 @@ test('report create rate limits', function (){
 });
 
 
+function generateEmergencyType (User $user){
+    return \App\Models\EmergencyType::where('rescue_company_id',
+        $user->branch_office->rescue_company_id
+    )->inRandomOrder()->first()->id;
+}
+
+function generateTransportType (User $user){
+    return \App\Models\TransportType::where('rescue_company_id',
+        $user->branch_office->rescue_company_id
+    )->inRandomOrder()->first()->id;
+}
+
+
 test('report update rate limits', function (){
     $report = Report::where([
         'branch_office_id' => $this->user->branch_id,
         'is_closed' => false,
     ])->inRandomOrder()->first();
 
-    $update = Update::factory()->make()->toArray();
+    $update = array_merge(Update::factory()->make()->toArray(), [
+        'transport' => [
+            [
+                'id' => generateTransportType($this->user),
+                'count' => fake()->numberBetween(1, 10),
+            ]
+        ]
+    ]);
 
     $this->actingAs($this->user)
         ->postJson(route('updates.store', $report->id), [
@@ -387,4 +412,93 @@ test('can access count table with own branch', function () {
         expect($branch_id)->toBe($this->user->branch_id);
     });
 
+});
+
+
+test("cannot view another company's report as a branch office user", function () {
+    $report = Report::whereHas('branch_office', function ($query) {
+        $query->where('rescue_company_id', '!=',$this->user->branch_office->rescue_company_id);
+    })->inRandomOrder()->first();
+
+    $this->actingAs($this->user)
+        ->get(route('reports.show', $report->id))
+        ->assertStatus(403);
+});
+
+
+test("cannot use another company's transport type in report", function () {
+    $report = Report::factory()->make()->toArray();
+    $report['call_date'] = Carbon::parse($report['call_date'])->format('Y-m-d H:i:s');
+    $report['work_start_date'] = Carbon::parse($report['work_start_date'])->format('Y-m-d H:i:s');
+
+    $attributes = array_merge($report, [
+        'emergency_type' => ['id' => $report['emergency_type']],
+        'transport' => [
+            [
+                'id' => \App\Models\TransportType::where('rescue_company_id', '!=', $this->user->branch_office->rescue_company_id)->inRandomOrder()->first()->id,
+                'count' => fake()->numberBetween(1, 10),
+            ]
+        ]
+    ]);
+
+    $this->actingAs($this->user)
+        ->postJson(route('reports.store'), [
+                "data" => [
+                    "type" => "report",
+                    "attributes" => $attributes,
+                ]
+            ])
+        ->assertStatus(422);
+});
+
+test("cannot use another company's emergency type in report", function () {
+    $report = Report::factory()->make()->toArray();
+    $report['call_date'] = Carbon::parse($report['call_date'])->format('Y-m-d H:i:s');
+    $report['work_start_date'] = Carbon::parse($report['work_start_date'])->format('Y-m-d H:i:s');
+
+    $attributes = array_merge($report, [
+        'emergency_type' => ['id' => \App\Models\EmergencyType::where('rescue_company_id', '!=', $this->user->branch_office->rescue_company_id)->inRandomOrder()->first()->id],
+        'transport' => [
+            [
+                'id' => \App\Models\TransportType::inRandomOrder()->first()->id,
+                'count' => fake()->numberBetween(1, 10),
+            ]
+        ]
+    ]);
+    //todo: low - turn this repeating mess into a function
+
+    $this->actingAs($this->user)
+        ->postJson(route('reports.store'), [
+                "data" => [
+                    "type" => "report",
+                    "attributes" => $attributes,
+                ]
+            ])
+        ->assertStatus(422);
+});
+
+
+test("cannot use another company's transport type in update", function () {
+    $report = Report::where([
+        'branch_office_id' => $this->user->branch_id,
+        'is_closed' => false,
+    ])->inRandomOrder()->first();
+
+    $update = array_merge(Update::factory()->make()->toArray(), [
+        'transport' => [
+            [
+                'id' => \App\Models\TransportType::where('rescue_company_id', '!=', $this->user->branch_office->rescue_company_id)->inRandomOrder()->first()->id,
+                'count' => fake()->numberBetween(1, 10),
+            ]
+        ]
+    ]);
+
+    $this->actingAs($this->user)
+        ->postJson(route('updates.store', $report->id), [
+            "data" => [
+                "type" => "update",
+                "attributes" => $update,
+            ]
+        ])
+        ->assertStatus(422);
 });

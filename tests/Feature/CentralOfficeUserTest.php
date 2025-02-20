@@ -10,7 +10,9 @@ beforeEach(function () {
 
 
 test('can see reports by id', function () {
-    $report = Report::inRandomOrder()->first();
+    $report = Report::whereHas('branch_office', function($query){
+        return $query->where('rescue_company_id', $this->user->branch_office->rescue_company_id);
+    })->inRandomOrder()->first();
 
     $this->actingAs($this->user)
         ->get(route('reports.show', $report->id))
@@ -73,5 +75,28 @@ test('cannot create updates', function () {
 
     $this->actingAs($this->user)
         ->post(route('updates.store', $report->id), [])
+        ->assertStatus(403);
+});
+
+
+test('can see all reports of own company', function (){
+    $this->actingAs($this->user)
+        ->get(route('reports.index'))
+        ->assertStatus(200)
+        ->assertJsonFragment([
+            'total' => Report::whereHas('branch_office', function ($query) {
+                $query->where('rescue_company_id', $this->user->branch_office->rescue_company_id);
+            })->count(),
+        ]);
+});
+
+
+test("cannot view another company's report as a central office user", function () {
+    $report = Report::whereHas('branch_office', function ($query) {
+        $query->where('rescue_company_id', '!=',$this->user->branch_office->rescue_company_id);
+    })->inRandomOrder()->first();
+
+    $this->actingAs($this->user)
+        ->get(route('reports.show', $report->id))
         ->assertStatus(403);
 });

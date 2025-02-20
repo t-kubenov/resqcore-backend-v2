@@ -68,7 +68,8 @@ class ReportService
 
     public function filterQuery($query, $request)
     {
-        $query = $this->filterBranchOffice($query, $request);
+        $query = $this->filterRescueCompany($query);
+        $query = $this->filterBranchOffice($query);
 
         if (isset($request['emergency_type'])) {
             $query->whereIn('emergency_type', $request['emergency_type']);
@@ -108,7 +109,20 @@ class ReportService
         return $query;
     }
 
-    private function filterBranchOffice($query, $request)
+    private function filterRescueCompany($query)
+    {
+        $user = Auth::user();
+
+        if ($user->access_level === 'app') {
+            return $query;
+        }
+
+        return $query->whereHas('branch_office', function ($q) use ($user) {
+            $q->where('rescue_company_id', $user->rescue_company->id);
+        });
+    }
+
+    private function filterBranchOffice($query)
     {
         $user = Auth::user();
 

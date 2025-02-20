@@ -30,7 +30,7 @@ class BranchOfficeSeeder extends Seeder
                     'key' => 'atyrau',
                 ],
                 [
-                    'name' => 'Восточно-Казахстанкий',
+                    'name' => 'Восточно-Казахстанский',
                     'alias' => 'ВКФ',
                     'key' => 'vkf',
                 ],
@@ -40,7 +40,7 @@ class BranchOfficeSeeder extends Seeder
                     'key' => 'zkf',
                 ],
                 [
-                    'name' => 'Карагандинкский',
+                    'name' => 'Карагандинский',
                     'key' => 'karaganda',
                 ],
                 [
@@ -73,15 +73,25 @@ class BranchOfficeSeeder extends Seeder
             'semser' =>
                 [
                     [
-                        'name' => 'Семсер',
+                        'name' => 'ЦА "Семсер"',
                         'key' => 'semser',
+                        'is_central_office' => true,
+                    ],
+                    [
+                        'name' => 'Филиал "Семсер"',
+                        'key' => 'branch_semser',
                     ],
                 ],
             'seriktes' =>
                 [
                     [
-                        'name' => 'Сериктес',
+                        'name' => 'ЦА "Сериктес"',
                         'key' => 'seriktes',
+                        'is_central_office' => true,
+                    ],
+                    [
+                        'name' => 'Филиал "Сериктес"',
+                        'key' => 'branch_seriktes',
                     ],
                 ],
             'test' =>
@@ -89,6 +99,7 @@ class BranchOfficeSeeder extends Seeder
                     [
                         'name' => 'Тестовый',
                         'key' => 'test',
+                        'is_central_office' => true,
                     ],
                     [
                         'name' => 'Рисовый',

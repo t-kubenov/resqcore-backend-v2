@@ -9,12 +9,15 @@ use App\Http\Resources\V2\Report\ReportCollection;
 use App\Http\Resources\V2\Report\ReportResource;
 use App\Http\Services\V2\ReportService;
 use App\Models\Report;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Exceptions\ThrottleRequestsException;
 use Illuminate\Support\Facades\Auth;
 
 
 class ReportController extends Controller
 {
+    use AuthorizesRequests;
+
     protected $reportService;
 
     public function __construct(ReportService $reportService)
@@ -33,15 +36,12 @@ class ReportController extends Controller
     public function show(int $id)
     {
         $report = Report::find($id);
-        $user = Auth::user();
 
         if (!$report) {
             return response()->json(['message' => __('reports.show.not-found')], 404);
         }
 
-        if ($user->hasRole('branch_office_user') && $user->branch_id !== $report->branch_office_id) {
-            return response()->json(['message' => __('reports.show.not-allowed')], 403);
-        }
+        $this->authorize('show', $report);
 
         $report = $this->reportService->show($report);
 
@@ -50,6 +50,8 @@ class ReportController extends Controller
 
     public function store(StoreReportRequest $request)
     {
+        $this->authorize('create', Report::class);
+
         try {
             $report = $this->reportService->storeRequest($request);
         }

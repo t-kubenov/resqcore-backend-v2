@@ -4,8 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Validation\Rule;
 
-//use Illuminate\Database\Eloquent\Model;
 
 class Report extends BaseOperation
 {
@@ -97,7 +97,10 @@ class Report extends BaseOperation
                 'name' => __('reports.fields.emergency_type.name'),
                 'alias' => __('reports.fields.emergency_type.alias'),
                 'type' => 'dropdown',
-                'rules' => ['required', 'integer', 'exists:emergency_types,id'],
+                'rules' => ['required', 'integer',
+                    Rule::exists('emergency_types', 'id')->where(function ($query) {
+                        $query->where('rescue_company_id', auth()->user()->rescue_company->id);
+                    })],
                 'options' => route('auxiliary.emergency-types'),
             ],
             'is_emergency_line' => [
@@ -210,6 +213,14 @@ class Report extends BaseOperation
             'last_update_created_at' => 'datetime',
             'close_date' => 'datetime',
         ];
+    }
+
+    public function rescue_company()
+    {
+        return $this->belongsToThrough(
+            RescueCompany::class,
+            BranchOffice::class,
+        );
     }
 
     public function emergency()

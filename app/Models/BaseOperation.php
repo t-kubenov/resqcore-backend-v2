@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Traits\AltersDisplayedDates;
+use Illuminate\Validation\Rule;
 
 //use Illuminate\Database\Eloquent\Model;
 
@@ -144,7 +145,11 @@ abstract class BaseOperation extends Model
                 'alias' => __('reports.fields.transport_id.alias'),
                 'type' => 'number',
                 'required' => true,
-                'rules' => ['required', 'integer', 'exists:transport_types,id'],
+                'rules' => ['required', 'integer',
+                    Rule::exists('transport_types', 'id')->where(function ($query) {
+                        $query->where('rescue_company_id', auth()->user()->branch_office->rescue_company_id);
+                    })
+                ],
                 'options' => route('auxiliary.transport-types'),
             ],
             'transport_count' => [

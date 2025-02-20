@@ -2,65 +2,18 @@
 
 namespace App\Policies;
 
-use App\Models\Update;
+use App\Enums\AccessLevel;
+use App\Models\Report;
 use App\Models\User;
-use Illuminate\Auth\Access\Response;
 
 class UpdatePolicy
 {
-    /**
-     * Determine whether the user can view any models.
-     */
-    public function viewAny(User $user): bool
+    public function create(User $user, Report $report): bool
     {
-        //
-    }
-
-    /**
-     * Determine whether the user can view the model.
-     */
-    public function view(User $user, Update $Update): bool
-    {
-        //
-    }
-
-    /**
-     * Determine whether the user can create models.
-     */
-    public function create(User $user): bool
-    {
-        //
-    }
-
-    /**
-     * Determine whether the user can update the model.
-     */
-    public function update(User $user, Update $Update): bool
-    {
-        //
-    }
-
-    /**
-     * Determine whether the user can delete the model.
-     */
-    public function delete(User $user, Update $Update): bool
-    {
-        //
-    }
-
-    /**
-     * Determine whether the user can restore the model.
-     */
-    public function restore(User $user, Update $Update): bool
-    {
-        //
-    }
-
-    /**
-     * Determine whether the user can permanently delete the model.
-     */
-    public function forceDelete(User $user, Update $Update): bool
-    {
-        //
+        return match ($user['access_level']) {
+            AccessLevel::APP => true,
+            AccessLevel::BRANCH => $user->branch_id === $report->branch_office_id,
+            default => false,
+        };
     }
 }

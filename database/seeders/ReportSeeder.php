@@ -13,7 +13,7 @@ class ReportSeeder extends Seeder
      */
     public function run(): void
     {
-        foreach (BranchOffice::all() as $branch_office) {
+        foreach (BranchOffice::where('is_central_office', false)->get() as $branch_office) {
             Report::factory()->count(10)->create([
                 'branch_office_id' => $branch_office->id,
             ]);

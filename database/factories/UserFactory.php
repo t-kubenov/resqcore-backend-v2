@@ -26,14 +26,14 @@ class UserFactory extends Factory
      */
     public function definition(): array
     {
-        // $is_company = fake()->boolean();
+
 
         return [
             'first_name' => fake()->firstName(),
             'last_name' => fake()->lastName(),
             'patronymic' => fake()->lastName(),
             // 'company' => $is_company? Company::factory(): null,
-            // 'branch' => $is_company? null: BranchOffice::inRandomOrder()->first()->id,
+//             'branch_id' =>  BranchOffice::inRandomOrder()->first()->id,
             // 'role_id' => Role::random()->id,
             'email' => fake()->unique()->safeEmail(),
             'email_verified_at' => now(),
@@ -52,26 +52,13 @@ class UserFactory extends Factory
         ]);
     }
 
-    // create company user
-    public function company_employee(): static
-    {
-        return $this->state(fn (array $attributes) => [
-            'company_id' => Company::factory(),
-            'branch_id' => null,
-            'role_id' => 4,
-        ])
-        ->afterCreating(function (User $user) {
-            $user->assignRole('company_user');
-        });
-    }
-
     // branch office employee
-
-    public function branch_office_employee(): static
+    public function branch_office_employee_by_id(int $branch_office_id): static
     {
+
         return $this->state(fn (array $attributes) => [
             'company_id' => null,
-            'branch_id' => BranchOffice::inRandomOrder()->first()->id,
+            'branch_id' => $branch_office_id,
             'role_id' => 3,
         ])
         ->afterCreating(function (User $user) {
@@ -79,18 +66,29 @@ class UserFactory extends Factory
         });
     }
 
-    // central office user
-
-    public function central_office_user(): static
+    public function branch_office_employee(): static
     {
         return $this->state(fn (array $attributes) => [
             'company_id' => null,
-            'branch_id' => null,
+            'branch_id' => BranchOffice::where('is_central_office', false)->inRandomOrder()->first()->id,
+            'role_id' => 3,
+        ])
+            ->afterCreating(function (User $user) {
+                $user->assignRole('branch_office_user');
+            });
+    }
+
+    // central office user
+
+    public function central_office_user_by_id(int $branch_office_id): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'company_id' => null,
+            'branch_id' => $branch_office_id,
             'role_id' => 2,
         ])
         ->afterCreating(function (User $user) {
             $user->assignRole('central_office_user');
         });
     }
-    //todo: block reports created by ca
 }

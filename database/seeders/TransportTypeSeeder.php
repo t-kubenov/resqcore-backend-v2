@@ -12,50 +12,12 @@ class TransportTypeSeeder extends Seeder
      */
     public function run(): void
     {
-        $transportTypes = [
-            [
-                'key' => 'ac',
-                'name' => 'АЦ',
-            ],
-            [
-                'key' => 'operational_vehicle',
-                'name' => 'Оперативный а/м',
-            ],
-            [
-                'key' => 'car_ladder',
-                'name' => 'Автолестница',
-            ],
-            [
-                'key' => 'rpg_car',
-                'name' => 'Автомобиль РПГ',
-            ],
-            [
-                'key' => 'shift_car',
-                'name' => 'Вахтовка',
-            ],
-            [
-                'key' => 'light_car',
-                'name' => 'Легковой а/м',
-            ],
-            [
-                'key' => 'light_car_high_cross_country',
-                'name' => 'Легковой а/м повышенной проходимости',
-                'alias' => 'Легковой а/м ПП',
-            ],
-            [
-                'key' => 'asa_car',
-                'name' => 'а/м АСА',
-            ],
-        ];
+        $rescueCompanies = \App\Models\RescueCompany::all();
 
-        foreach ($transportTypes as $transportType) {
-            TransportType::updateOrCreate(
-                ['name' => $transportType['name']], // Matching condition
-                [
-                    'key' => $transportType['key'] ?? null,
-                    'alias' => $transportType['alias'] ?? null, // Use null if alias is not set
-                ]
-            );
+        foreach ($rescueCompanies as $rescueCompany) {
+            TransportType::factory()->count(7)->create([
+                'rescue_company_id' => $rescueCompany->id,
+            ]);
         }
     }
 }
