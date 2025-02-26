@@ -3,6 +3,7 @@
 use App\Http\Controllers\V2\AuthController;
 use App\Http\Controllers\V2\AuxiliaryDataController;
 use App\Http\Controllers\V2\CompanyController;
+use App\Http\Controllers\V2\CustomFieldController;
 use App\Http\Controllers\V2\EmailController;
 use App\Http\Controllers\V2\ImageController;
 use App\Http\Controllers\V2\ReportController;
@@ -35,6 +36,10 @@ Route::middleware('throttle:global')->prefix('v2/')->group(function () {
             Route::get('/oil-fields', 'getOilFields')->name('oil-fields');
             Route::get('/subsoil-contracts', 'getSubsoilContracts')->name('subsoil-contracts');
         });
+
+        Route::prefix('admin')->name('admin.')
+            ->middleware('role:admin')
+            ->resource('custom-fields', 'CustomFieldController');
 
         Route::group(['middleware' => ['permission:user_register']], function () {
             Route::post('/register', [AuthController::class, 'register'])->name('register');
