@@ -1,6 +1,6 @@
 <?php
 
-namespace Database\Factories;
+namespace Database\Factories\V2\CustomField;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 

@@ -4,21 +4,25 @@ namespace App\Models\V2\CustomField;
 
 use App\Enums\CustomFieldType;
 use App\Models\RescueCompany;
+use Database\Factories\V2\CustomField\CustomFieldFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class CustomField extends Model
 {
-    /** @use HasFactory<\Database\Factories\CustomFieldFactory> */
+    /** @use HasFactory<CustomFieldFactory> */
     use HasFactory;
 
     protected $fillable = [
+        'rescue_company_id',
+        'parent_field',
+        'model',
         'name',
         'label',
         'required',
         'validation',
         'type',
-        'parameters', // add: is_filterable, has_total, total_variable,
+        'parameters', // array of CustomFieldParameters
     ];
 
     protected $casts = [

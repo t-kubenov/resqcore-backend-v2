@@ -1,6 +1,6 @@
 <?php
 
-namespace Database\Factories;
+namespace Database\Factories\V2\CustomField;
 
 use App\Enums\CustomFieldType;
 use App\Models\V2\CustomField\CustomField;

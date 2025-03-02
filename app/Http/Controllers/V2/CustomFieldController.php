@@ -2,65 +2,48 @@
 
 namespace App\Http\Controllers\V2;
 
+use App\Enums\CustomFieldType;
 use App\Http\Requests\V2\CustomField\StoreCustomFieldRequest;
-use App\Http\Requests\V2\CustomField\UpdateCustomFieldRequest;
 use App\Models\V2\CustomField\CustomField;
 
 class CustomFieldController
 {
     /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-
-    }
-
-    /**
      * Store a newly created resource in storage.
      */
     public function store(StoreCustomFieldRequest $request)
     {
-        //
+        $customField = CustomField::create($request->validated());
+
+        if (in_array($request['type'],[
+                CustomFieldType::SingleChoiceEnum->value,
+                CustomFieldType::MultipleChoiceEnum->value
+                ])
+            && $request->has('options')) {
+            $this->storeCustomFieldOptions($customField, $request->options);
+        }
+
+        if ($request->has('subfields')) {
+            $this->storeSubfields($customField, $request->subfields);
+        }
+
+
+        return response()->json($customField, 201);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(CustomField $customField)
+    private function storeCustomFieldOptions($customField, $options)
     {
-        //
+        foreach ($options as $option) {
+            $option['custom_field_id'] = $customField->id;
+            $customField->options()->create($option);
+        }
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(CustomField $customField)
+    private function storeSubfields($customField, $subfields)
     {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdateCustomFieldRequest $request, CustomField $customField)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(CustomField $customField)
-    {
-        //
+        foreach ($subfields as $subfield) {
+            $subfield['parent_field'] = $customField->id;
+            $customField->subfields()->create($subfield);
+        }
     }
 }

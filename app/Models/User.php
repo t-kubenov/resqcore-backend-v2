@@ -77,6 +77,11 @@ class User extends Authenticatable
         );
     }
 
+    public function getRescueCompanyIdAttribute(): int
+    {
+        return $this->branch_office->rescue_company_id;
+    }
+
     public function reports()
     {
         return $this->hasMany(Report::class);

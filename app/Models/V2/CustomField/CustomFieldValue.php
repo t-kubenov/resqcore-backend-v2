@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class CustomFieldValue extends Model
 {
-    /** @use HasFactory<\Database\Factories\CustomFieldValueFactory> */
+    /** @use HasFactory<\Database\Factories\V2\CustomField\CustomFieldValueFactory> */
     use HasFactory;
 
     protected $fillable = [

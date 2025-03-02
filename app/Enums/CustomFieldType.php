@@ -2,8 +2,12 @@
 
 namespace App\Enums;
 
+use App\Traits\EnumToArray;
+
 enum CustomFieldType: string
 {
+    use EnumToArray;
+
     case Int = 'int';
     case Float = 'float';
     case String = 'string';
@@ -15,11 +19,6 @@ enum CustomFieldType: string
     case MultiValue = 'multi_value';
 
 
-    public static function values(): array
-    {
-        return array_column(self::cases(), 'value');
-    }
-
     public static function plainTypes(): array
     {
         return [
@@ -29,15 +28,23 @@ enum CustomFieldType: string
             self::Text,
             self::Datetime,
             self::Boolean,
+            self::SingleChoiceEnum,
         ];
     }
 
     public static function nonPlainTypes(): array
     {
         return [
-            self::SingleChoiceEnum,
             self::MultipleChoiceEnum,
             self::MultiValue,
+        ];
+    }
+
+    public static function ChoiceEnum(): array
+    {
+        return [
+            self::SingleChoiceEnum,
+            self::MultipleChoiceEnum,
         ];
     }
 

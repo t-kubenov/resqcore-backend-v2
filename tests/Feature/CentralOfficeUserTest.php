@@ -85,7 +85,7 @@ test('can see all reports of own company', function (){
         ->assertStatus(200)
         ->assertJsonFragment([
             'total' => Report::whereHas('branch_office', function ($query) {
-                $query->where('rescue_company_id', $this->user->branch_office->rescue_company_id);
+                $query->where('rescue_company_id', $this->user->rescue_company_id);
             })->count(),
         ]);
 });

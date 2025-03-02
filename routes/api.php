@@ -9,6 +9,7 @@ use App\Http\Controllers\V2\ImageController;
 use App\Http\Controllers\V2\ReportController;
 use App\Http\Controllers\V2\StatisticsController;
 use App\Http\Controllers\V2\UpdateController;
+use App\Http\Controllers\V2\UpdateLogController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('throttle:global')->prefix('v2/')->group(function () {
@@ -37,9 +38,12 @@ Route::middleware('throttle:global')->prefix('v2/')->group(function () {
             Route::get('/subsoil-contracts', 'getSubsoilContracts')->name('subsoil-contracts');
         });
 
-        Route::prefix('admin')->name('admin.')
+        Route::prefix('admin')
+            ->name('admin.')
             ->middleware('role:admin')
-            ->resource('custom-fields', 'CustomFieldController');
+            ->group(function (){
+                Route::resource('custom-fields', CustomFieldController::class)->only(['store']);
+            });
 
         Route::group(['middleware' => ['permission:user_register']], function () {
             Route::post('/register', [AuthController::class, 'register'])->name('register');
@@ -49,7 +53,7 @@ Route::middleware('throttle:global')->prefix('v2/')->group(function () {
 
             Route::get('/reports', [ReportController::class, 'index'])->name('reports.index');
             Route::get('/reports/{id}', [ReportController::class, 'show'])->name('reports.show');
-            Route::get('/reports/{id}/log', [\App\Http\Controllers\V2\UpdateLogController::class, 'show'])->name('reports.id.log');
+            Route::get('/reports/{id}/log', [UpdateLogController::class, 'show'])->name('reports.id.log');
             Route::get('/export', [ReportController::class, 'export'])->name('reports.export');
 
             Route::group(['middleware' => ['permission:branch_report_create']], function () {
