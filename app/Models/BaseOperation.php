@@ -2,10 +2,10 @@
 
 namespace App\Models;
 
+use App\Models\V2\CustomField\CustomField;
 use App\Traits\AltersDisplayedDates;
 use Illuminate\Validation\Rule;
 
-//use Illuminate\Database\Eloquent\Model;
 
 abstract class BaseOperation extends Model
 {
@@ -38,7 +38,7 @@ abstract class BaseOperation extends Model
 
     public static function fieldDefinitions(): array
     {
-        return [
+        return array_merge(CustomField::getFormattedFields(auth()->user()->rescue_company_id, self::getClassName(static::class)), [
             'work_scope' => [
                 'key' => 'data.attributes.work_scope',
                 'name' => __('reports.fields.work_scope.name'),
@@ -160,7 +160,7 @@ abstract class BaseOperation extends Model
                 'required' => true,
                 'rules' => ['required', 'integer', 'min:1', 'max:10000'],
             ],
-        ];
+        ]);
     }
 
 
@@ -172,5 +172,16 @@ abstract class BaseOperation extends Model
     public function transport()
     {
         return $this->hasMany(Transport::class);
+    }
+
+    public function customFields()
+    {
+        return $this->hasMany(CustomField::class);
+    }
+
+    private static function getClassName($classname): string //todo: move to a helper sometime
+    {
+        if ($pos = strrpos($classname, '\\')) return substr($classname, $pos + 1);
+        return $pos;
     }
 }

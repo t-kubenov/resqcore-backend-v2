@@ -54,4 +54,45 @@ class CustomField extends Model
     {
         return $this->options->pluck('id')->toArray();
     }
+
+    public function generateValidationString(): string
+    {
+        $rules = [];
+
+        $rules[] = ($this->required? 'required': 'nullable');
+
+        $rules[] = match ($this->type) {
+            CustomFieldType::Int => 'integer',
+            CustomFieldType::Float => 'numeric',
+            CustomFieldType::String => 'string|max:255',
+            CustomFieldType::Text => 'string',
+            CustomFieldType::Datetime => 'date',
+            CustomFieldType::Boolean => 'boolean',
+            CustomFieldType::SingleChoiceEnum => 'integer|exists:custom_field_options,id',
+            CustomFieldType::MultipleChoiceEnum => 'array|exists:custom_field_options,id',
+            default => '',
+        };
+
+        $rules[] = $this->validation;
+
+        return implode('|', array_filter($rules));
+    }
+
+    public static function getFormattedFields(int $rescueCompanyId, string $model): array
+    {
+        return self::where([['rescue_company_id', $rescueCompanyId], ['model', $model]])
+            ->get()
+            ->mapWithKeys(function (CustomField $field) {
+            return [
+                $field->name => [
+                    'key' => "data.attributes.{$field->name}",
+                    'name' => $field->name,
+                    'alias' => $field->label,
+                    'type' => $field->type->value,
+                    'required' => $field->required,
+                    'rules' => explode('|', $field->generateValidationString()),
+                ],
+            ];
+        })->toArray();
+    }
 }

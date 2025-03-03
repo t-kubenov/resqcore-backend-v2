@@ -54,7 +54,8 @@ abstract class BaseReportStoreRequest extends FormRequest
      */
     abstract public function rules(): array;
 
-    protected function getRules(BaseOperation $operation){
+    protected function getRules(BaseOperation $operation): array
+    {
         return collect($operation::fieldDefinitions())
             ->mapWithKeys(fn($field) => [$field['key'] => $field['rules']])
             ->toArray();
