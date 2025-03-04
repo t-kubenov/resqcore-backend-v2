@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\V2\CustomField\CustomField;
+use App\Models\V2\CustomField\CustomFieldValue;
 use App\Traits\AltersDisplayedDates;
 use Illuminate\Validation\Rule;
 
@@ -43,7 +44,7 @@ abstract class BaseOperation extends Model
                 'key' => 'data.attributes.work_scope',
                 'name' => __('reports.fields.work_scope.name'),
                 'alias' => __('reports.fields.work_scope.alias'),
-                'type' => 'textarea',
+                'type' => 'text',
                 'required' => true,
                 'rules' => ['required', 'string'],
             ],
@@ -51,7 +52,7 @@ abstract class BaseOperation extends Model
                 'key' => 'data.attributes.situation_during_filing',
                 'name' => __('reports.fields.situation_during_filing.name'),
                 'alias' => __('reports.fields.situation_during_filing.alias'),
-                'type' => 'textarea',
+                'type' => 'text',
                 'required' => false,
                 'rules' => ['nullable', 'string'],
             ],
@@ -59,7 +60,7 @@ abstract class BaseOperation extends Model
                 'key' => 'data.attributes.minor_injury_count',
                 'name' => __('reports.fields.minor_injury_count.name'),
                 'alias' => __('reports.fields.minor_injury_count.alias'),
-                'type' => 'number',
+                'type' => 'int',
                 'required' => true,
                 'rules' => ['required', 'integer', 'min:0', 'max:10000'],
             ],
@@ -67,7 +68,7 @@ abstract class BaseOperation extends Model
                 'key' => 'data.attributes.severe_injury_count',
                 'name' => __('reports.fields.severe_injury_count.name'),
                 'alias' => __('reports.fields.severe_injury_count.alias'),
-                'type' => 'number',
+                'type' => 'int',
                 'required' => true,
                 'rules' => ['required', 'integer', 'min:0', 'max:10000'],
             ],
@@ -75,7 +76,7 @@ abstract class BaseOperation extends Model
                 'key' => 'data.attributes.fatal_injury_count',
                 'name' => __('reports.fields.fatal_injury_count.name'),
                 'alias' => __('reports.fields.fatal_injury_count.alias'),
-                'type' => 'number',
+                'type' => 'int',
                 'required' => true,
                 'rules' => ['required', 'integer', 'min:0', 'max:10000'],
             ],
@@ -83,7 +84,7 @@ abstract class BaseOperation extends Model
                 'key' => 'data.attributes.evacuated_people_count',
                 'name' => __('reports.fields.evacuated_people_count.name'),
                 'alias' => __('reports.fields.evacuated_people_count.alias'),
-                'type' => 'number',
+                'type' => 'int',
                 'required' => true,
                 'rules' => ['required', 'integer', 'min:0', 'max:10000'],
             ],
@@ -91,7 +92,7 @@ abstract class BaseOperation extends Model
                 'key' => 'data.attributes.provided_medical_count',
                 'name' => __('reports.fields.provided_medical_count.name'),
                 'alias' => __('reports.fields.provided_medical_count.alias'),
-                'type' => 'number',
+                'type' => 'int',
                 'required' => true,
                 'rules' => ['required', 'integer', 'min:0', 'max:10000'],
             ],
@@ -99,7 +100,7 @@ abstract class BaseOperation extends Model
                 'key' => 'data.attributes.client_equipment_count',
                 'name' => __('reports.fields.client_equipment_count.name'),
                 'alias' => __('reports.fields.client_equipment_count.alias'),
-                'type' => 'number',
+                'type' => 'int',
                 'required' => true,
                 'rules' => ['required', 'integer', 'min:0', 'max:10000'],
             ],
@@ -107,7 +108,7 @@ abstract class BaseOperation extends Model
                 'key' => 'data.attributes.third_parties_count',
                 'name' => __('reports.fields.third_parties_count.name'),
                 'alias' => __('reports.fields.third_parties_count.alias'),
-                'type' => 'number',
+                'type' => 'int',
                 'required' => true,
                 'rules' => ['required', 'integer', 'min:0', 'max:10000'],
             ],
@@ -143,7 +144,7 @@ abstract class BaseOperation extends Model
                 'key' => 'data.attributes.transport.*.id',
                 'name' => __('reports.fields.transport_id.name'),
                 'alias' => __('reports.fields.transport_id.alias'),
-                'type' => 'number',
+                'type' => 'int',
                 'required' => true,
                 'rules' => ['required', 'integer',
                     Rule::exists('transport_types', 'id')->where(function ($query) {
@@ -156,7 +157,7 @@ abstract class BaseOperation extends Model
                 'key' => 'data.attributes.transport.*.count',
                 'name' => __('reports.fields.transport_count.name'),
                 'alias' => __('reports.fields.transport_count.alias'),
-                'type' => 'number',
+                'type' => 'int',
                 'required' => true,
                 'rules' => ['required', 'integer', 'min:1', 'max:10000'],
             ],
@@ -174,8 +175,15 @@ abstract class BaseOperation extends Model
         return $this->hasMany(Transport::class);
     }
 
-    public function customFields()
+    public function customFieldValues()
     {
-        return $this->hasMany(CustomField::class);
+        return $this->morphMany(CustomFieldValue::class, 'model');
+    }
+
+    public function customFieldValueArray(): array
+    {
+        return $this->customFieldValues->mapWithKeys(function (CustomFieldValue $value) {
+            return [$value->customField->name => $value->value];
+        })->toArray();
     }
 }

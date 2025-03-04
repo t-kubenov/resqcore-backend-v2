@@ -32,13 +32,12 @@ class ReportResource extends JsonResource
                 'update_track' => $this->getUpdateTrack(),
             ],
             'original' => $this->getAttributes($request),
-
         ];
     }
 
     public function getModifiedAttributes()
     {
-        return [
+        return array_merge([
             'branch_office' => $this->branch_office?->name,
             'reported_by' => $this->reporter?->full_name,
             'report_code' => $this->report_code,
@@ -63,7 +62,7 @@ class ReportResource extends JsonResource
             'worker_man_hours' => $this->worker_man_hours,
             'close_date' => $this->close_date?->format(config('app.date_format')),
             'is_closed' => $this->is_closed,
-        ];
+        ], $this->customFieldValueArray());
     }
 
     public function getColumns(){

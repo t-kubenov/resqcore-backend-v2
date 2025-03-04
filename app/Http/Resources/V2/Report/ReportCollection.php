@@ -100,4 +100,11 @@ class ReportCollection extends ResourceCollection
             'transport_totals' => $report->transport_totals,
         ];
     }
+
+    protected function getCustomFieldValues($report): array
+    {
+        $customFields = $report->custom_fields;
+
+        dd($customFields);
+    }
 }

@@ -30,7 +30,7 @@ class CustomFieldValue extends Model
         'value_datetime' => 'datetime',
     ];
 
-    public function field()
+    public function customField()
     {
         return $this->belongsTo(CustomField::class);
     }
@@ -45,16 +45,18 @@ class CustomFieldValue extends Model
      */
     public function getValueAttribute()
     {
-        if ($this->field->type === 'multi_field') {
+        if ($this->type === 'multi_field') {
             throw new \BadFunctionCallException('Cannot get value of multi_field');
         }
 
-        return match ($this->field->type) {
-            'int', 'single_choice_enum', 'multiple_choice_enum' => $this->value_int,
-            'float' => $this->value_float,
-            'boolean' => $this->value_boolean,
-            'datetime' => $this->value_datetime,
-            'text' => $this->value_text,
+        return match ($this->customField->type) {
+            CustomFieldType::Int,
+            CustomFieldType::SingleChoiceEnum,
+            CustomFieldType::MultipleChoiceEnum => $this->value_int,
+            CustomFieldType::Float => $this->value_float,
+            CustomFieldType::Boolean => $this->value_boolean,
+            CustomFieldType::Datetime => $this->value_datetime,
+            CustomFieldType::Text => $this->value_text,
             default => $this->value_string, // 'string', 'enum', etc.
         };
     }

@@ -26,7 +26,20 @@ class AuxiliaryDataController extends Controller
 
     public function getReportFields(): JsonResponse
     {
-        return response()->json(['data' => Report::fieldDefinitions()]);
+        $data =
+            array_map(fn($field) => [
+            'name' => $field['key'],
+            'label' => $field['name'],
+            'type' => $field['type'],
+            'options' => $field['options'] ?? null,
+            'validationRules' => [
+                'required' => in_array('required', $field['rules'] ?? [])
+            ],
+        ], Report::fieldDefinitions());
+
+
+
+        return response()->json(['data' => $data]);
     }
 
     public function getUpdateFields(): JsonResponse

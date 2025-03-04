@@ -40,17 +40,23 @@ enum CustomFieldType: string
         ];
     }
 
-    public static function ChoiceEnum(): array
+    public static function complexTypes(): array
     {
         return [
             self::SingleChoiceEnum,
             self::MultipleChoiceEnum,
+            self::MultiValue,
         ];
     }
 
     public function isPlain(): bool
     {
         return in_array($this, self::plainTypes(), true);
+    }
+
+    public function isComplexType(): bool
+    {
+        return in_array($this, self::complexTypes(), true);
     }
 }
 
