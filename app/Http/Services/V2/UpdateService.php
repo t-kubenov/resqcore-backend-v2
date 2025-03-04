@@ -19,6 +19,7 @@ class UpdateService extends ReportService
 
         $update = $report->updates()->create($attributes);
 
+        CustomFieldValueService::store($user->rescue_company_id, $update, $attributes);
         $this->checkUpdateForClosing($update);
         $this->calculateTotalsAndUpdateTimestamp($update);
 
@@ -28,7 +29,7 @@ class UpdateService extends ReportService
         }
 
         return $update;
-    }
+    }    //todo: basically duplicates same method in reports, you know what to do
 
     private function parseTransport(Update $update, array $transport)
     {

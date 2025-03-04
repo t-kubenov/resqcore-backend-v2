@@ -45,6 +45,7 @@ class ReportService
 
         $report = Report::create($attributes);
 
+        CustomFieldValueService::store($user->rescue_company_id, $report, $attributes);
         $this->checkReportForClosing($report);
         $this->calculateTotals($report);
 

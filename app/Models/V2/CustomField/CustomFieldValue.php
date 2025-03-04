@@ -2,6 +2,7 @@
 
 namespace App\Models\V2\CustomField;
 
+use App\Enums\CustomFieldType;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -57,4 +58,21 @@ class CustomFieldValue extends Model
             default => $this->value_string, // 'string', 'enum', etc.
         };
     }
+
+    public static function getStorableColumn(CustomFieldType $customFieldType): string
+    {
+        return match ($customFieldType) {
+            CustomFieldType::Int,
+            CustomFieldType::SingleChoiceEnum,
+            CustomFieldType::MultipleChoiceEnum, => 'value_int',
+            CustomFieldType::Float => 'value_float',
+            CustomFieldType::String => 'value_string',
+            CustomFieldType::Text => 'value_text',
+            CustomFieldType::Datetime => 'value_datetime',
+            CustomFieldType::Boolean => 'value_boolean',
+
+            default => '',
+        };
+    }
+
 }
