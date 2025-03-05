@@ -39,7 +39,7 @@ abstract class BaseOperation extends Model
 
     public static function fieldDefinitions(): array
     {
-        return array_merge(CustomField::getFormattedFields(auth()->user()->rescue_company_id, get_class_name(static::class)), [
+        return array_merge(CustomField::getFormattedFields(auth()->user()->rescue_company_id, static::class), [
             'work_scope' => [
                 'key' => 'data.attributes.work_scope',
                 'name' => __('reports.fields.work_scope.name'),

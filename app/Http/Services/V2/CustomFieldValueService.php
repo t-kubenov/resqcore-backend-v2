@@ -18,7 +18,7 @@ class CustomFieldValueService
         $customFields = CustomField::where(
             [
                 ['rescue_company_id', $rescueCompanyId],
-                ['model', get_class_name($baseReport::class)],
+                ['model', $baseReport::class],
             ])
             ->get();
 

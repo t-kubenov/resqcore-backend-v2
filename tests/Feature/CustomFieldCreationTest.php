@@ -22,7 +22,7 @@ test('custom field create', function () {
             'rescue_company_id' => $this->rescueCompany->id,
             'name' => 'custom_field_example',
             'label' => 'Custom Field Example',
-            'model' => 'Report',
+            'model' => 'App\Models\Report',
             'required' => true,
             'type' => CustomFieldType::String->value,
         ]);
@@ -33,7 +33,7 @@ test('custom field create', function () {
         'rescue_company_id' => $this->rescueCompany->id,
         'name' => 'custom_field_example',
         'label' => 'Custom Field Example',
-        'model' => 'Report',
+        'model' => 'App\Models\Report',
         'required' => true,
         'type' => CustomFieldType::String->value,
     ]);
@@ -72,7 +72,7 @@ it('requires options for single and multiple choice enums', function () {
         ->postJson($this->url, [
         'rescue_company_id' => $this->rescueCompany->id,
         'name' => 'custom_field_example',
-        'model' => 'Report',
+        'model' => 'App\Models\Report',
         'required' => true,
         'type' => CustomFieldType::SingleChoiceEnum->value,
     ]);
@@ -88,7 +88,7 @@ it('fails when MultiValue fields contain subfields of type MultiValue', function
         ->postJson($this->url, [
         'rescue_company_id' => $this->rescueCompany->id,
         'name' => 'multi_value_field',
-        'model' => 'Report',
+        'model' => 'App\Models\Report',
         'required' => true,
         'type' => CustomFieldType::MultiValue->value,
         'subfields' => [
