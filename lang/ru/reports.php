@@ -202,6 +202,31 @@ return [
             'name' => 'Статус',
             'alias' => '',
         ],
+        'fire_station' => [
+            'name' => 'Пожарная часть',
+            'alias' => '',
+        ],
+        'injured_workers' => [
+            'name' => 'Пострадавшие оперативники',
+            'alias' => '',
+        ],
+        'water_used' => [
+            'name' => 'Использовано воды (литры)',
+            'alias' => '',
+        ],
+        'foam_used' => [
+            'name' => 'Использовано пены (литры)',
+            'alias' => '',
+        ],
+        'distance_to_scene' => [
+            'name' => 'Расстояние до места ЧС (км)',
+            'alias' => '',
+        ],
+        'false_call' => [
+            'name' => 'Ложный вызов',
+            'alias' => '',
+        ],
+
     ],
 
     'show' => [
