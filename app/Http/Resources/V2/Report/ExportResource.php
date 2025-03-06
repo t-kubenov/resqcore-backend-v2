@@ -17,7 +17,7 @@ class ExportResource extends JsonResource
         $this->load('transport');
         $attributes = $this->attributesToArray();
 
-        return [
+        return array_merge([
             "id" => $this->id,
             "type" => "departure",
             "attributes" => [
@@ -25,7 +25,8 @@ class ExportResource extends JsonResource
                 'call_date' => $attributes['call_date'],
                 'work_start_date' => $attributes['work_start_date'],
                 'close_date' => $attributes['close_date'],
-                'is_emergency_line' => $this->is_emergency_line,
+//                'is_emergency_line' => $this->is_emergency_line,
+                'is_emergency_line' => $this->is_emergency_line? 'Вне территории заказчика': 'На территории заказчика',
                 'line_facility_owner' => $this->line_facility_owner,
                 'emergency_type' => $this->emergency?->name, // Derive from emergency type
                 'emergency_location' => $this->emergency_location,
@@ -35,6 +36,6 @@ class ExportResource extends JsonResource
                 'transport_totals' => $this->transport_totals,
                 'is_closed' => $this->is_closed,
             ]
-        ];
+        ], $this->customFieldValueArray());
     }
 }
