@@ -21,6 +21,15 @@ class ReportService
         return $query->with(['transport', 'updates.transport'])->paginate();
     }
 
+    public function export(Request $request)
+    {
+        $query = Report::orderBy("call_date");
+
+        $query = $this->filterQuery($query, $request);
+
+        return $query->with(['transport', 'updates.transport'])->paginate();
+    }
+
     public function show($report)
     {
         $report->load([

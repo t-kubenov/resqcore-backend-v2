@@ -75,6 +75,6 @@ class ReportController extends Controller
 
     public function export(FilterReportRequest $request)
     {
-        return new ExportCollection($this->reportService->index($request));
+        return new ExportCollection($this->reportService->export($request));
     }
 }

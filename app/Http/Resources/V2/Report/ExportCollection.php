@@ -53,11 +53,4 @@ class ExportCollection extends ReportCollection
         ];
     }
 
-    public function getCollection()
-    {
-        return $this->collection
-            ->sortBy('call_date')
-            ->values()
-            ->all();
-    }
 }
