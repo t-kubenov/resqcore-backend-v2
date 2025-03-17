@@ -47,10 +47,17 @@ class ExportCollection extends ReportCollection
 
     public function toArray(Request $request): array
     {
-        return [
+         return [
             'columns' => $this->getColumns(),
             'data' => $this->getCollection(),
         ];
     }
 
+    public function getCollection()
+    {
+        return $this->collection
+            ->sortBy('call_date')
+            ->values()
+            ->all();
+    }
 }
