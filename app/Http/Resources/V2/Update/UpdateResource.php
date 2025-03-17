@@ -23,6 +23,11 @@ class UpdateResource extends JsonResource
         ];
     }
 
+    public function getAttributes()
+    {
+        return array_merge(parent::getAttributes(), $this->customFieldValueArray());
+    }
+
     protected function getRelationships()
     {
         return [

@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources\V2\Update;
 
+use App\Models\Report;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 
@@ -22,7 +23,7 @@ class UpdateLogCollection extends ResourceCollection
      */
     protected function getColumns(): array
     {
-        $attributes = [
+        $attributes = array_merge([
             'created_at',
             'reported_by',
             'minor_injury_count',
@@ -36,7 +37,7 @@ class UpdateLogCollection extends ResourceCollection
             'work_scope',
             'situation_during_filing',
             'transport',
-        ];
+        ], $this->getCustomFieldColumns());
 
         return collect($attributes)->map(fn($attribute) => [
             'key' => $attribute,

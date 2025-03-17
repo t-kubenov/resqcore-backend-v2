@@ -16,7 +16,6 @@ function loadAdmin (){
     return User::where('role_id', 1)->inRandomOrder()->first();
 };
 
-
 function assertEndpoint ($object, $route, $data): void
 {
     foreach ($object->users as $user) {

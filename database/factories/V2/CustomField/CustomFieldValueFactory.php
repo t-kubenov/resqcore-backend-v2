@@ -2,6 +2,7 @@
 
 namespace Database\Factories\V2\CustomField;
 
+use App\Enums\CustomFieldModel;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -19,7 +20,7 @@ class CustomFieldValueFactory extends Factory
     {
         return [
             'custom_field_id' => 1,
-            'model_type' => 'App\Models\V2\Company',
+            'model_type' => $this->faker->randomElement(CustomFieldModel::values()),
             'model_id' => 1,
         ];
     }

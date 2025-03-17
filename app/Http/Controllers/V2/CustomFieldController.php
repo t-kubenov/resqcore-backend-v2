@@ -2,9 +2,13 @@
 
 namespace App\Http\Controllers\V2;
 
+use App\Enums\CustomFieldParameter;
 use App\Enums\CustomFieldType;
 use App\Http\Requests\V2\CustomField\StoreCustomFieldRequest;
+use App\Models\Update;
 use App\Models\V2\CustomField\CustomField;
+use Illuminate\Http\Client\Request;
+
 
 class CustomFieldController
 {
@@ -13,22 +17,39 @@ class CustomFieldController
      */
     public function store(StoreCustomFieldRequest $request)
     {
-        $customField = CustomField::create($request->validated());
-
-        if (in_array($request['type'],[
-                CustomFieldType::SingleChoiceEnum->value,
-                CustomFieldType::MultipleChoiceEnum->value
-                ])
-            && $request->has('options')) {
-            $this->storeCustomFieldOptions($customField, $request->options);
-        }
-
-        if ($request->has('subfields')) {
-            $this->storeSubfields($customField, $request->subfields);
-        }
-
+        $attributes = $request->validated();
+        $customField = $this->createWithAttributes($attributes);
 
         return response()->json($customField, 201);
+    }
+
+
+    private function createWithAttributes(array $attributes): CustomField
+    {
+        $customField = CustomField::create($attributes);
+
+        if (in_array($attributes['type'],[
+                CustomFieldType::SingleChoiceEnum->value,
+                CustomFieldType::MultipleChoiceEnum->value
+            ])
+            && isset($attributes['options'])) {
+            $this->storeCustomFieldOptions($customField, $attributes['options']);
+        }
+
+        if (isset($attributes['subfields'])) {
+            $this->storeSubfields($customField, $attributes['subfields']);
+        }
+
+        if (in_array(CustomFieldParameter::IncludeToUpdates->value, $attributes['parameters'])) {
+            $this->createWithAttributes(array_merge($attributes, [
+                'model' => Update::class,
+                'parameters' => [],
+            ]));
+        }
+
+        //todo: total fields and addition
+
+        return $customField;
     }
 
     private function storeCustomFieldOptions($customField, $options)
