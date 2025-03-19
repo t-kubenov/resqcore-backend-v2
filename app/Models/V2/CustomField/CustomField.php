@@ -2,6 +2,8 @@
 
 namespace App\Models\V2\CustomField;
 
+use App\Casts\CustomFieldParameterCast;
+use App\Enums\CustomFieldParameter;
 use App\Enums\CustomFieldType;
 use App\Models\RescueCompany;
 use Database\Factories\V2\CustomField\CustomFieldFactory;
@@ -27,7 +29,7 @@ class CustomField extends Model
 
     protected $casts = [
         'type' => CustomFieldType::class,
-        'parameters' => 'array',
+        'parameters' => CustomFieldParameterCast::class,
     ];
 
     public function options()
@@ -93,11 +95,13 @@ class CustomField extends Model
             return [
                 $field->name => [
                     'key' => "data.attributes.{$field->name}",
-                    'name' => $field->name,
-                    'alias' => $field->label,
+                    'name' => $field->label,
+                    'alias' => '',
                     'type' => $field->type->value,
                     'required' => $field->required,
                     'rules' => explode('|', $field->generateValidationString()),
+                    ...($field->type->isEnum()? ['options' => route('auxiliary.field-options', $field->name)]: []),
+                    'parameters' => $field->parameters,
                 ],
             ];
         })->toArray();

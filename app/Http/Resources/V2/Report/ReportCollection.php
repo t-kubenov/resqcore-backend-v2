@@ -4,8 +4,11 @@ namespace App\Http\Resources\V2\Report;
 
 use App\Http\Resources\V2\GenericRelationshipResource;
 use App\Http\Resources\V2\TransportCollection;
+use App\Models\Report;
+use Arr;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\ResourceCollection;
+
 
 class ReportCollection extends ResourceCollection
 {
@@ -32,18 +35,20 @@ class ReportCollection extends ResourceCollection
         $attributes = array_merge([
             'report_code',
             'facility_owner',
-            'emergency_type',
+            'emergency_type_id',
             'emergency_location',
             'caller',
-            'branch_office',
+            'branch_office_id',
             'is_closed',
-        ], $this->getCustomFieldColumns());
+        ],
+            Report::customFieldNames()
+        );
 
-        return  collect($attributes)->map(fn($attribute) => [
-            'key' => $attribute,
-            'name' => __('reports.fields.' . $attribute . '.name'),
-            'alias' => __('reports.fields.' . $attribute . '.alias'),
-        ])->toArray();
+        return collect(Report::fieldDefinitions())
+            ->only($attributes)
+            ->map(fn(array $attribute) => Arr::only($attribute, ['key', 'name', 'alias']))
+            ->values()
+            ->toArray();
     }
 
     /**
@@ -91,5 +96,10 @@ class ReportCollection extends ResourceCollection
             'transport' => new TransportCollection($report->transport??[]),
             'transport_totals' => $report->transport_totals,
         ];
+    }
+
+    protected function getCustomFieldColumns()
+    {
+
     }
 }

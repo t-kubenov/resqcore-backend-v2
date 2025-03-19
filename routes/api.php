@@ -29,13 +29,10 @@ Route::middleware('throttle:global')->prefix('v2/')->group(function () {
             Route::get('/report-fields', 'getReportFields')->name('report-fields');
             Route::get('/update-fields', 'getUpdateFields')->name('update-fields');
             Route::get('/report-filters', 'getReportFilters')->name('report-filters');
-            Route::get('/transport-types', 'getTransportTypes')->name('transport-types');
-            Route::get('/emergency-types', 'getEmergencyTypes')->name('emergency-types');
-            Route::get('/departure-types', 'getDepartureTypes')->name('departure-types');
-            Route::get('/branch-offices', 'getBranchOffices')->name('branch-offices');
             Route::get('/mineral-fields', 'getMineralFields')->name('mineral-fields');
             Route::get('/oil-fields', 'getOilFields')->name('oil-fields');
             Route::get('/subsoil-contracts', 'getSubsoilContracts')->name('subsoil-contracts');
+            Route::get('/field-options/{field_name}', 'getFieldOptions')->name('field-options');
         });
 
         Route::prefix('admin')

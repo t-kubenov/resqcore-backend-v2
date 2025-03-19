@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\CustomFieldParameter;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Validation\Rule;
@@ -60,6 +61,10 @@ class Report extends BaseOperation
                 'alias' => __('reports.fields.branch_office_id.alias'),
                 'type' => 'int',
                 'rules' => ['sometimes', 'integer', 'exists:branch_offices,id'],
+                'options' => route('auxiliary.field-options', 'branch-offices'),
+                'parameters' => [
+                    CustomFieldParameter::IsFilterable
+                ]
             ],
             'caller' => [
                 'key' => 'data.attributes.caller',
@@ -79,6 +84,9 @@ class Report extends BaseOperation
                     'before_or_equal:data.attributes.work_start_date',
                     'before_or_equal:tomorrow',
                 ],
+                'parameters' => [
+                    CustomFieldParameter::IsFilterable
+                ]
             ],
             'work_start_date' => [
                 'key' => 'data.attributes.work_start_date',
@@ -101,7 +109,10 @@ class Report extends BaseOperation
                     Rule::exists('emergency_types', 'id')->where(function ($query) {
                         $query->where('rescue_company_id', auth()->user()->rescue_company->id);
                     })],
-                'options' => route('auxiliary.emergency-types'),
+                'options' => route('auxiliary.field-options', 'emergency-types'),
+                'parameters' => [
+                    CustomFieldParameter::IsFilterable
+                ]
             ],
             'is_emergency_line' => [
                 'key' => 'data.attributes.is_emergency_line',
@@ -109,7 +120,10 @@ class Report extends BaseOperation
                 'alias' => __('reports.fields.is_emergency_line.alias'),
                 'type' => 'single_choice_enum',
                 'rules' => ['required', 'boolean'],
-                'options' => route('auxiliary.departure-types'),
+                'options' => route('auxiliary.field-options', 'departure-types'),
+                'parameters' => [
+                    CustomFieldParameter::IsFilterable
+                ]
             ],
             'line_facility_owner' => [
                 'key' => 'data.attributes.line_facility_owner',
@@ -139,70 +153,25 @@ class Report extends BaseOperation
                 'type' => 'multi_value',
                 'rules' => ['required', 'array', 'min:1'],
             ],
+            'is_closed' => [
+                'key' => 'data.attributes.is_closed',
+                'name' => __('reports.fields.is_closed.name'),
+                'alias' => __('reports.fields.is_closed.alias'),
+                'type' => 'boolean',
+                'parameters' => [
+                    CustomFieldParameter::IsFilterable,
+                    CustomFieldParameter::IsHidden
+                ]
+            ]
         ], parent::fieldDefinitions());
 
     }
 
     public static function filters(): array
     {
-        return [
-            [
-                'key' => 'emergency_type',
-                'name' => __('reports.fields.emergency_type.name'),
-                'rules' => ['sometimes', 'array', 'min:1'],
-                'type' => 'multiselect',
-                'options' => route('auxiliary.emergency-types'),
-            ],
-            [
-                'key' => 'branch_office_id',
-                'name' => __('reports.fields.branch_office_id.name'),
-                'rules' => ['sometimes', 'array', 'min:1'],
-                'type' => 'multiselect',
-                'options' => route('auxiliary.branch-offices'),
-                'dont_display_to' => ['branch_office_employee'],
-            ],
-            [
-                'key' => 'is_emergency_line',
-                'name' => __('reports.fields.is_emergency_line.name'),
-                'rules' => ['sometimes', 'boolean'],
-                'type' => 'dropdown',
-                'options' => route('auxiliary.departure-types'),
-            ],
-            [
-                'key' => 'date_start',
-                'name' => 'Начало периода',
-                'rules' => ['sometimes', 'date'],
-                'type' => 'date',
-            ],
-            [
-                'key' => 'date_end',
-                'name' => 'Конец периода',
-                'rules' => ['sometimes', 'date'],
-                'type' => 'date',
-            ],
-            [
-                'key' => 'search',
-                'name' => 'Поиск',
-                'rules' => ['sometimes', 'string', 'max:255'],
-                'type' => 'text',
-            ],
-            [
-                'key' => 'is_closed',
-                'name' => __('reports.fields.is_closed.name'),
-                'rules' => ['sometimes', 'boolean'],
-                'type' => 'dropdown',
-                'options' => [
-                    [
-                        'id' => 'true',
-                        'name' => 'Да',
-                    ],
-                    [
-                        'id' => 'false',
-                        'name' => 'Нет',
-                    ]
-                ]
-            ],
-        ];
+        return array_filter(Report::fieldDefinitions(), function ($field) {
+            return in_array(CustomFieldParameter::IsFilterable, $field['parameters'] ?? []);
+        });
     }
 
     protected function casts(): array
@@ -253,20 +222,6 @@ class Report extends BaseOperation
         return Attribute::make(
             get: fn() => $this->groupAndSumTransport()
         );
-    }
-
-    public static function departureTypes(): array
-    {
-        return [
-            [
-                'id' => 'true',
-                'name' => __('reports.emergency-line.true'),
-            ],
-            [
-                'id' => 'false',
-                'name' => __('reports.emergency-line.false'),
-            ]
-        ];
     }
 
     /**

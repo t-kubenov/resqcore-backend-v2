@@ -151,7 +151,7 @@ abstract class BaseOperation extends Model
                         $query->where('rescue_company_id', auth()->user()->branch_office->rescue_company_id);
                     })
                 ],
-                'options' => route('auxiliary.transport-types'),
+                'options' => route('auxiliary.field-options', 'transport-types'),
             ],
             'transport_count' => [
                 'key' => 'data.attributes.transport.*.count',
@@ -173,6 +173,16 @@ abstract class BaseOperation extends Model
     public function transport()
     {
         return $this->hasMany(Transport::class);
+    }
+
+
+    public static function customFieldNames(): array
+    {
+        return CustomField::where([
+            ['model', static::class],
+            ['rescue_company_id', auth()->user()->rescue_company_id]
+        ])->pluck('name')
+            ->toArray();
     }
 
     public function customFieldValues()

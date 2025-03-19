@@ -40,6 +40,14 @@ enum CustomFieldType: string
         ];
     }
 
+    public static function enums(): array
+    {
+        return [
+            self::SingleChoiceEnum,
+            self::MultipleChoiceEnum,
+        ];
+    }
+
     public static function complexTypes(): array
     {
         return [
@@ -57,6 +65,11 @@ enum CustomFieldType: string
     public function isComplexType(): bool
     {
         return in_array($this, self::complexTypes(), true);
+    }
+
+    public function isEnum(): bool
+    {
+        return in_array($this, self::enums(), true);
     }
 }
 

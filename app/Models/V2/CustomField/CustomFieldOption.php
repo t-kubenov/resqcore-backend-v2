@@ -16,7 +16,13 @@ class CustomFieldOption extends Model
         'order',
     ];
 
-    public function field()
+    protected $hidden = [
+        'created_at',
+        'updated_at',
+        'custom_field_id',
+    ];
+
+    public function customField()
     {
         return $this->belongsTo(CustomField::class);
     }
