@@ -2,6 +2,8 @@
 
 namespace App\Http\Requests\V2;
 
+use App\DTOs\ReportFilterFieldValidationDTO;
+use App\Models\Report;
 use Illuminate\Foundation\Http\FormRequest;
 
 class FilterReportRequest extends FormRequest
@@ -21,16 +23,10 @@ class FilterReportRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
-            'emergency_type'                => ['sometimes', 'array', 'min:1'],
-            'emergency_type.*'              => ['integer'],
-            'branch_office_id'              => ['sometimes', 'array', 'min:1'],
-            'branch_office_id.*'            => ['integer'],
-            'is_emergency_line'             => ['sometimes', 'boolean'],
-            'date_start'                    => ['sometimes', 'date'],
-            'date_end'                      => ['sometimes', 'date'],
-            'search'                        => ['sometimes', 'string', 'max:255'],
-            'is_closed'                     => ['sometimes', 'boolean'],
-        ];
+//        return
+            dd(
+                ReportFilterFieldValidationDTO::fromArray(Report::filters(), 'filtering')
+            )
+                ;
     }
 }

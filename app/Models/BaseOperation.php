@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\CustomFieldType;
 use App\Models\V2\CustomField\CustomField;
 use App\Models\V2\CustomField\CustomFieldValue;
 use App\Traits\AltersDisplayedDates;
@@ -44,84 +45,80 @@ abstract class BaseOperation extends Model
                 'key' => 'data.attributes.work_scope',
                 'name' => __('reports.fields.work_scope.name'),
                 'alias' => __('reports.fields.work_scope.alias'),
-                'type' => 'text',
+                'type' => CustomFieldType::Text,
                 'required' => true,
-                'rules' => ['required', 'string'],
             ],
             'situation_during_filing' => [
                 'key' => 'data.attributes.situation_during_filing',
                 'name' => __('reports.fields.situation_during_filing.name'),
                 'alias' => __('reports.fields.situation_during_filing.alias'),
-                'type' => 'text',
+                'type' => CustomFieldType::Text,
                 'required' => false,
-                'rules' => ['nullable', 'string'],
             ],
             'minor_injury_count' => [
                 'key' => 'data.attributes.minor_injury_count',
                 'name' => __('reports.fields.minor_injury_count.name'),
                 'alias' => __('reports.fields.minor_injury_count.alias'),
-                'type' => 'int',
+                'type' => CustomFieldType::Int,
                 'required' => true,
-                'rules' => ['required', 'integer', 'min:0', 'max:10000'],
+                'rules' => ['min:0', 'max:10000'],
             ],
             'severe_injury_count' => [
                 'key' => 'data.attributes.severe_injury_count',
                 'name' => __('reports.fields.severe_injury_count.name'),
                 'alias' => __('reports.fields.severe_injury_count.alias'),
-                'type' => 'int',
+                'type' => CustomFieldType::Int,
                 'required' => true,
-                'rules' => ['required', 'integer', 'min:0', 'max:10000'],
+                'rules' => ['min:0', 'max:10000'],
             ],
             'fatal_injury_count' => [
                 'key' => 'data.attributes.fatal_injury_count',
                 'name' => __('reports.fields.fatal_injury_count.name'),
                 'alias' => __('reports.fields.fatal_injury_count.alias'),
-                'type' => 'int',
+                'type' => CustomFieldType::Int,
                 'required' => true,
-                'rules' => ['required', 'integer', 'min:0', 'max:10000'],
+                'rules' => ['min:0', 'max:10000'],
             ],
             'evacuated_people_count' => [
                 'key' => 'data.attributes.evacuated_people_count',
                 'name' => __('reports.fields.evacuated_people_count.name'),
                 'alias' => __('reports.fields.evacuated_people_count.alias'),
-                'type' => 'int',
+                'type' => CustomFieldType::Int,
                 'required' => true,
-                'rules' => ['required', 'integer', 'min:0', 'max:10000'],
+                'rules' => ['min:0', 'max:10000'],
             ],
             'provided_medical_count' => [
                 'key' => 'data.attributes.provided_medical_count',
                 'name' => __('reports.fields.provided_medical_count.name'),
                 'alias' => __('reports.fields.provided_medical_count.alias'),
-                'type' => 'int',
+                'type' => CustomFieldType::Int,
                 'required' => true,
-                'rules' => ['required', 'integer', 'min:0', 'max:10000'],
+                'rules' => ['min:0', 'max:10000'],
             ],
             'client_equipment_count' => [
                 'key' => 'data.attributes.client_equipment_count',
                 'name' => __('reports.fields.client_equipment_count.name'),
                 'alias' => __('reports.fields.client_equipment_count.alias'),
-                'type' => 'int',
+                'type' => CustomFieldType::Int,
                 'required' => true,
-                'rules' => ['required', 'integer', 'min:0', 'max:10000'],
+                'rules' => ['min:0', 'max:10000'],
             ],
             'third_parties_count' => [
                 'key' => 'data.attributes.third_parties_count',
                 'name' => __('reports.fields.third_parties_count.name'),
                 'alias' => __('reports.fields.third_parties_count.alias'),
-                'type' => 'int',
+                'type' => CustomFieldType::Int,
                 'required' => true,
-                'rules' => ['required', 'integer', 'min:0', 'max:10000'],
+                'rules' => ['min:0', 'max:10000'],
             ],
             'worker_man_hours' => [
                 'key' => 'data.attributes.worker_man_hours',
                 'name' => __('reports.fields.worker_man_hours.name'),
                 'alias' => __('reports.fields.worker_man_hours.alias'),
-                'type' => 'float',
+                'type' => CustomFieldType::Float,
                 'required' => false,
                 'rules' => [
-                    'nullable',
                     'required_with:data.attributes.close_date',
-                    'numeric',
                     'min:0',
                     'max:1000000'
                 ],
@@ -130,12 +127,10 @@ abstract class BaseOperation extends Model
                 'key' => 'data.attributes.close_date',
                 'name' => __('reports.fields.close_date.name'),
                 'alias' => __('reports.fields.close_date.alias'),
-                'type' => 'datetime',
+                'type' => CustomFieldType::Datetime,
                 'required' => false,
                 'rules' => [
-                    'nullable',
                     'required_with:data.attributes.worker_man_hours',
-                    'date',
                     'after_or_equal:data.attributes.work_start_date',
                     'before_or_equal:tomorrow',
                 ],
@@ -144,9 +139,9 @@ abstract class BaseOperation extends Model
                 'key' => 'data.attributes.transport.*.id',
                 'name' => __('reports.fields.transport_id.name'),
                 'alias' => __('reports.fields.transport_id.alias'),
-                'type' => 'int',
+                'type' => CustomFieldType::Int,
                 'required' => true,
-                'rules' => ['required', 'integer',
+                'rules' => [
                     Rule::exists('transport_types', 'id')->where(function ($query) {
                         $query->where('rescue_company_id', auth()->user()->branch_office->rescue_company_id);
                     })
@@ -157,9 +152,9 @@ abstract class BaseOperation extends Model
                 'key' => 'data.attributes.transport.*.count',
                 'name' => __('reports.fields.transport_count.name'),
                 'alias' => __('reports.fields.transport_count.alias'),
-                'type' => 'int',
+                'type' => CustomFieldType::Int,
                 'required' => true,
-                'rules' => ['required', 'integer', 'min:1', 'max:10000'],
+                'rules' => ['min:1', 'max:10000'],
             ],
         ]);
     }

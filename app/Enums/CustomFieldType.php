@@ -3,73 +3,97 @@
 namespace App\Enums;
 
 use App\Traits\EnumToArray;
+use Attribute;
+
+#[Attribute(Attribute::TARGET_CLASS_CONSTANT)]
+final class PlainType {}
+
+#[Attribute(Attribute::TARGET_CLASS_CONSTANT)]
+final class ComplexType {}
+
+#[Attribute(Attribute::TARGET_CLASS_CONSTANT)]
+final class EnumType {}
+
 
 enum CustomFieldType: string
 {
     use EnumToArray;
 
+    #[PlainType]
     case Int = 'int';
+
+    #[PlainType]
     case Float = 'float';
+
+    #[PlainType]
     case String = 'string';
+
+    #[PlainType]
     case Text = 'text';
+
+    #[PlainType]
     case Datetime = 'datetime';
+
+    #[PlainType]
     case Boolean = 'boolean';
+
+    #[PlainType, ComplexType, EnumType]
     case SingleChoiceEnum = 'single_choice_enum';
+
+    #[ComplexType, EnumType]
     case MultipleChoiceEnum = 'multiple_choice_enum';
+
+    #[ComplexType]
     case MultiValue = 'multi_value';
 
-
-    public static function plainTypes(): array
+    public function creationValidationRule(): string
     {
-        return [
-            self::Int,
-            self::Float,
-            self::String,
-            self::Text,
-            self::Datetime,
-            self::Boolean,
-            self::SingleChoiceEnum,
-        ];
+        return match ($this) {
+            self::Int, self::SingleChoiceEnum => 'integer',
+            self::Float => 'numeric',
+            self::String, self::Text => 'string',
+            self::Datetime => 'date',
+            self::Boolean => 'boolean',
+            self::MultipleChoiceEnum, self::MultiValue => 'array',
+        };
     }
 
-    public static function nonPlainTypes(): array
+    public function filteringValidationRule(): string
     {
-        return [
-            self::MultipleChoiceEnum,
-            self::MultiValue,
-        ];
+        return match ($this) {
+            self::Int,  => 'integer',
+            self::Float => 'numeric',
+            self::String, self::Text  => 'string',
+            self::Datetime => 'date',
+            self::Boolean => 'boolean',
+            self::SingleChoiceEnum, self::MultipleChoiceEnum, self::MultiValue => 'array',
+        };
     }
 
-    public static function enums(): array
+    private function hasAttribute(string $attribute): bool
     {
-        return [
-            self::SingleChoiceEnum,
-            self::MultipleChoiceEnum,
-        ];
-    }
-
-    public static function complexTypes(): array
-    {
-        return [
-            self::SingleChoiceEnum,
-            self::MultipleChoiceEnum,
-            self::MultiValue,
-        ];
+        $reflection = new \ReflectionEnumUnitCase(self::class, $this->name);
+        return !empty($reflection->getAttributes($attribute));
     }
 
     public function isPlain(): bool
     {
-        return in_array($this, self::plainTypes(), true);
+        return $this->hasAttribute(PlainType::class);
     }
 
     public function isComplexType(): bool
     {
-        return in_array($this, self::complexTypes(), true);
+        return $this->hasAttribute(ComplexType::class);
     }
 
     public function isEnum(): bool
     {
-        return in_array($this, self::enums(), true);
+        return $this->hasAttribute(EnumType::class);
+    }
+
+    public static function plainTypes(): array
+    {
+        return array_filter(self::cases(), fn (self $case) => $case->isPlain());
     }
 }
 

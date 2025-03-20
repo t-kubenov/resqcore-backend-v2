@@ -9,6 +9,7 @@ use App\Models\RescueCompany;
 use Database\Factories\V2\CustomField\CustomFieldFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Validation\Rule;
 
 class CustomField extends Model
 {
@@ -64,27 +65,22 @@ class CustomField extends Model
         return $this->options->pluck('id')->toArray();
     }
 
-    public function generateValidationString(): string
+    public function generateValidationString(): array
     {
         $rules = [];
 
-        $rules[] = ($this->required? 'required': 'nullable');
-
-        $rules[] = match ($this->type) {
-            CustomFieldType::Int => 'integer',
-            CustomFieldType::Float => 'numeric',
-            CustomFieldType::String => 'string|max:255',
-            CustomFieldType::Text => 'string',
-            CustomFieldType::Datetime => 'date',
-            CustomFieldType::Boolean => 'boolean',
-            CustomFieldType::SingleChoiceEnum => 'integer|exists:custom_field_options,id',
-            CustomFieldType::MultipleChoiceEnum => 'array|exists:custom_field_options,id',
-            default => '',
+        if($this->type->isEnum()) {
+            $rules[] = Rule::exists('custom_field_options', 'id')->where(function ($query) {
+                $query->where('custom_field_id', $this->id);
+            });
         };
+        // todo: implement with actual options
 
-        $rules[] = $this->validation;
+        if (!empty($this->validation)){
+            $rules[] = $this->validation;
+        }
 
-        return implode('|', array_filter($rules));
+        return $rules;
     }
 
     public static function getFormattedFields(int $rescueCompanyId, string $model): array
@@ -97,9 +93,9 @@ class CustomField extends Model
                     'key' => "data.attributes.{$field->name}",
                     'name' => $field->label,
                     'alias' => '',
-                    'type' => $field->type->value,
+                    'type' => $field->type,
                     'required' => $field->required,
-                    'rules' => explode('|', $field->generateValidationString()),
+                    'rules' => $field->generateValidationString(),
                     ...($field->type->isEnum()? ['options' => route('auxiliary.field-options', $field->name)]: []),
                     'parameters' => $field->parameters,
                 ],

@@ -76,33 +76,17 @@ class ReportService
         return false;
     }
 
+
+
     public function filterQuery($query, $request)
     {
         $query = $this->filterRescueCompany($query);
         $query = $this->filterBranchOffice($query);
 
-        if (isset($request['emergency_type'])) {
-            $query->whereIn('emergency_type', $request['emergency_type']);
-        }
-
-        if (isset($request['branch_office_id']) && auth()->user()->can('departure_view')) {
-            $query->whereIn('branch_office_id', $request['branch_office_id']);
-        }
-
-        if (isset($request['is_emergency_line'])) {
-            $query->where('is_emergency_line', $request['is_emergency_line']);
-        }
-
-        if (isset($request['date_start'])) {
-            $query->where('call_date', '>=', $request['date_start']);
-        }
-
-        if (isset($request['date_end'])) {
-            $query->where('call_date', '<=', $request['date_end']);
-        }
-
-        if (isset($request['is_closed'])) {
-            $query->where('is_closed', $request['is_closed']);
+        foreach ($request as $option => $value){
+            if (array_key_exists($option, Report::filters())){
+                $query->where($option, $value);
+            }
         }
 
         if (isset($request['search'])) {
