@@ -32,23 +32,51 @@ class ReportCollection extends ResourceCollection
      */
     protected function getColumns(): array
     {
-        $attributes = array_merge([
-            'report_code',
-            'facility_owner',
-            'emergency_type_id',
-            'emergency_location',
-            'caller',
-            'branch_office_id',
-            'is_closed',
-        ],
-            Report::customFieldNames()
-        );
+        return [
+            "start" => [
+                [
+                    "key" => "report_code",
+                    "name" => "Номер отчета",
+                    "alias" => ""
+                ]
+            ],
+            "middle" => [
+                [
+                    "key" => "facility_owner",
+                    "name" => "Наименование объекта",
+                    "alias" => ""
+                ],
+                [
+                    "key" => "emergency_type",
+                    "name" => "Тип ЧС",
+                    "alias" => ""
+                ],
+                [
+                    "key" => "emergency_location",
+                    "name" => "Место ЧС",
+                    "alias" => ""
+                ],
+                [
+                    "key" => "caller",
+                    "name" => "Кто произвел вызов",
+                    "alias" => ""
+                ]
+            ],
+            "end" => [
+                [
+                    "key" => "branch_office",
+                    "name" => "Филиал",
+                    "alias" => ""
+                ],
+                [
+                    "key" => "is_closed",
+                    "name" => "Ликвидирован",
+                    "alias" => "Статус"
+                ]
+            ]
+        ];
 
-        return collect(Report::fieldDefinitions())
-            ->only($attributes)
-            ->map(fn(array $attribute) => Arr::only($attribute, ['key', 'name', 'alias']))
-            ->values()
-            ->toArray();
+
     }
 
     /**
