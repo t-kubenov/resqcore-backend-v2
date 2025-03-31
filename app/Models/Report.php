@@ -124,7 +124,7 @@ class Report extends BaseOperation
                 'key' => 'data.attributes.is_emergency_line',
                 'name' => __('reports.fields.is_emergency_line.name'),
                 'alias' => __('reports.fields.is_emergency_line.alias'),
-                'type' => CustomFieldType::SingleChoiceEnum,
+                'type' => CustomFieldType::Boolean,
                 'required' => true,
                 'options' => route('auxiliary.field-options', 'departure-types'),
                 'parameters' => [

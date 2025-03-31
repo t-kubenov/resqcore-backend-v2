@@ -2,8 +2,11 @@
 
 namespace App\Enums;
 
+use App\Rules\DateRangeRule;
 use App\Traits\EnumToArray;
 use Attribute;
+use Illuminate\Contracts\Validation\ValidationRule;
+use Illuminate\Validation\Rule;
 
 #[Attribute(Attribute::TARGET_CLASS_CONSTANT)]
 final class PlainType {}
@@ -58,13 +61,13 @@ enum CustomFieldType: string
         };
     }
 
-    public function filteringValidationRule(): string
+    public function filteringValidationRule(): string|ValidationRule
     {
         return match ($this) {
             self::Int,  => 'integer',
             self::Float => 'numeric',
             self::String, self::Text  => 'string',
-            self::Datetime => 'date',
+            self::Datetime => new DateRangeRule(),
             self::Boolean => 'boolean',
             self::SingleChoiceEnum, self::MultipleChoiceEnum, self::MultiValue => 'array',
         };

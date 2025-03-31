@@ -25,7 +25,7 @@ class ReportFilterFieldValidationDTO
     {
         $condition = ['sometimes'];
         $type = [$field['type']->filteringValidationRule()];
-        $rules = $field['rules'] ?? [];
+        $rules = [];
 
         return new self(
             $key,
@@ -36,17 +36,18 @@ class ReportFilterFieldValidationDTO
             ));
     }
 
-    public static function forCreation(array $field): self
+    public static function forCreation(string $key, array $field): self
     {
-        $required = isset($field['required']) ? ($field['required']? ['required'] : []): [];
+        $condition = !empty($field['required']) ? ['required'] : [];
         $type = [$field['type']->creationValidationRule()];
+        $rules = $field['rules'] ?? [];
 
         return new self(
             $field['key'],
             array_merge(
-                $required,
+                $condition,
                 $type,
-                $field['rules']
+                $rules
             ));
     }
 
@@ -56,7 +57,7 @@ class ReportFilterFieldValidationDTO
 
             return match ($context) {
                 'filtering' => self::forFiltering($key, $field),
-                'creation' => self::forCreation($field),
+                'creation' => self::forCreation($key, $field),
                 default => throw new \InvalidArgumentException('Unknown context: ' . $context),
             };
         })

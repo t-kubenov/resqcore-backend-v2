@@ -2,13 +2,16 @@
 
 namespace App\Http\Services\V2;
 
+use App\Enums\CustomFieldType;
 use App\Http\Requests\V2\StoreReportRequest;
 use App\Models\Report;
+use App\Models\V2\CustomField\CustomFieldValue;
 use Illuminate\Http\Exceptions\ThrottleRequestsException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\RateLimiter;
+use LaravelIdea\Helper\_BaseBuilder;
 
 class ReportService
 {
@@ -83,11 +86,70 @@ class ReportService
         $query = $this->filterRescueCompany($query);
         $query = $this->filterBranchOffice($query);
 
-        foreach ($request as $option => $value){
-            if (array_key_exists($option, Report::filters())){
-                $query->where($option, $value);
-            }
+        $filters = Report::filters();
+
+        if (isset($request['emergency_type'])) {
+            $query->whereIn('emergency_type', $request['emergency_type']);
+            unset($request['emergency_type']);
         }
+
+        if (isset($request['branch_office_id']) && auth()->user()->can('departure_view')) {
+            $query->whereIn('branch_office_id', $request['branch_office_id']);
+            unset($request['branch_office_id']);
+        }
+
+        if (isset($request['is_emergency_line'])) {
+            $query->where('is_emergency_line', $request['is_emergency_line']);
+            unset($request['is_emergency_line']);
+        }
+
+        if (isset($request['call_date'])) {
+            [$startDate, $endDate] = explode('|', $request['call_date']);
+
+            $query->whereDate('call_date', '>=', $startDate)->whereDate('call_date', '<=', $endDate);
+
+            unset($request['call_date']);
+        }
+
+        if (isset($request['is_closed'])) {
+            $query->where('is_closed', $request['is_closed']);
+            unset($request['is_closed']);
+        }
+
+
+        // Filter Custom Fields
+        foreach ($request->query as $field_name => $value) {
+            if (!array_key_exists($field_name, $filters)) {
+                continue;
+            }
+
+            $filter = $filters[$field_name];
+            $column = CustomFieldValue::getStorableColumn($filter['type']);
+
+            $query->whereHas('customFieldValues', function ($q) use ($filter, $field_name, $value, $column) {
+                $q->where('custom_field_id', $filter['id']);
+
+                match (true) {
+                    // Enum
+                    $filter['type']->isEnum() => $q->whereIn('value_int', $value),
+
+                    // Datetime
+                    $filter['type'] === CustomFieldType::Datetime => function () use ($q, $value) {
+                        [$startDate, $endDate] = explode('|', $value);
+                        $q->whereDate('value_datetime', '>=', $startDate)
+                            ->whereDate('value_datetime', '<=', $endDate);
+                    },
+
+                    // String/Text
+                    in_array($filter['type'], [CustomFieldType::String, CustomFieldType::Text]) =>
+                    $q->where($column, 'ILIKE', "%{$value}%"),
+
+                    // Boolean, Int, Float
+                    in_array($filter['type'], [CustomFieldType::Boolean, CustomFieldType::Int, CustomFieldType::Float]) =>
+                    $q->where($column, $value),
+                };
+            });
+    }
 
         if (isset($request['search'])) {
             $search = $request['search'];
@@ -171,6 +233,11 @@ class ReportService
 
     public function storeRequest(StoreReportRequest $request): Report
     {
+        if (config('app.debug')) {
+            return $this->store($request);
+        }
+
+
         $key = 'report-create:' . (Auth::user()?->id ?: $request->ip());
 
         if (RateLimiter::tooManyAttempts($key, 1)) {

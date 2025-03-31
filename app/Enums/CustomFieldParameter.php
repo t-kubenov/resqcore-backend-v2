@@ -15,4 +15,5 @@ enum CustomFieldParameter: string
     case IsRequired = 'is_required';
     case IncludeToUpdates = 'include_to_updates';
     case IsHidden = 'is_hidden';
+    case IsCustom = 'is_custom';
 }

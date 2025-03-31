@@ -23,10 +23,10 @@ class FilterReportRequest extends FormRequest
      */
     public function rules(): array
     {
-//        return
-            dd(
-                ReportFilterFieldValidationDTO::fromArray(Report::filters(), 'filtering')
-            )
-                ;
+//        dd(
+        return
+        ReportFilterFieldValidationDTO::fromArray(Report::filters(), 'filtering')
+//        )
+        ;
     }
 }

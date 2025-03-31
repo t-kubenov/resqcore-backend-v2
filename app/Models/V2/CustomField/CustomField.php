@@ -90,6 +90,7 @@ class CustomField extends Model
             ->mapWithKeys(function (CustomField $field) {
             return [
                 $field->name => [
+                    'id' => $field->id,
                     'key' => "data.attributes.{$field->name}",
                     'name' => $field->label,
                     'alias' => '',
@@ -97,7 +98,9 @@ class CustomField extends Model
                     'required' => $field->required,
                     'rules' => $field->generateValidationString(),
                     ...($field->type->isEnum()? ['options' => route('auxiliary.field-options', $field->name)]: []),
-                    'parameters' => $field->parameters,
+                    'parameters' => array_merge($field->parameters, [
+//                        CustomFieldParameter::IsCustom,
+                    ]),
                 ],
             ];
         })->toArray();

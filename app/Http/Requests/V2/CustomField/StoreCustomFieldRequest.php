@@ -31,7 +31,7 @@ class StoreCustomFieldRequest extends FormRequest
         return array_merge([
             'rescue_company_id'        => ['required', 'integer', 'exists:rescue_companies,id'],
             'parent_field'             => ['nullable', 'integer', 'exists:custom_fields,id'],
-            'name'                     => ['required', 'string'],
+            'name'                     => ['required', 'string', 'unique:custom_fields,name'],
             'label'                    => ['nullable', 'string'],
             'model'                    => ['required', 'string', "in:$modelValues"],
             'required'                 => ['required', 'boolean'], // is set to false by db if not provided

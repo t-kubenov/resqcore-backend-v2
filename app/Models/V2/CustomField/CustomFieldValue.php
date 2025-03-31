@@ -3,6 +3,7 @@
 namespace App\Models\V2\CustomField;
 
 use App\Enums\CustomFieldType;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -29,6 +30,11 @@ class CustomFieldValue extends Model
         'value_boolean' => 'boolean',
         'value_datetime' => 'datetime',
     ];
+
+    public function getValueDatetimeAttribute($value): string
+    {
+        return Carbon::parse($value)->format(config('app.date_format'));
+    }
 
     public function customField()
     {

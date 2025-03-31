@@ -32,6 +32,8 @@ class CustomFieldValueService
             }
             self::createCustomFieldValue($rescueCompanyId, $field, $baseReport, $validatedData[$field->name]);
         }
+
+        // todo: storing dates is fricked up, somehow affected by timezone
     }
 
 
