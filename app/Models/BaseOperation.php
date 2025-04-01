@@ -55,6 +55,14 @@ abstract class BaseOperation extends Model
                 'type' => CustomFieldType::Text,
                 'required' => false,
             ],
+            'branch_worker_count' => [
+                'key' => 'data.attributes.branch_worker_count',
+                'name' => __('reports.fields.branch_worker_count.name'),
+                'alias' => __('reports.fields.branch_worker_count.alias'),
+                'type' => CustomFieldType::Int,
+                'required' => true,
+                'rules' => ['min:1', 'max:10000'],
+            ],
             'minor_injury_count' => [
                 'key' => 'data.attributes.minor_injury_count',
                 'name' => __('reports.fields.minor_injury_count.name'),

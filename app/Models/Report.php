@@ -49,16 +49,9 @@ class Report extends BaseOperation
 
     public static function fieldDefinitions(): array
     {
+        //todo: add totals, last_update_created_at and  por favor
         return array_merge([
-            'branch_worker_count' => [
-                'key' => 'data.attributes.branch_worker_count',
-                'name' => __('reports.fields.branch_worker_count.name'),
-                'alias' => __('reports.fields.branch_worker_count.alias'),
-                'type' => CustomFieldType::Int,
-                'required' => true,
-                'rules' => ['min:1', 'max:10000'],
-            ],
-            'branch_office_id' => [
+            'branch_office' => [
                 'key' => 'data.attributes.branch_office_id',
                 'name' => __('reports.fields.branch_office_id.name'),
                 'alias' => __('reports.fields.branch_office_id.alias'),
@@ -67,7 +60,28 @@ class Report extends BaseOperation
                 'required' => false,
                 'options' => route('auxiliary.field-options', 'branch-offices'),
                 'parameters' => [
-                    CustomFieldParameter::IsFilterableForCA
+                    CustomFieldParameter::IsFilterableForCA,
+                    CustomFieldParameter::IsHidden
+                ]
+            ],
+            'reported_by' => [
+                'key' => 'data.attributes.reported_by',
+                'name' => __('reports.fields.reported_by.name'),
+                'alias' => __('reports.fields.reported_by.alias'),
+                'type' => CustomFieldType::String,
+                'parameters' => [
+                    CustomFieldParameter::IsHidden,
+                ]
+            ],
+            'facility_owner' => [
+                'key' => 'data.attributes.facility_owner_id',
+                'name' => __('reports.fields.facility_owner_id.name'),
+                'alias' => __('reports.fields.facility_owner_id.alias'),
+                'type' => CustomFieldType::SingleChoiceEnum,
+                'rules' => ['exists:companies,id'],
+                'required' => false,
+                'parameters' => [
+                    CustomFieldParameter::IsHidden
                 ]
             ],
             'caller' => [
@@ -103,7 +117,7 @@ class Report extends BaseOperation
                     'before_or_equal:tomorrow',
                 ],
             ],
-            'emergency_type_id' => [
+            'emergency_name' => [
                 'key' => 'data.attributes.emergency_type.id',
                 'name' => __('reports.fields.emergency_type.name'),
                 'alias' => __('reports.fields.emergency_type.alias'),
@@ -170,7 +184,112 @@ class Report extends BaseOperation
                     CustomFieldParameter::IsHidden,
                     CustomFieldParameter::IsFilterableForCA
                 ]
-            ]
+            ],
+            'report_code' => [
+                'key' => 'data.attributes.report_code',
+                'name' => __('reports.fields.report_code.name'),
+                'alias' => __('reports.fields.report_code.alias'),
+                'type' => CustomFieldType::String,
+                'parameters' => [
+                    CustomFieldParameter::IsHidden,
+                ]
+            ],
+            'minor_injury_total' => [
+                'key' => 'data.attributes.minor_injury_total',
+                'name' => __('reports.fields.minor_injury_total.name'),
+                'alias' => __('reports.fields.minor_injury_total.alias'),
+                'type' => CustomFieldType::Int,
+                'parameters' => [
+                    CustomFieldParameter::IsHidden,
+                    CustomFieldParameter::IsTotalField,
+                ]
+            ],
+            'severe_injury_total' => [
+                'key' => 'data.attributes.severe_injury_total',
+                'name' => __('reports.fields.severe_injury_total.name'),
+                'alias' => __('reports.fields.severe_injury_total.alias'),
+                'type' => CustomFieldType::Int,
+                'parameters' => [
+                    CustomFieldParameter::IsHidden,
+                    CustomFieldParameter::IsTotalField,
+                ]
+            ],
+            'fatal_injury_total' => [
+                'key' => 'data.attributes.fatal_injury_total',
+                'name' => __('reports.fields.fatal_injury_total.name'),
+                'alias' => __('reports.fields.fatal_injury_total.alias'),
+                'type' => CustomFieldType::Int,
+                'parameters' => [
+                    CustomFieldParameter::IsHidden,
+                    CustomFieldParameter::IsTotalField,
+                ]
+            ],
+            'evacuated_people_total' => [
+                'key' => 'data.attributes.evacuated_people_total',
+                'name' => __('reports.fields.evacuated_people_total.name'),
+                'alias' => __('reports.fields.evacuated_people_total.alias'),
+                'type' => CustomFieldType::Int,
+                'parameters' => [
+                    CustomFieldParameter::IsHidden,
+                    CustomFieldParameter::IsTotalField,
+                ]
+            ],
+            'provided_medical_total' => [
+                'key' => 'data.attributes.provided_medical_total',
+                'name' => __('reports.fields.provided_medical_total.name'),
+                'alias' => __('reports.fields.provided_medical_total.alias'),
+                'type' => CustomFieldType::Int,
+                'parameters' => [
+                    CustomFieldParameter::IsHidden,
+                    CustomFieldParameter::IsTotalField,
+                ]
+            ],
+            'client_equipment_total' => [
+                'key' => 'data.attributes.client_equipment_total',
+                'name' => __('reports.fields.client_equipment_total.name'),
+                'alias' => __('reports.fields.client_equipment_total.alias'),
+                'type' => CustomFieldType::Int,
+                'parameters' => [
+                    CustomFieldParameter::IsHidden,
+                    CustomFieldParameter::IsTotalField,
+                ]
+            ],
+            'third_parties_total' => [
+                'key' => 'data.attributes.third_parties_total',
+                'name' => __('reports.fields.third_parties_total.name'),
+                'alias' => __('reports.fields.third_parties_total.alias'),
+                'type' => CustomFieldType::Int,
+                'parameters' => [
+                    CustomFieldParameter::IsHidden,
+                    CustomFieldParameter::IsTotalField,
+                ]
+            ],
+            'branch_worker_total' => [
+                'key' => 'data.attributes.branch_worker_total',
+                'name' => __('reports.fields.branch_worker_total.name'),
+                'alias' => __('reports.fields.branch_worker_total.alias'),
+                'type' => CustomFieldType::Int,
+                'parameters' => [
+                    CustomFieldParameter::IsHidden,
+                    CustomFieldParameter::IsTotalField,
+                ]
+            ],
+            'other_info' => [
+                'key' => 'data.attributes.other_info',
+                'name' => __('reports.fields.other_info.name'),
+                'alias' => __('reports.fields.other_info.alias'),
+                'type' => CustomFieldType::Text,
+            ],
+            'last_update_created_at' => [
+                'key' => 'data.attributes.last_update_created_at',
+                'name' => __('reports.fields.last_update_created_at.name'),
+                'alias' => __('reports.fields.last_update_created_at.alias'),
+                'type' => CustomFieldType::Datetime,
+                'parameters' => [
+                    CustomFieldParameter::IsHidden,
+                ]
+            ],
+
         ], parent::fieldDefinitions());
 
     }

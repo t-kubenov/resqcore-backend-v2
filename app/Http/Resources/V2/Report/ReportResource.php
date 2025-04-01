@@ -76,16 +76,16 @@ class ReportResource extends JsonResource
         );
 
         return [
-            'highlighted' => collect($highlighted)->map(fn($attribute) => [
-                'key' => $attribute,
-                'name' => __('reports.fields.' . $attribute . '.name'),
-                'alias' => __('reports.fields.' . $attribute . '.alias'),
-            ])->toArray(),
-            'attributes' => collect($attributes)->map(fn($attribute) => [
-                'key' => $attribute,
-                'name' => __('reports.fields.' . $attribute . '.name'),
-                'alias' => __('reports.fields.' . $attribute . '.alias'),
-            ])->toArray(),
+            'highlighted' => collect(array_intersect_key(self::fieldDefinitions(), array_flip($highlighted)))->map(fn($attribute, $key) => [
+                'key' => $key,
+                'name' => $attribute['name'],
+                'alias' => $attribute['alias'],
+            ])->values()->toArray(),
+            'attributes' => collect(array_intersect_key(self::fieldDefinitions(), array_flip($attributes)))->map(fn($attribute, $key) => [
+                'key' => $key,
+                'name' => $attribute['name'],
+                'alias' => $attribute['alias'],
+            ])->values()->toArray(),
         ];
     }
 
