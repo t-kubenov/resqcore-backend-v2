@@ -103,15 +103,22 @@ class AuthService
                 $query->select('id', 'name');
             },
             'branch_office' => function ($query) {
-                $query->select('id', 'name');
-            },
-            'company' => function ($query) {
-                $query->select('id', 'name');
+                $query->select('id', 'name', 'rescue_company_id');
             },
             'role.permissions' => function ($query) {
                 $query->select('id', 'name');
             },
         ]);
+
+        $rescueCompanyId = $user->branch_office?->rescue_company_id;
+
+        if ($rescueCompanyId) {
+            $user->load([
+                'rescue_company' => function ($query) use ($rescueCompanyId) {
+                    $query->where('rescue_companies.id', $rescueCompanyId);
+                }
+            ]);
+        }
 
         $user->role?->permissions->makeHidden('pivot');
     }

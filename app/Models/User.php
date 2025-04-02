@@ -69,12 +69,17 @@ class User extends Authenticatable
         return $this->belongsTo(Company::class);
     }
 
-    public function rescue_company()
+    public function rescue_company(): \Znck\Eloquent\Relations\BelongsToThrough
     {
         return $this->belongsToThrough(
             RescueCompany::class,
             BranchOffice::class,
-            foreignKeyLookup: [BranchOffice::class => 'branch_id']
+            foreignKeyLookup: [
+                BranchOffice::class => 'rescue_company_id',
+            ],
+            localKeyLookup: [
+                User::class => 'branch_id',
+            ],
         );
     }
 
