@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\V2\Sushi;
 
 use Illuminate\Database\Eloquent\Model;
 use Sushi\Sushi;

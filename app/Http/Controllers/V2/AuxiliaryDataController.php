@@ -4,7 +4,6 @@ namespace App\Http\Controllers\V2;
 
 use App\Enums\CustomFieldParameter;
 use App\Models\BranchOffice;
-use App\Models\DepartureType;
 use App\Models\Egov\MineralField;
 use App\Models\Egov\OilField;
 use App\Models\Egov\SubsoilContract;
@@ -12,9 +11,8 @@ use App\Models\EmergencyType;
 use App\Models\Report;
 use App\Models\TransportType;
 use App\Models\Update;
-use App\Models\V2\CustomField\CustomField;
 use App\Models\V2\CustomField\CustomFieldOption;
-use App\Models\V2\CustomField\CustomFieldValue;
+use App\Models\V2\Sushi\DepartureType;
 use Illuminate\Http\JsonResponse;
 
 class AuxiliaryDataController extends Controller
