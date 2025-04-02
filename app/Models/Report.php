@@ -90,6 +90,9 @@ class Report extends BaseOperation
                 'alias' => __('reports.fields.caller.alias'),
                 'type' => CustomFieldType::String,
                 'required' => true,
+                'parameters' => [
+                    CustomFieldParameter::CategoryId->value => 1,
+                ]
             ],
             'call_date' => [
                 'key' => 'data.attributes.call_date',
@@ -103,7 +106,8 @@ class Report extends BaseOperation
                 ],
                 'parameters' => [
                     CustomFieldParameter::IsFilterable,
-                    CustomFieldParameter::IsFilterableForCA
+                    CustomFieldParameter::IsFilterableForCA,
+                    CustomFieldParameter::CategoryId->value => 1,
                 ]
             ],
             'work_start_date' => [
@@ -116,6 +120,9 @@ class Report extends BaseOperation
                     'after_or_equal:data.attributes.call_date',
                     'before_or_equal:tomorrow',
                 ],
+                'parameters' => [
+                    CustomFieldParameter::CategoryId->value => 1,
+                ]
             ],
             'emergency_name' => [
                 'key' => 'data.attributes.emergency_type.id',
@@ -131,7 +138,8 @@ class Report extends BaseOperation
                 'options' => route('auxiliary.field-options', 'emergency-types'),
                 'parameters' => [
                     CustomFieldParameter::IsFilterable,
-                    CustomFieldParameter::IsFilterableForCA
+                    CustomFieldParameter::IsFilterableForCA,
+                    CustomFieldParameter::CategoryId->value => 1,
                 ]
             ],
             'is_emergency_line' => [
@@ -143,7 +151,8 @@ class Report extends BaseOperation
                 'options' => route('auxiliary.field-options', 'departure-types'),
                 'parameters' => [
                     CustomFieldParameter::IsFilterable,
-                    CustomFieldParameter::IsFilterableForCA
+                    CustomFieldParameter::IsFilterableForCA,
+                    CustomFieldParameter::CategoryId->value => 1,
                 ]
             ],
             'line_facility_owner' => [
@@ -152,6 +161,9 @@ class Report extends BaseOperation
                 'alias' => __('reports.fields.line_facility_owner.alias'),
                 'type' => CustomFieldType::String,
                 'rules' => ['required', 'string'],
+                'parameters' => [
+                    CustomFieldParameter::CategoryId->value => 1,
+                ]
             ],
             'emergency_location' => [
                 'key' => 'data.attributes.emergency_location',
@@ -159,6 +171,9 @@ class Report extends BaseOperation
                 'alias' => __('reports.fields.emergency_location.alias'),
                 'type' => CustomFieldType::String,
                 'rules' => ['required', 'string'],
+                'parameters' => [
+                    CustomFieldParameter::CategoryId->value => 1,
+                ]
             ],
             'emergency_info' => [
                 'key' => 'data.attributes.emergency_info',
@@ -166,6 +181,9 @@ class Report extends BaseOperation
                 'alias' => __('reports.fields.emergency_info.alias'),
                 'type' => CustomFieldType::Text,
                 'rules' => ['nullable', 'string'],
+                'parameters' => [
+                    CustomFieldParameter::CategoryId->value => 1,
+                ]
             ],
             'transport' => [
                 'key' => 'data.attributes.transport',
@@ -173,6 +191,9 @@ class Report extends BaseOperation
                 'alias' => __('reports.fields.transport.alias'),
                 'type' => CustomFieldType::MultiValue,
                 'rules' => ['required', 'array', 'min:1'],
+                'parameters' => [
+                    CustomFieldParameter::CategoryId->value => 2,
+                ]
             ],
             'is_closed' => [
                 'key' => 'data.attributes.is_closed',
@@ -276,9 +297,12 @@ class Report extends BaseOperation
             ],
             'other_info' => [
                 'key' => 'data.attributes.other_info',
-                'name' => __('reports.fields.other_info.name'),
+                'name' => __('reports.fields.other_info.name'), //todo: what is this field? also translate
                 'alias' => __('reports.fields.other_info.alias'),
                 'type' => CustomFieldType::Text,
+                'parameters' => [
+                    CustomFieldParameter::CategoryId->value => 2,
+                ]
             ],
             'last_update_created_at' => [
                 'key' => 'data.attributes.last_update_created_at',

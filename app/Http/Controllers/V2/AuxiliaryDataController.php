@@ -13,6 +13,7 @@ use App\Models\TransportType;
 use App\Models\Update;
 use App\Models\V2\CustomField\CustomFieldOption;
 use App\Models\V2\Sushi\DepartureType;
+use App\Models\V2\Sushi\ReportFieldCategory;
 use Illuminate\Http\JsonResponse;
 
 class AuxiliaryDataController extends Controller
@@ -24,26 +25,43 @@ class AuxiliaryDataController extends Controller
 
     public function getReportFields(): JsonResponse
     {
-        $fields = array_filter(Report::fieldDefinitions(), function ($field) {
-            return !in_array(CustomFieldParameter::IsHidden, $field['parameters'] ?? []);
-        });
+        $fields = Report::fieldDefinitions();
 
-//        $data = array_map(fn($field) => [
-//            'name' => $field['key'],
-//            'label' => $field['name'],
-//            'type' => $field['type'],
-//            'options' => $field['options'] ?? null,
-//            'validationRules' => [
-//                'required' => in_array('required', $field['rules'] ?? [])
-//            ],
-//        ], $fields);
-
-        return response()->json(['data' => $fields]);
+        return response()->json(['data' => $this->filterAndCategorizeFields($fields)]);
     }
 
     public function getUpdateFields(): JsonResponse
     {
-        return response()->json(['data' => Update::fieldDefinitions()]);
+        $fields = Update::fieldDefinitions();
+
+        return response()->json(['data' => $this->filterAndCategorizeFields($fields)]);
+    }
+
+    private function filterAndCategorizeFields(array $fields): array
+    {
+        $fields = array_filter($fields, function ($field) {
+            return !in_array(CustomFieldParameter::IsHidden, $field['parameters'] ?? []);
+        });
+
+        // Group fields by category
+        $groupedFields = [];
+
+        foreach ($fields as $field) {
+            $category = ReportFieldCategory::find($field['parameters'][CustomFieldParameter::CategoryId->value] ?? 2);
+            $catName = $category->name;
+
+            if (!isset($groupedFields[$catName])) {
+                $groupedFields[$catName] = [
+                    'category' => $catName,
+                    ...(isset($category->note) ? ['note' => $category->note] : []),
+                    'fields' => []
+                ];
+            }
+
+            $groupedFields[$catName]['fields'][] = $field;
+        }
+
+        return array_values($groupedFields);
     }
 
     public function getMineralFields(): JsonResponse

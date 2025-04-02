@@ -16,4 +16,5 @@ enum CustomFieldParameter: string
     case IncludeToUpdates = 'include_to_updates';
     case IsHidden = 'is_hidden';
     case IsCustom = 'is_custom';
+    case CategoryId = 'category_id';
 }

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\CustomFieldParameter;
 use App\Enums\CustomFieldType;
 use App\Models\V2\CustomField\CustomField;
 use App\Models\V2\CustomField\CustomFieldValue;
@@ -41,12 +42,26 @@ abstract class BaseOperation extends Model
     public static function fieldDefinitions(): array
     {
         return array_merge(CustomField::getFormattedFields(auth()->user()->rescue_company_id, static::class), [
+            'branch_worker_count' => [
+                'key' => 'data.attributes.branch_worker_count',
+                'name' => __('reports.fields.branch_worker_count.name'), // todo: Задействовано работников филиала
+                'alias' => __('reports.fields.branch_worker_count.alias'),
+                'type' => CustomFieldType::Int,
+                'required' => true,
+                'rules' => ['min:1', 'max:10000'],
+                'parameters' => [
+                    CustomFieldParameter::CategoryId->value => 2,
+                ]
+            ],
             'work_scope' => [
                 'key' => 'data.attributes.work_scope',
-                'name' => __('reports.fields.work_scope.name'),
+                'name' => __('reports.fields.work_scope.name'), // todo: Перечень и объем проведенных работ
                 'alias' => __('reports.fields.work_scope.alias'),
                 'type' => CustomFieldType::Text,
                 'required' => true,
+                'parameters' => [
+                    CustomFieldParameter::CategoryId->value => 2,
+                ]
             ],
             'situation_during_filing' => [
                 'key' => 'data.attributes.situation_during_filing',
@@ -54,14 +69,9 @@ abstract class BaseOperation extends Model
                 'alias' => __('reports.fields.situation_during_filing.alias'),
                 'type' => CustomFieldType::Text,
                 'required' => false,
-            ],
-            'branch_worker_count' => [
-                'key' => 'data.attributes.branch_worker_count',
-                'name' => __('reports.fields.branch_worker_count.name'),
-                'alias' => __('reports.fields.branch_worker_count.alias'),
-                'type' => CustomFieldType::Int,
-                'required' => true,
-                'rules' => ['min:1', 'max:10000'],
+                'parameters' => [
+                    CustomFieldParameter::CategoryId->value => 2,
+                ]
             ],
             'minor_injury_count' => [
                 'key' => 'data.attributes.minor_injury_count',
@@ -70,6 +80,9 @@ abstract class BaseOperation extends Model
                 'type' => CustomFieldType::Int,
                 'required' => true,
                 'rules' => ['min:0', 'max:10000'],
+                'parameters' => [
+                    CustomFieldParameter::CategoryId->value => 3,
+                ]
             ],
             'severe_injury_count' => [
                 'key' => 'data.attributes.severe_injury_count',
@@ -78,6 +91,9 @@ abstract class BaseOperation extends Model
                 'type' => CustomFieldType::Int,
                 'required' => true,
                 'rules' => ['min:0', 'max:10000'],
+                'parameters' => [
+                    CustomFieldParameter::CategoryId->value => 3,
+                ]
             ],
             'fatal_injury_count' => [
                 'key' => 'data.attributes.fatal_injury_count',
@@ -86,6 +102,9 @@ abstract class BaseOperation extends Model
                 'type' => CustomFieldType::Int,
                 'required' => true,
                 'rules' => ['min:0', 'max:10000'],
+                'parameters' => [
+                    CustomFieldParameter::CategoryId->value => 3,
+                ]
             ],
             'evacuated_people_count' => [
                 'key' => 'data.attributes.evacuated_people_count',
@@ -94,6 +113,9 @@ abstract class BaseOperation extends Model
                 'type' => CustomFieldType::Int,
                 'required' => true,
                 'rules' => ['min:0', 'max:10000'],
+                'parameters' => [
+                    CustomFieldParameter::CategoryId->value => 3,
+                ]
             ],
             'provided_medical_count' => [
                 'key' => 'data.attributes.provided_medical_count',
@@ -102,6 +124,9 @@ abstract class BaseOperation extends Model
                 'type' => CustomFieldType::Int,
                 'required' => true,
                 'rules' => ['min:0', 'max:10000'],
+                'parameters' => [
+                    CustomFieldParameter::CategoryId->value => 3,
+                ]
             ],
             'client_equipment_count' => [
                 'key' => 'data.attributes.client_equipment_count',
@@ -110,6 +135,9 @@ abstract class BaseOperation extends Model
                 'type' => CustomFieldType::Int,
                 'required' => true,
                 'rules' => ['min:0', 'max:10000'],
+                'parameters' => [
+                    CustomFieldParameter::CategoryId->value => 2,
+                ]
             ],
             'third_parties_count' => [
                 'key' => 'data.attributes.third_parties_count',
@@ -118,6 +146,9 @@ abstract class BaseOperation extends Model
                 'type' => CustomFieldType::Int,
                 'required' => true,
                 'rules' => ['min:0', 'max:10000'],
+                'parameters' => [
+                    CustomFieldParameter::CategoryId->value => 2,
+                ]
             ],
             'worker_man_hours' => [
                 'key' => 'data.attributes.worker_man_hours',
@@ -130,6 +161,9 @@ abstract class BaseOperation extends Model
                     'min:0',
                     'max:1000000'
                 ],
+                'parameters' => [
+                    CustomFieldParameter::CategoryId->value => 4,
+                ]
             ],
             'close_date' => [
                 'key' => 'data.attributes.close_date',
@@ -142,6 +176,9 @@ abstract class BaseOperation extends Model
                     'after_or_equal:data.attributes.work_start_date',
                     'before_or_equal:tomorrow',
                 ],
+                'parameters' => [
+                    CustomFieldParameter::CategoryId->value => 4,
+                ]
             ],
             'transport_id' => [
                 'key' => 'data.attributes.transport.*.id',
@@ -155,6 +192,9 @@ abstract class BaseOperation extends Model
                     })
                 ],
                 'options' => route('auxiliary.field-options', 'transport-types'),
+                'parameters' => [
+                    CustomFieldParameter::CategoryId->value => 2,
+                ]
             ],
             'transport_count' => [
                 'key' => 'data.attributes.transport.*.count',
@@ -163,6 +203,9 @@ abstract class BaseOperation extends Model
                 'type' => CustomFieldType::Int,
                 'required' => true,
                 'rules' => ['min:1', 'max:10000'],
+                'parameters' => [
+                    CustomFieldParameter::CategoryId->value => 2,
+                ]
             ],
         ]);
     }
