@@ -10,8 +10,10 @@ class UpdateLogCollection extends ResourceCollection
 {
     public function toArray(Request $request): array
     {
+//        dd($this->resource[0]->customFieldsUsedInUpdates());
+
         return [
-            'columns' => $this->getColumns(),
+            'columns' => $this->getColumns(array_keys($this->resource[0]->customFieldValueArray())),
             'data' => $this->resource,
         ];
     }
@@ -21,7 +23,7 @@ class UpdateLogCollection extends ResourceCollection
      *
      * @return array
      */
-    protected function getColumns(): array
+    protected function getColumns(array $customFields = []): array
     {
         $attributes = array_merge([
             'created_at',
@@ -37,13 +39,20 @@ class UpdateLogCollection extends ResourceCollection
             'work_scope',
             'situation_during_filing',
             'transport',
-        ], $this->getCustomFieldColumns());
+        ], $customFields);
 
-        return collect($attributes)->map(fn($attribute) => [
-            'key' => $attribute,
-            'name' => __('reports.fields.' . $attribute . '.name'),
-            'alias' => __('reports.fields.' . $attribute . '.alias'),
-        ])->toArray();
+        return collect(array_intersect_key(Report::fieldDefinitions(), array_flip($attributes)))->map(fn($attribute, $key) => [ //repeating piece of code x3
+            'key' => $key,
+            'name' => $attribute['name'],
+            'alias' => $attribute['alias'],
+        ])->values()->toArray();
+    }
+
+    private function getAttributes($report): array
+    {
+        $customFields = $report->custom_fields;
+
+        dd($customFields);
     }
 
 }

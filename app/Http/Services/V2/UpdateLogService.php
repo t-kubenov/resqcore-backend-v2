@@ -15,17 +15,20 @@ class UpdateLogService
 //     */
     public function getUpdateLog(Report $report): Collection
     {
-        // Load necessary relationships: 'updates' (with transport) and 'transport' for the report itself
         $report->load([
-            'updates.transport', // Updates with transport
-            'updates.reporter',  // Updates with reporter
-            'transport',         // Report's transport
-            'reporter',          // Report's reporter (if applicable)
+            'updates.transport',
+            'updates.reporter',
+            'transport',
+            'reporter',
         ]);
+
+        $customValues = $report->customFieldValueArray();
 
         // Transform the Report into an Update format
         $reportAsUpdate = new Update();
         $reportAsUpdate->fill($report->toArray());
+
+        $reportAsUpdate = $this->loadCustomValues($reportAsUpdate, $customValues);
 
         // Add missing fields to match the Update structure
         $reportAsUpdate->id = $report->id; // Add Report ID
@@ -35,6 +38,8 @@ class UpdateLogService
         // Add relationships (transport and reporter)
         $reportAsUpdate->setRelation('transport', $report->transport);
         $reportAsUpdate->setRelation('reporter', $report->reporter);
+        $reportAsUpdate->setRelation('customFieldValues', $report->customFieldValuesUsedInUpdates());
+//        dd($report->customFieldValuesUsedInUpdates());
 
         // Merge the transformed report and its updates into a single array
         $updatesArray = array_merge(
@@ -42,11 +47,23 @@ class UpdateLogService
             $report->updates->map(function ($update) {
                 // Ensure each update retains its transport relationship
                 $update->load('transport');
-                return $update;
+
+                return $this->loadCustomValues($update, $update->customFieldValueArray());
+
             })->all()
         );
 
+
         // Return the combined result as a Laravel collection
         return new Collection($updatesArray);
+    }
+
+    private function loadCustomValues(Update $update, array $customValues = []): Update
+    {
+        foreach ($customValues as $key => $value) {
+            $update->{$key} = $value;
+        }
+
+        return $update;
     }
 }

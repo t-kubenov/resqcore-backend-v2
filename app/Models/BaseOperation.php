@@ -7,6 +7,7 @@ use App\Enums\CustomFieldType;
 use App\Models\V2\CustomField\CustomField;
 use App\Models\V2\CustomField\CustomFieldValue;
 use App\Traits\AltersDisplayedDates;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Validation\Rule;
 
 
@@ -221,14 +222,12 @@ abstract class BaseOperation extends Model
         return $this->hasMany(Transport::class);
     }
 
-
-    public static function customFieldNames(): array
+    public static function customFields(): Builder
     {
         return CustomField::where([
             ['model', static::class],
             ['rescue_company_id', auth()->user()->rescue_company_id]
-        ])->pluck('name')
-            ->toArray();
+        ]);
     }
 
     public function customFieldValues()
@@ -241,5 +240,14 @@ abstract class BaseOperation extends Model
         return $this->customFieldValues->mapWithKeys(function (CustomFieldValue $value) {
             return [$value->customField->name => $value->value];
         })->toArray();
+    }
+
+    public function customFieldValuesUsedInUpdates()
+    {
+        return $this->customFieldValues()
+            ->whereHas('customField', function ($query) {
+                $query->whereJsonContains('parameters', CustomFieldParameter::IncludeToUpdates);
+        })
+            ->get();
     }
 }
