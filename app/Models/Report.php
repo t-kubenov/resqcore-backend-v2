@@ -95,6 +95,7 @@ class Report extends BaseOperation
                 'alias' => __('reports.fields.caller.alias'),
                 'type' => CustomFieldType::String,
                 'required' => true,
+                'rules' => ['max:255'],
                 'parameters' => [
                     CustomFieldParameter::CategoryId->value => 1,
                 ]
@@ -170,7 +171,7 @@ class Report extends BaseOperation
                 'label' => __('reports.fields.line_facility_owner.name'),
                 'alias' => __('reports.fields.line_facility_owner.alias'),
                 'type' => CustomFieldType::String,
-                'rules' => ['required', 'string'],
+                'rules' => ['required', 'string', 'max:255'],
                 'parameters' => [
                     CustomFieldParameter::CategoryId->value => 1,
                 ]
@@ -181,7 +182,7 @@ class Report extends BaseOperation
                 'label' => __('reports.fields.emergency_location.name'),
                 'alias' => __('reports.fields.emergency_location.alias'),
                 'type' => CustomFieldType::String,
-                'rules' => ['required', 'string'],
+                'rules' => ['required', 'string', 'max:255'],
                 'parameters' => [
                     CustomFieldParameter::CategoryId->value => 1,
                 ]
@@ -191,8 +192,8 @@ class Report extends BaseOperation
                 'name' => 'emergency_info',
                 'label' => __('reports.fields.emergency_info.name'),
                 'alias' => __('reports.fields.emergency_info.alias'),
-                'type' => CustomFieldType::Text,
-                'rules' => ['nullable', 'string'],
+                'type' => CustomFieldType::String,
+                'rules' => ['nullable', 'string', 'max:255'],
                 'parameters' => [
                     CustomFieldParameter::CategoryId->value => 1,
                 ]
@@ -219,6 +220,7 @@ class Report extends BaseOperation
                 'label' => __('reports.fields.report_code.name'),
                 'alias' => __('reports.fields.report_code.alias'),
                 'type' => CustomFieldType::String,
+                'rules' => ['max:255'],
                 'parameters' => [
                     CustomFieldParameter::IsHidden,
                 ]
