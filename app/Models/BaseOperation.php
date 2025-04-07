@@ -192,7 +192,7 @@ abstract class BaseOperation extends Model
                         $query->where('rescue_company_id', auth()->user()->branch_office->rescue_company_id);
                     })
                 ],
-                'options' => route('auxiliary.field-options', 'transport-types'),
+                'options' => route('auxiliary.field-options', 'transport_type'),
                 'parameters' => [
                     CustomFieldParameter::CategoryId->value => 2,
                 ]

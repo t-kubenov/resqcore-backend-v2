@@ -59,7 +59,7 @@ class Report extends BaseOperation
                 'type' => CustomFieldType::SingleChoiceEnum,
                 'rules' => ['exists:branch_offices,id'],
                 'required' => false,
-                'options' => route('auxiliary.field-options', 'branch-offices'),
+                'options' => route('auxiliary.field-options', 'branch_office'),
                 'parameters' => [
                     CustomFieldParameter::IsFilterableForCA,
                     CustomFieldParameter::IsHidden
@@ -136,7 +136,7 @@ class Report extends BaseOperation
                         $query->where('rescue_company_id', auth()->user()->rescue_company->id);
                     })
                 ],
-                'options' => route('auxiliary.field-options', 'emergency-types'),
+                'options' => route('auxiliary.field-options', 'emergency_type'),
                 'parameters' => [
                     CustomFieldParameter::IsFilterable,
                     CustomFieldParameter::IsFilterableForCA,
@@ -149,7 +149,7 @@ class Report extends BaseOperation
                 'alias' => __('reports.fields.is_emergency_line.alias'),
                 'type' => CustomFieldType::Boolean,
                 'required' => true,
-                'options' => route('auxiliary.field-options', 'departure-types'),
+                'options' => route('auxiliary.field-options', 'departure_type'),
                 'parameters' => [
                     CustomFieldParameter::IsFilterable,
                     CustomFieldParameter::IsFilterableForCA,
