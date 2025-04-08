@@ -6,6 +6,7 @@ use App\Enums\CustomFieldType;
 use App\Http\Requests\V2\StoreReportRequest;
 use App\Models\Report;
 use App\Models\V2\CustomField\CustomFieldValue;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Exceptions\ThrottleRequestsException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -106,10 +107,7 @@ class ReportService
         }
 
         if (isset($data['call_date'])) {
-            [$startDate, $endDate] = explode('|', $data['call_date']);
-
-            $query->whereDate('call_date', '>=', $startDate)->whereDate('call_date', '<=', $endDate);
-
+            $this->filterDates($query, 'call_date', $data['call_date']);
             unset($data['call_date']);
         }
 
@@ -136,9 +134,7 @@ class ReportService
 
                     // Datetime
                     $filter['type'] === CustomFieldType::Datetime => function () use ($q, $value) {
-                        [$startDate, $endDate] = explode('|', $value);
-                        $q->whereDate('value_datetime', '>=', $startDate)
-                            ->whereDate('value_datetime', '<=', $endDate);
+                        $this->filterDates($q,'value_datetime', $value);
                     },
 
                     // String/Text
@@ -221,6 +217,19 @@ class ReportService
         $report->branch_worker_total = $report->branch_worker_count;
 
         $report->save();
+    }
+
+    private function filterDates(Builder $query, string $field, string $dates): void
+    {
+        [$startDate, $endDate] = explode('|', $dates);
+
+        if ($startDate) {
+            $query->whereDate($field, '>=', $startDate);
+        }
+
+        if ($endDate) {
+            $query->whereDate($field, '<=', $endDate);
+        }
     }
 
     private function checkReportForClosing($report)
