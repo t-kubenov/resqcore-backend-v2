@@ -78,12 +78,12 @@ class ReportResource extends JsonResource
         return [
             'highlighted' => collect(array_intersect_key(self::fieldDefinitions(), array_flip($highlighted)))->map(fn($attribute, $key) => [
                 'key' => $key,
-                'name' => $attribute['name'],
+                'name' => $attribute['label'],
                 'alias' => $attribute['alias'],
             ])->values()->toArray(),
             'attributes' => collect(array_intersect_key(self::fieldDefinitions(), array_flip($attributes)))->map(fn($attribute, $key) => [
                 'key' => $key,
-                'name' => $attribute['name'],
+                'name' => $attribute['label'],
                 'alias' => $attribute['alias'],
             ])->values()->toArray(),
         ];

@@ -30,7 +30,8 @@ class Update extends BaseOperation
         return array_merge([
             'transport' => [
                 'key' => 'data.attributes.transport',
-                'name' => __('reports.fields.transport.name'),
+                'name' => 'transport',
+                'label' => __('reports.fields.transport.name'),
                 'alias' => __('reports.fields.transport.alias'),
                 'type' => 'multi_value',
                 'required' => false,
@@ -38,7 +39,8 @@ class Update extends BaseOperation
             ],
             'branch_worker_count' => [
                 'key' => 'data.attributes.branch_worker_count',
-                'name' => __('reports.fields.branch_worker_count.name'),
+                'name' => 'branch_worker_count',
+                'label' => __('reports.fields.branch_worker_count.name'),
                 'alias' => __('reports.fields.branch_worker_count.alias'),
                 'type' => 'integer',
                 'required' => false,

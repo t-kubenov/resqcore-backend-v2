@@ -43,7 +43,7 @@ class UpdateLogCollection extends ResourceCollection
 
         return collect(array_intersect_key(Report::fieldDefinitions(), array_flip($attributes)))->map(fn($attribute, $key) => [ //repeating piece of code x3
             'key' => $key,
-            'name' => $attribute['name'],
+            'name' => $attribute['label'],
             'alias' => $attribute['alias'],
         ])->values()->toArray();
     }

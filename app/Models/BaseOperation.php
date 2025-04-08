@@ -45,7 +45,8 @@ abstract class BaseOperation extends Model
         return array_merge(CustomField::getFormattedFields(auth()->user()->rescue_company_id, static::class), [
             'branch_worker_count' => [
                 'key' => 'data.attributes.branch_worker_count',
-                'name' => __('reports.fields.branch_worker_count.name'), // todo: Задействовано работников филиала
+                'name' => 'branch_worker_count',
+                'label' => __('reports.fields.branch_worker_count.name'), // todo: Задействовано работников филиала
                 'alias' => __('reports.fields.branch_worker_count.alias'),
                 'type' => CustomFieldType::Int,
                 'required' => true,
@@ -56,7 +57,8 @@ abstract class BaseOperation extends Model
             ],
             'work_scope' => [
                 'key' => 'data.attributes.work_scope',
-                'name' => __('reports.fields.work_scope.name'), // todo: Перечень и объем проведенных работ
+                'name' => 'work_scope',
+                'label' => __('reports.fields.work_scope.name'), // todo: Перечень и объем проведенных работ
                 'alias' => __('reports.fields.work_scope.alias'),
                 'type' => CustomFieldType::Text,
                 'required' => true,
@@ -66,7 +68,8 @@ abstract class BaseOperation extends Model
             ],
             'situation_during_filing' => [
                 'key' => 'data.attributes.situation_during_filing',
-                'name' => __('reports.fields.situation_during_filing.name'),
+                'name' => 'situation_during_filing',
+                'label' => __('reports.fields.situation_during_filing.name'),
                 'alias' => __('reports.fields.situation_during_filing.alias'),
                 'type' => CustomFieldType::Text,
                 'required' => false,
@@ -76,7 +79,8 @@ abstract class BaseOperation extends Model
             ],
             'minor_injury_count' => [
                 'key' => 'data.attributes.minor_injury_count',
-                'name' => __('reports.fields.minor_injury_count.name'),
+                'name' => 'minor_injury_count',
+                'label' => __('reports.fields.minor_injury_count.name'),
                 'alias' => __('reports.fields.minor_injury_count.alias'),
                 'type' => CustomFieldType::Int,
                 'required' => true,
@@ -87,7 +91,8 @@ abstract class BaseOperation extends Model
             ],
             'severe_injury_count' => [
                 'key' => 'data.attributes.severe_injury_count',
-                'name' => __('reports.fields.severe_injury_count.name'),
+                'name' => 'severe_injury_count',
+                'label' => __('reports.fields.severe_injury_count.name'),
                 'alias' => __('reports.fields.severe_injury_count.alias'),
                 'type' => CustomFieldType::Int,
                 'required' => true,
@@ -98,7 +103,8 @@ abstract class BaseOperation extends Model
             ],
             'fatal_injury_count' => [
                 'key' => 'data.attributes.fatal_injury_count',
-                'name' => __('reports.fields.fatal_injury_count.name'),
+                'name' => 'fatal_injury_count',
+                'label' => __('reports.fields.fatal_injury_count.name'),
                 'alias' => __('reports.fields.fatal_injury_count.alias'),
                 'type' => CustomFieldType::Int,
                 'required' => true,
@@ -109,7 +115,8 @@ abstract class BaseOperation extends Model
             ],
             'evacuated_people_count' => [
                 'key' => 'data.attributes.evacuated_people_count',
-                'name' => __('reports.fields.evacuated_people_count.name'),
+                'name' => 'evacuated_people_count',
+                'label' => __('reports.fields.evacuated_people_count.name'),
                 'alias' => __('reports.fields.evacuated_people_count.alias'),
                 'type' => CustomFieldType::Int,
                 'required' => true,
@@ -120,7 +127,8 @@ abstract class BaseOperation extends Model
             ],
             'provided_medical_count' => [
                 'key' => 'data.attributes.provided_medical_count',
-                'name' => __('reports.fields.provided_medical_count.name'),
+                'name' => 'provided_medical_count',
+                'label' => __('reports.fields.provided_medical_count.name'),
                 'alias' => __('reports.fields.provided_medical_count.alias'),
                 'type' => CustomFieldType::Int,
                 'required' => true,
@@ -131,7 +139,8 @@ abstract class BaseOperation extends Model
             ],
             'client_equipment_count' => [
                 'key' => 'data.attributes.client_equipment_count',
-                'name' => __('reports.fields.client_equipment_count.name'),
+                'name' => 'client_equipment_count',
+                'label' => __('reports.fields.client_equipment_count.name'),
                 'alias' => __('reports.fields.client_equipment_count.alias'),
                 'type' => CustomFieldType::Int,
                 'required' => true,
@@ -142,7 +151,8 @@ abstract class BaseOperation extends Model
             ],
             'third_parties_count' => [
                 'key' => 'data.attributes.third_parties_count',
-                'name' => __('reports.fields.third_parties_count.name'),
+                'name' => 'third_parties_count',
+                'label' => __('reports.fields.third_parties_count.name'),
                 'alias' => __('reports.fields.third_parties_count.alias'),
                 'type' => CustomFieldType::Int,
                 'required' => true,
@@ -153,7 +163,8 @@ abstract class BaseOperation extends Model
             ],
             'worker_man_hours' => [
                 'key' => 'data.attributes.worker_man_hours',
-                'name' => __('reports.fields.worker_man_hours.name'),
+                'name' => 'worker_man_hours',
+                'label' => __('reports.fields.worker_man_hours.name'),
                 'alias' => __('reports.fields.worker_man_hours.alias'),
                 'type' => CustomFieldType::Float,
                 'required' => false,
@@ -168,7 +179,8 @@ abstract class BaseOperation extends Model
             ],
             'close_date' => [
                 'key' => 'data.attributes.close_date',
-                'name' => __('reports.fields.close_date.name'),
+                'name' => 'close_date',
+                'label' => __('reports.fields.close_date.name'),
                 'alias' => __('reports.fields.close_date.alias'),
                 'type' => CustomFieldType::Datetime,
                 'required' => false,
@@ -183,7 +195,8 @@ abstract class BaseOperation extends Model
             ],
             'transport_id' => [
                 'key' => 'data.attributes.transport.*.id',
-                'name' => __('reports.fields.transport_id.name'),
+                'name' => 'transport_id',
+                'label' => __('reports.fields.transport_id.name'),
                 'alias' => __('reports.fields.transport_id.alias'),
                 'type' => CustomFieldType::Int,
                 'required' => true,
@@ -199,7 +212,8 @@ abstract class BaseOperation extends Model
             ],
             'transport_count' => [
                 'key' => 'data.attributes.transport.*.count',
-                'name' => __('reports.fields.transport_count.name'),
+                'name' => 'transport_count',
+                'label' => __('reports.fields.transport_count.name'),
                 'alias' => __('reports.fields.transport_count.alias'),
                 'type' => CustomFieldType::Int,
                 'required' => true,

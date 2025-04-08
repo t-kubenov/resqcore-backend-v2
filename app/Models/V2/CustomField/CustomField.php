@@ -92,7 +92,8 @@ class CustomField extends Model
                 $field->name => [
                     'id' => $field->id,
                     'key' => "data.attributes.{$field->name}",
-                    'name' => $field->label,
+                    'name' => $field->name,
+                    'label' => $field->label,
                     'alias' => '',
                     'type' => $field->type,
                     'required' => $field->required,

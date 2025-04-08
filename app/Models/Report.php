@@ -54,7 +54,8 @@ class Report extends BaseOperation
         return array_merge([
             'branch_office' => [
                 'key' => 'data.attributes.branch_office_id',
-                'name' => __('reports.fields.branch_office_id.name'),
+                'name' => 'branch_office',
+                'label' => __('reports.fields.branch_office_id.name'),
                 'alias' => __('reports.fields.branch_office_id.alias'),
                 'type' => CustomFieldType::SingleChoiceEnum,
                 'rules' => ['exists:branch_offices,id'],
@@ -67,7 +68,8 @@ class Report extends BaseOperation
             ],
             'reported_by' => [
                 'key' => 'data.attributes.reported_by',
-                'name' => __('reports.fields.reported_by.name'),
+                'name' => 'reported_by',
+                'label' => __('reports.fields.reported_by.name'),
                 'alias' => __('reports.fields.reported_by.alias'),
                 'type' => CustomFieldType::String,
                 'parameters' => [
@@ -76,7 +78,8 @@ class Report extends BaseOperation
             ],
             'facility_owner' => [
                 'key' => 'data.attributes.facility_owner_id',
-                'name' => __('reports.fields.facility_owner_id.name'),
+                'name' => 'facility_owner',
+                'label' => __('reports.fields.facility_owner_id.name'),
                 'alias' => __('reports.fields.facility_owner_id.alias'),
                 'type' => CustomFieldType::SingleChoiceEnum,
                 'rules' => ['exists:companies,id'],
@@ -87,7 +90,8 @@ class Report extends BaseOperation
             ],
             'caller' => [
                 'key' => 'data.attributes.caller',
-                'name' => __('reports.fields.caller.name'),
+                'name' => 'caller',
+                'label' => __('reports.fields.caller.name'),
                 'alias' => __('reports.fields.caller.alias'),
                 'type' => CustomFieldType::String,
                 'required' => true,
@@ -97,7 +101,8 @@ class Report extends BaseOperation
             ],
             'call_date' => [
                 'key' => 'data.attributes.call_date',
-                'name' => __('reports.fields.call_date.name'),
+                'name' => 'call_date',
+                'label' => __('reports.fields.call_date.name'),
                 'alias' => __('reports.fields.call_date.alias'),
                 'type' => CustomFieldType::Datetime,
                 'required' => true,
@@ -113,7 +118,8 @@ class Report extends BaseOperation
             ],
             'work_start_date' => [
                 'key' => 'data.attributes.work_start_date',
-                'name' => __('reports.fields.work_start_date.name'),
+                'name' => 'work_start_date',
+                'label' => __('reports.fields.work_start_date.name'),
                 'alias' => __('reports.fields.work_start_date.alias'),
                 'type' => CustomFieldType::Datetime,
                 'required' => true,
@@ -127,7 +133,8 @@ class Report extends BaseOperation
             ],
             'emergency_name' => [
                 'key' => 'data.attributes.emergency_type.id',
-                'name' => __('reports.fields.emergency_type.name'),
+                'name' => 'emergency_name',
+                'label' => __('reports.fields.emergency_type.name'),
                 'alias' => __('reports.fields.emergency_type.alias'),
                 'type' => CustomFieldType::SingleChoiceEnum,
                 'required' => true,
@@ -145,7 +152,8 @@ class Report extends BaseOperation
             ],
             'is_emergency_line' => [
                 'key' => 'data.attributes.is_emergency_line',
-                'name' => __('reports.fields.is_emergency_line.name'),
+                'name' => 'is_emergency_line',
+                'label' => __('reports.fields.is_emergency_line.name'),
                 'alias' => __('reports.fields.is_emergency_line.alias'),
                 'type' => CustomFieldType::Boolean,
                 'required' => true,
@@ -158,7 +166,8 @@ class Report extends BaseOperation
             ],
             'line_facility_owner' => [
                 'key' => 'data.attributes.line_facility_owner',
-                'name' => __('reports.fields.line_facility_owner.name'),
+                'name' => 'line_facility_owner',
+                'label' => __('reports.fields.line_facility_owner.name'),
                 'alias' => __('reports.fields.line_facility_owner.alias'),
                 'type' => CustomFieldType::String,
                 'rules' => ['required', 'string'],
@@ -168,7 +177,8 @@ class Report extends BaseOperation
             ],
             'emergency_location' => [
                 'key' => 'data.attributes.emergency_location',
-                'name' => __('reports.fields.emergency_location.name'),
+                'name' => 'emergency_location',
+                'label' => __('reports.fields.emergency_location.name'),
                 'alias' => __('reports.fields.emergency_location.alias'),
                 'type' => CustomFieldType::String,
                 'rules' => ['required', 'string'],
@@ -178,7 +188,8 @@ class Report extends BaseOperation
             ],
             'emergency_info' => [
                 'key' => 'data.attributes.emergency_info',
-                'name' => __('reports.fields.emergency_info.name'),
+                'name' => 'emergency_info',
+                'label' => __('reports.fields.emergency_info.name'),
                 'alias' => __('reports.fields.emergency_info.alias'),
                 'type' => CustomFieldType::Text,
                 'rules' => ['nullable', 'string'],
@@ -188,7 +199,8 @@ class Report extends BaseOperation
             ],
             'transport' => [
                 'key' => 'data.attributes.transport',
-                'name' => __('reports.fields.transport.name'),
+                'name' => 'transport',
+                'label' => __('reports.fields.transport.name'),
                 'alias' => __('reports.fields.transport.alias'),
                 'type' => CustomFieldType::MultiValue,
                 'rules' => ['required', 'array', 'min:1'],
@@ -198,7 +210,8 @@ class Report extends BaseOperation
             ],
             'is_closed' => [
                 'key' => 'data.attributes.is_closed',
-                'name' => __('reports.fields.is_closed.name'),
+                'name' => 'is_closed',
+                'label' => __('reports.fields.is_closed.name'),
                 'alias' => __('reports.fields.is_closed.alias'),
                 'type' => CustomFieldType::Boolean,
                 'parameters' => [
@@ -209,7 +222,8 @@ class Report extends BaseOperation
             ],
             'report_code' => [
                 'key' => 'data.attributes.report_code',
-                'name' => __('reports.fields.report_code.name'),
+                'name' => 'report_code',
+                'label' => __('reports.fields.report_code.name'),
                 'alias' => __('reports.fields.report_code.alias'),
                 'type' => CustomFieldType::String,
                 'parameters' => [
@@ -218,7 +232,8 @@ class Report extends BaseOperation
             ],
             'minor_injury_total' => [
                 'key' => 'data.attributes.minor_injury_total',
-                'name' => __('reports.fields.minor_injury_total.name'),
+                'name' => 'minor_injury_total',
+                'label' => __('reports.fields.minor_injury_total.name'),
                 'alias' => __('reports.fields.minor_injury_total.alias'),
                 'type' => CustomFieldType::Int,
                 'parameters' => [
@@ -228,7 +243,8 @@ class Report extends BaseOperation
             ],
             'severe_injury_total' => [
                 'key' => 'data.attributes.severe_injury_total',
-                'name' => __('reports.fields.severe_injury_total.name'),
+                'name' => 'severe_injury_total',
+                'label' => __('reports.fields.severe_injury_total.name'),
                 'alias' => __('reports.fields.severe_injury_total.alias'),
                 'type' => CustomFieldType::Int,
                 'parameters' => [
@@ -238,7 +254,8 @@ class Report extends BaseOperation
             ],
             'fatal_injury_total' => [
                 'key' => 'data.attributes.fatal_injury_total',
-                'name' => __('reports.fields.fatal_injury_total.name'),
+                'name' => 'fatal_injury_total',
+                'label' => __('reports.fields.fatal_injury_total.name'),
                 'alias' => __('reports.fields.fatal_injury_total.alias'),
                 'type' => CustomFieldType::Int,
                 'parameters' => [
@@ -248,7 +265,8 @@ class Report extends BaseOperation
             ],
             'evacuated_people_total' => [
                 'key' => 'data.attributes.evacuated_people_total',
-                'name' => __('reports.fields.evacuated_people_total.name'),
+                'name' => 'evacuated_people_total',
+                'label' => __('reports.fields.evacuated_people_total.name'),
                 'alias' => __('reports.fields.evacuated_people_total.alias'),
                 'type' => CustomFieldType::Int,
                 'parameters' => [
@@ -258,7 +276,8 @@ class Report extends BaseOperation
             ],
             'provided_medical_total' => [
                 'key' => 'data.attributes.provided_medical_total',
-                'name' => __('reports.fields.provided_medical_total.name'),
+                'name' => 'provided_medical_total',
+                'label' => __('reports.fields.provided_medical_total.name'),
                 'alias' => __('reports.fields.provided_medical_total.alias'),
                 'type' => CustomFieldType::Int,
                 'parameters' => [
@@ -268,7 +287,8 @@ class Report extends BaseOperation
             ],
             'client_equipment_total' => [
                 'key' => 'data.attributes.client_equipment_total',
-                'name' => __('reports.fields.client_equipment_total.name'),
+                'name' => 'client_equipment_total',
+                'label' => __('reports.fields.client_equipment_total.name'),
                 'alias' => __('reports.fields.client_equipment_total.alias'),
                 'type' => CustomFieldType::Int,
                 'parameters' => [
@@ -278,7 +298,8 @@ class Report extends BaseOperation
             ],
             'third_parties_total' => [
                 'key' => 'data.attributes.third_parties_total',
-                'name' => __('reports.fields.third_parties_total.name'),
+                'name' => 'third_parties_total',
+                'label' => __('reports.fields.third_parties_total.name'),
                 'alias' => __('reports.fields.third_parties_total.alias'),
                 'type' => CustomFieldType::Int,
                 'parameters' => [
@@ -288,7 +309,8 @@ class Report extends BaseOperation
             ],
             'branch_worker_total' => [
                 'key' => 'data.attributes.branch_worker_total',
-                'name' => __('reports.fields.branch_worker_total.name'),
+                'name' => 'branch_worker_total',
+                'label' => __('reports.fields.branch_worker_total.name'),
                 'alias' => __('reports.fields.branch_worker_total.alias'),
                 'type' => CustomFieldType::Int,
                 'parameters' => [
@@ -298,7 +320,8 @@ class Report extends BaseOperation
             ],
             'other_info' => [
                 'key' => 'data.attributes.other_info',
-                'name' => __('reports.fields.other_info.name'), //todo: what is this field? also translate
+                'name' => 'other_info',
+                'label' => __('reports.fields.other_info.name'),
                 'alias' => __('reports.fields.other_info.alias'),
                 'type' => CustomFieldType::Text,
                 'parameters' => [
@@ -307,7 +330,8 @@ class Report extends BaseOperation
             ],
             'last_update_created_at' => [
                 'key' => 'data.attributes.last_update_created_at',
-                'name' => __('reports.fields.last_update_created_at.name'),
+                'name' => 'last_update_created_at',
+                'label' => __('reports.fields.last_update_created_at.name'),
                 'alias' => __('reports.fields.last_update_created_at.alias'),
                 'type' => CustomFieldType::Datetime,
                 'parameters' => [
