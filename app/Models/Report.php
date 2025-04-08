@@ -214,6 +214,7 @@ class Report extends BaseOperation
                 'label' => __('reports.fields.is_closed.name'),
                 'alias' => __('reports.fields.is_closed.alias'),
                 'type' => CustomFieldType::Boolean,
+                'options' => route('auxiliary.field-options', 'boolean'),
                 'parameters' => [
                     CustomFieldParameter::IsFilterable,
                     CustomFieldParameter::IsHidden,

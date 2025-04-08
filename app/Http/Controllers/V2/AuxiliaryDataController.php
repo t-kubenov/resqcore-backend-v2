@@ -96,6 +96,15 @@ class AuxiliaryDataController extends Controller
             'departure_type' => DepartureType::class,
         ];
 
+        if ($fieldName === 'boolean') {
+            return response()->json([
+                'data' => [
+                    ['id' => 1, 'name' => __('etc.boolean.true')],
+                    ['id' => 0, 'name' => __('etc.boolean.false')],
+                ]
+            ], 200);
+        }
+
         if (array_key_exists($fieldName, $models))
         {
             $data = $models[$fieldName]::where('rescue_company_id', $companyId)->get();
