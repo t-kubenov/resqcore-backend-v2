@@ -83,49 +83,50 @@ class ReportService
 
     public function filterQuery($query, $request)
     {
+        $data = $request->all();
+
         $query = $this->filterRescueCompany($query);
         $query = $this->filterBranchOffice($query);
 
         $filters = Report::filters();
 
-        if (isset($request['emergency_type'])) {
-            $query->whereIn('emergency_type', $request['emergency_type']);
-            unset($request['emergency_type']);
+        if (isset($data['emergency_type'])) {
+            $query->whereIn('emergency_type', $data['emergency_type']);
+            unset($data['emergency_type']);
         }
 
-        if (isset($request['branch_office_id']) && auth()->user()->can('departure_view')) {
-            $query->whereIn('branch_office_id', $request['branch_office_id']);
-            unset($request['branch_office_id']);
+        if (isset($data['branch_office']) && auth()->user()->can('departure_view')) {
+            $query->whereIn('branch_office_id', $data['branch_office']);
+            unset($data['branch_office']);
         }
 
-        if (isset($request['is_emergency_line'])) {
-            $query->where('is_emergency_line', $request['is_emergency_line']);
-            unset($request['is_emergency_line']);
+        if (isset($data['is_emergency_line'])) {
+            $query->where('is_emergency_line', $data['is_emergency_line']);
+            unset($data['is_emergency_line']);
         }
 
-        if (isset($request['call_date'])) {
-            [$startDate, $endDate] = explode('|', $request['call_date']);
+        if (isset($data['call_date'])) {
+            [$startDate, $endDate] = explode('|', $data['call_date']);
 
             $query->whereDate('call_date', '>=', $startDate)->whereDate('call_date', '<=', $endDate);
 
-            unset($request['call_date']);
+            unset($data['call_date']);
         }
 
-        if (isset($request['is_closed'])) {
-            $query->where('is_closed', $request['is_closed']);
-            unset($request['is_closed']);
+        if (isset($data['is_closed'])) {
+            $query->where('is_closed', $data['is_closed']);
+            unset($data['is_closed']);
         }
 
 
         // Filter Custom Fields
-        foreach ($request->query as $field_name => $value) {
+        foreach ($data as $field_name => $value) {
             if (!array_key_exists($field_name, $filters)) {
                 continue;
             }
 
             $filter = $filters[$field_name];
             $column = CustomFieldValue::getStorableColumn($filter['type']);
-
             $query->whereHas('customFieldValues', function ($q) use ($filter, $field_name, $value, $column) {
                 $q->where('custom_field_id', $filter['id']);
 
@@ -151,8 +152,8 @@ class ReportService
             });
     }
 
-        if (isset($request['search'])) {
-            $search = $request['search'];
+        if (isset($data['search'])) {
+            $search = $data['search'];
             $query->where(function ($q) use ($search) {
                 $q->where('line_facility_owner', 'ILIKE', "%{$search}%")
                     ->orWhere('emergency_location', 'ILIKE', "%{$search}%")
