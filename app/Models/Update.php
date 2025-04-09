@@ -27,27 +27,7 @@ class Update extends BaseOperation
 
     public static function fieldDefinitions(): array
     {
-        return array_merge([
-            'transport' => [
-                'key' => 'data.attributes.transport',
-                'name' => 'transport',
-                'label' => __('reports.fields.transport.name'),
-                'alias' => __('reports.fields.transport.alias'),
-                'type' => 'multi_value',
-                'required' => false,
-                'rules' => ['nullable', 'array', 'min:1'],
-            ],
-            'branch_worker_count' => [
-                'key' => 'data.attributes.branch_worker_count',
-                'name' => 'branch_worker_count',
-                'label' => __('reports.fields.branch_worker_count.name'),
-                'alias' => __('reports.fields.branch_worker_count.alias'),
-                'type' => 'integer',
-                'required' => false,
-                'rules' => ['required', 'integer', 'min:0', 'max:10000'],
-            ],
-        ], parent::fieldDefinitions());
-
+        return parent::fieldDefinitions();
     }
 
     public function report()

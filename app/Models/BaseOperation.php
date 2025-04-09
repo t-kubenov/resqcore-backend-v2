@@ -193,35 +193,48 @@ abstract class BaseOperation extends Model
                     CustomFieldParameter::CategoryId->value => 4,
                 ]
             ],
-            'transport_id' => [
-                'key' => 'data.attributes.transport.*.id',
-                'name' => 'transport_id',
-                'label' => __('reports.fields.transport_id.name'),
-                'alias' => __('reports.fields.transport_id.alias'),
-                'type' => CustomFieldType::Int,
-                'required' => true,
-                'rules' => [
-                    Rule::exists('transport_types', 'id')->where(function ($query) {
-                        $query->where('rescue_company_id', auth()->user()->branch_office->rescue_company_id);
-                    })
-                ],
+            'transport' => [
+                'key' => 'data.attributes.transport',
+                'name' => 'transport',
+                'label' => __('reports.fields.transport.name'),
+                'alias' => __('reports.fields.transport.alias'),
+                'type' => CustomFieldType::MultiValue,
+                'rules' => ['array', 'min:1'],
                 'options' => route('auxiliary.field-options', 'transport_type'),
                 'parameters' => [
                     CustomFieldParameter::CategoryId->value => 2,
+                ],
+                'subfields' => [
+                    'transport_id' => [
+                        'key' => 'data.attributes.transport.*.id',
+                        'name' => 'transport_id',
+                        'label' => __('reports.fields.transport_id.name'),
+                        'alias' => __('reports.fields.transport_id.alias'),
+                        'type' => CustomFieldType::Int,
+                        'required' => true,
+                        'rules' => [
+                            Rule::exists('transport_types', 'id')->where(function ($query) {
+                                $query->where('rescue_company_id', auth()->user()->branch_office->rescue_company_id);
+                            })
+                        ],
+                        'parameters' => [
+                            CustomFieldParameter::CategoryId->value => 2,
+                        ]
+                    ],
+                    'transport_count' => [
+                        'key' => 'data.attributes.transport.*.count',
+                        'name' => 'transport_count',
+                        'label' => __('reports.fields.transport_count.name'),
+                        'alias' => __('reports.fields.transport_count.alias'),
+                        'type' => CustomFieldType::Int,
+                        'required' => true,
+                        'rules' => ['min:1', 'max:10000'],
+                        'parameters' => [
+                            CustomFieldParameter::CategoryId->value => 2,
+                        ]
+                    ],
                 ]
-            ],
-            'transport_count' => [
-                'key' => 'data.attributes.transport.*.count',
-                'name' => 'transport_count',
-                'label' => __('reports.fields.transport_count.name'),
-                'alias' => __('reports.fields.transport_count.alias'),
-                'type' => CustomFieldType::Int,
-                'required' => true,
-                'rules' => ['min:1', 'max:10000'],
-                'parameters' => [
-                    CustomFieldParameter::CategoryId->value => 2,
-                ]
-            ],
+            ]
         ]);
     }
 

@@ -51,7 +51,7 @@ class Report extends BaseOperation
     public static function fieldDefinitions(): array
     {
         //todo: add totals, last_update_created_at and  por favor
-        return array_merge([
+        return array_replace_recursive(parent::fieldDefinitions(), [
             'branch_office' => [
                 'key' => 'data.attributes.branch_office_id',
                 'name' => 'branch_office',
@@ -198,15 +198,7 @@ class Report extends BaseOperation
                 ]
             ],
             'transport' => [
-                'key' => 'data.attributes.transport',
-                'name' => 'transport',
-                'label' => __('reports.fields.transport.name'),
-                'alias' => __('reports.fields.transport.alias'),
-                'type' => CustomFieldType::MultiValue,
-                'rules' => ['required', 'array', 'min:1'],
-                'parameters' => [
-                    CustomFieldParameter::CategoryId->value => 2,
-                ]
+                'required' => true,
             ],
             'is_closed' => [
                 'key' => 'data.attributes.is_closed',
@@ -340,7 +332,7 @@ class Report extends BaseOperation
                 ]
             ],
 
-        ], parent::fieldDefinitions());
+        ]);
 
     }
 
