@@ -7,6 +7,8 @@ use App\Http\Resources\V2\TransportCollection;
 use App\Http\Resources\V2\TransportResource;
 use App\Http\Resources\V2\Update\UpdateCollection;
 use App\Http\Resources\V2\UserResource;
+use App\Models\User;
+use App\Models\V2\Sushi\DepartureType;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -57,7 +59,7 @@ class ReportResource extends JsonResource
             'third_parties_total' => $this->third_parties_total,
             'branch_worker_total' => $this->branch_worker_total,
             'other_info' => $this->other_info,
-            'is_emergency_line' => $this->is_emergency_line? 'Вне территории заказчика': 'На территории заказчика',
+            'is_emergency_line' => DepartureType::getDepartureType(User::where('id', $this->reporter->id)->first(), $this->is_emergency_line),
             'last_update_created_at' => $this->last_update_created_at?->format(config('app.date_format')),
             'worker_man_hours' => $this->worker_man_hours,
             'close_date' => $this->close_date?->format(config('app.date_format')),

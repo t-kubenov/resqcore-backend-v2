@@ -2,6 +2,7 @@
 
 namespace App\Models\V2\Sushi;
 
+use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
 use Sushi\Sushi;
 
@@ -36,4 +37,13 @@ class DepartureType extends Model
         ],
 
     ];
+
+    public static function getDepartureType(User $user, bool $option): string
+    {
+        return
+            self::where('rescue_company_id', $user->branch_office['rescue_company_id'])
+            ->where('id', $option)
+            ->first()
+            ->name;
+    }
 }

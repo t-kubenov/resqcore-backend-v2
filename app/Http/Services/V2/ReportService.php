@@ -54,7 +54,7 @@ class ReportService
         $attributes['reported_by'] = $user->id;
         $attributes['branch_office_id'] = $user->branch_id ?? $attributes['branch_office_id']; //todo: move this to separate function
         $attributes['report_code'] = $this->generateReportCode($attributes['branch_office_id']);
-        $attributes['emergency_type'] = $attributes['emergency_type']['id'];
+        $attributes['emergency_type'] = $attributes['emergency_name'];
 
         $report = Report::create($attributes);
 

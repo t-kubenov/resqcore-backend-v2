@@ -133,7 +133,7 @@ class Report extends BaseOperation
                 ]
             ],
             'emergency_name' => [
-                'key' => 'data.attributes.emergency_type.id',
+                'key' => 'data.attributes.emergency_name',
                 'name' => 'emergency_name',
                 'label' => __('reports.fields.emergency_type.name'),
                 'alias' => __('reports.fields.emergency_type.alias'),
