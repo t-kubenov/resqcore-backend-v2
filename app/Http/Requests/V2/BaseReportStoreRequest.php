@@ -58,6 +58,6 @@ abstract class BaseReportStoreRequest extends FormRequest
 
     protected function getRules(BaseOperation $operation): array
     {
-        return ReportFilterFieldValidationDTO::fromArray(Report::fieldDefinitions(), 'creation');
+        return ReportFilterFieldValidationDTO::fromArray($operation::fieldDefinitions(), 'creation');
     }
 }

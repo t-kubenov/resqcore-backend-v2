@@ -171,7 +171,7 @@ class ReportService
         }
 
         return $query->whereHas('branch_office', function ($q) use ($user) {
-            $q->where('rescue_company_id', $user->rescue_company->id);
+            $q->where('rescue_company_id', $user->branch_office->rescue_company_id);
         });
     }
 

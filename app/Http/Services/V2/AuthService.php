@@ -3,6 +3,7 @@
 namespace App\Http\Services\V2;
 
 use App\Http\Resources\V2\UserResource;
+use App\Models\RescueCompany;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
@@ -110,14 +111,13 @@ class AuthService
             },
         ]);
 
+
         $rescueCompanyId = $user->branch_office?->rescue_company_id;
 
         if ($rescueCompanyId) {
-            $user->load([
-                'rescue_company' => function ($query) use ($rescueCompanyId) {
-                    $query->where('rescue_companies.id', $rescueCompanyId);
-                }
-            ]);
+            $rescueCompany = RescueCompany::where('rescue_companies.id', $rescueCompanyId)->first();
+
+            $user->setRelation('rescue_company', $rescueCompany);
         }
 
         $user->role?->permissions->makeHidden('pivot');
