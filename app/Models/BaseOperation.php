@@ -50,7 +50,7 @@ abstract class BaseOperation extends Model
                 'alias' => __('reports.fields.branch_worker_count.alias'),
                 'type' => CustomFieldType::Int,
                 'required' => false,
-                'rules' => ['min:1', 'max:10000'],
+                'rules' => ['min:0', 'max:10000'],
                 'parameters' => [
                     CustomFieldParameter::CategoryId->value => 2,
                 ]
@@ -234,7 +234,20 @@ abstract class BaseOperation extends Model
                         ]
                     ],
                 ]
-            ]
+            ],
+            'created_at' => [
+                'key' => 'data.attributes.created_at',
+                'name' => 'created_at',
+                'label' => __('reports.fields.created_at.name'),
+                'alias' => __('reports.fields.created_at.alias'),
+                'type' => CustomFieldType::Datetime,
+                'required' => false,
+                'rules' => ['date'],
+                'parameters' => [
+                    CustomFieldParameter::CategoryId->value => 1,
+                    CustomFieldParameter::IsHidden,
+                ]
+            ],
         ]);
     }
 

@@ -339,6 +339,9 @@ class Report extends BaseOperation
             ],
             'branch_worker_count' => [
                 'required' => true,
+                'rules' => [
+                    'min:1',
+                ],
             ]
         ]);
 
