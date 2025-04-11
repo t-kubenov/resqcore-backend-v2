@@ -56,9 +56,9 @@ class CustomFieldValue extends Model
         }
 
         return match ($this->customField->type) {
-            CustomFieldType::Int,
+            CustomFieldType::Int => $this->value_int,
             CustomFieldType::SingleChoiceEnum,
-            CustomFieldType::MultipleChoiceEnum => $this->value_int,
+            CustomFieldType::MultipleChoiceEnum => CustomFieldOption::find($this->value_int)->label,
             CustomFieldType::Float => $this->value_float,
             CustomFieldType::Boolean => $this->value_boolean,
             CustomFieldType::Datetime => $this->value_datetime,
