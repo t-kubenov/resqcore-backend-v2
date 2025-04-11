@@ -27,7 +27,6 @@ class UpdateLogCollection extends ResourceCollection
     {
         $attributes = array_merge([
             'created_at',
-            'reported_by',
             'minor_injury_count',
             'severe_injury_count',
             'fatal_injury_count',

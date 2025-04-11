@@ -132,17 +132,19 @@ class Report extends BaseOperation
                     CustomFieldParameter::CategoryId->value => 1,
                 ]
             ],
-            'emergency_name' => [
-                'key' => 'data.attributes.emergency_name',
-                'name' => 'emergency_name',
+            'emergency_type' => [
+                'key' => 'data.attributes.emergency_type',
+                'name' => 'emergency_type',
                 'label' => __('reports.fields.emergency_type.name'),
                 'alias' => __('reports.fields.emergency_type.alias'),
                 'type' => CustomFieldType::SingleChoiceEnum,
                 'required' => true,
                 'rules' => [
-                    Rule::exists('emergency_types', 'id')->where(function ($query) {
-                        $query->where('rescue_company_id', auth()->user()->rescue_company->id);
-                    })
+                    Rule::exists('emergency_types', 'id')
+//                          ->where(function ($query) {
+//                        $query->where('rescue_company_id', auth()->user()->rescue_company->id);
+//                        dd(auth()->user()->rescue_company); // todo: this always returns 1. wtf?
+//                    })
                 ],
                 'options' => route('auxiliary.field-options', 'emergency_type'),
                 'parameters' => [
@@ -171,6 +173,7 @@ class Report extends BaseOperation
                 'label' => __('reports.fields.line_facility_owner.name'),
                 'alias' => __('reports.fields.line_facility_owner.alias'),
                 'type' => CustomFieldType::String,
+                'required' => true,
                 'rules' => ['required', 'string', 'max:255'],
                 'parameters' => [
                     CustomFieldParameter::CategoryId->value => 1,
@@ -182,6 +185,7 @@ class Report extends BaseOperation
                 'label' => __('reports.fields.emergency_location.name'),
                 'alias' => __('reports.fields.emergency_location.alias'),
                 'type' => CustomFieldType::String,
+                'required' => true,
                 'rules' => ['required', 'string', 'max:255'],
                 'parameters' => [
                     CustomFieldParameter::CategoryId->value => 1,
@@ -333,7 +337,9 @@ class Report extends BaseOperation
                     CustomFieldParameter::IsHidden,
                 ]
             ],
-
+            'branch_worker_count' => [
+                'required' => true,
+            ]
         ]);
 
     }

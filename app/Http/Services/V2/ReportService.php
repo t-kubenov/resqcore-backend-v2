@@ -54,7 +54,7 @@ class ReportService
         $attributes['reported_by'] = $user->id;
         $attributes['branch_office_id'] = $user->branch_id ?? $attributes['branch_office_id']; //todo: move this to separate function
         $attributes['report_code'] = $this->generateReportCode($attributes['branch_office_id']);
-        $attributes['emergency_type'] = $attributes['emergency_name'];
+//        $attributes['emergency_type'] = $attributes['emergency_type'];
 
         $report = Report::create($attributes);
 
@@ -115,7 +115,6 @@ class ReportService
             $query->where('is_closed', $data['is_closed']);
             unset($data['is_closed']);
         }
-
 
         // Filter Custom Fields
         foreach ($data as $field_name => $value) {

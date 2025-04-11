@@ -49,7 +49,7 @@ class ReportResource extends JsonResource
             'emergency_info' => $this->emergency_info,
             'call_date' => $this->call_date?->format(config('app.date_format')),
             'work_start_date' => $this->work_start_date?->format(config('app.date_format')),
-            'emergency_name' => $this->emergency->name,
+            'emergency_type' => $this->emergency->name,
             'minor_injury_total' => $this->minor_injury_total,
             'severe_injury_total' => $this->severe_injury_total,
             'fatal_injury_total' => $this->fatal_injury_total,

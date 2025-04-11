@@ -53,6 +53,7 @@ class AuxiliaryDataController extends Controller
             if (!isset($groupedFields[$catName])) {
                 $groupedFields[$catName] = [
                     'category' => $catName,
+                    'order' => $category->id,
                     ...(isset($category->note) ? ['note' => $category->note] : []),
                     'fields' => []
                 ];
@@ -60,6 +61,10 @@ class AuxiliaryDataController extends Controller
 
             $groupedFields[$catName]['fields'][] = $field;
         }
+
+        usort($groupedFields, function ($a, $b) {
+            return $a['order'] <=> $b['order'];
+        });
 
         return array_values($groupedFields);
     }

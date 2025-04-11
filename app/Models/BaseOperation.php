@@ -49,7 +49,7 @@ abstract class BaseOperation extends Model
                 'label' => __('reports.fields.branch_worker_count.name'), // todo: Задействовано работников филиала
                 'alias' => __('reports.fields.branch_worker_count.alias'),
                 'type' => CustomFieldType::Int,
-                'required' => true,
+                'required' => false,
                 'rules' => ['min:1', 'max:10000'],
                 'parameters' => [
                     CustomFieldParameter::CategoryId->value => 2,
@@ -72,7 +72,7 @@ abstract class BaseOperation extends Model
                 'label' => __('reports.fields.situation_during_filing.name'),
                 'alias' => __('reports.fields.situation_during_filing.alias'),
                 'type' => CustomFieldType::Text,
-                'required' => false,
+                'required' => true,
                 'parameters' => [
                     CustomFieldParameter::CategoryId->value => 2,
                 ]
@@ -83,7 +83,7 @@ abstract class BaseOperation extends Model
                 'label' => __('reports.fields.minor_injury_count.name'),
                 'alias' => __('reports.fields.minor_injury_count.alias'),
                 'type' => CustomFieldType::Int,
-                'required' => true,
+                'required' => false,
                 'rules' => ['min:0', 'max:10000'],
                 'parameters' => [
                     CustomFieldParameter::CategoryId->value => 3,
@@ -95,7 +95,7 @@ abstract class BaseOperation extends Model
                 'label' => __('reports.fields.severe_injury_count.name'),
                 'alias' => __('reports.fields.severe_injury_count.alias'),
                 'type' => CustomFieldType::Int,
-                'required' => true,
+                'required' => false,
                 'rules' => ['min:0', 'max:10000'],
                 'parameters' => [
                     CustomFieldParameter::CategoryId->value => 3,
@@ -107,7 +107,7 @@ abstract class BaseOperation extends Model
                 'label' => __('reports.fields.fatal_injury_count.name'),
                 'alias' => __('reports.fields.fatal_injury_count.alias'),
                 'type' => CustomFieldType::Int,
-                'required' => true,
+                'required' => false,
                 'rules' => ['min:0', 'max:10000'],
                 'parameters' => [
                     CustomFieldParameter::CategoryId->value => 3,
@@ -119,7 +119,7 @@ abstract class BaseOperation extends Model
                 'label' => __('reports.fields.evacuated_people_count.name'),
                 'alias' => __('reports.fields.evacuated_people_count.alias'),
                 'type' => CustomFieldType::Int,
-                'required' => true,
+                'required' => false,
                 'rules' => ['min:0', 'max:10000'],
                 'parameters' => [
                     CustomFieldParameter::CategoryId->value => 3,
@@ -131,7 +131,7 @@ abstract class BaseOperation extends Model
                 'label' => __('reports.fields.provided_medical_count.name'),
                 'alias' => __('reports.fields.provided_medical_count.alias'),
                 'type' => CustomFieldType::Int,
-                'required' => true,
+                'required' => false,
                 'rules' => ['min:0', 'max:10000'],
                 'parameters' => [
                     CustomFieldParameter::CategoryId->value => 3,
@@ -143,7 +143,7 @@ abstract class BaseOperation extends Model
                 'label' => __('reports.fields.client_equipment_count.name'),
                 'alias' => __('reports.fields.client_equipment_count.alias'),
                 'type' => CustomFieldType::Int,
-                'required' => true,
+                'required' => false,
                 'rules' => ['min:0', 'max:10000'],
                 'parameters' => [
                     CustomFieldParameter::CategoryId->value => 2,
@@ -155,7 +155,7 @@ abstract class BaseOperation extends Model
                 'label' => __('reports.fields.third_parties_count.name'),
                 'alias' => __('reports.fields.third_parties_count.alias'),
                 'type' => CustomFieldType::Int,
-                'required' => true,
+                'required' => false,
                 'rules' => ['min:0', 'max:10000'],
                 'parameters' => [
                     CustomFieldParameter::CategoryId->value => 2,
