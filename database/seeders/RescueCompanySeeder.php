@@ -2,7 +2,6 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class RescueCompanySeeder extends Seeder
@@ -16,7 +15,6 @@ class RescueCompanySeeder extends Seeder
             ['key' => 'pvass', 'name' => 'Республиканский Центральный Штаб Профессиональных Военнизированных Аварийно-Спасательных Служб', 'alias' => 'РЦШ ПВАСС'],
             ['key' => 'semser', 'name' => 'ТОО "Семсер - Өрт Сөндіруші"', 'alias' => 'Семсер'],
             ['key' => 'seriktes', 'name' => 'Аварийно-спасательная служба "Серіктес"', 'alias' => 'Серіктес'],
-            ['key' => 'test', 'name' => 'ТОО "Рога и Копыта"', 'alias' => ''],
         ];
 
         foreach ($rescueCompanies as $rescueCompany) {

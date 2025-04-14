@@ -18,6 +18,11 @@ return new class extends Migration
             $table->string('name');
             $table->string('alias')->nullable();
         });
+
+        Artisan::call('db:seed', [
+            '--class' => 'RescueCompanySeeder',
+            '--force' => true,
+        ]);
     }
 
     /**

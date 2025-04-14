@@ -47,6 +47,14 @@ return new class extends Migration
             $table->boolean('value_boolean')->nullable();
             $table->dateTime('value_datetime')->nullable();
         });
+
+        Artisan::call(
+            'db:seed',
+            [
+                '--class' => 'Database\\Seeders\\Main\\SemserMergeSeeder',
+                '--force' => true,
+            ]
+        );
     }
 
     /**
