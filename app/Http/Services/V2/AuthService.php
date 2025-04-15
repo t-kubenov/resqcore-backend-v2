@@ -36,7 +36,7 @@ class AuthService
 
     public function login(array $credentials)
     {
-        $user = User::where("email", $credentials['email'])->first();
+        $user = User::whereRaw('LOWER(email) = ?', [strtolower($credentials['email'])])->first();
 
         if (!$user || !Hash::check($credentials['password'], $user->password)) {
             return response()->json([
