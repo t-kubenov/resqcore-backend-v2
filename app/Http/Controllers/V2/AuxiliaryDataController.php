@@ -95,10 +95,10 @@ class AuxiliaryDataController extends Controller
         $companyId = auth()->user()->rescue_company_id;
 
         $models = [
-            'branch_office' => BranchOffice::class,
-            'emergency_type' => EmergencyType::class,
-            'transport_type' => TransportType::class,
-            'departure_type' => DepartureType::class,
+            'branch_office' => BranchOffice::where('is_central_office', false),
+            'emergency_type' => EmergencyType::query(),
+            'transport_type' => TransportType::query(),
+            'departure_type' => DepartureType::query(),
         ];
 
         if ($fieldName === 'boolean') {
@@ -112,7 +112,7 @@ class AuxiliaryDataController extends Controller
 
         if (array_key_exists($fieldName, $models))
         {
-            $data = $models[$fieldName]::where('rescue_company_id', $companyId)->get();
+            $data = $models[$fieldName]->where('rescue_company_id', $companyId)->get();
         }
 
         else
