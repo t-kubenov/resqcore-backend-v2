@@ -50,7 +50,6 @@ class Report extends BaseOperation
 
     public static function fieldDefinitions(): array
     {
-        //todo: add totals, last_update_created_at and  por favor
         return array_replace_recursive(parent::fieldDefinitions(), [
             'branch_office' => [
                 'key' => 'data.attributes.branch_office_id',

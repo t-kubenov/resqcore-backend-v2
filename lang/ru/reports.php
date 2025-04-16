@@ -12,11 +12,11 @@ return [
         ],
         'branch_office_id' => [
             'name' => 'ID филиала',
-            'alias' => '',
+            'alias' => 'Филиал',
         ],
         'facility_id' => [
             'name' => 'ID объекта',
-            'alias' => '',
+            'alias' => 'Объект',
         ],
         'facility_name' => [
             'name' => 'Название объекта',
@@ -24,7 +24,7 @@ return [
         ],
         'facility_owner_id' => [
             'name' => 'ID объекта',
-            'alias' => '',
+            'alias' => 'Объект',
         ],
         'facility_owner' => [
             'name' => 'Наименование объекта',
@@ -103,7 +103,7 @@ return [
             'alias' => 'Сторонних организаций',
         ],
         'branch_worker_count' => [
-            'name' => 'Количество работников филиала',
+            'name' => 'Задействовано работников филиала',
             'alias' => 'Работников филиала',
         ],
         'worker_man_hours' => [
@@ -143,8 +143,8 @@ return [
             'alias' => '',
         ],
         'work_scope' => [
-            'name' => 'Объем работ',
-            'alias' => '',
+            'name' => 'Перечень и объем проведенных работ',
+            'alias' => 'Объем работ',
         ],
         'situation_during_filing' => [
             'name' => 'Ситуация на момент подачи донесения',

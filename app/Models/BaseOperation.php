@@ -46,7 +46,7 @@ abstract class BaseOperation extends Model
             'branch_worker_count' => [
                 'key' => 'data.attributes.branch_worker_count',
                 'name' => 'branch_worker_count',
-                'label' => __('reports.fields.branch_worker_count.name'), // todo: Задействовано работников филиала
+                'label' => __('reports.fields.branch_worker_count.name'),
                 'alias' => __('reports.fields.branch_worker_count.alias'),
                 'type' => CustomFieldType::Int,
                 'required' => false,
@@ -58,7 +58,7 @@ abstract class BaseOperation extends Model
             'work_scope' => [
                 'key' => 'data.attributes.work_scope',
                 'name' => 'work_scope',
-                'label' => __('reports.fields.work_scope.name'), // todo: Перечень и объем проведенных работ
+                'label' => __('reports.fields.work_scope.name'),
                 'alias' => __('reports.fields.work_scope.alias'),
                 'type' => CustomFieldType::Text,
                 'required' => true,
