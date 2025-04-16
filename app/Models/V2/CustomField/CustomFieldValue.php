@@ -60,7 +60,7 @@ class CustomFieldValue extends Model
             CustomFieldType::SingleChoiceEnum,
             CustomFieldType::MultipleChoiceEnum => CustomFieldOption::find($this->value_int)->label,
             CustomFieldType::Float => $this->value_float,
-            CustomFieldType::Boolean => $this->value_boolean,
+            CustomFieldType::Boolean => $this->value_boolean? __('etc.boolean.true'): __('etc.boolean.false'),
             CustomFieldType::Datetime => $this->value_datetime,
             CustomFieldType::Text => $this->value_text,
             default => $this->value_string, // 'string', 'enum', etc.
