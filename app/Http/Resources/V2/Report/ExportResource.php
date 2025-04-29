@@ -2,6 +2,8 @@
 
 namespace App\Http\Resources\V2\Report;
 
+use App\Models\User;
+use App\Models\V2\Sushi\DepartureType;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -25,8 +27,7 @@ class ExportResource extends JsonResource
                 'call_date' => $attributes['call_date'],
                 'work_start_date' => $attributes['work_start_date'],
                 'close_date' => $attributes['close_date'],
-//                'is_emergency_line' => $this->is_emergency_line,
-                'is_emergency_line' => $this->is_emergency_line? 'Вне территории заказчика': 'На территории заказчика',
+                'is_emergency_line' => DepartureType::getDepartureType(User::where('id', $this->reporter->id)->first(), $this->is_emergency_line),
                 'line_facility_owner' => $this->line_facility_owner,
                 'emergency_type' => $this->emergency?->name, // Derive from emergency type
                 'emergency_location' => $this->emergency_location,
