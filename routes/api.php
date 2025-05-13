@@ -8,6 +8,7 @@ use App\Http\Controllers\V2\EmailController;
 use App\Http\Controllers\V2\ImageController;
 use App\Http\Controllers\V2\ReportController;
 use App\Http\Controllers\V2\StatisticsController;
+use App\Http\Controllers\V2\Survey\SurveyController;
 use App\Http\Controllers\V2\UpdateController;
 use App\Http\Controllers\V2\UpdateLogController;
 use Illuminate\Support\Facades\Route;
@@ -55,6 +56,7 @@ Route::middleware('throttle:global')->prefix('v2/')->group(function () {
 
             Route::group(['middleware' => ['permission:branch_report_create']], function () {
                 Route::post('/reports', [ReportController::class, 'store'])->name('reports.store');
+                Route::post('/surveys', [SurveyController::class, 'store'])->name('surveys.store');
             });
 
             Route::group(['middleware' => ['permission:branch_update_create']], function () {

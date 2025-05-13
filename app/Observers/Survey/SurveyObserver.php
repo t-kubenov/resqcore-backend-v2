@@ -1,0 +1,29 @@
+<?php
+
+namespace App\Observers\Survey;
+
+use App\Models\User;
+use App\Models\V2\Survey\Survey;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Log;
+
+class SurveyObserver
+{
+    public function creating(Survey $survey): void
+    {
+        $user = auth()->user();
+
+        $survey->branch_office_id = $user?->branch_id;
+        $survey->created_by = $user?->id;
+        $survey->survey_code = $this->generateSurveyCode($survey);
+    }
+
+    private function generateSurveyCode(Survey $survey): string
+    {
+        $year = Carbon::create($survey->survey_date)->format('y');
+        $branchId = $survey->branch_office_id;
+        $surveyCount = Survey::where('branch_office_id', $branchId)->count() + 1;
+
+        return "{$branchId}-{$year}-{$surveyCount}";
+    }
+}
