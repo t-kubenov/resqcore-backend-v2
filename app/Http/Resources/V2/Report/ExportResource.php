@@ -35,7 +35,7 @@ class ExportResource extends JsonResource
                 'worker_man_hours' => $this->worker_man_hours,
                 'branch_office' => $this->branch_office?->name,
                 'transport_totals' => $this->transport_totals,
-                'is_closed' => $this->is_closed,
+                'is_closed' => __('reports.fields.is_closed.'. ($this->is_closed ? 'true' : 'false')),
             ]
         ], $this->customFieldValueArray());
     }
