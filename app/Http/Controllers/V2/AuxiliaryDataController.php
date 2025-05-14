@@ -8,10 +8,15 @@ use App\Models\Egov\MineralField;
 use App\Models\Egov\OilField;
 use App\Models\Egov\SubsoilContract;
 use App\Models\EmergencyType;
+use App\Models\Model;
 use App\Models\Report;
 use App\Models\TransportType;
 use App\Models\Update;
+use App\Models\User;
 use App\Models\V2\CustomField\CustomFieldOption;
+use App\Models\V2\Survey\Survey;
+use App\Models\V2\Survey\SurveyLegalEntity;
+use App\Models\V2\Survey\SurveyLegalEntityUnit;
 use App\Models\V2\Sushi\DepartureType;
 use App\Models\V2\Sushi\ReportFieldCategory;
 use Illuminate\Http\JsonResponse;
@@ -33,6 +38,13 @@ class AuxiliaryDataController extends Controller
     public function getUpdateFields(): JsonResponse
     {
         $fields = Update::fieldDefinitions();
+
+        return response()->json(['data' => $this->filterAndCategorizeFields($fields)]);
+    }
+
+    public function getSurveyFields(): JsonResponse
+    {
+        $fields = Survey::fieldDefinitions();
 
         return response()->json(['data' => $this->filterAndCategorizeFields($fields)]);
     }
@@ -93,12 +105,19 @@ class AuxiliaryDataController extends Controller
     public function getFieldOptions(string $fieldName): JsonResponse
     {
         $companyId = auth()->user()->rescue_company_id;
+        $branchId = auth()->user()->branch_id;
 
         $models = [
-            'branch_office' => BranchOffice::where('is_central_office', false),
-            'emergency_type' => EmergencyType::query(),
-            'transport_type' => TransportType::query(),
-            'departure_type' => DepartureType::query(),
+            'branch_office' => BranchOffice::where('is_central_office', false)
+                ->where('rescue_company_id', $companyId),
+            'emergency_type' => EmergencyType::where('rescue_company_id', $companyId),
+            'transport_type' => TransportType::where('rescue_company_id', $companyId),
+            'departure_type' => DepartureType::where('rescue_company_id', $companyId),
+            'legal_entity' => SurveyLegalEntity::where('branch_office_id', $branchId),
+            'legal_entity_unit' => SurveyLegalEntityUnit::
+                whereHas('legal_entity', function ($query) use ($branchId) {
+                $query->where('branch_office_id', $branchId);
+            }),
         ];
 
         if ($fieldName === 'boolean') {
@@ -112,7 +131,7 @@ class AuxiliaryDataController extends Controller
 
         if (array_key_exists($fieldName, $models))
         {
-            $data = $models[$fieldName]->where('rescue_company_id', $companyId)->get();
+            $data = $models[$fieldName]->get();
         }
 
         else

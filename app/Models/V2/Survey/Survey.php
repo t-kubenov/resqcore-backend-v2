@@ -81,7 +81,7 @@ class Survey extends Model
                 'rules' => [
                     'exists:legal_entities,id',
                 ],
-                'options' => route('auxiliary.field-options', 'legal_entity_id'),
+                'options' => route('auxiliary.field-options', 'legal_entity'),
                 'parameters' => [
                     CustomFieldParameter::IsFilterable,
                     CustomFieldParameter::IsFilterableForCA,
@@ -98,7 +98,7 @@ class Survey extends Model
                 'rules' => [
                     'exists:legal_entity_units,id',
                 ],
-                'options' => route('auxiliary.field-options', 'legal_entity_unit_id'),
+                'options' => route('auxiliary.field-options', 'legal_entity_unit'),
                 'parameters' => [
                     CustomFieldParameter::IsFilterable,
                     CustomFieldParameter::IsFilterableForCA,

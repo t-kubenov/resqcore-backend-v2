@@ -2,9 +2,11 @@
 
 namespace App\Models\V2\Survey;
 
+use App\Models\BranchOffice;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Znck\Eloquent\Relations\BelongsToThrough;
 
 class SurveyLegalEntityUnit extends Model
 {
@@ -17,8 +19,13 @@ class SurveyLegalEntityUnit extends Model
         'legal_entity_id', //integer
     ];
 
-    public function legalEntity(): BelongsTo
+    public function legal_entity(): BelongsTo
     {
         return $this->belongsTo(SurveyLegalEntity::class, 'legal_entity_id');
+    }
+
+    public function branch_office(): BelongsToThrough
+    {
+        return $this->belongsToThrough(BranchOffice::class, SurveyLegalEntity::class, 'legal_entity_id', 'id', 'id', 'branch_office_id');
     }
 }
