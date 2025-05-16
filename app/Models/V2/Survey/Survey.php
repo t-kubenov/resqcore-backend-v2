@@ -71,6 +71,34 @@ class Survey extends Model
                 ],
             ],
 
+            'senders' =>
+            [
+                'key' => 'data.attributes.senders',
+                'name' => 'senders',
+                'label' => __('surveys.fields.senders.name'),
+                'alias' => __('surveys.fields.senders.alias'),
+                'type' => CustomFieldType::MultiValue,
+                'rules' => ['array', 'max:4'],
+                'parameters' => [
+                    CustomFieldParameter::IsFilterable,
+                    CustomFieldParameter::IsFilterableForCA,
+                ],
+            ],
+
+            'spokesmen' =>
+            [
+                'key' => 'data.attributes.spokesmen',
+                'name' => 'spokesmen',
+                'label' => __('surveys.fields.spokesmen.name'),
+                'alias' => __('surveys.fields.spokesmen.alias'),
+                'type' => CustomFieldType::MultiValue,
+                'rules' => ['array', 'min:1', 'max:6'],
+                'parameters' => [
+                    CustomFieldParameter::IsFilterable,
+                    CustomFieldParameter::IsFilterableForCA,
+                ],
+            ],
+
             'legal_entity_id' => [
                 'key' => 'data.attributes.legal_entity_id',
                 'name' => 'legal_entity_id',
@@ -152,7 +180,7 @@ class Survey extends Model
         return $this->hasMany(SurveySender::class);
     }
 
-    public function participants(): HasMany
+    public function spokesmen(): HasMany
     {
         return $this->hasMany(SurveyFacilitySpokesman::class);
     }

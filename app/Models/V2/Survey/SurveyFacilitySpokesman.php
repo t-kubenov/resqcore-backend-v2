@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class SurveyFacilitySpokesman extends Model
 {
+    protected $table = 'survey_facility_spokesman';
+
     protected $fillable = [
         'survey_id', //integer
         'name',

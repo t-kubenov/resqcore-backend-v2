@@ -40,15 +40,29 @@ class SurveyService
         $survey = new Survey();
         $survey->fill($data);
         $survey->save();
+        $this->processSendersAndSpokesmen($survey, $data);
 
         return $survey;
+    }
+
+    private function processSendersAndSpokesmen(Survey $survey, $data): void
+    {
+        if (isset($data['senders'])){
+            $senders = array_map(fn($name) => ['name' => $name], $data['senders']);
+            $survey->senders()->createMany($senders);
+        }
+
+        if (isset($data['spokesmen'])) {
+            $spokesmen = array_map(fn($name) => ['name' => $name], $data['spokesmen']);
+            $survey->spokesmen()->createMany($spokesmen);
+        }
     }
 
     public function index(Request $request)
     {
         $query = Survey::query();
 
-        //fixme: add filters
+        //todo: add filters
         return $query->paginate();
     }
 

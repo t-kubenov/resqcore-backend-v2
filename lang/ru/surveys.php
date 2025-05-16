@@ -58,7 +58,7 @@ return [
             ],
         ],
 
-        'facility_spokesmen' => [
+        'spokesmen' => [
             'name' => 'Представители ОПО',
             'alias' => '',
         ],
