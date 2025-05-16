@@ -129,6 +129,18 @@ class Survey extends Model
         ];
     }
 
+    public static function columns(): array
+    {
+        return array_map(function ($field) {
+            return [
+                'key' => $field['name'],
+                'name' => $field['label'],
+                'alias' => $field['alias'],
+            ];
+        }, array_values(self::fieldDefinitions()));
+
+    }
+
 
     public function branch_office(): BelongsTo
     {

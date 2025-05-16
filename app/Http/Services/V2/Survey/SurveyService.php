@@ -4,6 +4,7 @@ namespace App\Http\Services\V2\Survey;
 
 use App\Http\Requests\V2\Survey\StoreSurveyRequest;
 use App\Models\V2\Survey\Survey;
+use App\Models\V2\Survey\SurveyViolation;
 use Illuminate\Http\Exceptions\ThrottleRequestsException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -11,12 +12,11 @@ use Illuminate\Support\Facades\RateLimiter;
 
 class SurveyService
 {
-    public function handleCreate(StoreSurveyRequest $request): Survey
+    public function store(StoreSurveyRequest $request): Survey
     {
         $this->throttle($request);
         return $this->create($request);
     }
-
 
     private function throttle(Request $request): void
     {
@@ -42,6 +42,24 @@ class SurveyService
         $survey->save();
 
         return $survey;
+    }
+
+    public function index(Request $request)
+    {
+        $query = Survey::query();
+
+        //fixme: add filters
+        return $query->paginate();
+    }
+
+    public function storeViolation(Request $request, Survey $survey): SurveyViolation
+    {
+        $violation = new SurveyViolation();
+        $violation->fill($request->validated);
+        $violation->survey()->associate($survey);
+        $violation->save();
+
+        return $violation;
     }
 
 }

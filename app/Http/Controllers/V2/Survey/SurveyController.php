@@ -3,9 +3,11 @@
 namespace App\Http\Controllers\V2\Survey;
 
 use App\Http\Requests\V2\Survey\StoreSurveyRequest;
+use App\Http\Resources\V2\Survey\SurveyCollection;
 use App\Http\Services\V2\Survey\SurveyService;
 use App\Models\Report;
 use App\Models\V2\Survey\Survey;
+use App\Models\V2\Survey\SurveyViolation;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Exceptions\ThrottleRequestsException;
 use Illuminate\Http\Request;
@@ -24,12 +26,11 @@ class SurveyController
 
     public function index(Request $request)
     {
-        return ":3";
+        return new SurveyCollection($this->surveyService->index($request));
     }
 
     public function show($id)
     {
-        // Your logic to handle the request and return a response
         return response()->json(['message' => 'Survey show', 'id' => $id]);
     }
 
@@ -38,12 +39,24 @@ class SurveyController
         $this->authorize('create', Report::class); // todo: replace with survey, maybe move to middleware
 
         try {
-            $survey = $this->surveyService->handleCreate($request);
+            $survey = $this->surveyService->store($request);
         } catch (ThrottleRequestsException $e) {
             return response()->json(['message' => __('throttle.report-create')], 429);
         }
 
         return $survey;
+    }
+
+    public function storeViolation(Request $request, Survey $survey)
+    {
+        $this->authorize('create', Report::class); // todo: replace with survey, maybe move to middleware
+        $validation = $this->validateBranch($survey);
+
+        if ($validation !== true) {
+            return $validation;
+        }
+
+        return $this->surveyService->storeViolation($request, $survey);
     }
 
     public function update(Request $request, $id)
@@ -56,5 +69,14 @@ class SurveyController
     {
         // Your logic to handle the request and return a response
         return response()->json(['message' => 'Survey destroy', 'id' => $id]);
+    }
+
+    private function validateBranch(Survey $survey): mixed
+    {
+        if ($survey->branch_office_id !== auth()->user()->branch_id) {
+            return response()->json(['message' => 'Unauthorized'], 403);
+        }
+
+        return true;
     }
 }

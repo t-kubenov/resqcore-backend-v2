@@ -55,9 +55,12 @@ Route::middleware('throttle:global')->prefix('v2/')->group(function () {
             Route::get('/reports/{id}/log', [UpdateLogController::class, 'show'])->name('reports.id.log');
             Route::get('/export', [ReportController::class, 'export'])->name('reports.export');
 
+            Route::get('/surveys', [SurveyController::class, 'index'])->name('surveys.index');
+
             Route::group(['middleware' => ['permission:branch_report_create']], function () {
                 Route::post('/reports', [ReportController::class, 'store'])->name('reports.store');
                 Route::post('/surveys', [SurveyController::class, 'store'])->name('surveys.store');
+//                Route::post('/surveys/{survey}/violations', [SurveyController::class, 'storeViolation'])->name('surveys.store-violation');
             });
 
             Route::group(['middleware' => ['permission:branch_update_create']], function () {
