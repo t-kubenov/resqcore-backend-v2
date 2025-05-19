@@ -29,10 +29,7 @@ class SurveyCollection extends ResourceCollection
      */
     protected function getColumns(): array
     {
-        return
-            Survey::columns();
-
-
+        return Survey::columns();
     }
 
     /**
@@ -47,7 +44,7 @@ class SurveyCollection extends ResourceCollection
                 'id' => $survey->id,
                 'type' => 'survey',
                 'attributes' => [
-                    $survey->resource
+                    $survey->getReadableData(),
                 ],
                 'relationships' => $this->getRelationships($survey),
             ];

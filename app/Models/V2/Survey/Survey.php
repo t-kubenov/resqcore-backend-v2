@@ -43,6 +43,7 @@ class Survey extends Model
                 ],
                 'parameters' => [
                     CustomFieldParameter::IsHidden,
+                    CustomFieldParameter::ShowInTable,
                 ],
             ],
 
@@ -60,6 +61,7 @@ class Survey extends Model
                     CustomFieldParameter::IsHidden,
                     CustomFieldParameter::IsFilterable,
                     CustomFieldParameter::IsFilterableForCA,
+                    CustomFieldParameter::ShowInTable,
                 ],
             ],
 
@@ -74,6 +76,7 @@ class Survey extends Model
                     CustomFieldParameter::IsHidden,
                     CustomFieldParameter::IsFilterable,
                     CustomFieldParameter::IsFilterableForCA,
+                    CustomFieldParameter::ShowInTable,
                 ],
             ],
 
@@ -119,6 +122,7 @@ class Survey extends Model
                 'parameters' => [
                     CustomFieldParameter::IsFilterable,
                     CustomFieldParameter::IsFilterableForCA,
+                    CustomFieldParameter::ShowInTable,
                 ],
             ],
 
@@ -136,6 +140,7 @@ class Survey extends Model
                 'parameters' => [
                     CustomFieldParameter::IsFilterable,
                     CustomFieldParameter::IsFilterableForCA,
+                    CustomFieldParameter::ShowInTable,
                 ],
             ],
 
@@ -149,6 +154,7 @@ class Survey extends Model
                 'parameters' => [
                     CustomFieldParameter::IsFilterable,
                     CustomFieldParameter::IsFilterableForCA,
+                    CustomFieldParameter::ShowInTable,
                 ],
             ],
 
@@ -162,26 +168,49 @@ class Survey extends Model
                     'max:255',
                 ],
                 'required' => true,
+                'parameters' => [
+                    CustomFieldParameter::ShowInTable,
+                ],
             ],
         ];
     }
 
     public static function columns(): array
     {
-        return array_map(function ($field) {
-            return [
+        return array_values(array_map(
+            fn($field) => [
                 'key' => $field['name'],
                 'name' => $field['label'],
                 'alias' => $field['alias'],
-            ];
-        }, array_values(self::fieldDefinitions()));
+            ],
+            array_filter(self::fieldDefinitions(), fn($field) =>
+                in_array(CustomFieldParameter::ShowInTable, $field['parameters'])
+            )
+        ));
+    }
 
+    public function getReadableData(): array
+    {
+        return [
+            'survey_code' => $this->survey_code,
+            'branch_office_id' => $this->branch_office->name,
+            'created_by' => $this->user->full_name,
+            'legal_entity_id' => $this->legal_entity->name,
+            'legal_entity_unit_id' => $this->legal_entity_unit->name,
+            'survey_date' => Carbon::parse($this->survey_date)->format('Y-m-d H:i:s'),
+            'hazardous_facility_name' => $this->hazardous_facility_name,
+        ];
     }
 
 
     public function branch_office(): BelongsTo
     {
         return $this->belongsTo(BranchOffice::class);
+    }
+
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'created_by');
     }
 
     public function senders(): HasMany
