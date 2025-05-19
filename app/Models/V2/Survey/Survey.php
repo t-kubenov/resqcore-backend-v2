@@ -83,7 +83,7 @@ class Survey extends Model
                 'name' => 'senders',
                 'label' => __('surveys.fields.senders.name'),
                 'alias' => __('surveys.fields.senders.alias'),
-                'type' => CustomFieldType::MultiValue,
+                'type' => CustomFieldType::StringArray,
                 'rules' => ['array', 'max:4'],
                 'parameters' => [
                     CustomFieldParameter::IsFilterable,
@@ -97,7 +97,7 @@ class Survey extends Model
                 'name' => 'spokesmen',
                 'label' => __('surveys.fields.spokesmen.name'),
                 'alias' => __('surveys.fields.spokesmen.alias'),
-                'type' => CustomFieldType::MultiValue,
+                'type' => CustomFieldType::StringArray,
                 'rules' => ['array', 'min:1', 'max:6'],
                 'parameters' => [
                     CustomFieldParameter::IsFilterable,
