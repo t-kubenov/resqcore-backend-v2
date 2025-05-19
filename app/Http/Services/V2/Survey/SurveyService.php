@@ -2,6 +2,7 @@
 
 namespace App\Http\Services\V2\Survey;
 
+use App\Http\Requests\V2\Survey\CloseViolationRequest;
 use App\Http\Requests\V2\Survey\StoreSurveyRequest;
 use App\Http\Requests\V2\Survey\StoreViolationRequest;
 use App\Models\V2\Survey\Survey;
@@ -70,6 +71,15 @@ class SurveyService
     public function storeViolation(StoreViolationRequest $request, Survey $survey): Violation
     {
         $violation = $survey->violations()->create($request->validated()['data']['attributes']);
+
+        return $violation;
+    }
+
+    public function closeViolation(CloseViolationRequest $request, Violation $violation): Violation
+    {
+        $data = $request->validated()['data']['attributes'];
+        $data['elimination_completion'] = true;
+        $violation->update($data);
 
         return $violation;
     }

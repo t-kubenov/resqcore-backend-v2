@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\V2\Survey;
 
+use App\Http\Requests\V2\Survey\CloseViolationRequest;
 use App\Http\Requests\V2\Survey\StoreSurveyRequest;
 use App\Http\Requests\V2\Survey\StoreViolationRequest;
 use App\Http\Resources\V2\Survey\SurveyCollection;
@@ -60,6 +61,21 @@ class SurveyController
         $this->authorizeBranchAccess($survey);
 
         return new ViolationResource($this->surveyService->storeViolation($request, $survey));
+    }
+
+    public function closeViolation(CloseViolationRequest $request, int $id): ViolationResource|JsonResponse
+    {
+        $violation = Violation::findOrFail($id);
+
+        $this->authorize('create', Report::class); // todo: replace with survey, maybe move to middleware
+
+        $this->authorizeBranchAccess($violation->survey);
+
+        if ($violation->elimination_completion) {
+            return response()->json(['message' => __('validation.survey.violations.close.already_closed')], 422);
+        }
+
+        return new ViolationResource($this->surveyService->closeViolation($request, $violation));
     }
 
 
