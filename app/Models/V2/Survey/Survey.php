@@ -38,6 +38,9 @@ class Survey extends Model
                 'label' => __('surveys.fields.survey_code.name'),
                 'alias' => __('surveys.fields.survey_code.alias'),
                 'type' => CustomFieldType::String,
+                'rules' => [
+                    'max:255',
+                ],
                 'parameters' => [
                     CustomFieldParameter::IsHidden,
                 ],
@@ -50,6 +53,9 @@ class Survey extends Model
                 'alias' => __('surveys.fields.branch_office_id.alias'),
                 'type' => CustomFieldType::String,
                 'options' => route('auxiliary.field-options', 'branch_office_id'),
+                'rules' => [
+                    'max:255',
+                ],
                 'parameters' => [
                     CustomFieldParameter::IsHidden,
                     CustomFieldParameter::IsFilterable,
@@ -152,6 +158,9 @@ class Survey extends Model
                 'label' => __('surveys.fields.hazardous_facility_name.name'),
                 'alias' => __('surveys.fields.hazardous_facility_name.alias'),
                 'type' => CustomFieldType::String,
+                'rules' => [
+                    'max:255',
+                ],
                 'required' => true,
             ],
         ];
@@ -187,7 +196,7 @@ class Survey extends Model
 
     public function violations(): HasMany
     {
-        return $this->hasMany(SurveyViolation::class);
+        return $this->hasMany(Violation::class);
     }
 
     public function legal_entity(): BelongsTo

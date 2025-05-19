@@ -60,7 +60,8 @@ Route::middleware('throttle:global')->prefix('v2/')->group(function () {
             Route::group(['middleware' => ['permission:branch_report_create']], function () {
                 Route::post('/reports', [ReportController::class, 'store'])->name('reports.store');
                 Route::post('/surveys', [SurveyController::class, 'store'])->name('surveys.store');
-//                Route::post('/surveys/{survey}/violations', [SurveyController::class, 'storeViolation'])->name('surveys.store-violation');
+                Route::post('/surveys/{id}/create-violation', [SurveyController::class, 'storeViolation'])->name('surveys.store-violation');
+                Route::post('/surveys/{id}/close-violation', [SurveyController::class, 'closeViolation'])->name('surveys.close-violation');
             });
 
             Route::group(['middleware' => ['permission:branch_update_create']], function () {

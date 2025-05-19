@@ -24,6 +24,6 @@ class SurveyObserver
         $branchId = $survey->branch_office_id;
         $surveyCount = Survey::where('branch_office_id', $branchId)->count() + 1;
 
-        return "{$branchId}-{$year}-{$surveyCount}";
+        return "{$branchId}-{$year}-{$surveyCount}"; //todo: need to make it so that the surveyCount resets on the new year
     }
 }

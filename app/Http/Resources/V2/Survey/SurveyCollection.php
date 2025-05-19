@@ -47,7 +47,7 @@ class SurveyCollection extends ResourceCollection
                 'id' => $survey->id,
                 'type' => 'survey',
                 'attributes' => [
-                    $survey
+                    $survey->resource
                 ],
                 'relationships' => $this->getRelationships($survey),
             ];

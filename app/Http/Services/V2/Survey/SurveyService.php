@@ -3,8 +3,9 @@
 namespace App\Http\Services\V2\Survey;
 
 use App\Http\Requests\V2\Survey\StoreSurveyRequest;
+use App\Http\Requests\V2\Survey\StoreViolationRequest;
 use App\Models\V2\Survey\Survey;
-use App\Models\V2\Survey\SurveyViolation;
+use App\Models\V2\Survey\Violation;
 use Illuminate\Http\Exceptions\ThrottleRequestsException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -18,7 +19,7 @@ class SurveyService
         return $this->create($request);
     }
 
-    private function throttle(Request $request): void
+    private function throttle(Request $request): void // maybe: move to middleware
     {
         if (config('app.debug')) {
             return;
@@ -66,12 +67,9 @@ class SurveyService
         return $query->paginate();
     }
 
-    public function storeViolation(Request $request, Survey $survey): SurveyViolation
+    public function storeViolation(StoreViolationRequest $request, Survey $survey): Violation
     {
-        $violation = new SurveyViolation();
-        $violation->fill($request->validated);
-        $violation->survey()->associate($survey);
-        $violation->save();
+        $violation = $survey->violations()->create($request->validated()['data']['attributes']);
 
         return $violation;
     }
