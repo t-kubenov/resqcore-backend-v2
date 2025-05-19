@@ -197,8 +197,8 @@ class Survey extends Model
             'created_by' => $this->user->full_name,
             'legal_entity_id' => $this->legal_entity->name,
             'legal_entity_unit_id' => $this->legal_entity_unit->name,
-            'survey_date' => Carbon::parse($this->survey_date)->format('Y-m-d H:i:s'),
-            'hazardous_facility_name' => $this->hazardous_facility_name,
+            'survey_date' => Carbon::parse($this->survey_date)->format('Y-m-d'),
+            'hazardous_facility_name' => $this->hazardous_facility_name, // maybe: move to mutators?
         ];
     }
 
