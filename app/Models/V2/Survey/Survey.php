@@ -113,7 +113,7 @@ class Survey extends Model
                 'name' => 'legal_entity_id',
                 'label' => __('surveys.fields.legal_entity_id.name'),
                 'alias' => __('surveys.fields.legal_entity_id.alias'),
-                'type' => CustomFieldType::Int,
+                'type' => CustomFieldType::SingleChoiceEnum,
                 'required' => true,
                 'rules' => [
                     'exists:legal_entities,id',
@@ -131,7 +131,7 @@ class Survey extends Model
                 'name' => 'legal_entity_unit_id',
                 'label' => __('surveys.fields.legal_entity_unit_id.name'),
                 'alias' => __('surveys.fields.legal_entity_unit_id.alias'),
-                'type' => CustomFieldType::Int,
+                'type' => CustomFieldType::SingleChoiceEnum,
                 'required' => true,
                 'rules' => [
                     'exists:legal_entity_units,id',
