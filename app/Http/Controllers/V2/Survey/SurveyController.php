@@ -2,21 +2,16 @@
 
 namespace App\Http\Controllers\V2\Survey;
 
-use App\Http\Requests\V2\Survey\CloseViolationRequest;
 use App\Http\Requests\V2\Survey\StoreSurveyRequest;
-use App\Http\Requests\V2\Survey\StoreViolationRequest;
 use App\Http\Resources\V2\Survey\SurveyCollection;
 use App\Http\Resources\V2\Survey\SurveyResource;
-use App\Http\Resources\V2\Survey\ViolationResource;
 use App\Http\Services\V2\Survey\SurveyService;
 use App\Models\Report;
 use App\Models\V2\Survey\Survey;
-use App\Models\V2\Survey\Violation;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Exceptions\ThrottleRequestsException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
 
 class SurveyController
 {
@@ -52,33 +47,6 @@ class SurveyController
         return new SurveyResource($survey);
     }
 
-    public function storeViolation(StoreViolationRequest $request, int $id): ViolationResource
-    {
-        $survey = Survey::findOrFail($id);
-
-        $this->authorize('create', Report::class); // todo: replace with survey, maybe move to middleware
-
-        $this->authorizeBranchAccess($survey);
-
-        return new ViolationResource($this->surveyService->storeViolation($request, $survey));
-    }
-
-    public function closeViolation(CloseViolationRequest $request, int $id): ViolationResource|JsonResponse
-    {
-        $violation = Violation::findOrFail($id);
-
-        $this->authorize('create', Report::class); // todo: replace with survey, maybe move to middleware
-
-        $this->authorizeBranchAccess($violation->survey);
-
-        if ($violation->elimination_completion) {
-            return response()->json(['message' => __('validation.survey.violations.close.already_closed')], 422);
-        }
-
-        return new ViolationResource($this->surveyService->closeViolation($request, $violation));
-    }
-
-
     public function update(Request $request, $id)
     {
         // Your logic to handle the request and return a response
@@ -89,12 +57,5 @@ class SurveyController
     {
         // Your logic to handle the request and return a response
         return response()->json(['message' => 'Survey destroy', 'id' => $id]);
-    }
-
-    private function authorizeBranchAccess(Survey $survey): void
-    {
-        if ($survey->branch_office_id !== auth()->user()->branch_id) {
-            abort(403, __('validation.survey.violations.create.unauthorized'));
-        }
     }
 }
