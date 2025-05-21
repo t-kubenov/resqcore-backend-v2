@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers\V2\Survey;
 
+use App\Enums\AccessLevel;
 use App\Http\Requests\V2\Survey\CloseViolationRequest;
 use App\Http\Requests\V2\Survey\StoreViolationRequest;
+use App\Http\Resources\V2\Survey\ViolationCollection;
 use App\Http\Resources\V2\Survey\ViolationResource;
 use App\Http\Services\V2\Survey\ViolationService;
 use App\Models\Report;
@@ -52,5 +54,19 @@ class ViolationController
         }
 
         return new ViolationResource($this->violationService->close($request, $violation));
+    }
+
+    public function index(int $surveyId): ViolationCollection
+    {
+        $survey = Survey::findOrFail($surveyId);
+
+        $this->violationService->authorizeBranchAccess($survey);
+
+        $violations = Violation::query()
+            ->where('survey_id', $surveyId)
+            ->get();
+
+
+        return new ViolationCollection($violations);
     }
 }

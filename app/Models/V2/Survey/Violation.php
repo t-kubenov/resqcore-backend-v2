@@ -4,6 +4,7 @@ namespace App\Models\V2\Survey;
 
 use App\Enums\CustomFieldParameter;
 use App\Enums\CustomFieldType;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
@@ -50,6 +51,7 @@ class Violation extends Model
                 'parameters' => [
                     CustomFieldParameter::IsFilterable,
                     CustomFieldParameter::IsFilterableForCA,
+                    CustomFieldParameter::ShowInTable,
                 ],
             ],
 
@@ -67,6 +69,7 @@ class Violation extends Model
                 'parameters' => [
                     CustomFieldParameter::IsFilterable,
                     CustomFieldParameter::IsFilterableForCA,
+                    CustomFieldParameter::ShowInTable,
                 ],
             ],
 
@@ -81,6 +84,7 @@ class Violation extends Model
                 'parameters' => [
                     CustomFieldParameter::IsFilterable,
                     CustomFieldParameter::IsFilterableForCA,
+                    CustomFieldParameter::ShowInTable,
                 ],
             ],
 
@@ -94,6 +98,7 @@ class Violation extends Model
                 'parameters' => [
                     CustomFieldParameter::IsFilterable,
                     CustomFieldParameter::IsFilterableForCA,
+                    CustomFieldParameter::ShowInTable,
                 ],
             ],
 
@@ -107,11 +112,36 @@ class Violation extends Model
                 'parameters' => [
                     CustomFieldParameter::IsFilterable,
                     CustomFieldParameter::IsFilterableForCA,
+                    CustomFieldParameter::ShowInTable,
                 ],
             ],
         ];
     }
 
+    public static function columns(): array
+    { // todo: duplicate, move to trait or something
+        return array_values(array_map(
+            fn($field) => [
+                'key' => $field['name'],
+                'name' => $field['label'],
+                'alias' => $field['alias'],
+            ],
+            array_filter(self::fieldDefinitions(), fn($field) =>
+            in_array(CustomFieldParameter::ShowInTable, $field['parameters'])
+            )
+        ));
+    }
+
+    public function getReadableData(): array
+    {
+        return [
+            'description' => $this->description,
+            'clause' => $this->clause,
+            'elimination_prescription_date' => Carbon::parse($this->elimination_prescription_date)->format('Y-m-d'),
+            'elimination_completion' => $this->elimination_completion,
+            'elimination_completion_date' => $this->elimination_completion ? Carbon::parse($this->elimination_completion_date)->format('Y-m-d') : null,
+        ];
+    }
 
     public function survey(): BelongsTo
     {

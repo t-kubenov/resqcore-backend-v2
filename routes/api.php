@@ -11,6 +11,7 @@ use App\Http\Controllers\V2\StatisticsController;
 use App\Http\Controllers\V2\Survey\SurveyController;
 use App\Http\Controllers\V2\UpdateController;
 use App\Http\Controllers\V2\UpdateLogController;
+use App\Http\Controllers\V2\Survey\ViolationController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('throttle:global')->prefix('v2/')->group(function () {
@@ -59,9 +60,10 @@ Route::middleware('throttle:global')->prefix('v2/')->group(function () {
 
             Route::group(['middleware' => ['permission:branch_report_create']], function () {
                 Route::post('/reports', [ReportController::class, 'store'])->name('reports.store');
-                Route::post('/surveys/close-violation/{id}', [\App\Http\Controllers\V2\Survey\ViolationController::class, 'close'])->name('surveys.close-violation');
+                Route::post('/surveys/close-violation/{id}', [ViolationController::class, 'close'])->name('surveys.violations.close');
                 Route::post('/surveys', [SurveyController::class, 'store'])->name('surveys.store');
-                Route::post('/surveys/{id}/create-violation', [\App\Http\Controllers\V2\Survey\ViolationController::class, 'store'])->name('surveys.store-violation');
+                Route::post('/surveys/{id}/create-violation', [ViolationController::class, 'store'])->name('surveys.violations.store');
+                Route::get('/surveys/{id}/violations', [ViolationController::class, 'index'])->name('surveys.violations.index');
             });
 
             Route::group(['middleware' => ['permission:branch_update_create']], function () {
