@@ -52,6 +52,7 @@ class Violation extends Model
                     CustomFieldParameter::IsFilterable,
                     CustomFieldParameter::IsFilterableForCA,
                     CustomFieldParameter::ShowInTable,
+                    CustomFieldParameter::ShowInCard,
                 ],
             ],
 
@@ -70,6 +71,7 @@ class Violation extends Model
                     CustomFieldParameter::IsFilterable,
                     CustomFieldParameter::IsFilterableForCA,
                     CustomFieldParameter::ShowInTable,
+                    CustomFieldParameter::ShowInCard,
                 ],
             ],
 
@@ -85,6 +87,7 @@ class Violation extends Model
                     CustomFieldParameter::IsFilterable,
                     CustomFieldParameter::IsFilterableForCA,
                     CustomFieldParameter::ShowInTable,
+                    CustomFieldParameter::ShowInCard,
                 ],
             ],
 
@@ -100,6 +103,7 @@ class Violation extends Model
                     CustomFieldParameter::IsFilterableForCA,
                     CustomFieldParameter::ShowInTable,
                     CustomFieldParameter::IsHidden,
+                    CustomFieldParameter::ShowInCard,
                 ],
             ],
 
@@ -115,6 +119,7 @@ class Violation extends Model
                     CustomFieldParameter::IsFilterableForCA,
                     CustomFieldParameter::ShowInTable,
                     CustomFieldParameter::IsHidden,
+                    CustomFieldParameter::ShowInCard,
                 ],
             ],
         ];
@@ -130,6 +135,20 @@ class Violation extends Model
             ],
             array_filter(self::fieldDefinitions(), fn($field) =>
             in_array(CustomFieldParameter::ShowInTable, $field['parameters'])
+            )
+        ));
+    }
+
+    public function cardColumns(): array
+    {
+        return array_values(array_map(
+            fn($field) => [
+                'key' => $field['name'],
+                'name' => $field['label'],
+                'alias' => $field['alias'],
+            ],
+            array_filter(self::fieldDefinitions(), fn($field) =>
+            in_array(CustomFieldParameter::ShowInCard, $field['parameters'])
             )
         ));
     }

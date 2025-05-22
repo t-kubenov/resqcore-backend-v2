@@ -61,8 +61,9 @@ Route::middleware('throttle:global')->prefix('v2/')->group(function () {
 
             Route::group(['middleware' => ['permission:branch_report_create']], function () {
                 Route::post('/reports', [ReportController::class, 'store'])->name('reports.store');
-                Route::post('/surveys/close-violation/{id}', [ViolationController::class, 'close'])->name('surveys.violations.close');
                 Route::post('/surveys', [SurveyController::class, 'store'])->name('surveys.store');
+                Route::get('/surveys/violations/{id}', [ViolationController::class, 'show'])->name('surveys.violations.show');
+                Route::post('/surveys/close-violation/{id}', [ViolationController::class, 'close'])->name('surveys.violations.close');
                 Route::post('/surveys/{id}/create-violation', [ViolationController::class, 'store'])->name('surveys.violations.store');
                 Route::get('/surveys/{id}/violations', [ViolationController::class, 'index'])->name('surveys.violations.index');
                 Route::get('/surveys/{id}', [SurveyController::class, 'show'])->name('surveys.show');
