@@ -44,6 +44,7 @@ class Survey extends Model
                 'parameters' => [
                     CustomFieldParameter::IsHidden,
                     CustomFieldParameter::ShowInTable,
+                    CustomFieldParameter::ShowInCard,
                 ],
             ],
 
@@ -62,6 +63,7 @@ class Survey extends Model
                     CustomFieldParameter::IsFilterable,
                     CustomFieldParameter::IsFilterableForCA,
                     CustomFieldParameter::ShowInTable,
+                    CustomFieldParameter::ShowInCard,
                 ],
             ],
 
@@ -77,6 +79,7 @@ class Survey extends Model
                     CustomFieldParameter::IsFilterable,
                     CustomFieldParameter::IsFilterableForCA,
                     CustomFieldParameter::ShowInTable,
+                    CustomFieldParameter::ShowInCard,
                 ],
             ],
 
@@ -91,6 +94,7 @@ class Survey extends Model
                 'parameters' => [
                     CustomFieldParameter::IsFilterable,
                     CustomFieldParameter::IsFilterableForCA,
+                    CustomFieldParameter::ShowInCard,
                 ],
             ],
 
@@ -105,6 +109,7 @@ class Survey extends Model
                 'parameters' => [
                     CustomFieldParameter::IsFilterable,
                     CustomFieldParameter::IsFilterableForCA,
+                    CustomFieldParameter::ShowInCard,
                 ],
             ],
 
@@ -123,6 +128,7 @@ class Survey extends Model
                     CustomFieldParameter::IsFilterable,
                     CustomFieldParameter::IsFilterableForCA,
                     CustomFieldParameter::ShowInTable,
+                    CustomFieldParameter::ShowInCard,
                 ],
             ],
 
@@ -141,6 +147,7 @@ class Survey extends Model
                     CustomFieldParameter::IsFilterable,
                     CustomFieldParameter::IsFilterableForCA,
                     CustomFieldParameter::ShowInTable,
+                    CustomFieldParameter::ShowInCard,
                 ],
             ],
 
@@ -155,6 +162,7 @@ class Survey extends Model
                     CustomFieldParameter::IsFilterable,
                     CustomFieldParameter::IsFilterableForCA,
                     CustomFieldParameter::ShowInTable,
+                    CustomFieldParameter::ShowInCard,
                 ],
             ],
 
@@ -170,6 +178,7 @@ class Survey extends Model
                 'required' => true,
                 'parameters' => [
                     CustomFieldParameter::ShowInTable,
+                    CustomFieldParameter::ShowInCard,
                 ],
             ],
         ];
@@ -189,12 +198,28 @@ class Survey extends Model
         ));
     }
 
+    public static function cardColumns(): array
+    {
+        return array_values(array_map(
+            fn($field) => [
+                'key' => $field['name'],
+                'name' => $field['label'],
+                'alias' => $field['alias'],
+            ],
+            array_filter(self::fieldDefinitions(), fn($field) =>
+            in_array(CustomFieldParameter::ShowInCard, $field['parameters'])
+            )
+        ));
+    }
+
     public function getReadableData(): array
     {
         return [
             'survey_code' => $this->survey_code,
             'branch_office_id' => $this->branch_office->name,
             'created_by' => $this->user->full_name,
+            'senders' => $this->senders->pluck('name'),
+            'spokesmen' => $this->spokesmen->pluck('name'),
             'legal_entity_id' => $this->legal_entity->name,
             'legal_entity_unit_id' => $this->legal_entity_unit->name,
             'survey_date' => Carbon::parse($this->survey_date)->format('Y-m-d'),

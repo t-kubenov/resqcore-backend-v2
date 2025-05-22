@@ -17,6 +17,7 @@ use App\Models\V2\CustomField\CustomFieldOption;
 use App\Models\V2\Survey\Survey;
 use App\Models\V2\Survey\SurveyLegalEntity;
 use App\Models\V2\Survey\SurveyLegalEntityUnit;
+use App\Models\V2\Survey\Violation;
 use App\Models\V2\Sushi\DepartureType;
 use App\Models\V2\Sushi\ReportFieldCategory;
 use Illuminate\Http\JsonResponse;
@@ -51,7 +52,7 @@ class AuxiliaryDataController extends Controller
 
     public function getViolationFields()
     {
-        $fields = Survey::fieldDefinitions();
+        $fields = Violation::fieldDefinitions();
 
         return response()->json(['data' => $this->filterAndCategorizeFields($fields)]);
     }

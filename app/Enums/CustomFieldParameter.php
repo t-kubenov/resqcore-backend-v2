@@ -18,4 +18,5 @@ enum CustomFieldParameter: string
     case IsCustom = 'is_custom';
     case CategoryId = 'category_id';
     case ShowInTable = 'show_in_table';
+    case ShowInCard = 'show_in_card';
 }

@@ -65,6 +65,7 @@ Route::middleware('throttle:global')->prefix('v2/')->group(function () {
                 Route::post('/surveys', [SurveyController::class, 'store'])->name('surveys.store');
                 Route::post('/surveys/{id}/create-violation', [ViolationController::class, 'store'])->name('surveys.violations.store');
                 Route::get('/surveys/{id}/violations', [ViolationController::class, 'index'])->name('surveys.violations.index');
+                Route::get('/surveys/{id}', [SurveyController::class, 'show'])->name('surveys.show');
             });
 
             Route::group(['middleware' => ['permission:branch_update_create']], function () {

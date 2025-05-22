@@ -29,9 +29,17 @@ class SurveyController
         return new SurveyCollection($this->surveyService->index($request));
     }
 
-    public function show($id)
+    public function show(int $id)
     {
-        return response()->json(['message' => 'Survey show', 'id' => $id]);
+        $survey = Survey::findOrFail($id);
+
+//        dd($survey->toArray());
+
+//        $this->authorize('show', $survey);
+
+//        $survey = $this->surveyService->show($survey);
+
+        return new SurveyResource($survey);
     }
 
     public function store(StoreSurveyRequest $request): SurveyResource|JsonResponse

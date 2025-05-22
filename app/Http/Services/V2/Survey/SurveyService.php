@@ -15,6 +15,11 @@ class SurveyService extends SurveyBaseService
         return $query->paginate();
     }
 
+    public function show(Survey $survey)
+    {
+
+    }
+
     public function store(StoreSurveyRequest $request): Survey
     {
         $this->throttle($request);

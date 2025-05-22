@@ -8,5 +8,15 @@ use Illuminate\Http\Resources\Json\JsonResource;
 
 class SurveyResource extends GenericResource
 {
-
+    protected function formatResponse(): array
+    {
+        return [
+            'columns' => $this->cardColumns(),
+            'data' => [
+                'type' => strtolower(class_basename($this->resource)),
+                'id' => $this->id,
+                'attributes' => $this->getReadableData(),
+            ],
+        ];
+    }
 }
