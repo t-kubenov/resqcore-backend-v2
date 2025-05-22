@@ -49,6 +49,13 @@ class AuxiliaryDataController extends Controller
         return response()->json(['data' => $this->filterAndCategorizeFields($fields)]);
     }
 
+    public function getViolationFields()
+    {
+        $fields = Survey::fieldDefinitions();
+
+        return response()->json(['data' => $this->filterAndCategorizeFields($fields)]);
+    }
+
     private function filterAndCategorizeFields(array $fields): array
     {
         $fields = array_filter($fields, function ($field) {

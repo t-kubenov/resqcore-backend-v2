@@ -99,6 +99,7 @@ class Violation extends Model
                     CustomFieldParameter::IsFilterable,
                     CustomFieldParameter::IsFilterableForCA,
                     CustomFieldParameter::ShowInTable,
+                    CustomFieldParameter::IsHidden,
                 ],
             ],
 
@@ -113,6 +114,7 @@ class Violation extends Model
                     CustomFieldParameter::IsFilterable,
                     CustomFieldParameter::IsFilterableForCA,
                     CustomFieldParameter::ShowInTable,
+                    CustomFieldParameter::IsHidden,
                 ],
             ],
         ];
