@@ -13,9 +13,17 @@ class SurveyObserver
     {
         $user = auth()->user();
 
-        $survey->branch_office_id = $user?->branch_id;
-        $survey->created_by = $user?->id;
-        $survey->survey_code = $this->generateSurveyCode($survey);
+        if (!$survey->branch_office_id) {
+            $survey->branch_office_id = $user?->branch_id;
+        }
+
+        if (!$survey->created_by) {
+            $survey->created_by = $user?->id;
+        }
+
+        if (!$survey->survey_code) {
+            $survey->survey_code = $this->generateSurveyCode($survey);
+        }
     }
 
     private function generateSurveyCode(Survey $survey): string

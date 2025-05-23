@@ -5,11 +5,14 @@ namespace App\Models\V2\Survey;
 use App\Enums\CustomFieldParameter;
 use App\Enums\CustomFieldType;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Violation extends Model
 {
+    use HasFactory;
+
     protected $table = 'survey_violations';
 
     protected $hidden = [
