@@ -10,9 +10,11 @@ class SurveyService extends SurveyBaseService
 {
     public function index(Request $request)
     {
-        $query = Survey::query();
+        $query = Survey::query()
+            ->orderBy('created_at', 'desc')
+            ->paginate(15);
 
-        return $query->paginate();
+        return $query;
     }
 
     public function show(Survey $survey)
