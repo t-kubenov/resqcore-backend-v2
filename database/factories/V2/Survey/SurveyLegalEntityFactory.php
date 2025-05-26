@@ -19,7 +19,7 @@ class SurveyLegalEntityFactory extends Factory
     {
         return [
             'branch_office_id' => BranchOffice::inRandomOrder()->first()->id,
-            'name' => $this->faker->word,
+            'name' => $this->faker->company(),
         ];
     }
 }

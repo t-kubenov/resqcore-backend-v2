@@ -18,7 +18,7 @@ class SurveyLegalEntityUnitFactory extends Factory
     {
         return [
             'legal_entity_id' => \App\Models\V2\Survey\SurveyLegalEntity::inRandomOrder()->first()->id,
-            'name' => $this->faker->word,
+            'name' => $this->faker->company(),
         ];
     }
 }
