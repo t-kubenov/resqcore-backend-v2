@@ -17,7 +17,7 @@ abstract class SurveyBaseService
             return;
         }
 
-        $key = 'survey-create:' . (auth()::user()?->id ?: $request->ip());
+        $key = 'survey-create:' . (auth()->user()?->id ?: $request->ip());
 
         if (RateLimiter::tooManyAttempts($key, 1)) {
             throw new ThrottleRequestsException(__('throttle.report-create'));
