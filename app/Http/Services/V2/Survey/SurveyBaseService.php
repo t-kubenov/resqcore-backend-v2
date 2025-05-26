@@ -6,6 +6,7 @@ use App\Models\V2\Survey\Survey;
 use Illuminate\Http\Exceptions\ThrottleRequestsException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\RateLimiter;
+use App\Enums\AccessLevel;
 
 
 abstract class SurveyBaseService
@@ -27,6 +28,10 @@ abstract class SurveyBaseService
 
     public function authorizeBranchAccess(Survey $survey): void
     {
+        if (auth()->user()->access_level == AccessLevel::APP) {
+            return;
+        }
+
         if ($survey->branch_office_id !== auth()->user()->branch_id) {
             abort(403, __('validation.survey.violations.create.unauthorized'));
         }

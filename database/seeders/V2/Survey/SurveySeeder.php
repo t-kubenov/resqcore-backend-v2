@@ -5,10 +5,11 @@ namespace Database\Seeders\V2\Survey;
 use App\Models\BranchOffice;
 use App\Models\User;
 use App\Models\V2\Survey\Survey;
+use App\Models\V2\Survey\SurveyFacilitySpokesman;
 use App\Models\V2\Survey\SurveyLegalEntity;
 use App\Models\V2\Survey\SurveyLegalEntityUnit;
+use App\Models\V2\Survey\SurveySender;
 use App\Models\V2\Survey\Violation;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class SurveySeeder extends Seeder
@@ -38,6 +39,16 @@ class SurveySeeder extends Seeder
                         ->create([
                             'survey_id' => $survey->id,
                         ]);
+                    SurveySender::factory()
+                        ->count(3)
+                        ->create([
+                        'survey_id' => $survey->id,
+                        ]);
+                    SurveyFacilitySpokesman::factory()
+                        ->count(3)
+                        ->create([
+                        'survey_id' => $survey->id,
+                    ]);
                 });
         });
     }
