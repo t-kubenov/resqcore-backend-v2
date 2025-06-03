@@ -346,18 +346,6 @@ class Report extends BaseOperation
 
     }
 
-    public static function filters(): array
-    {
-
-        return array_filter(Report::fieldDefinitions(), function ($field) {
-
-            $needle = auth()->user()->access_level === AccessLevel::BRANCH?
-                CustomFieldParameter::IsFilterable: CustomFieldParameter::IsFilterableForCA;
-
-            return in_array($needle, $field['parameters'] ?? []);
-        });
-    }
-
     protected function casts(): array
     {
         return [

@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Validation\Rule;
 
 
-abstract class BaseOperation extends Model
+abstract class BaseOperation extends BaseEntity
 {
     use AltersDisplayedDates;
 

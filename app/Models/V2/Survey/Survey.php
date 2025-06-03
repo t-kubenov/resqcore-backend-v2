@@ -4,20 +4,19 @@ namespace App\Models\V2\Survey;
 
 use App\Enums\CustomFieldParameter;
 use App\Enums\CustomFieldType;
+use App\Models\BaseEntity;
 use App\Models\BranchOffice;
 use App\Models\User;
 use App\Observers\Survey\SurveyObserver;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
-use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Validation\Rule;
+
 
 #[ObservedBy(SurveyObserver::class)]
-class Survey extends Model
+class Survey extends BaseEntity
 {
     use HasFactory;
 
@@ -185,34 +184,6 @@ class Survey extends Model
                 ],
             ],
         ];
-    }
-
-    public static function columns(): array
-    {
-        return array_values(array_map(
-            fn($field) => [
-                'key' => $field['name'],
-                'name' => $field['label'],
-                'alias' => $field['alias'],
-            ],
-            array_filter(self::fieldDefinitions(), fn($field) =>
-                in_array(CustomFieldParameter::ShowInTable, $field['parameters'])
-            )
-        ));
-    }
-
-    public static function cardColumns(): array
-    {
-        return array_values(array_map(
-            fn($field) => [
-                'key' => $field['name'],
-                'name' => $field['label'],
-                'alias' => $field['alias'],
-            ],
-            array_filter(self::fieldDefinitions(), fn($field) =>
-            in_array(CustomFieldParameter::ShowInCard, $field['parameters'])
-            )
-        ));
     }
 
     public function getReadableData(): array
