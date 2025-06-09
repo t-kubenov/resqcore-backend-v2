@@ -29,6 +29,11 @@ class AuxiliaryDataController extends Controller
         return response()->json(['data' => Report::filters()]);
     }
 
+    public function getSurveyFilters(): JsonResponse
+    {
+        return response()->json(['data' => Survey::filters()]);
+    }
+
     public function getReportFields(): JsonResponse
     {
         $fields = Report::fieldDefinitions();
@@ -125,6 +130,10 @@ class AuxiliaryDataController extends Controller
             'legal_entity_unit' => SurveyLegalEntityUnit::
                 whereHas('legal_entity', function ($query) use ($branchId) {
                 $query->where('branch_office_id', $branchId);
+            }),
+            'created_by' => User::
+                whereHas('branch_office', function ($query) use ($companyId) {
+                $query->where('rescue_company_id', $companyId);
             }),
         ];
 

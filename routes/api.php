@@ -33,6 +33,7 @@ Route::middleware('throttle:global')->prefix('v2/')->group(function () {
             Route::get('/survey-fields', 'getSurveyFields')->name('survey-fields');
             Route::get('/violation-fields', 'getViolationFields')->name('violation-fields');
             Route::get('/report-filters', 'getReportFilters')->name('report-filters');
+            Route::get('/survey-filters', 'getSurveyFilters')->name('survey-filters');
             Route::get('/mineral-fields', 'getMineralFields')->name('mineral-fields'); // todo: bruh i gotta unite these like the field options
             Route::get('/oil-fields', 'getOilFields')->name('oil-fields');
             Route::get('/subsoil-contracts', 'getSubsoilContracts')->name('subsoil-contracts');

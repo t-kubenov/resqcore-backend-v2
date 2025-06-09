@@ -62,7 +62,6 @@ class Survey extends BaseEntity
                 ],
                 'parameters' => [
                     CustomFieldParameter::IsHidden,
-                    CustomFieldParameter::IsFilterable,
                     CustomFieldParameter::IsFilterableForCA,
                     CustomFieldParameter::ShowInTable,
                     CustomFieldParameter::ShowInCard,
