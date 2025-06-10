@@ -73,10 +73,10 @@ enum CustomFieldType: string
         return match ($this) {
             self::Int,  => 'integer',
             self::Float => 'numeric',
-            self::String, self::Text  => 'string',
+            self::String, self::Text, self::StringArray  => 'string',
             self::Date, self::Datetime => new DateRangeRule(),
             self::Boolean => 'boolean',
-            self::SingleChoiceEnum, self::MultipleChoiceEnum, self::MultiValue, self::StringArray => 'array',
+            self::SingleChoiceEnum, self::MultipleChoiceEnum, self::MultiValue => 'array',
         };
     }
 

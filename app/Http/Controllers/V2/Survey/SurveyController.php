@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\V2\Survey;
 
+use App\Http\Requests\V2\Survey\FilterSurveyRequest;
 use App\Http\Requests\V2\Survey\StoreSurveyRequest;
 use App\Http\Resources\V2\Survey\SurveyCollection;
 use App\Http\Resources\V2\Survey\SurveyResource;
@@ -24,7 +25,7 @@ class SurveyController
         $this->surveyService = $surveyService;
     }
 
-    public function index(Request $request)
+    public function index(FilterSurveyRequest $request)
     {
         return new SurveyCollection($this->surveyService->index($request));
     }
@@ -32,12 +33,6 @@ class SurveyController
     public function show(int $id)
     {
         $survey = Survey::findOrFail($id);
-
-//        dd($survey->toArray());
-
-//        $this->authorize('show', $survey);
-
-//        $survey = $this->surveyService->show($survey);
 
         return new SurveyResource($survey);
     }

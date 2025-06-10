@@ -55,7 +55,7 @@ class Survey extends BaseEntity
                 'name' => 'branch_office_id',
                 'label' => __('surveys.fields.branch_office_id.name'),
                 'alias' => __('surveys.fields.branch_office_id.alias'),
-                'type' => CustomFieldType::String,
+                'type' => CustomFieldType::SingleChoiceEnum,
                 'options' => route('auxiliary.field-options', 'branch_office_id'),
                 'rules' => [
                     'max:255',
@@ -73,7 +73,7 @@ class Survey extends BaseEntity
                 'name' => 'created_by',
                 'label' => __('surveys.fields.created_by.name'),
                 'alias' => __('surveys.fields.created_by.alias'),
-                'type' => CustomFieldType::Int,
+                'type' => CustomFieldType::SingleChoiceEnum,
                 'options' => route('auxiliary.field-options', 'created_by'),
                 'parameters' => [
                     CustomFieldParameter::IsHidden,

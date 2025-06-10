@@ -1,15 +1,15 @@
 <?php
 
-namespace App\Http\Services\V2\Survey;
+namespace App\Http\Services\V2;
 
+use App\Enums\AccessLevel;
 use App\Models\V2\Survey\Survey;
 use Illuminate\Http\Exceptions\ThrottleRequestsException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\RateLimiter;
-use App\Enums\AccessLevel;
 
 
-abstract class SurveyBaseService
+abstract class BaseService
 {
     public function throttle(Request $request): void // maybe: move to middleware
     {
