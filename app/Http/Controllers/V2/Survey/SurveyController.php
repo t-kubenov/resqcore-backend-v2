@@ -30,6 +30,11 @@ class SurveyController
         return new SurveyCollection($this->surveyService->index($request));
     }
 
+    public function export(FilterSurveyRequest $request)
+    {
+        return new SurveyCollection($this->surveyService->index($request));
+    }
+
     public function show(int $id)
     {
         $survey = Survey::findOrFail($id);

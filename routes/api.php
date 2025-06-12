@@ -59,6 +59,7 @@ Route::middleware('throttle:global')->prefix('v2/')->group(function () {
             Route::get('/export', [ReportController::class, 'export'])->name('reports.export');
 
             Route::get('/surveys', [SurveyController::class, 'index'])->name('surveys.index');
+            Route::get('/surveys/export', [SurveyController::class, 'export'])->name('surveys.export');
 
             Route::group(['middleware' => ['permission:branch_report_create']], function () {
                 Route::post('/reports', [ReportController::class, 'store'])->name('reports.store');
