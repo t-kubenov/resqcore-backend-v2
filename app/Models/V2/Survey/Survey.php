@@ -56,7 +56,7 @@ class Survey extends BaseEntity
                 'label' => __('surveys.fields.branch_office_id.name'),
                 'alias' => __('surveys.fields.branch_office_id.alias'),
                 'type' => CustomFieldType::SingleChoiceEnum,
-                'options' => route('auxiliary.field-options', 'branch_office_id'),
+                'options' => route('auxiliary.field-options', 'branch_office'),
                 'rules' => [
                     'max:255',
                 ],

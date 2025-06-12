@@ -21,6 +21,7 @@ use App\Models\V2\Survey\Violation;
 use App\Models\V2\Sushi\DepartureType;
 use App\Models\V2\Sushi\ReportFieldCategory;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\DB;
 
 class AuxiliaryDataController extends Controller
 {
@@ -132,9 +133,11 @@ class AuxiliaryDataController extends Controller
                 $query->where('branch_office_id', $branchId);
             }),
             'created_by' => User::
-                whereHas('branch_office', function ($query) use ($companyId) {
+            whereHas('branch_office', function ($query) use ($companyId) {
                 $query->where('rescue_company_id', $companyId);
-            }),
+            })
+                ->select(['id', DB::raw("CONCAT(last_name, ' ', first_name, ' ', patronymic) as name")]),
+
         ];
 
         if ($fieldName === 'boolean') {
