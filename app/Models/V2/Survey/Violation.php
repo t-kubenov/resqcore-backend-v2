@@ -4,12 +4,12 @@ namespace App\Models\V2\Survey;
 
 use App\Enums\CustomFieldParameter;
 use App\Enums\CustomFieldType;
+use App\Models\BaseEntity;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class Violation extends Model
+class Violation extends BaseEntity
 {
     use HasFactory;
 
@@ -128,34 +128,6 @@ class Violation extends Model
         ];
     }
 
-    public static function columns(): array
-    { // todo: duplicate, move to trait or something
-        return array_values(array_map(
-            fn($field) => [
-                'key' => $field['name'],
-                'name' => $field['label'],
-                'alias' => $field['alias'],
-            ],
-            array_filter(self::fieldDefinitions(), fn($field) =>
-            in_array(CustomFieldParameter::ShowInTable, $field['parameters'])
-            )
-        ));
-    }
-
-    public function cardColumns(): array
-    {
-        return array_values(array_map(
-            fn($field) => [
-                'key' => $field['name'],
-                'name' => $field['label'],
-                'alias' => $field['alias'],
-            ],
-            array_filter(self::fieldDefinitions(), fn($field) =>
-            in_array(CustomFieldParameter::ShowInCard, $field['parameters'])
-            )
-        ));
-    }
-
     public function getReadableData(): array
     {
         return [
@@ -171,5 +143,4 @@ class Violation extends Model
     {
         return $this->belongsTo(Survey::class);
     }
-
 }

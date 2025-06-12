@@ -61,7 +61,7 @@ abstract class BaseEntity extends Model
                 'name' => $field['label'],
                 'alias' => $field['alias'],
             ],
-            array_filter(self::fieldDefinitions(), fn($field) =>
+            array_filter(static::fieldDefinitions(), fn($field) =>
             in_array(CustomFieldParameter::ShowInCard, $field['parameters'])
             )
         ));
