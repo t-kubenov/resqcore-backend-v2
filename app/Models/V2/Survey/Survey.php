@@ -200,6 +200,14 @@ class Survey extends BaseEntity
         ];
     }
 
+    public static function generatePrintColumns(): array
+    {
+        $fields = \Lang::get('surveys.print.fields', [], 'ru');
+
+        return collect($fields)->map(function ($value, $key) {
+            return array_merge(['key' => $key], $value);
+        })->values()->all();
+    }
 
     public function branch_office(): BelongsTo
     {

@@ -9,16 +9,18 @@ class GenericResource extends JsonResource
 {
     public function toArray(Request $request): array
     {
-        return $this->formatResponse();
+        return $this->formatResponse($this->cardColumns(), $this->getReadableData());
     }
 
-    protected function formatResponse(): array
+    protected function formatResponse(array $columns, array $attributes, array $relationships = null): array
     {
         return [
+            ...($columns? ['columns' => $columns]: []),
             'data' => [
                 'type' => strtolower(class_basename($this->resource)),
                 'id' => $this->id,
-                'attributes' => $this->attributesToArray(),
+                'attributes' => $attributes,
+                ...($relationships ? ['relationships' => $relationships] : []),
             ],
         ];
     }

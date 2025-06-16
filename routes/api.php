@@ -68,6 +68,7 @@ Route::middleware('throttle:global')->prefix('v2/')->group(function () {
                 Route::post('/surveys/close-violation/{id}', [ViolationController::class, 'close'])->name('surveys.violations.close');
                 Route::post('/surveys/{id}/create-violation', [ViolationController::class, 'store'])->name('surveys.violations.store');
                 Route::get('/surveys/{id}/violations', [ViolationController::class, 'index'])->name('surveys.violations.index');
+                Route::get('/surveys/{id}/print', [SurveyController::class, 'print'])->name('surveys.print');
                 Route::get('/surveys/{id}', [SurveyController::class, 'show'])->name('surveys.show');
             });
 

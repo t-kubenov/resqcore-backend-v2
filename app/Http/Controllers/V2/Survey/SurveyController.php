@@ -4,6 +4,7 @@ namespace App\Http\Controllers\V2\Survey;
 
 use App\Http\Requests\V2\Survey\FilterSurveyRequest;
 use App\Http\Requests\V2\Survey\StoreSurveyRequest;
+use App\Http\Resources\V2\Survey\PrintResource;
 use App\Http\Resources\V2\Survey\SurveyCollection;
 use App\Http\Resources\V2\Survey\SurveyResource;
 use App\Http\Services\V2\Survey\SurveyService;
@@ -33,6 +34,13 @@ class SurveyController
     public function export(FilterSurveyRequest $request)
     {
         return new SurveyCollection($this->surveyService->index($request));
+    }
+
+    public function print(int $id)
+    {
+        $survey = Survey::findOrFail($id);
+
+        return new PrintResource($survey);
     }
 
     public function show(int $id)
