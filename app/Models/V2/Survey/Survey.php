@@ -93,6 +93,7 @@ class Survey extends BaseEntity
                 'type' => CustomFieldType::StringArray,
                 'rules' => ['array', 'max:4'],
                 'parameters' => [
+                    CustomFieldParameter::CategoryId->value => 1,
                     CustomFieldParameter::IsFilterable,
                     CustomFieldParameter::IsFilterableForCA,
                     CustomFieldParameter::ShowInCard,
@@ -108,6 +109,7 @@ class Survey extends BaseEntity
                 'type' => CustomFieldType::StringArray,
                 'rules' => ['array', 'min:1', 'max:6'],
                 'parameters' => [
+                    CustomFieldParameter::CategoryId->value => 1,
                     CustomFieldParameter::IsFilterable,
                     CustomFieldParameter::IsFilterableForCA,
                     CustomFieldParameter::ShowInCard,
@@ -126,6 +128,7 @@ class Survey extends BaseEntity
                 ],
                 'options' => route('auxiliary.field-options', 'legal_entity'),
                 'parameters' => [
+                    CustomFieldParameter::CategoryId->value => 1,
                     CustomFieldParameter::IsFilterable,
                     CustomFieldParameter::IsFilterableForCA,
                     CustomFieldParameter::ShowInTable,
@@ -145,10 +148,12 @@ class Survey extends BaseEntity
                 ],
                 'options' => route('auxiliary.field-options', 'legal_entity_unit'),
                 'parameters' => [
+                    CustomFieldParameter::CategoryId->value => 1,
                     CustomFieldParameter::IsFilterable,
                     CustomFieldParameter::IsFilterableForCA,
                     CustomFieldParameter::ShowInTable,
                     CustomFieldParameter::ShowInCard,
+                    'limit_options' => 'legal_entity_id'
                 ],
             ],
 
@@ -160,6 +165,7 @@ class Survey extends BaseEntity
                 'type' => CustomFieldType::Datetime,
                 'required' => true,
                 'parameters' => [
+                    CustomFieldParameter::CategoryId->value => 1,
                     CustomFieldParameter::IsFilterable,
                     CustomFieldParameter::IsFilterableForCA,
                     CustomFieldParameter::ShowInTable,
@@ -178,6 +184,7 @@ class Survey extends BaseEntity
                 ],
                 'required' => true,
                 'parameters' => [
+                    CustomFieldParameter::CategoryId->value => 1,
                     CustomFieldParameter::ShowInTable,
                     CustomFieldParameter::ShowInCard,
                 ],

@@ -52,6 +52,7 @@ class Violation extends BaseEntity
                 'type' => CustomFieldType::Text,
                 'required' => true,
                 'parameters' => [
+                    CustomFieldParameter::CategoryId->value => 1,
                     CustomFieldParameter::IsFilterable,
                     CustomFieldParameter::IsFilterableForCA,
                     CustomFieldParameter::ShowInTable,
@@ -71,6 +72,7 @@ class Violation extends BaseEntity
                     'max:255',
                 ],
                 'parameters' => [
+                    CustomFieldParameter::CategoryId->value => 1,
                     CustomFieldParameter::IsFilterable,
                     CustomFieldParameter::IsFilterableForCA,
                     CustomFieldParameter::ShowInTable,
@@ -87,6 +89,7 @@ class Violation extends BaseEntity
                 'type' => CustomFieldType::Date,
                 'required' => true,
                 'parameters' => [
+                    CustomFieldParameter::CategoryId->value => 1,
                     CustomFieldParameter::IsFilterable,
                     CustomFieldParameter::IsFilterableForCA,
                     CustomFieldParameter::ShowInTable,
