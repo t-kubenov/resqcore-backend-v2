@@ -17,6 +17,7 @@ enum CustomFieldParameter: string
     case IsHidden = 'is_hidden';    // hidden from the creation form, that is
     case IsCustom = 'is_custom';
     case CategoryId = 'category_id';
+    case FilterByField = 'filter_by_field';
     case ShowInTable = 'show_in_table';
     case ShowInCard = 'show_in_card';
 }

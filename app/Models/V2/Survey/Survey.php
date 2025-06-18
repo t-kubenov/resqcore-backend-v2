@@ -149,11 +149,11 @@ class Survey extends BaseEntity
                 'options' => route('auxiliary.field-options', 'legal_entity_unit'),
                 'parameters' => [
                     CustomFieldParameter::CategoryId->value => 1,
+                    CustomFieldParameter::FilterByField->value => 'legal_entity_id',
                     CustomFieldParameter::IsFilterable,
                     CustomFieldParameter::IsFilterableForCA,
                     CustomFieldParameter::ShowInTable,
                     CustomFieldParameter::ShowInCard,
-                    'limit_options' => 'legal_entity_id'
                 ],
             ],
 

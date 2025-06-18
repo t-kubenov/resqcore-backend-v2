@@ -3,6 +3,9 @@
 namespace App\Http\Controllers\V2;
 
 use App\Enums\CustomFieldParameter;
+use App\Http\Resources\V2\GenericRelationshipCollection;
+use App\Http\Resources\V2\GenericRelationshipResource;
+use App\Http\Resources\V2\GenericResource;
 use App\Models\BranchOffice;
 use App\Models\Egov\MineralField;
 use App\Models\Egov\OilField;
@@ -22,6 +25,7 @@ use App\Models\V2\Sushi\DepartureType;
 use App\Models\V2\Sushi\ReportFieldCategory;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Http\Request;
 
 class AuxiliaryDataController extends Controller
 {
@@ -116,10 +120,12 @@ class AuxiliaryDataController extends Controller
         return response()->json(['data' => $subsoilContracts], 200);
     }
 
-    public function getFieldOptions(string $fieldName): JsonResponse
+    public function getFieldOptions(string $fieldName, Request $request) //todo: break this down
     {
         $companyId = auth()->user()->rescue_company_id;
         $branchId = auth()->user()->branch_id;
+        $legalEntityId = $request->input('legal_entity_id', null);
+        $search = $request->input('search', null);
 
         $models = [
             'branch_office' => BranchOffice::where('is_central_office', false)
@@ -129,14 +135,16 @@ class AuxiliaryDataController extends Controller
             'departure_type' => DepartureType::where('rescue_company_id', $companyId),
             'legal_entity' => SurveyLegalEntity::where('branch_office_id', $branchId),
             'legal_entity_unit' => SurveyLegalEntityUnit::
-                whereHas('legal_entity', function ($query) use ($branchId) {
+                whereHas('legal_entity', function ($query) use ($branchId, $legalEntityId) {
                 $query->where('branch_office_id', $branchId);
+                if ($legalEntityId) {
+                    $query->where('id', $legalEntityId);
+                }
             }),
-            'created_by' => User::
+            'created_by' => User::withFullName()->
             whereHas('branch_office', function ($query) use ($companyId) {
                 $query->where('rescue_company_id', $companyId);
-            })
-                ->select(['id', DB::raw("CONCAT(last_name, ' ', first_name, ' ', patronymic) as name")]),
+            }),
 
         ];
 
@@ -151,17 +159,29 @@ class AuxiliaryDataController extends Controller
 
         if (array_key_exists($fieldName, $models))
         {
-            $data = $models[$fieldName]->get();
+            if ($search) {
+                if ($fieldName == 'created_by') {
+                    $models[$fieldName]->whereRaw("CONCAT(last_name, ' ', first_name, ' ', patronymic) ILIKE ?", ["%{$search}%"]);
+                }
+                else {
+                    $models[$fieldName]->where('name', 'ILIKE', "%{$search}%");
+                }
+            }
+
+            $data = $models[$fieldName];
         }
 
         else
         {
-            $data = CustomFieldOption::whereHas('customField', function ($query) use ($fieldName, $companyId) {
+            $data = CustomFieldOption::whereHas('customField', function ($query) use ($fieldName, $companyId, $search) {
                 $query->where('name', $fieldName)
                     ->where('rescue_company_id', $companyId);
-            })->get();
+                if ($search) {
+                    $query->where('name', 'ILIKE', "%{$search}%");
+                }
+            });
         }
 
-        return response()->json(['data' => $data], 200);
+        return new GenericRelationshipCollection($data->paginate());
     }
 }
