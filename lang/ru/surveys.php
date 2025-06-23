@@ -12,7 +12,7 @@ return [
                 'alias' => '',
             ],
         ],
-        'fields' => [
+        'columns' => [
             'survey_code' => [
                 'name' => '',
                 'alias' => '',
@@ -30,7 +30,7 @@ return [
                 'alias' => '',
             ],
         ],
-        'violations' => [
+        'table_columns' => [
             'description' => [
                 'name' => 'Анықталған бұзушылықтар және оларды жою туралы ұсынымдар/Выявленные нарушения и рекомендации по их устранению',
                 'alias' => '',

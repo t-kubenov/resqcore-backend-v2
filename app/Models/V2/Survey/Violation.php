@@ -142,16 +142,6 @@ class Violation extends BaseEntity
         ];
     }
 
-
-    public static function generatePrintColumns(): array
-    {
-        $fields = \Lang::get('surveys.print.violations', [], 'ru');
-
-        return collect($fields)->map(function ($value, $key) {
-            return array_merge(['key' => $key], $value);
-        })->values()->all();
-    }
-
     public function survey(): BelongsTo
     {
         return $this->belongsTo(Survey::class);

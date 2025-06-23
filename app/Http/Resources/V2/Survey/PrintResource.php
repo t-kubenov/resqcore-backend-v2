@@ -21,8 +21,6 @@ class PrintResource extends GenericResource
         return [
             'columns' =>
                 self::generatePrintColumns(),
-            'table_columns' =>
-                Violation::generatePrintColumns(),
 
             'data' => [
                 'id' => $this->id,
