@@ -120,7 +120,14 @@ class AuxiliaryDataController extends Controller
             $data = CustomFieldOption::whereHas('customField', function ($query) use ($fieldName, $companyId) {
                 $query->where('name', $fieldName)
                     ->where('rescue_company_id', $companyId);
-            })->get();
+            })->get()->map(function ($item) {
+                return [
+                    'id' => $item->id,
+                    'key' => $item->name,
+                    'name' => $item->label,
+                    'order' => $item->order,
+                ];
+            });
         }
 
         return response()->json(['data' => $data], 200);
