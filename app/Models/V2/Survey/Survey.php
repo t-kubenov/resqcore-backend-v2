@@ -207,6 +207,15 @@ class Survey extends BaseEntity
         ];
     }
 
+    public function getPrintData(): array
+    {
+        $data = $this->getReadableData();
+        $data['branch_office_id'] = $this->branch_office_id;
+
+        return $data;
+    }
+
+
     public static function generatePrintColumns(): array
     {
         $fields = \Lang::get('surveys.print.fields', [], 'ru');

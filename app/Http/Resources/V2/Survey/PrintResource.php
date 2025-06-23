@@ -28,7 +28,7 @@ class PrintResource extends GenericResource
                 'id' => $this->id,
                 'type' => 'survey_print',
                 'attributes' => [
-                    $this->getReadableData(),
+                    $this->getPrintData(),
                 ],
                 'relationships' =>
                     $this->violations->map(function($violation_){
