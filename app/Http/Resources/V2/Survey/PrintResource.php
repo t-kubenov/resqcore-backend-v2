@@ -18,10 +18,8 @@ class PrintResource extends GenericResource
     {
         $violation = new Violation();
 
-        return [
-            'columns' =>
-                self::generatePrintColumns(),
-
+        return array_merge(
+            self::generatePrintColumns(),[
             'data' => [
                 'id' => $this->id,
                 'type' => 'survey_print',
@@ -38,7 +36,7 @@ class PrintResource extends GenericResource
                             ]
                         ];
                     })->toArray(),
-            ]
-        ];
+            ]]
+        );
     }
 }
