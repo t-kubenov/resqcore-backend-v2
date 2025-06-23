@@ -5,6 +5,7 @@ namespace App\Http\Services\V2\Survey;
 use App\Http\Requests\V2\Survey\StoreSurveyRequest;
 use App\Http\Services\V2\BaseService;
 use App\Models\V2\Survey\Survey;
+use App\Models\V2\Survey\SurveyLegalEntityUnit;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 
@@ -112,12 +113,22 @@ class SurveyService extends BaseService
     {
         $data = $request->validated()['data']['attributes'];
 
-        $survey = new Survey();
-        $survey->fill($data);
-        $survey->save();
+        $this->validateLegalEntityUnitRelation($data['legal_entity_id'], $data['legal_entity_unit_id']);
+
+        $survey = Survey::create($data);
+
         $this->processSendersAndSpokesmen($survey, $data);
 
         return $survey;
+    }
+
+    private function validateLegalEntityUnitRelation(int $legalEntityId, int $unitId)
+    {
+        $belongs = SurveyLegalEntityUnit::where('id', $unitId)
+            ->where('legal_entity_id', $legalEntityId)
+            ->exists();
+
+        abort_if((!$belongs), '422', __('validation.survey.create.legal_entity_unit_mismatch'));
     }
 
     private function processSendersAndSpokesmen(Survey $survey, $data): void

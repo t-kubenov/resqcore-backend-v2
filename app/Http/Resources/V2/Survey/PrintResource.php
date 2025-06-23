@@ -16,8 +16,6 @@ class PrintResource extends GenericResource
      */
     public function toArray(Request $request): array
     {
-        $violation = new Violation();
-
         return array_merge(
             self::generatePrintColumns(),[
             'data' => [
@@ -27,12 +25,12 @@ class PrintResource extends GenericResource
                     $this->getPrintData(),
                 ],
                 'relationships' =>
-                    $this->violations->map(function($violation_){
+                    $this->violations->map(function($violation){
                         return [
-                            'id' => $violation_->id,
+                            'id' => $violation->id,
                             'type' => 'violation',
                             'attributes' => [
-                                $violation_->toArray(),
+                                $violation->toArray(),
                             ]
                         ];
                     })->toArray(),
