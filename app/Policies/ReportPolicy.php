@@ -5,6 +5,7 @@ namespace App\Policies;
 use App\Enums\AccessLevel;
 use App\Models\Report;
 use App\Models\User;
+use App\Models\V2\Survey\Survey;
 use Illuminate\Auth\Access\Response;
 use Illuminate\Support\Facades\Log;
 
@@ -12,6 +13,7 @@ class ReportPolicy
 {
     public function show(User $user, Report $report): Response
     {
+//        dd($user->access_level, $report->branch_office->rescue_company_id, $user->branch_office->rescue_company_id, $report->branch_office_id, $user->branch_id);
         $match = match ($user->access_level) {
             AccessLevel::APP => true,
             AccessLevel::COMPANY => $report->branch_office->rescue_company_id === $user->branch_office->rescue_company_id,

@@ -80,8 +80,6 @@ class ReportService
         return false;
     }
 
-
-
     public function filterQuery($query, $request)
     {
         $data = $request->all();

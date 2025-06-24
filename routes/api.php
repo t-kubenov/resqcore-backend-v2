@@ -8,8 +8,10 @@ use App\Http\Controllers\V2\EmailController;
 use App\Http\Controllers\V2\ImageController;
 use App\Http\Controllers\V2\ReportController;
 use App\Http\Controllers\V2\StatisticsController;
+use App\Http\Controllers\V2\Survey\SurveyController;
 use App\Http\Controllers\V2\UpdateController;
 use App\Http\Controllers\V2\UpdateLogController;
+use App\Http\Controllers\V2\Survey\ViolationController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('throttle:global')->prefix('v2/')->group(function () {
@@ -28,8 +30,11 @@ Route::middleware('throttle:global')->prefix('v2/')->group(function () {
         Route::prefix('auxiliary')->name('auxiliary.')->controller(AuxiliaryDataController::class)->group(function () {
             Route::get('/report-fields', 'getReportFields')->name('report-fields');
             Route::get('/update-fields', 'getUpdateFields')->name('update-fields');
+            Route::get('/survey-fields', 'getSurveyFields')->name('survey-fields');
+            Route::get('/violation-fields', 'getViolationFields')->name('violation-fields');
             Route::get('/report-filters', 'getReportFilters')->name('report-filters');
-            Route::get('/mineral-fields', 'getMineralFields')->name('mineral-fields');
+            Route::get('/survey-filters', 'getSurveyFilters')->name('survey-filters');
+            Route::get('/mineral-fields', 'getMineralFields')->name('mineral-fields'); // todo: bruh i gotta unite these like the field options
             Route::get('/oil-fields', 'getOilFields')->name('oil-fields');
             Route::get('/subsoil-contracts', 'getSubsoilContracts')->name('subsoil-contracts');
             Route::get('/field-options/{field_name}', 'getFieldOptions')->name('field-options');
@@ -53,8 +58,18 @@ Route::middleware('throttle:global')->prefix('v2/')->group(function () {
             Route::get('/reports/{id}/log', [UpdateLogController::class, 'show'])->name('reports.id.log');
             Route::get('/export', [ReportController::class, 'export'])->name('reports.export');
 
+            Route::get('/surveys', [SurveyController::class, 'index'])->name('surveys.index');
+            Route::get('/surveys/export', [SurveyController::class, 'export'])->name('surveys.export');
+
             Route::group(['middleware' => ['permission:branch_report_create']], function () {
                 Route::post('/reports', [ReportController::class, 'store'])->name('reports.store');
+                Route::post('/surveys', [SurveyController::class, 'store'])->name('surveys.store');
+                Route::get('/surveys/violations/{id}', [ViolationController::class, 'show'])->name('surveys.violations.show');
+                Route::post('/surveys/close-violation/{id}', [ViolationController::class, 'close'])->name('surveys.violations.close');
+                Route::post('/surveys/{id}/create-violation', [ViolationController::class, 'store'])->name('surveys.violations.store');
+                Route::get('/surveys/{id}/violations', [ViolationController::class, 'index'])->name('surveys.violations.index');
+                Route::get('/surveys/{id}/print', [SurveyController::class, 'print'])->name('surveys.print');
+                Route::get('/surveys/{id}', [SurveyController::class, 'show'])->name('surveys.show');
             });
 
             Route::group(['middleware' => ['permission:branch_update_create']], function () {

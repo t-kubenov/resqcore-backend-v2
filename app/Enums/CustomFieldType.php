@@ -35,6 +35,9 @@ enum CustomFieldType: string
     case Text = 'text';
 
     #[PlainType]
+    case Date = 'date';
+
+    #[PlainType]
     case Datetime = 'datetime';
 
     #[PlainType]
@@ -49,15 +52,19 @@ enum CustomFieldType: string
     #[ComplexType]
     case MultiValue = 'multi_value';
 
+    #[ComplexType]
+    case StringArray = 'string_array';
+
     public function creationValidationRule(): string
     {
         return match ($this) {
             self::Int, self::SingleChoiceEnum => 'integer',
             self::Float => 'numeric',
             self::String, self::Text => 'string',
+            self::Date => 'date_format:Y-m-d',
             self::Datetime => 'date',
             self::Boolean => 'boolean',
-            self::MultipleChoiceEnum, self::MultiValue => 'array',
+            self::MultipleChoiceEnum, self::MultiValue, self::StringArray => 'array',
         };
     }
 
@@ -66,8 +73,8 @@ enum CustomFieldType: string
         return match ($this) {
             self::Int,  => 'integer',
             self::Float => 'numeric',
-            self::String, self::Text  => 'string',
-            self::Datetime => new DateRangeRule(),
+            self::String, self::Text, self::StringArray  => 'string',
+            self::Date, self::Datetime => new DateRangeRule(),
             self::Boolean => 'boolean',
             self::SingleChoiceEnum, self::MultipleChoiceEnum, self::MultiValue => 'array',
         };

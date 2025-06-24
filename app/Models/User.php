@@ -11,6 +11,7 @@ use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Traits\HasRoles;
 use Znck\Eloquent\Traits\BelongsToThrough;
+use Illuminate\Database\Eloquent\Builder;
 
 
 class User extends Authenticatable
@@ -81,6 +82,14 @@ class User extends Authenticatable
                 User::class => 'branch_id',
             ],
         );
+    }
+
+    public function scopeWithFullName(Builder $query): Builder
+    {
+        return $query->select([
+            'id',
+            \DB::raw("CONCAT(last_name, ' ', first_name, ' ', patronymic) as name")
+        ]);
     }
 
     public function getRescueCompanyIdAttribute(): int

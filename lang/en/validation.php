@@ -189,6 +189,15 @@ return [
     |
     */
 
+    'survey' => [
+        'violations' => [
+            'close' => [
+                'already_closed' => 'Это нарушение уже устранено.',
+                'prescription_date' => 'Дата устранения не может быть раньше даты предписания.',
+            ]
+        ]
+    ],
+
     'attributes' => [],
 
 ];

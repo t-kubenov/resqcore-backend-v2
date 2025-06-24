@@ -17,7 +17,7 @@ class ReportFieldCategory extends Model
         ],
         [
             'id' => 2,
-            'name' => 'Дополнтельная информация',
+            'name' => 'Дополнительная информация',
             'note' => null,
         ],
         [

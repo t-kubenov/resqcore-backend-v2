@@ -1,0 +1,69 @@
+<?php
+
+namespace App\Models;
+
+use App\Enums\AccessLevel;
+use App\Enums\CustomFieldParameter;
+
+
+abstract class BaseEntity extends Model
+{
+    /**
+     * Get field definitions.
+     *
+     * @return array<int, array{
+     *     key: string,
+     *     name: string,
+     *     type: string,
+     *     label: string,
+     *     alias: ?string,
+     *     required: ?bool,
+     *     rules: ?array<string, string>,
+     *     options: ?string,
+     *     parameters?: array<int, CustomFieldParameter>
+     * }>
+     */
+    public static function fieldDefinitions(): array
+    {
+        return [];
+    }
+
+    public static function filters(): array
+    {
+        return array_filter(static::fieldDefinitions(), function ($field) {
+
+            $needle = auth()->user()->access_level === AccessLevel::BRANCH?
+                CustomFieldParameter::IsFilterable: CustomFieldParameter::IsFilterableForCA;
+
+            return in_array($needle, $field['parameters'] ?? []);
+        });
+    }
+
+    public static function columns(): array
+    {
+        return array_values(array_map(
+            fn($field) => [
+                'key' => $field['name'],
+                'name' => $field['label'],
+                'alias' => $field['alias'],
+            ],
+            array_filter(static::fieldDefinitions(), fn($field) =>
+            in_array(CustomFieldParameter::ShowInTable, $field['parameters'])
+            )
+        ));
+    }
+
+    public static function cardColumns(): array
+    {
+        return array_values(array_map(
+            fn($field) => [
+                'key' => $field['name'],
+                'name' => $field['label'],
+                'alias' => $field['alias'],
+            ],
+            array_filter(static::fieldDefinitions(), fn($field) =>
+            in_array(CustomFieldParameter::ShowInCard, $field['parameters'])
+            )
+        ));
+    }
+}
