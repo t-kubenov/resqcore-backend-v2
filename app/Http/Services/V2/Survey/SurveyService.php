@@ -48,16 +48,6 @@ class SurveyService extends BaseService
             unset($data['spokesmen']);
         }
 
-        if (isset($data['legal_entity_id'])) {
-            $query->whereIn('legal_entity_id', $data['legal_entity_id']);
-            unset($data['legal_entity_id']);
-        }
-
-        if (isset($data['legal_entity_unit_id'])) {
-            $query->whereIn('legal_entity_unit_id', $data['legal_entity_unit_id']);
-            unset($data['legal_entity_unit_id']);
-        }
-
         if (isset($data['survey_date'])) {
             $this->filterDates($query, 'survey_date', $data['survey_date']);
             unset($data['survey_date']);
@@ -71,6 +61,12 @@ class SurveyService extends BaseService
                     ->where('description', 'ILIKE', "%{$search}%")
                     ->orWhere('clause', 'ILIKE', "%{$search}%");
             })
+                ->orWhereHas('legal_entity', function ($q) use ($search) {
+                    $q->where('name', 'ILIKE', "%{$search}%");
+                })
+                ->orWhereHas('legal_entity_unit', function ($q) use ($search) {
+                    $q->where('name', 'ILIKE', "%{$search}%");
+                })
                 ->orWhere('hazardous_facility_name', 'ILIKE', "%{$search}%")
                 ->orWhere('survey_code', 'ILIKE', "%{$search}%");
 
