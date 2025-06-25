@@ -120,8 +120,11 @@ class SurveyService extends BaseService
 
     private function validateLegalEntityUnitRelation(int $legalEntityId, int $unitId)
     {
+        $branch_office_id = auth()->user()->branch_id;
+
         $belongs = SurveyLegalEntityUnit::where('id', $unitId)
             ->where('legal_entity_id', $legalEntityId)
+            ->whereHas('legal_entity', fn($q) => $q->where('branch_office_id', $branch_office_id))
             ->exists();
 
         abort_if((!$belongs), '422', __('validation.survey.create.legal_entity_unit_mismatch'));

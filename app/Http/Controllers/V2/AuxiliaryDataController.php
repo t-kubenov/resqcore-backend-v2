@@ -134,13 +134,9 @@ class AuxiliaryDataController extends Controller
             'transport_type' => TransportType::where('rescue_company_id', $companyId),
             'departure_type' => DepartureType::where('rescue_company_id', $companyId),
             'legal_entity' => SurveyLegalEntity::where('branch_office_id', $branchId),
-            'legal_entity_unit' => SurveyLegalEntityUnit::
-                whereHas('legal_entity', function ($query) use ($branchId, $legalEntityId) {
-                $query->where('branch_office_id', $branchId);
-                if ($legalEntityId) {
-                    $query->where('id', $legalEntityId);
-                }
-            }),
+            'legal_entity_unit' => $legalEntityId?
+                SurveyLegalEntityUnit::where('legal_entity_id', $legalEntityId):
+                SurveyLegalEntityUnit::whereRaw('1 = 0'),
             'created_by' => User::withFullName()->
             whereHas('branch_office', function ($query) use ($companyId) {
                 $query->where('rescue_company_id', $companyId);
