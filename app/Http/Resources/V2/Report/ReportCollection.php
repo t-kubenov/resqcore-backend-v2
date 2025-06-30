@@ -40,9 +40,7 @@ class ReportCollection extends ResourceCollection
                     "alias" => ""
                 ]
             ],
-            "middle" => [
-                Report::columns()
-            ],
+            "middle" => Report::columns(),
             "end" => [
                 [
                     "key" => "branch_office",
