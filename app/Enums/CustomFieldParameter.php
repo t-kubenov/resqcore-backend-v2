@@ -20,4 +20,6 @@ enum CustomFieldParameter: string
     case FilterByField = 'filter_by_field';
     case ShowInTable = 'show_in_table';
     case ShowInCard = 'show_in_card';
+    case ShowInExport = 'show_in_export';
+    case TableOrder = 'table_order';
 }
