@@ -56,13 +56,8 @@ class ReportCollection extends ResourceCollection
                     "name" => "Место ЧС",
                     "alias" => ""
                 ],
-                [
-                    "key" => "caller",
-                    "name" => "Кто произвел вызов",
-                    "alias" => ""
-                ]
             ],
-            "end" => [
+            "end" => array_merge([
                 [
                     "key" => "branch_office",
                     "name" => "Филиал",
@@ -73,10 +68,8 @@ class ReportCollection extends ResourceCollection
                     "name" => "Ликвидирован",
                     "alias" => "Статус"
                 ]
-            ]
+            ], Report::exportColumns()),
         ];
-
-
     }
 
     /**
@@ -90,7 +83,7 @@ class ReportCollection extends ResourceCollection
             return [
                 'id' => $report->id,
                 'type' => 'report',
-                'attributes' => [
+                'attributes' => array_merge([
                     'report_code' => $report->report_code,
                     'branch_office' => $report->branch_office?->name,
                     'caller' => $report->caller,
@@ -104,6 +97,8 @@ class ReportCollection extends ResourceCollection
                     'is_closed' => $report->is_closed,
                     'close_date' => $report->close_date?->format(config('app.date_format')),
                 ],
+                $report->customFieldValueArray()
+                ),
                 'relationships' => $this->getRelationships($report),
             ];
         });
@@ -124,10 +119,5 @@ class ReportCollection extends ResourceCollection
             'transport' => new TransportCollection($report->transport??[]),
             'transport_totals' => $report->transport_totals,
         ];
-    }
-
-    protected function getCustomFieldColumns()
-    {
-
     }
 }

@@ -53,6 +53,20 @@ abstract class BaseEntity extends Model
         ));
     }
 
+    public static function exportColumns(): array
+    {
+        return array_values(array_map(
+            fn($field) => [
+                'key' => $field['name'],
+                'name' => $field['label'],
+                'alias' => $field['alias'],
+            ],
+            array_filter(static::fieldDefinitions(), fn($field) =>
+            in_array(CustomFieldParameter::ShowInExport, $field['parameters'])
+            )
+        ));
+    }
+
     public static function cardColumns(): array
     {
         return array_values(array_map(

@@ -78,13 +78,15 @@ class Report extends BaseOperation
             'facility_owner' => [
                 'key' => 'data.attributes.facility_owner_id',
                 'name' => 'facility_owner',
-                'label' => __('reports.fields.facility_owner_id.name'),
-                'alias' => __('reports.fields.facility_owner_id.alias'),
+                'label' => __('reports.fields.facility_owner.name'),
+                'alias' => __('reports.fields.facility_owner.alias'),
                 'type' => CustomFieldType::SingleChoiceEnum,
                 'rules' => ['exists:companies,id'],
                 'required' => false,
                 'parameters' => [
-                    CustomFieldParameter::IsHidden
+                    CustomFieldParameter::IsHidden,
+                    CustomFieldParameter::ShowInTable,
+                    CustomFieldParameter::TableOrder->value => 0,
                 ]
             ],
             'caller' => [
@@ -150,6 +152,8 @@ class Report extends BaseOperation
                     CustomFieldParameter::IsFilterable,
                     CustomFieldParameter::IsFilterableForCA,
                     CustomFieldParameter::CategoryId->value => 1,
+                    CustomFieldParameter::ShowInTable,
+                    CustomFieldParameter::TableOrder->value => 1,
                 ]
             ],
             'is_emergency_line' => [
@@ -188,6 +192,8 @@ class Report extends BaseOperation
                 'rules' => ['required', 'string', 'max:255'],
                 'parameters' => [
                     CustomFieldParameter::CategoryId->value => 1,
+                    CustomFieldParameter::ShowInTable,
+                    CustomFieldParameter::TableOrder->value => 2,
                 ]
             ],
             'emergency_info' => [

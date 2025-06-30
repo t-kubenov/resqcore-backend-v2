@@ -19,10 +19,10 @@ class ExportResource extends JsonResource
         $this->load('transport');
         $attributes = $this->attributesToArray();
 
-        return array_merge([
+        return [
             "id" => $this->id,
             "type" => "departure",
-            "attributes" => [
+            "attributes" => array_merge([
                 'report_code' => $this->report_code,
                 'call_date' => $attributes['call_date'],
                 'work_start_date' => $attributes['work_start_date'],
@@ -36,7 +36,8 @@ class ExportResource extends JsonResource
                 'branch_office' => $this->branch_office?->name,
                 'transport_totals' => $this->transport_totals,
                 'is_closed' => __('reports.fields.is_closed.'. ($this->is_closed ? 'true' : 'false')),
-            ]
-        ], $this->customFieldValueArray());
+            ],
+                $this->customFieldValueArray())
+        ];
     }
 }
