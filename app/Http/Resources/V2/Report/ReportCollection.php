@@ -56,11 +56,6 @@ class ReportCollection extends ResourceCollection
                     "name" => "Место ЧС",
                     "alias" => ""
                 ],
-                [
-                    "key" => "caller",
-                    "name" => "Кто произвел вызов",
-                    "alias" => ""
-                ]
             ],
             "end" => array_merge([
                 [
