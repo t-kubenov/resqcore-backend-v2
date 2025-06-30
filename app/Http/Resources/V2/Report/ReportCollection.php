@@ -40,8 +40,29 @@ class ReportCollection extends ResourceCollection
                     "alias" => ""
                 ]
             ],
-            "middle" => Report::columns(),
-            "end" => [
+            "middle" => [
+                [
+                    "key" => "facility_owner",
+                    "name" => "Наименование объекта",
+                    "alias" => ""
+                ],
+                [
+                    "key" => "emergency_type",
+                    "name" => "Тип ЧС",
+                    "alias" => ""
+                ],
+                [
+                    "key" => "emergency_location",
+                    "name" => "Место ЧС",
+                    "alias" => ""
+                ],
+                [
+                    "key" => "caller",
+                    "name" => "Кто произвел вызов",
+                    "alias" => ""
+                ]
+            ],
+            "end" => array_merge([
                 [
                     "key" => "branch_office",
                     "name" => "Филиал",
@@ -52,7 +73,7 @@ class ReportCollection extends ResourceCollection
                     "name" => "Ликвидирован",
                     "alias" => "Статус"
                 ]
-            ]
+            ], Report::exportColumns()),
         ];
     }
 
