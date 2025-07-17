@@ -79,7 +79,11 @@ class UpdateService extends ReportService
 
     public function updateRequest(StoreUpdateRequest $request, $update, $attributes): Update
     {
-        $key = 'report-create:' . (Auth::user()?->id ?: $request->ip());
+        if (config('app.debug')) {
+            return $this->createUpdate($update, $attributes);
+        }
+
+        $key = 'update-create:' . (Auth::user()?->id ?: $request->ip());
 
         if (RateLimiter::tooManyAttempts($key, 1)) {
             throw new ThrottleRequestsException(__('throttle.report-create'));

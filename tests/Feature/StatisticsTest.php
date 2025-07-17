@@ -1,13 +1,24 @@
 <?php
 
-use function Tests\Helpers\{assertEndpoint, loadUsers};
+use function Tests\Helpers\{getRandomCentralAndBranchUsers};
 
 // todo: unit test for the statistics, reports, and departures filters
 
 
 beforeEach(function () {
-    $this->users = loadUsers();
+    $this->users = getRandomCentralAndBranchUsers();
 });
+
+
+function assertUsersCanAccessEndpoint ($test_instance, $route, $data): void
+{
+    foreach ($test_instance->users as $user) {
+        $test_instance->actingAs($user)
+            ->get('/api/v2/' . $route)
+            ->assertStatus(200)
+            ->assertJsonStructure($data);
+    }
+} // moved this here from helpers to avoid rewriting everything
 
 
 test('card statistics', function () {
@@ -23,7 +34,7 @@ test('card statistics', function () {
         ]
     ];
 
-    assertEndpoint($this, 'statistics/card-statistics', $data);
+    assertUsersCanAccessEndpoint($this, 'statistics/card-statistics', $data);
 });
 
 
@@ -39,7 +50,7 @@ test('emergency types distribution', function () {
         ]
     ];
 
-    assertEndpoint($this, 'statistics/emergency-types-distribution', $data);
+    assertUsersCanAccessEndpoint($this, 'statistics/emergency-types-distribution', $data);
 });
 
 
@@ -56,7 +67,7 @@ test('emergencies per branch office', function () {
         ]
     ];
 
-    assertEndpoint($this, 'statistics/emergencies-per-branch-office', $data);
+    assertUsersCanAccessEndpoint($this, 'statistics/emergencies-per-branch-office', $data);
 });
 
 
@@ -76,7 +87,7 @@ test('injury counts per emergency type', function () {
         ],
     ];
 
-    assertEndpoint($this, 'statistics/injury-counts-per-emergency-type', $data);
+    assertUsersCanAccessEndpoint($this, 'statistics/injury-counts-per-emergency-type', $data);
 });
 
 
@@ -88,7 +99,7 @@ test('evacuated people medical aid', function () {
         ]
     ];
 
-    assertEndpoint($this, 'statistics/evacuated-people-medical-aid', $data);
+    assertUsersCanAccessEndpoint($this, 'statistics/evacuated-people-medical-aid', $data);
 });
 
 
@@ -106,7 +117,7 @@ test('response time per emergency type', function () {
         ],
     ];
 
-    assertEndpoint($this, 'statistics/response-time-per-emergency-type', $data);
+    assertUsersCanAccessEndpoint($this, 'statistics/response-time-per-emergency-type', $data);
 });
 
 
@@ -125,7 +136,7 @@ test('worker man hours per emergency', function () {
     ];
 
 
-    assertEndpoint($this, 'statistics/worker-man-hours-per-emergency', $data);
+    assertUsersCanAccessEndpoint($this, 'statistics/worker-man-hours-per-emergency', $data);
 });
 
 
@@ -143,7 +154,7 @@ test('total injuries impact over time', function () {
         ],
     ];
 
-    assertEndpoint($this, 'statistics/total-injuries-impact-over-time', $data);
+    assertUsersCanAccessEndpoint($this, 'statistics/total-injuries-impact-over-time', $data);
 });
 
 
@@ -158,5 +169,5 @@ test('transport usage', function () {
         ],
     ];
 
-    assertEndpoint($this, 'statistics/transport-usage', $data);
+    assertUsersCanAccessEndpoint($this, 'statistics/transport-usage', $data);
 });

@@ -7,20 +7,23 @@ use App\Models\V2\CustomField\CustomField;
 
 
 beforeEach(function () {
-    $this->rescueCompany = RescueCompany::where('key', 'test')->first();
+    $this->rescueCompany = RescueCompany::inRandomOrder()->first();
     $this->user = User::where('role_id', '1')->first();
     $this->url = '/api/v2/admin/custom-fields';
 });
 
-//todo: add tests for successful creation of different field types, check db, etc.
+//todo: add tests for successful creation of different field types, check db for existence of the field, values and options.
+//todo: add tests for storing data into a registered custom field, check for the storage of value.
 
 test('custom field create', function () {
+
+    $name = fake()->word();
 
     $response = $this
         ->actingAs($this->user)
         ->postJson($this->url, [
             'rescue_company_id' => $this->rescueCompany->id,
-            'name' => 'custom_field_example',
+            'name' => $name,
             'label' => 'Custom Field Example',
             'model' => 'App\Models\Report',
             'required' => true,
@@ -31,7 +34,7 @@ test('custom field create', function () {
 
     $this->assertDatabaseHas('custom_fields', [
         'rescue_company_id' => $this->rescueCompany->id,
-        'name' => 'custom_field_example',
+        'name' => $name,
         'label' => 'Custom Field Example',
         'model' => 'App\Models\Report',
         'required' => true,
@@ -59,7 +62,7 @@ it('fails when type is invalid', function () {
             'name' => 'custom_field_example',
             'model' => 'user',
             'required' => true,
-            'type' => 'invalid_type', // ❌ Invalid type
+            'type' => 'invalid_type',
         ]);
 
     $response->assertStatus(422)
@@ -95,7 +98,7 @@ it('fails when MultiValue fields contain subfields of type MultiValue', function
             [
                 'name' => 'invalid_subfield',
                 'label' => 'Invalid Subfield',
-                'type' => CustomFieldType::MultiValue->value, // ❌ Not allowed
+                'type' => CustomFieldType::MultiValue->value, // not allowed
                 'required' => false,
             ],
         ],

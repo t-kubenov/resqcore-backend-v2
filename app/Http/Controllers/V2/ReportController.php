@@ -53,7 +53,7 @@ class ReportController extends Controller
         $this->authorize('create', Report::class);
 
         try {
-            $report = $this->reportService->storeRequest($request);
+            $report = $this->reportService->storeAndThrottleRequest($request);
         }
         catch (ThrottleRequestsException $e) {
             return response()->json(['message' => __('throttle.report-create')], 429);

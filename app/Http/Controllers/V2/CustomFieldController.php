@@ -40,7 +40,7 @@ class CustomFieldController
             $this->storeSubfields($customField, $attributes['subfields']);
         }
 
-        if (in_array(CustomFieldParameter::IncludeToUpdates->value, $attributes['parameters'])) {
+        if (isset($attributes['parameters']) && in_array(CustomFieldParameter::IncludeToUpdates->value, $attributes['parameters'])) {
             $this->createWithAttributes(array_merge($attributes, [
                 'model' => Update::class,
                 'parameters' => [],

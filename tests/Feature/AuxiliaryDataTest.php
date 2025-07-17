@@ -1,65 +1,35 @@
 <?php
 
+use function Tests\Helpers\{getRandomCentralAndBranchUsers, assertUsersCanAccessEndpoint};
 
-use function Tests\Helpers\{loadUsers, assertEndpoint};
-
-
-$auxiliaryDataRoutes = [
-    'transport-types',
-    'emergency-types',
-    'branch-offices',
-    'mineral-fields',
-    'oil-fields',
-    'subsoil-contracts',
-];
-
+// the data should be in the context of users, branch offices and the company.
 
 beforeEach(function (){
-    $this->users = loadUsers();
+    $this->users = getRandomCentralAndBranchUsers();
 });
 
 
-test('transport types', function () {
+test('data format', function () {
+    $auxiliaryDataRoutes = [
+        'branch_office',
+        'emergency_type',
+        'transport_type',
+        'departure_type',
+        'legal_entity',
+        'legal_entity_unit',
+        'created_by',
+    ];
+
     $data = [
         'data' => [
             '*' => [
                 'id',
-                'key',
                 'name',
             ]
         ]
     ];
 
-    assertEndpoint($this, 'auxiliary/transport-types', $data);
-});
-
-
-test('emergency types', function () {
-    $data = [
-        'data' => [
-            '*' => [
-                'id',
-                'key',
-                'name',
-            ]
-        ]
-    ];
-
-    assertEndpoint($this, 'auxiliary/emergency-types', $data);
-});
-
-
-test('branch offices', function () {
-    $data = [
-        'data' => [
-            '*' => [
-                'id',
-                'key',
-                'name',
-                'alias',
-            ]
-        ]
-    ];
-
-    assertEndpoint($this, 'auxiliary/branch-offices', $data);
+    foreach ($auxiliaryDataRoutes as $route){
+        assertUsersCanAccessEndpoint($this, route('auxiliary.field-options', $route), $data);
+    }
 });

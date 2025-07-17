@@ -238,12 +238,11 @@ class ReportService
         }
     }
 
-    public function storeRequest(StoreReportRequest $request): Report
+    public function storeAndThrottleRequest(StoreReportRequest $request): Report
     {
         if (config('app.debug')) {
             return $this->store($request);
         }
-
 
         $key = 'report-create:' . (Auth::user()?->id ?: $request->ip());
 
