@@ -5,22 +5,27 @@ namespace App\Http\Controllers\V2;
 use App\Http\Requests\V2\FilterReportRequest;
 use App\Http\Services\V2\ReportService;
 use App\Models\Report;
+use App\Models\User;
 use App\Traits\Cacheable;
 use Illuminate\Http\Request;
 
 class StatisticsController extends Controller
 {
     use Cacheable;
-    protected $reportService;
+    protected ReportService $reportService;
+    protected int $roleId;
+    protected int $branchId;
 
     public function __construct(ReportService $reportService)
     {
         $this->reportService = $reportService;
+        $this->roleId = auth()->user()->role_id ?? null;
+        $this->branchId = auth()->user()->branch_office_id ?? null;
     }
 
     public function getCountTable(Request $request)
     {
-        $data = $this->cacheResponse('statistics:getCountTable', $request, function () use ($request) {
+        $data = $this->cacheResponse("statistics:getCountTable:r{$this->roleId}:b{$this->branchId}", $request, function () use ($request) {
             $filteredQuery = $this->reportService->filterQuery(Report::query(), $request);
 
             return [
@@ -44,7 +49,7 @@ class StatisticsController extends Controller
 
     public function getCardStatistics(FilterReportRequest $request)
     {
-        $data = $this->cacheResponse('statistics:getCardStatistics', $request, function () use ($request) {
+        $data = $this->cacheResponse("statistics:getCardStatistics:r{$this->roleId}:b{$this->branchId}", $request, function () use ($request) {
             $filterQuery = $this->reportService->filterQuery(Report::query(), $request);
 
             return [
@@ -63,7 +68,7 @@ class StatisticsController extends Controller
 
     public function getEmergencyTypesDistribution(FilterReportRequest $request)
     {
-        $data = $this->cacheResponse('statistics:getEmergencyTypesDistribution', $request, function () use ($request) {
+        $data = $this->cacheResponse("statistics:getEmergencyTypesDistribution:r{$this->roleId}:b{$this->branchId}", $request, function () use ($request) {
             $filterQuery = $this->reportService->filterQuery(Report::selectRaw('emergency_type, count(id)')->with('emergency'), $request);
 
             return $filterQuery->groupBy('emergency_type')
@@ -85,7 +90,7 @@ class StatisticsController extends Controller
 
     public function getEmergenciesPerBranchOffice(FilterReportRequest $request)
     {
-        $data = $this->cacheResponse('statistics:getEmergenciesPerBranchOffice', $request, function () use ($request) {
+        $data = $this->cacheResponse("statistics:getEmergenciesPerBranchOffice:r{$this->roleId}:b{$this->branchId}", $request, function () use ($request) {
             $filterQuery = $this->reportService->filterQuery(
                 Report::selectRaw('branch_office_id, count(id)')->with('branch_office'),
                 $request
@@ -110,7 +115,7 @@ class StatisticsController extends Controller
 
     public function getInjuryCountsPerEmergencyType(FilterReportRequest $request)
     {
-        $data = $this->cacheResponse('statistics:getInjuryCountsPerEmergencyType', $request, function () use ($request) {
+        $data = $this->cacheResponse("statistics:getInjuryCountsPerEmergencyType:r{$this->roleId}:b{$this->branchId}", $request, function () use ($request) {
             return $this->reportService->filterQuery(Report::query(), $request)
                 ->with('emergency')
                 ->select('emergency_type')
@@ -135,7 +140,7 @@ class StatisticsController extends Controller
 
     public function getEvacuatedPeopleMedicalAid(FilterReportRequest $request)
     {
-        $data = $this->cacheResponse('statistics:getEvacuatedPeopleMedicalAid', $request, function () use ($request) {
+        $data = $this->cacheResponse("statistics:getEvacuatedPeopleMedicalAid:r{$this->roleId}:b{$this->branchId}", $request, function () use ($request) {
             $filteredQuery = $this->reportService->filterQuery(Report::query(), $request);
 
             return [
@@ -150,7 +155,7 @@ class StatisticsController extends Controller
 
     public function getResponseTimePerEmergencyType(FilterReportRequest $request)
     {
-        $data = $this->cacheResponse('statistics:getResponseTimePerEmergencyType', $request, function () use ($request) {
+        $data = $this->cacheResponse("statistics:getResponseTimePerEmergencyType:r{$this->roleId}:b{$this->branchId}", $request, function () use ($request) {
             return $this->reportService->filterQuery(Report::query(), $request)
                 ->with('emergency')
                 ->select('emergency_type')
@@ -193,7 +198,7 @@ class StatisticsController extends Controller
 
     public function getTotalInjuriesImpactOverTime(FilterReportRequest $request)
     {
-        $data = $this->cacheResponse('statistics:getTotalInjuriesImpactOverTime', $request, function () use ($request) {
+        $data = $this->cacheResponse("statistics:getTotalInjuriesImpactOverTime:r{$this->roleId}:b{$this->branchId}", $request, function () use ($request) {
             return $this->reportService->filterQuery(Report::query(), $request)
                 ->select('call_date')
                 ->selectRaw('SUM(SUM(minor_injury_total)) OVER (ORDER BY call_date) as cumulative_minor_injury_total')
@@ -212,7 +217,7 @@ class StatisticsController extends Controller
 
     public function getTransportUsage(FilterReportRequest $request)
     {
-        $data = $this->cacheResponse('statistics:getTransportUsage', $request, function () use ($request) {
+        $data = $this->cacheResponse("statistics:getTransportUsage:r{$this->roleId}:b{$this->branchId}", $request, function () use ($request) {
             $filterQuery = $this->reportService->filterQuery(Report::query(), $request);
 
             return $filterQuery->join('transports', 'reports.id', '=', 'transports.report_id')
