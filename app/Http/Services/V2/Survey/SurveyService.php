@@ -83,6 +83,13 @@ class SurveyService extends BaseService
         if ($user->hasRole('branch_office_user')) {
             $query->where('branch_office_id', $user->branch_id);
         }
+
+        if ($user->hasRole('central_office_user')){
+            $query->whereHas('branch_office', function($q) use ($user){
+                $q->where('rescue_company_id', $user['rescue_company_id']);
+            });
+        }
+
         return $query;
     }
 

@@ -60,16 +60,16 @@ Route::middleware('throttle:global')->prefix('v2/')->group(function () {
 
             Route::get('/surveys', [SurveyController::class, 'index'])->name('surveys.index');
             Route::get('/surveys/export', [SurveyController::class, 'export'])->name('surveys.export');
+            Route::get('/surveys/{id}', [SurveyController::class, 'show'])->name('surveys.show');
+            Route::get('/surveys/violations/{id}', [ViolationController::class, 'show'])->name('surveys.violations.show');
+            Route::get('/surveys/{id}/violations', [ViolationController::class, 'index'])->name('surveys.violations.index');
+            Route::get('/surveys/{id}/print', [SurveyController::class, 'print'])->name('surveys.print');
 
             Route::group(['middleware' => ['permission:branch_report_create']], function () {
                 Route::post('/reports', [ReportController::class, 'store'])->name('reports.store');
                 Route::post('/surveys', [SurveyController::class, 'store'])->name('surveys.store');
-                Route::get('/surveys/violations/{id}', [ViolationController::class, 'show'])->name('surveys.violations.show');
-                Route::post('/surveys/close-violation/{id}', [ViolationController::class, 'close'])->name('surveys.violations.close');
                 Route::post('/surveys/{id}/create-violation', [ViolationController::class, 'store'])->name('surveys.violations.store');
-                Route::get('/surveys/{id}/violations', [ViolationController::class, 'index'])->name('surveys.violations.index');
-                Route::get('/surveys/{id}/print', [SurveyController::class, 'print'])->name('surveys.print');
-                Route::get('/surveys/{id}', [SurveyController::class, 'show'])->name('surveys.show');
+                Route::post('/surveys/close-violation/{id}', [ViolationController::class, 'close'])->name('surveys.violations.close');
             });
 
             Route::group(['middleware' => ['permission:branch_update_create']], function () {

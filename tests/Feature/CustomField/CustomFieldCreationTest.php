@@ -41,6 +41,8 @@ test('custom field create', function () {
         'type' => CustomFieldType::String->value,
     ]);
 
+
+
     CustomField::destroy($response->json('id'));
 });
 
@@ -69,20 +71,52 @@ it('fails when type is invalid', function () {
         ->assertJsonValidationErrors(['type']);
 });
 
+
 it('requires options for single and multiple choice enums', function () {
-    $response = $this
+    $this
         ->actingAs($this->user)
         ->postJson($this->url, [
-        'rescue_company_id' => $this->rescueCompany->id,
-        'name' => 'custom_field_example',
-        'model' => 'App\Models\Report',
-        'required' => true,
-        'type' => CustomFieldType::SingleChoiceEnum->value,
-    ]);
-
-    $response->assertStatus(422)
+            'rescue_company_id' => $this->rescueCompany->id,
+            'name' => 'custom_field_example',
+            'model' => 'App\Models\Report',
+            'required' => true,
+            'type' => CustomFieldType::SingleChoiceEnum->value,
+        ])
+        ->assertStatus(422)
         ->assertJsonValidationErrors(['options']);
 });
+
+
+it('stores custom field options when enum type is created', function()
+{
+    $options = [
+        [
+            'name' => fake()->word(),
+            'label' => fake()->sentence()
+        ],
+        [
+            'name' => fake()->word(),
+            'label' => fake()->sentence()
+        ],
+    ];
+
+    $this
+        ->actingAs($this->user)
+        ->postJson($this->url, [
+            'rescue_company_id' => $this->rescueCompany->id,
+            'name' => fake()->word(),
+            'model' => 'App\Models\Report',
+            'required' => false,
+            'type' => CustomFieldType::SingleChoiceEnum->value,
+            'options' => $options
+        ]);
+
+        foreach ($options as $option)
+        {
+            $this->assertDatabaseHas('custom_field_options', $option);
+        }
+});
+
 
 it('fails when MultiValue fields contain subfields of type MultiValue', function () {
 
@@ -107,4 +141,3 @@ it('fails when MultiValue fields contain subfields of type MultiValue', function
     $response->assertStatus(422)
         ->assertJsonValidationErrors(['subfields.0.type']);
 });
-

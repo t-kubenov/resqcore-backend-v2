@@ -3,6 +3,7 @@
 namespace Database\Factories\V2\CustomField;
 
 use App\Enums\CustomFieldType;
+use App\Models\RescueCompany;
 use App\Models\V2\CustomField\CustomField;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -19,11 +20,11 @@ class CustomFieldFactory extends Factory
     public function definition(): array
     {
         return [
-            'rescue_company_id' => 4,
+            'rescue_company_id' => RescueCompany::inRandomOrder()->first()->id,
             'parent_field' => null,
             'name' => $this->faker->word,
             'label' => $this->faker->word,
-            'model' => 'Report',
+            'model' => 'App\Models\Report',
             'required' => $this->faker->boolean(20),
             'validation' => $this->faker->word,
             'type' => $this->faker->randomElement(CustomFieldType::values()),

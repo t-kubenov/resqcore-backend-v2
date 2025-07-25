@@ -4,8 +4,12 @@ namespace App\Models;
 
 //use Illuminate\Database\Eloquent\Model;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+
 class BranchOffice extends Model
 {
+    use HasFactory;
+
     protected $fillable = [
         'rescue_company_id',
         'key',

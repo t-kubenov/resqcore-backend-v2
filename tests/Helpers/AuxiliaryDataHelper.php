@@ -2,6 +2,7 @@
 
 namespace Tests\Helpers;
 
+use App\Models\BranchOffice;
 use App\Models\User;
 
 
@@ -26,6 +27,7 @@ function loadAdmin ()
     return User::where('role_id', 1)->inRandomOrder()->first();
 };
 
+
 function assertUsersCanAccessEndpoint ($test_instance, $route, $data): void
 {
     foreach ($test_instance->users as $user) {
@@ -34,4 +36,14 @@ function assertUsersCanAccessEndpoint ($test_instance, $route, $data): void
             ->assertStatus(200)
             ->assertJsonStructure($data);
     }
+}
+
+
+function getRandomBranchIdFromCentralOffice(int $central_office_id): int
+{
+    $central_office = BranchOffice::find($central_office_id);
+
+    return BranchOffice::where('rescue_company_id', $central_office['rescue_company_id'])
+        ->where('is_central_office', false)
+        ->inRandomOrder()->first()->id;
 }

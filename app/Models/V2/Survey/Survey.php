@@ -6,6 +6,7 @@ use App\Enums\CustomFieldParameter;
 use App\Enums\CustomFieldType;
 use App\Models\BaseEntity;
 use App\Models\BranchOffice;
+use App\Models\RescueCompany;
 use App\Models\User;
 use App\Observers\Survey\SurveyObserver;
 use Carbon\Carbon;
@@ -13,12 +14,13 @@ use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Znck\Eloquent\Traits\BelongsToThrough;
 
 
 #[ObservedBy(SurveyObserver::class)]
 class Survey extends BaseEntity
 {
-    use HasFactory;
+    use HasFactory, BelongsToThrough;
 
     protected $fillable = [
         'branch_office_id',
@@ -254,6 +256,17 @@ class Survey extends BaseEntity
     public function legal_entity_unit(): BelongsTo
     {
         return $this->belongsTo(SurveyLegalEntityUnit::class);
+    }
+
+    public function rescue_company()
+    {
+        return $this->belongsToThrough(
+            RescueCompany::class,
+            BranchOffice::class,
+            foreignKeyLookup: [
+                BranchOffice::class => 'rescue_company_id',
+            ],
+        );
     }
 
 }

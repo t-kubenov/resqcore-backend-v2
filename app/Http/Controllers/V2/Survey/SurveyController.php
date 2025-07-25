@@ -40,12 +40,16 @@ class SurveyController
     {
         $survey = Survey::findOrFail($id);
 
+        $this->surveyService->authorizeBranchAccess($survey);
+
         return new PrintResource($survey);
     }
 
     public function show(int $id)
     {
         $survey = Survey::findOrFail($id);
+
+        $this->surveyService->authorizeBranchAccess($survey);
 
         return new SurveyResource($survey);
     }

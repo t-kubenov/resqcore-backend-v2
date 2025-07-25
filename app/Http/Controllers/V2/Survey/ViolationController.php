@@ -75,8 +75,6 @@ class ViolationController
     {
         $violation = Violation::findOrFail($id);
 
-        $this->authorize('create', Report::class); // todo: replace with survey, maybe move to middleware
-
         $this->violationService->authorizeBranchAccess($violation->survey);
 
         return new ViolationResource($violation);
