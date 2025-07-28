@@ -1,6 +1,6 @@
 <?php
 
-namespace Database\Factories;
+namespace Database\Factories\V2\Report;
 
 use App\Models\BranchOffice;
 use App\Models\EmergencyType;
@@ -9,7 +9,7 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Report>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\V2\Report\Report>
  */
 class ReportFactory extends Factory
 {

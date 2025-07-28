@@ -1,17 +1,17 @@
 <?php
 
-namespace App\Http\Controllers\V2;
+namespace App\Http\Controllers\V2\Report;
 
-use App\Http\Requests\V2\FilterReportRequest;
-use App\Http\Requests\V2\StoreReportRequest;
+use App\Http\Controllers\V2\Controller;
+use App\Http\Requests\V2\Report\FilterReportRequest;
+use App\Http\Requests\V2\Report\StoreReportRequest;
 use App\Http\Resources\V2\Report\ExportCollection;
 use App\Http\Resources\V2\Report\ReportCollection;
 use App\Http\Resources\V2\Report\ReportResource;
-use App\Http\Services\V2\ReportService;
-use App\Models\Report;
+use App\Http\Services\V2\Report\ReportService;
+use App\Models\V2\Report\Report;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Exceptions\ThrottleRequestsException;
-use Illuminate\Support\Facades\Auth;
 
 
 class ReportController extends Controller

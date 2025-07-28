@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Controllers\V2;
+namespace App\Http\Controllers\V2\Report;
 
 use App\Http\Resources\V2\Update\UpdateLogCollection;
 use App\Http\Services\V2\UpdateLogService;
-use App\Models\Report;
+use App\Models\V2\Report\Report;
 
 class UpdateLogController
 {

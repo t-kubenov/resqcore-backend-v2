@@ -1,18 +1,18 @@
 <?php
 
-namespace App\Http\Services\V2;
+namespace App\Http\Services\V2\Report;
 
 use App\Enums\CustomFieldType;
-use App\Http\Requests\V2\StoreReportRequest;
-use App\Models\Report;
+use App\Http\Requests\V2\Report\StoreReportRequest;
+use App\Http\Services\V2\CustomField\CustomFieldValueService;
 use App\Models\V2\CustomField\CustomFieldValue;
+use App\Models\V2\Report\Report;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Exceptions\ThrottleRequestsException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\RateLimiter;
-use LaravelIdea\Helper\_BaseBuilder;
 
 class ReportService
 {

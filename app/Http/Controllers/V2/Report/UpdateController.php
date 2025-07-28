@@ -1,12 +1,13 @@
 <?php
 
-namespace App\Http\Controllers\V2;
+namespace App\Http\Controllers\V2\Report;
 
-use App\Http\Requests\V2\StoreUpdateRequest;
+use App\Http\Controllers\V2\Controller;
+use App\Http\Requests\V2\Report\StoreUpdateRequest;
 use App\Http\Resources\V2\Update\UpdateResource;
-use App\Http\Services\V2\UpdateService;
-use App\Models\Report;
-use App\Models\Update;
+use App\Http\Services\V2\Report\UpdateService;
+use App\Models\V2\Report\Report;
+use App\Models\V2\Report\Update;
 use Illuminate\Http\Exceptions\ThrottleRequestsException;
 use Illuminate\Support\Facades\Auth;
 

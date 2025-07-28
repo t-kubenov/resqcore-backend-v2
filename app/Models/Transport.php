@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Models\V2\Report\Report;
+use App\Models\V2\Report\Update;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 //use Illuminate\Database\Eloquent\Model;

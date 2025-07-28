@@ -3,11 +3,9 @@
 namespace App\Policies;
 
 use App\Enums\AccessLevel;
-use App\Models\Report;
 use App\Models\User;
-use App\Models\V2\Survey\Survey;
+use App\Models\V2\Report\Report;
 use Illuminate\Auth\Access\Response;
-use Illuminate\Support\Facades\Log;
 
 class ReportPolicy
 {

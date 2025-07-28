@@ -1,9 +1,9 @@
 <?php
 
-namespace Database\Factories;
+namespace Database\Factories\V2\Report;
 
-use App\Models\Report;
-use App\Models\Update;
+use App\Models\V2\Report\Report;
+use App\Models\V2\Report\Update;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -12,7 +12,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 // use App\Models\User;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Update>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\V2\Report\Update>
  */
 class UpdateFactory extends Factory
 {

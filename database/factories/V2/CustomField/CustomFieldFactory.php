@@ -24,7 +24,7 @@ class CustomFieldFactory extends Factory
             'parent_field' => null,
             'name' => $this->faker->word,
             'label' => $this->faker->word,
-            'model' => 'App\Models\Report',
+            'model' => 'App\Models\V2\Report\Report',
             'required' => $this->faker->boolean(20),
             'validation' => $this->faker->word,
             'type' => $this->faker->randomElement(CustomFieldType::values()),

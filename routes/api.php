@@ -6,11 +6,11 @@ use App\Http\Controllers\V2\CompanyController;
 use App\Http\Controllers\V2\CustomFieldController;
 use App\Http\Controllers\V2\EmailController;
 use App\Http\Controllers\V2\ImageController;
-use App\Http\Controllers\V2\ReportController;
+use App\Http\Controllers\V2\Report\ReportController;
+use App\Http\Controllers\V2\Report\UpdateController;
+use App\Http\Controllers\V2\Report\UpdateLogController;
 use App\Http\Controllers\V2\StatisticsController;
 use App\Http\Controllers\V2\Survey\SurveyController;
-use App\Http\Controllers\V2\UpdateController;
-use App\Http\Controllers\V2\UpdateLogController;
 use App\Http\Controllers\V2\Survey\ViolationController;
 use Illuminate\Support\Facades\Route;
 

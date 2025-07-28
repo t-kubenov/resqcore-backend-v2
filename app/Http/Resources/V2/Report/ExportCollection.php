@@ -2,8 +2,8 @@
 
 namespace App\Http\Resources\V2\Report;
 
-use App\Models\Report;
 use App\Enums\CustomFieldParameter;
+use App\Models\V2\Report\Report;
 use Illuminate\Http\Request;
 
 class ExportCollection extends ReportCollection

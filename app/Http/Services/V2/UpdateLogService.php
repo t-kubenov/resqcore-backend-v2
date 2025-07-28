@@ -2,8 +2,8 @@
 
 namespace App\Http\Services\V2;
 
-use App\Models\Report;
-use App\Models\Update;
+use App\Models\V2\Report\Report;
+use App\Models\V2\Report\Update;
 use Illuminate\Database\Eloquent\Collection;
 
 

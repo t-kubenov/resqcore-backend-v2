@@ -1,11 +1,14 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\V2\Report;
 
-use App\Enums\AccessLevel;
 use App\Enums\CustomFieldParameter;
 use App\Enums\CustomFieldType;
-use GuzzleHttp\Psr7\Query;
+use App\Models\BaseOperation;
+use App\Models\BranchOffice;
+use App\Models\Company;
+use App\Models\EmergencyType;
+use App\Models\RescueCompany;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Validation\Rule;

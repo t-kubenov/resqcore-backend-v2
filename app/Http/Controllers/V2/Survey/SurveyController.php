@@ -8,7 +8,7 @@ use App\Http\Resources\V2\Survey\PrintResource;
 use App\Http\Resources\V2\Survey\SurveyCollection;
 use App\Http\Resources\V2\Survey\SurveyResource;
 use App\Http\Services\V2\Survey\SurveyService;
-use App\Models\Report;
+use App\Models\V2\Report\Report;
 use App\Models\V2\Survey\Survey;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Exceptions\ThrottleRequestsException;

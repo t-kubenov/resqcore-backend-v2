@@ -4,19 +4,16 @@ namespace App\Http\Controllers\V2;
 
 use App\Enums\CustomFieldParameter;
 use App\Http\Resources\V2\GenericRelationshipCollection;
-use App\Http\Resources\V2\GenericRelationshipResource;
-use App\Http\Resources\V2\GenericResource;
 use App\Models\BranchOffice;
 use App\Models\Egov\MineralField;
 use App\Models\Egov\OilField;
 use App\Models\Egov\SubsoilContract;
 use App\Models\EmergencyType;
-use App\Models\Model;
-use App\Models\Report;
 use App\Models\TransportType;
-use App\Models\Update;
 use App\Models\User;
 use App\Models\V2\CustomField\CustomFieldOption;
+use App\Models\V2\Report\Report;
+use App\Models\V2\Report\Update;
 use App\Models\V2\Survey\Survey;
 use App\Models\V2\Survey\SurveyLegalEntity;
 use App\Models\V2\Survey\SurveyLegalEntityUnit;
@@ -24,7 +21,6 @@ use App\Models\V2\Survey\Violation;
 use App\Models\V2\Sushi\DepartureType;
 use App\Models\V2\Sushi\ReportFieldCategory;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 
 class AuxiliaryDataController extends Controller

@@ -2,7 +2,7 @@
 
 namespace App\Http\Resources\V2\Update;
 
-use App\Models\Report;
+use App\Models\V2\Report\Report;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 

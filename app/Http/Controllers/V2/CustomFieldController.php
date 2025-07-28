@@ -5,9 +5,8 @@ namespace App\Http\Controllers\V2;
 use App\Enums\CustomFieldParameter;
 use App\Enums\CustomFieldType;
 use App\Http\Requests\V2\CustomField\StoreCustomFieldRequest;
-use App\Models\Update;
 use App\Models\V2\CustomField\CustomField;
-use Illuminate\Http\Client\Request;
+use App\Models\V2\Report\Update;
 
 
 class CustomFieldController

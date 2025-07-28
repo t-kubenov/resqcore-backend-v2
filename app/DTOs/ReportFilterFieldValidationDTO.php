@@ -2,11 +2,6 @@
 
 namespace App\DTOs;
 
-use App\Enums\CustomFieldParameter;
-use App\Enums\CustomFieldType;
-use App\Models\Report;
-use Ramsey\Collection\Collection;
-
 class ReportFilterFieldValidationDTO
 {
     public string $field;

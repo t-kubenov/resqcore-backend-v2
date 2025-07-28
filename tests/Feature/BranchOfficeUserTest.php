@@ -1,9 +1,9 @@
 <?php
 
-use App\Models\Report;
 use App\Models\Transport;
-use App\Models\Update;
 use App\Models\User;
+use App\Models\V2\Report\Report;
+use App\Models\V2\Report\Update;
 use Carbon\Carbon;
 
 

@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Http\Requests\V2;
+namespace App\Http\Requests\V2\Report;
 
 use App\DTOs\ReportFilterFieldValidationDTO;
-use App\Models\Report;
+use App\Models\V2\Report\Report;
 use Illuminate\Foundation\Http\FormRequest;
 
 class FilterReportRequest extends FormRequest

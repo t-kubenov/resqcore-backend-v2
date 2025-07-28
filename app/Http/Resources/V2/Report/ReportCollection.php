@@ -4,8 +4,7 @@ namespace App\Http\Resources\V2\Report;
 
 use App\Http\Resources\V2\GenericRelationshipResource;
 use App\Http\Resources\V2\TransportCollection;
-use App\Models\Report;
-use Arr;
+use App\Models\V2\Report\Report;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 

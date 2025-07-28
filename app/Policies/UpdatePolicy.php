@@ -3,8 +3,8 @@
 namespace App\Policies;
 
 use App\Enums\AccessLevel;
-use App\Models\Report;
 use App\Models\User;
+use App\Models\V2\Report\Report;
 
 class UpdatePolicy
 {

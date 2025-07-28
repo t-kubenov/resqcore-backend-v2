@@ -3,7 +3,9 @@
 namespace App\Models;
 
 use App\Enums\AccessLevel;
+use App\Models\V2\Report\Report;
 use App\Traits\AltersDisplayedDates;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -11,7 +13,6 @@ use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Traits\HasRoles;
 use Znck\Eloquent\Traits\BelongsToThrough;
-use Illuminate\Database\Eloquent\Builder;
 
 
 class User extends Authenticatable

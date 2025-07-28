@@ -5,14 +5,12 @@ namespace Database\Seeders\Main;
 use App\Enums\CustomFieldType;
 use App\Models\BranchOffice;
 use App\Models\EmergencyType;
-use App\Models\Report;
 use App\Models\TransportType;
 use App\Models\User;
 use App\Models\V2\CustomField\CustomField;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\V2\Report\Report;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Hash;
 
 class SemserMergeSeeder extends Seeder
 {

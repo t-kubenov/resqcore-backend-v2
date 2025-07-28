@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Services\V2;
+namespace App\Http\Services\V2\CustomField;
 
 use App\Enums\CustomFieldType;
 use App\Models\BaseOperation;

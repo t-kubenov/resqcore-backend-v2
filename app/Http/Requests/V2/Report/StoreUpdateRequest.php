@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\V2;
+namespace App\Http\Requests\V2\Report;
 
-use App\Models\Report;
+use App\Models\V2\Report\Update;
 
-class StoreReportRequest extends BaseReportStoreRequest
+class StoreUpdateRequest extends BaseReportStoreRequest
 {
     /**
      * Get the validation rules that apply to the request.
@@ -13,6 +13,6 @@ class StoreReportRequest extends BaseReportStoreRequest
      */
     public function rules(): array
     {
-        return $this->getRules(new Report());
+        return $this->getRules(new Update());
     }
 }

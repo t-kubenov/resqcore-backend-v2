@@ -1,7 +1,7 @@
 <?php
 
-use App\Models\Report;
 use App\Models\User;
+use App\Models\V2\Report\Report;
 
 
 beforeEach(function () {
