@@ -19,8 +19,8 @@ class StatisticsController extends Controller
     public function __construct(ReportService $reportService)
     {
         $this->reportService = $reportService;
-        $this->roleId = auth()->user()->role_id ?? null;
-        $this->branchId = auth()->user()->branch_office_id ?? null;
+        $this->roleId = auth()->user()->role_id ?? 0;
+        $this->branchId = auth()->user()->branch_office_id ?? 0;
     }
 
     public function getCountTable(Request $request)

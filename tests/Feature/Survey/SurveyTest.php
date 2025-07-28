@@ -262,8 +262,6 @@ it('forbids showing a survey to a branch office user from another branch', funct
         ])->id,
     ]);
 
-    dump($survey->branch_office_id, $this->users['branch_user']['branch_id'], $this->users['branch_user']['access_level']);
-
     $this->actingAs($this->users['branch_user'])
         ->getJson(route('surveys.show', $survey->id))
         ->assertForbidden();
@@ -271,13 +269,13 @@ it('forbids showing a survey to a branch office user from another branch', funct
 
 
 it('forbids showing a survey to a central office user from another company', function () {
-    $central_id = $this->users['central_user']['branch_id'];
-    $branch_id = getDifferentCompanyBranchOfficeId($central_id);
+    $company_id = $this->users['central_user']['rescue_company_id'];
+    $branch_id = getDifferentCompanyBranchOfficeId($company_id);
 
     $survey = Survey::factory()->create([
         'branch_office_id' => $branch_id,
     ]);
-        // todo: this is a critical ahh bug, fix it
+
     $this->actingAs($this->users['central_user'])
         ->getJson(route('surveys.show', $survey->id))
         ->assertForbidden();
