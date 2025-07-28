@@ -20,7 +20,7 @@ class StatisticsController extends Controller
     {
         $this->reportService = $reportService;
         $this->roleId = auth()->user()->role_id ?? 0;
-        $this->branchId = auth()->user()->branch_office_id ?? 0;
+        $this->branchId = auth()->user()->branch_id ?? 0;
     }
 
     public function getCountTable(Request $request)
