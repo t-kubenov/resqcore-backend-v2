@@ -35,13 +35,9 @@ class ReportController extends Controller
 
     public function show(int $id)
     {
-        $report = Report::find($id);
+        $report = Report::findOrFail($id);
 
-        if (!$report) {
-            return response()->json(['message' => __('reports.show.not-found')], 404);
-        }
-
-        $this->authorize('show', $report);
+        $this->authorize('view', $report);
 
         $report = $this->reportService->show($report);
 

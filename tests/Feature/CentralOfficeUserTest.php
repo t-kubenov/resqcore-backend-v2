@@ -2,6 +2,8 @@
 
 use App\Models\User;
 use App\Models\V2\Report\Report;
+use App\Models\V2\Report\Update;
+use function Tests\Helpers\generateReport;
 
 
 beforeEach(function () {
@@ -64,17 +66,27 @@ test('can access count table endpoint', function () {
 
 
 test('cannot create reports', function () {
+    $report = generateReport($this->user);
+
     $this->actingAs($this->user)
-        ->post(route('reports.store'), [])
-        ->assertStatus(403);
+        ->post(route('reports.store'), [
+            'data' => [
+                'attributes' => $report
+            ]
+        ])->assertStatus(403);
 });
 
 
 test('cannot create updates', function () {
     $report = Report::where('is_closed', false)->inRandomOrder()->first();
+    $update = Update::factory()->make()->toArray();
 
     $this->actingAs($this->user)
-        ->post(route('updates.store', $report->id), [])
+        ->post(route('reports.updates.store', $report->id),  [
+            'data' => [
+                'attributes' => $update
+            ]
+        ])
         ->assertStatus(403);
 });
 

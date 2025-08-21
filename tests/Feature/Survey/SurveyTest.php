@@ -1,19 +1,16 @@
 <?php
 
 use App\Models\BranchOffice;
-use App\Models\User;
 use App\Models\V2\Survey\Survey;
-use App\Models\V2\Survey\SurveyFacilitySpokesman;
 use App\Models\V2\Survey\SurveyLegalEntity;
 use App\Models\V2\Survey\SurveyLegalEntityUnit;
-use App\Models\V2\Survey\SurveySender;
 use function Tests\Helpers\{getRandomCentralAndBranchUsers, getRandomBranchIdFromCentralOffice};
 
 
 function generateSurvey($user): array
 {
-    $legalEntity = SurveyLegalEntity::where('branch_office_id', $user->branch_id)->inRandomOrder()->first();
-    $legalEntityUnit = SurveyLegalEntityUnit::where('legal_entity_id', $legalEntity?->id)->inRandomOrder()->first();
+    $legalEntity = SurveyLegalEntity::factory()->create(['branch_office_id' => $user->branch_id]);
+    $legalEntityUnit = SurveyLegalEntityUnit::factory()->create(['legal_entity_id' => $legalEntity->id]);
 
     return [
         'data' => [
@@ -158,8 +155,8 @@ it('shows a specific survey for a branch office user', function()
 
     $this->actingAs($this->users['branch_user'])
         ->getJson(route('surveys.show', $survey['id']))
-        ->assertJsonStructure($this->showStructure)
-        ->assertOk();
+        ->assertOk()
+        ->assertJsonStructure($this->showStructure);
 });
 
 
@@ -174,8 +171,8 @@ it('shows a specific survey for a central office user', function()
 
     $this->actingAs($this->users['central_user'])
         ->getJson(route('surveys.show', $survey['id']))
-        ->assertJsonStructure($this->showStructure)
-        ->assertOk();
+        ->assertOk()
+        ->assertJsonStructure($this->showStructure);
 });
 
 
@@ -280,11 +277,3 @@ it('forbids showing a survey to a central office user from another company', fun
         ->getJson(route('surveys.show', $survey->id))
         ->assertForbidden();
 });
-
-
-
-// showing index and show for different branch office and company users
-// printing and exporting for same cases,
-// aaand we're good to go
-
-

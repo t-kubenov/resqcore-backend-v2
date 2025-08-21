@@ -8,7 +8,7 @@ beforeEach(function () {
     $this->token = $this->user->createToken('test-token')->plainTextToken;
 
     $this->login_route = route('login');
-    $this->register_route = route('register');
+    $this->register_route = route('admin.register');
     $this->logout_route = route('logout');
 });
 

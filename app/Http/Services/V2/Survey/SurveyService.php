@@ -24,7 +24,7 @@ class SurveyService extends BaseService
         $data = $request->all();
         $query = $this->filterBranchOffice($query);
 
-        if (isset($data['branch_office_id']) && auth()->user()->can('departure_view')) {
+        if (isset($data['branch_office_id']) && auth()->user()->can('view surveys')) {
             $query->whereIn('branch_office_id', $data['branch_office_id']);
             unset($data['branch_office_id']);
         }
@@ -93,7 +93,7 @@ class SurveyService extends BaseService
         return $query;
     }
 
-    private function filterDates(Builder $query, string $field, string $dates): void // todo: duplicate with ReportService, should be moved to BaseService
+private function filterDates(Builder $query, string $field, string $dates): void // todo: duplicate with ReportService, should be moved to BaseService
     {
         [$startDate, $endDate] = explode('|', $dates);
 

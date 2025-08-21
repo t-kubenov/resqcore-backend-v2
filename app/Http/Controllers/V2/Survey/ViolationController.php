@@ -32,9 +32,7 @@ class ViolationController
     {
         $survey = Survey::findOrFail($id);
 
-        $this->authorize('create', Report::class); // todo: replace with survey, maybe move to middleware
-
-        $this->violationService->authorizeBranchAccess($survey);
+        $this->authorize('create', Survey::class); // todo: replace with survey, maybe move to middleware
 
         return new ViolationResource($this->violationService->store($request, $survey));
     }
@@ -43,9 +41,7 @@ class ViolationController
     {
         $violation = Violation::findOrFail($id);
 
-        $this->authorize('create', Report::class); // todo: replace with survey, maybe move to middleware
-
-        $this->violationService->authorizeBranchAccess($violation->survey);
+        $this->authorize('create', Survey::class); // todo: replace with survey, maybe move to middleware
 
         if ($violation->elimination_completion) {
             return response()->json(['message' => __('validation.survey.violations.close.already_closed')], 422);
@@ -58,7 +54,7 @@ class ViolationController
     {
         $survey = Survey::findOrFail($surveyId);
 
-        $this->violationService->authorizeBranchAccess($survey);
+        $this->authorize('view', $survey);
 
         $violations = Violation::query()
             ->where('survey_id', $surveyId)
@@ -73,7 +69,7 @@ class ViolationController
     {
         $violation = Violation::findOrFail($id);
 
-        $this->violationService->authorizeBranchAccess($violation->survey);
+        $this->authorize('view', $violation->survey);
 
         return new ViolationResource($violation);
     }

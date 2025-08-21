@@ -4,6 +4,7 @@ use App\Enums\CustomFieldType;
 use App\Models\RescueCompany;
 use App\Models\User;
 use App\Models\V2\CustomField\CustomField;
+use App\Models\V2\Report\Report;
 
 
 beforeEach(function () {
@@ -25,7 +26,7 @@ test('custom field create', function () {
             'rescue_company_id' => $this->rescueCompany->id,
             'name' => $name,
             'label' => 'Custom Field Example',
-            'model' => 'App\Models\V2\Report\Report',
+            'model' => Report::class,
             'required' => true,
             'type' => CustomFieldType::String->value,
         ]);
@@ -36,7 +37,7 @@ test('custom field create', function () {
         'rescue_company_id' => $this->rescueCompany->id,
         'name' => $name,
         'label' => 'Custom Field Example',
-        'model' => 'App\Models\V2\Report\Report',
+        'model' => Report::class,
         'required' => true,
         'type' => CustomFieldType::String->value,
     ]);
@@ -78,7 +79,7 @@ it('requires options for single and multiple choice enums', function () {
         ->postJson($this->url, [
             'rescue_company_id' => $this->rescueCompany->id,
             'name' => 'custom_field_example',
-            'model' => 'App\Models\V2\Report\Report',
+            'model' => Report::class,
             'required' => true,
             'type' => CustomFieldType::SingleChoiceEnum->value,
         ])
@@ -105,7 +106,7 @@ it('stores custom field options when enum type is created', function()
         ->postJson($this->url, [
             'rescue_company_id' => $this->rescueCompany->id,
             'name' => fake()->word(),
-            'model' => 'App\Models\V2\Report\Report',
+            'model' => Report::class,
             'required' => false,
             'type' => CustomFieldType::SingleChoiceEnum->value,
             'options' => $options
@@ -125,7 +126,7 @@ it('fails when MultiValue fields contain subfields of type MultiValue', function
         ->postJson($this->url, [
         'rescue_company_id' => $this->rescueCompany->id,
         'name' => 'multi_value_field',
-        'model' => 'App\Models\V2\Report\Report',
+        'model' => Report::class,
         'required' => true,
         'type' => CustomFieldType::MultiValue->value,
         'subfields' => [

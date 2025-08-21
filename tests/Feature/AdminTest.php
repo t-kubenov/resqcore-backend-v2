@@ -10,7 +10,7 @@ beforeEach(function () {
 test('test_admin_can_create_users', function(){
 
     $response = $this->actingAs($this->admin)
-        ->postJson(route('register'), [
+        ->postJson(route('admin.register'), [
             'first_name' => fake()->firstName(),
             'last_name' => fake()->lastName(),
             'email' => fake()->email(),

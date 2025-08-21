@@ -3,7 +3,30 @@
 namespace Tests\Helpers;
 
 use App\Models\BranchOffice;
+use App\Models\V2\Report\Report;
 use App\Models\User;
+use Carbon\Carbon;
+
+
+function generateReport(User $user): array
+{
+    $report = Report::factory()->make()->toArray();
+    $report['call_date'] = Carbon::parse($report['call_date'])->format('Y-m-d H:i:s');
+    $report['work_start_date'] = Carbon::parse($report['work_start_date'])->format('Y-m-d H:i:s');
+    $report['emergency_type'] = generateEmergencyType($user);
+
+    unset($report['reported_by']);
+    unset($report['report_code']);
+
+    return array_merge($report, [
+        'transport' => [
+            [
+                'id' => generateTransportType($user),
+                'count' => fake()->numberBetween(1, 10),
+            ]
+        ]
+    ]);
+}
 
 
 function getRandomCentralAndBranchUsers(): array

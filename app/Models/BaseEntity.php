@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Enums\AccessLevel;
 use App\Enums\CustomFieldParameter;
 
 
@@ -32,7 +31,7 @@ abstract class BaseEntity extends Model
     {
         return array_filter(static::fieldDefinitions(), function ($field) {
 
-            $needle = auth()->user()->access_level === AccessLevel::BRANCH?
+            $needle = auth()->user()->isBranchOffice()?
                 CustomFieldParameter::IsFilterable: CustomFieldParameter::IsFilterableForCA;
 
             return in_array($needle, $field['parameters'] ?? []);

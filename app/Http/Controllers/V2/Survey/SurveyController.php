@@ -10,6 +10,7 @@ use App\Http\Resources\V2\Survey\SurveyResource;
 use App\Http\Services\V2\Survey\SurveyService;
 use App\Models\V2\Report\Report;
 use App\Models\V2\Survey\Survey;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Exceptions\ThrottleRequestsException;
 use Illuminate\Http\JsonResponse;
@@ -36,20 +37,26 @@ class SurveyController
         return new SurveyCollection($this->surveyService->index($request));
     }
 
+    /**
+     * @throws AuthorizationException
+     */
     public function print(int $id)
     {
         $survey = Survey::findOrFail($id);
 
-        $this->surveyService->authorizeBranchAccess($survey);
+        $this->authorize('view', $survey);
 
         return new PrintResource($survey);
     }
 
+    /**
+     * @throws AuthorizationException
+     */
     public function show(int $id)
     {
         $survey = Survey::findOrFail($id);
 
-        $this->surveyService->authorizeBranchAccess($survey);
+        $this->authorize('view', $survey);
 
         return new SurveyResource($survey);
     }
@@ -65,17 +72,5 @@ class SurveyController
         }
 
         return new SurveyResource($survey);
-    }
-
-    public function update(Request $request, $id)
-    {
-        // Your logic to handle the request and return a response
-        return response()->json(['message' => 'Survey update', 'id' => $id]);
-    }
-
-    public function destroy($id)
-    {
-        // Your logic to handle the request and return a response
-        return response()->json(['message' => 'Survey destroy', 'id' => $id]);
     }
 }

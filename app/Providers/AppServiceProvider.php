@@ -2,6 +2,9 @@
 
 namespace App\Providers;
 
+use App\Models\V2\Report\Report;
+use App\Models\V2\Survey\Survey;
+use App\Policies\ReportPolicy;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\RateLimiter;

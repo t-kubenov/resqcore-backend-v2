@@ -2,11 +2,12 @@
 
 namespace App\Models;
 
-use App\Enums\AccessLevel;
+use App\Enums\RoleEnum;
 use App\Models\V2\Report\Report;
 use App\Traits\AltersDisplayedDates;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
@@ -66,36 +67,9 @@ class User extends Authenticatable
         return $this->belongsTo(BranchOffice::class, 'branch_id');
     }
 
-    public function company()
+    public function rescue_company(): HasOneThrough
     {
-        return $this->belongsTo(Company::class);
-    }
-
-    public function rescue_company(): \Znck\Eloquent\Relations\BelongsToThrough
-    {
-        return $this->belongsToThrough(
-            RescueCompany::class,
-            BranchOffice::class,
-            foreignKeyLookup: [
-                BranchOffice::class => 'rescue_company_id',
-            ],
-            localKeyLookup: [
-                User::class => 'branch_id',
-            ],
-        );
-    }
-
-    public function scopeWithFullName(Builder $query): Builder
-    {
-        return $query->select([
-            'id',
-            \DB::raw("CONCAT(last_name, ' ', first_name, ' ', patronymic) as name")
-        ]);
-    }
-
-    public function getRescueCompanyIdAttribute(): int
-    {
-        return $this->branch_office->rescue_company_id;
+        return $this->hasOneThrough(RescueCompany::class, BranchOffice::class, localKey: 'branch_id');
     }
 
     public function reports()
@@ -108,21 +82,36 @@ class User extends Authenticatable
         return $this->belongsTo(Role::class);
     }
 
+    public function getRescueCompanyIdAttribute(): int
+    {
+        return $this->branch_office->rescue_company_id;
+    }
+
     public function getFullNameAttribute(): string
     {
         return $this->first_name . ' ' . $this->last_name;
     }
 
-    public function getAccessLevelAttribute(): AccessLevel
+    public function isAdmin(): bool
     {
-        if ($this->role->name === 'admin') {
-            return AccessLevel::APP;
-        }
+        return $this->role->name === RoleEnum::Admin->value;
+    }
 
-        if ($this->branch_office?->is_central_office) {
-            return AccessLevel::COMPANY;
-        }
+    public function isCentralOffice(): bool
+    {
+        return $this->role->name === RoleEnum::CentralOfficeUser->value;
+    }
 
-        return AccessLevel::BRANCH;
+    public function isBranchOffice(): bool
+    {
+        return $this->role->name === RoleEnum::BranchOfficeUser->value;
+    }
+
+    public function scopeWithFullName(Builder $query): Builder
+    {
+        return $query->select([
+            'id',
+            \DB::raw("CONCAT(last_name, ' ', first_name, ' ', patronymic) as name")
+        ]);
     }
 }

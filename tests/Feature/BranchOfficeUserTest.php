@@ -5,27 +5,8 @@ use App\Models\User;
 use App\Models\V2\Report\Report;
 use App\Models\V2\Report\Update;
 use Carbon\Carbon;
+use function Tests\Helpers\{generateReport};
 
-
-function generateReport(User $user): array
-{
-    $report = Report::factory()->make()->toArray();
-    $report['call_date'] = Carbon::parse($report['call_date'])->format('Y-m-d H:i:s');
-    $report['work_start_date'] = Carbon::parse($report['work_start_date'])->format('Y-m-d H:i:s');
-    $report['emergency_type'] = generateEmergencyType($user);
-
-    unset($report['reported_by']);
-    unset($report['report_code']);
-
-    return array_merge($report, [
-        'transport' => [
-            [
-                'id' => generateTransportType($user),
-                'count' => fake()->numberBetween(1, 10),
-            ]
-        ]
-    ]);
-}
 
 function sendReportCreationRequest(P\Tests\Feature\BranchOfficeUserTest $test_object, array $report):
 \Illuminate\Testing\TestResponse
@@ -206,7 +187,7 @@ test('can create updates', function () {
     $update = Update::factory()->make()->toArray();
 
     $this->actingAs($this->user)
-        ->postJson(route('updates.store', $report->id), [
+        ->postJson(route('reports.updates.store', $report->id), [
             "data" => [
                 "type" => "update",
                 "attributes" => $update,
@@ -245,7 +226,7 @@ test('report closing updates', function (){
     $update['close_date'] = $report['work_start_date']->addDays(1)->format('Y-m-d H:i:s');
 
     $this->actingAs($this->user)
-        ->postJson(route('updates.store', $report->id), [
+        ->postJson(route('reports.updates.store', $report->id), [
             "data" => [
                 "type" => "update",
                 "attributes" => $update,
@@ -289,7 +270,7 @@ test('report closing updates', function (){
 //    ]);
 //
 //    $this->actingAs($this->user)
-//        ->postJson(route('updates.store', $report->id), [
+//        ->postJson(route('reports.updates.store', $report->id), [
 //            "data" => [
 //                "type" => "update",
 //                "attributes" => $update,
@@ -298,7 +279,7 @@ test('report closing updates', function (){
 //        ->assertStatus(201);
 //
 //    $this->actingAs($this->user)
-//        ->postJson(route('updates.store', $report->id), [
+//        ->postJson(route('reports.updates.store', $report->id), [
 //            "data" => [
 //                "type" => "update",
 //                "attributes" => $update,
@@ -317,7 +298,7 @@ test('report update sums', function(){
     $update = Update::factory()->make()->toArray();
 
     $this->actingAs($this->user)
-        ->postJson(route('updates.store', $report->id), [
+        ->postJson(route('reports.updates.store', $report->id), [
             "data" => [
                 "type" => "update",
                 "attributes" => $update,
@@ -340,15 +321,15 @@ test('report update sums', function(){
 
 
 test('cannot create updates for closed reports', function () {
-    $report = Report::where([
+    $report = Report::factory()->create([
         'branch_office_id' => $this->user->branch_id,
         'is_closed' => true,
-    ])->inRandomOrder()->first();
+    ]);
 
     $update = Update::factory()->make()->toArray();
 
     $this->actingAs($this->user)
-        ->postJson(route('updates.store', $report->id), [
+        ->postJson(route('reports.updates.store', $report->id), [
                 "data" => [
                     "type" => "update",
                     "attributes" => $update,
@@ -368,7 +349,7 @@ test('cannot create updates for reports from other branches', function () {
     $update = Update::factory()->make()->toArray();
 
     $this->actingAs($this->user)
-        ->postJson(route('updates.store', $report->id), [
+        ->postJson(route('reports.updates.store', $report->id), [
                 "data" => [
                     "type" => "update",
                     "attributes" => $update,
@@ -491,7 +472,7 @@ test("cannot use another company's emergency type in report", function () {
 //    ]);
 //
 //    $this->actingAs($this->user)
-//        ->postJson(route('updates.store', $report->id), [
+//        ->postJson(route('reports.updates.store', $report->id), [
 //            "data" => [
 //                "type" => "update",
 //                "attributes" => $update,

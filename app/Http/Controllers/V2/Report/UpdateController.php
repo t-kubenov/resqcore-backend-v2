@@ -8,11 +8,14 @@ use App\Http\Resources\V2\Update\UpdateResource;
 use App\Http\Services\V2\Report\UpdateService;
 use App\Models\V2\Report\Report;
 use App\Models\V2\Report\Update;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Exceptions\ThrottleRequestsException;
 use Illuminate\Support\Facades\Auth;
 
 class UpdateController extends Controller
 {
+    use AuthorizesRequests;
+
     protected $updateService;
 
     public function __construct(UpdateService $updateService)
@@ -20,21 +23,14 @@ class UpdateController extends Controller
         $this->updateService = $updateService;
     }
 
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
-    }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(StoreUpdateRequest $request)
     {
         $user = Auth::user();
         $report = Report::find($request->id);
+
+        $this->authorize('create', $report);
+
 
         if (!$report) {
             return response()->json(['message' => __('reports.show.not-found')], 404);
@@ -62,29 +58,5 @@ class UpdateController extends Controller
         }
 
         return new UpdateResource($update);
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(Update $Update)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-//    public function update(UpdateUpdateRequest $request, Update $Update)
-//    {
-//        //
-//    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Update $Update)
-    {
-        //
     }
 }
