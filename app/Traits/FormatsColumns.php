@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Models;
+namespace App\Traits;
 
 use App\Enums\CustomFieldParameter;
 
 
-abstract class BaseEntity extends Model
+trait FormatsColumns
 {
     /**
      * Get field definitions.

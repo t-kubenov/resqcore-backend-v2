@@ -63,7 +63,7 @@ class SurveyController
 
     public function store(StoreSurveyRequest $request): SurveyResource|JsonResponse
     {
-        $this->authorize('create', Report::class); // todo: replace with survey, maybe move to middleware
+        $this->authorize('create', Survey::class);
 
         try {
             $survey = $this->surveyService->store($request);

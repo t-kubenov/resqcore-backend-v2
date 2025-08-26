@@ -8,6 +8,6 @@ class CustomFieldPolicy
 {
     public function create(User $user): bool
     {
-        return $user->access_level === 'APP';
+        return $user->isAdmin();
     }
 }

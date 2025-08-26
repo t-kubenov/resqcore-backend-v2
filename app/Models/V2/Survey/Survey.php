@@ -4,23 +4,23 @@ namespace App\Models\V2\Survey;
 
 use App\Enums\CustomFieldParameter;
 use App\Enums\CustomFieldType;
-use App\Models\BaseEntity;
 use App\Models\BranchOffice;
+use App\Models\Model;
 use App\Models\RescueCompany;
 use App\Models\User;
 use App\Observers\Survey\SurveyObserver;
+use App\Traits\FormatsColumns;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Znck\Eloquent\Traits\BelongsToThrough;
-
+use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 
 #[ObservedBy(SurveyObserver::class)]
-class Survey extends BaseEntity
+class Survey extends Model
 {
-    use HasFactory, BelongsToThrough;
+    use HasFactory, FormatsColumns;
 
     protected $fillable = [
         'branch_office_id',
@@ -258,15 +258,9 @@ class Survey extends BaseEntity
         return $this->belongsTo(SurveyLegalEntityUnit::class);
     }
 
-    public function rescue_company()
+    public function rescue_company(): HasOneThrough
     {
-        return $this->belongsToThrough(
-            RescueCompany::class,
-            BranchOffice::class,
-            foreignKeyLookup: [
-                BranchOffice::class => 'rescue_company_id',
-            ],
-        );
+        return $this->hasOneThrough(RescueCompany::class, BranchOffice::class, localKey: 'branch_id');
     }
 
 }

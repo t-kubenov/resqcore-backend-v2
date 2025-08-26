@@ -3,13 +3,13 @@
 namespace App\Http\Services\V2\Survey;
 
 use App\Http\Requests\V2\Survey\StoreSurveyRequest;
-use App\Http\Services\V2\BaseService;
+use App\Http\Services\V2\GeneralService;
 use App\Models\V2\Survey\Survey;
 use App\Models\V2\Survey\SurveyLegalEntityUnit;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 
-class SurveyService extends BaseService
+class SurveyService extends GeneralService
 {
     public function index(Request $request)
     {
@@ -24,7 +24,7 @@ class SurveyService extends BaseService
         $data = $request->all();
         $query = $this->filterBranchOffice($query);
 
-        if (isset($data['branch_office_id']) && auth()->user()->can('view surveys')) {
+        if (isset($data['branch_office_id']) && auth()->user()->isCentralOffice()) {
             $query->whereIn('branch_office_id', $data['branch_office_id']);
             unset($data['branch_office_id']);
         }
@@ -91,19 +91,6 @@ class SurveyService extends BaseService
         }
 
         return $query;
-    }
-
-private function filterDates(Builder $query, string $field, string $dates): void // todo: duplicate with ReportService, should be moved to BaseService
-    {
-        [$startDate, $endDate] = explode('|', $dates);
-
-        if ($startDate) {
-            $query->whereDate($field, '>=', $startDate);
-        }
-
-        if ($endDate) {
-            $query->whereDate($field, '<=', $endDate);
-        }
     }
 
     public function store(StoreSurveyRequest $request): Survey

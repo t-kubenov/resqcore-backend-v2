@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\BranchOffice;
 use App\Models\Transport;
 use App\Models\User;
 use App\Models\V2\Report\Report;
@@ -290,10 +291,10 @@ test('report closing updates', function (){
 
 
 test('report update sums', function(){
-    $report = Report::where([
+    $report = Report::factory()->create([
         'branch_office_id' => $this->user->branch_id,
         'is_closed' => false,
-    ])->inRandomOrder()->first();
+    ]);
 
     $update = Update::factory()->make()->toArray();
 
@@ -340,11 +341,14 @@ test('cannot create updates for closed reports', function () {
 
 
 test('cannot create updates for reports from other branches', function () {
-    $report = Report::where([
-            ['branch_office_id', '!=', $this->user->branch_id],
-            ['is_closed', '=', false],
-        ])
-        ->inRandomOrder()->first();
+    $other_branch = BranchOffice::factory()->create([
+        'rescue_company_id' => $this->user->rescue_company_id
+    ]);
+
+    $report = Report::factory()->create([
+        'branch_office_id' => $other_branch->id,
+        'is_closed' => false,
+    ]);
 
     $update = Update::factory()->make()->toArray();
 

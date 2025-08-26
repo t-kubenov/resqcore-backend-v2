@@ -5,9 +5,10 @@ namespace App\Http\Services\V2;
 use Illuminate\Http\Exceptions\ThrottleRequestsException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\RateLimiter;
+use Illuminate\Database\Eloquent\Builder;
 
 
-abstract class BaseService
+abstract class GeneralService
 {
     public function throttle(Request $request): void // maybe: move to middleware
     {
@@ -22,5 +23,18 @@ abstract class BaseService
         }
 
         RateLimiter::hit($key, 60);
+    }
+
+    public function filterDates(Builder $query, string $field, string $dates): void
+    {
+        [$startDate, $endDate] = explode('|', $dates);
+
+        if ($startDate) {
+            $query->whereDate($field, '>=', $startDate);
+        }
+
+        if ($endDate) {
+            $query->whereDate($field, '<=', $endDate);
+        }
     }
 }

@@ -4,17 +4,16 @@ namespace App\Http\Services\V2\Report;
 
 use App\Enums\CustomFieldType;
 use App\Http\Requests\V2\Report\StoreReportRequest;
+use App\Http\Services\V2\GeneralService;
 use App\Http\Services\V2\CustomField\CustomFieldValueService;
 use App\Models\V2\CustomField\CustomFieldValue;
 use App\Models\V2\Report\Report;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Exceptions\ThrottleRequestsException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\RateLimiter;
 
-class ReportService
+class ReportService extends GeneralService
 {
     public function index(Request $request)
     {
@@ -52,17 +51,17 @@ class ReportService
         $attributes = $request['data']['attributes'];
 
         $attributes['reported_by'] = $user->id;
-        $attributes['branch_office_id'] = $user->branch_id ?? $attributes['branch_office_id']; //todo: move this to separate function
-        $attributes['report_code'] = $this->generateReportCode($attributes['branch_office_id']);
+        $attributes['branch_office_id'] = $user->branch_id ?? $attributes['branch_office_id'];
+        $attributes['report_code'] = Report::generateReportCode($attributes['branch_office_id']);
 
         $report = Report::create($attributes);
 
         CustomFieldValueService::store($user->rescue_company_id, $report, $attributes);
-        $this->checkReportForClosing($report);
-        $this->calculateTotals($report);
+        $report->close();
+        $report->calculateTotals($report);
 
         if (isset($attributes['transport'])) {
-            $this->parseTransport($report, $attributes['transport']);
+            $report->parseTransport($attributes['transport']);
             $report->load('transport');
         }
 
@@ -93,7 +92,7 @@ class ReportService
             unset($data['emergency_type']);
         }
 
-        if (isset($data['branch_office']) && auth()->user()->can('departure_view')) {
+        if (isset($data['branch_office']) && auth()->user()->isCentralOffice()) {
             $query->whereIn('branch_office_id', $data['branch_office']);
             unset($data['branch_office']);
         }
@@ -162,7 +161,7 @@ class ReportService
     {
         $user = Auth::user();
 
-        if ($user->access_level === 'app') {
+        if ($user->isAdmin()) {
             return $query;
         }
 
@@ -175,66 +174,10 @@ class ReportService
     {
         $user = Auth::user();
 
-        if ($user->hasRole('branch_office_user')) {
+        if ($user->isBranchOffice()) {
             $query->where('branch_office_id', $user->branch_id);
         }
         return $query;
-    }
-
-    private function generateReportCode($branchOfficeId) // to mutator
-    {
-        $reportCount = Report::where('branch_office_id', $branchOfficeId)->count() + 1;
-        return $branchOfficeId . '-' . $reportCount;
-    }
-
-    private function parseTransport(Report $report, array $transport)
-    {
-        try {
-            foreach ($transport as $vehicle) {
-                $report->transport()->create([
-                    'type' => $vehicle['id'],
-                    'count' => $vehicle['count'],
-                ]);
-            }
-        } catch (\Exception $e) {
-            Log::error($e->getMessage());
-        }
-    }
-
-    private function calculateTotals($report) // to mutator
-    {
-        $report->minor_injury_total = $report->minor_injury_count;
-        $report->severe_injury_total = $report->severe_injury_count;
-        $report->fatal_injury_total = $report->fatal_injury_count;
-        $report->evacuated_people_total = $report->evacuated_people_count;
-        $report->provided_medical_total = $report->provided_medical_count;
-        $report->client_equipment_total = $report->client_equipment_count;
-        $report->third_parties_total = $report->third_parties_count;
-        $report->branch_worker_total = $report->branch_worker_count;
-
-        $report->save();
-    }
-
-    private function filterDates(Builder $query, string $field, string $dates): void
-    {
-        [$startDate, $endDate] = explode('|', $dates);
-
-        if ($startDate) {
-            $query->whereDate($field, '>=', $startDate);
-        }
-
-        if ($endDate) {
-            $query->whereDate($field, '<=', $endDate);
-        }
-    }
-
-    private function checkReportForClosing($report)
-    {
-        if ($report->close_date
-            && $report->worker_man_hours > 0) {
-            $report->is_closed = true;
-            $report->save();
-        }
     }
 
     public function storeAndThrottleRequest(StoreReportRequest $request): Report

@@ -1,17 +1,21 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\V2\Report;
 
 use App\Enums\CustomFieldParameter;
 use App\Enums\CustomFieldType;
+use App\Models\Model;
+use App\Models\Transport;
+use App\Models\User;
 use App\Models\V2\CustomField\CustomField;
 use App\Models\V2\CustomField\CustomFieldValue;
 use App\Traits\AltersDisplayedDates;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\Rule;
 
 
-abstract class BaseOperation extends BaseEntity
+abstract class ReportBase extends Model
 {
     use AltersDisplayedDates;
 
@@ -38,7 +42,6 @@ abstract class BaseOperation extends BaseEntity
             'close_date' => 'datetime',
         ];
     }
-
 
     public static function fieldDefinitions(): array
     {
@@ -251,7 +254,6 @@ abstract class BaseOperation extends BaseEntity
         ]);
     }
 
-
     public function reporter()
     {
         return $this->belongsTo(User::class, 'reported_by');
@@ -289,5 +291,19 @@ abstract class BaseOperation extends BaseEntity
                 $query->whereJsonContains('parameters', CustomFieldParameter::IncludeToUpdates);
         })
             ->get();
+    }
+
+    public function parseTransport(array $transport): void
+    {
+        try {
+            foreach ($transport as $vehicle) {
+                $this->transport()->create([
+                    'type' => $vehicle['id'],
+                    'count' => $vehicle['count'],
+                ]);
+            }
+        } catch (\Exception $e) {
+            Log::error($e->getMessage());
+        }
     }
 }

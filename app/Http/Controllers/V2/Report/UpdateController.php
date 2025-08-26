@@ -16,32 +16,21 @@ class UpdateController extends Controller
 {
     use AuthorizesRequests;
 
-    protected $updateService;
+    protected UpdateService $updateService;
 
     public function __construct(UpdateService $updateService)
     {
         $this->updateService = $updateService;
     }
 
-
     public function store(StoreUpdateRequest $request)
     {
-        $user = Auth::user();
-        $report = Report::find($request->id);
+        $report = Report::findOrFail($request->id);
 
-        $this->authorize('create', $report);
-
-
-        if (!$report) {
-            return response()->json(['message' => __('reports.show.not-found')], 404);
-        }
+        $this->authorize('create', [Update::class, $report]);
 
         if ($report->is_closed) {
             return response()->json(['message' => __('reports.update.closed')], 400);
-        }
-
-        if (!($user->branch_id == $report->branch_office_id || $user->hasRole('admin'))) {
-            return response()->json(['message' => __('reports.update.not-allowed')], 403);
         }
 
         if (isset($request['data']['attributes']['close_date']) &&
@@ -50,6 +39,7 @@ class UpdateController extends Controller
         }
 
         $attributes = $request['data']['attributes'];
+
         try {
             $update = $this->updateService->updateRequest($request, $report, $attributes);
         }

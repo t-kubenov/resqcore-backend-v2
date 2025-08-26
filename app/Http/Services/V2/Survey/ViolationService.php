@@ -4,11 +4,11 @@ namespace App\Http\Services\V2\Survey;
 
 use App\Http\Requests\V2\Survey\CloseViolationRequest;
 use App\Http\Requests\V2\Survey\StoreViolationRequest;
-use App\Http\Services\V2\BaseService;
+use App\Http\Services\V2\GeneralService;
 use App\Models\V2\Survey\Survey;
 use App\Models\V2\Survey\Violation;
 
-class ViolationService extends BaseService
+class ViolationService extends GeneralService
 {
     public function store(StoreViolationRequest $request, Survey $survey): Violation
     {

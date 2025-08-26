@@ -13,13 +13,11 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Traits\HasRoles;
-use Znck\Eloquent\Traits\BelongsToThrough;
 
 
 class User extends Authenticatable
 {
-    use HasFactory, Notifiable, HasApiTokens, HasRoles, AltersDisplayedDates,
-        BelongsToThrough;
+    use HasFactory, Notifiable, HasApiTokens, HasRoles, AltersDisplayedDates;
 
     /**
      * The attributes that are mass assignable.

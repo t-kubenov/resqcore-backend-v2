@@ -18,29 +18,22 @@ beforeEach(function () {
 
 test('custom field create', function () {
 
-    $name = fake()->word();
-
-    $response = $this
-        ->actingAs($this->user)
-        ->postJson($this->url, [
-            'rescue_company_id' => $this->rescueCompany->id,
-            'name' => $name,
-            'label' => 'Custom Field Example',
-            'model' => Report::class,
-            'required' => true,
-            'type' => CustomFieldType::String->value,
-        ]);
-
-    $response->assertStatus(201); // Should pass and create the field
-
-    $this->assertDatabaseHas('custom_fields', [
+    $customField = [
         'rescue_company_id' => $this->rescueCompany->id,
-        'name' => $name,
+        'name' => fake()->word(),
         'label' => 'Custom Field Example',
         'model' => Report::class,
         'required' => true,
         'type' => CustomFieldType::String->value,
-    ]);
+    ];
+
+    $response = $this
+        ->actingAs($this->user)
+        ->postJson($this->url, $customField)
+        ->assertStatus(201);
+
+    $this
+        ->assertDatabaseHas('custom_fields', $customField);
 
 
 

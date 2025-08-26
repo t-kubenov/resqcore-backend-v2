@@ -27,6 +27,6 @@ class GeneralPolicy
 
     public function create(User $user): bool
     {
-        return $user->isBranchOffice();
+        return $user->isBranchOffice() || $user->isAdmin();
     }
 }

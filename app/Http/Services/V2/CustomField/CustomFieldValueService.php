@@ -3,9 +3,9 @@
 namespace App\Http\Services\V2\CustomField;
 
 use App\Enums\CustomFieldType;
-use App\Models\BaseOperation;
 use App\Models\V2\CustomField\CustomField;
 use App\Models\V2\CustomField\CustomFieldValue;
+use App\Models\V2\Report\ReportBase;
 use Carbon\Exceptions\InvalidTypeException;
 
 class CustomFieldValueService
@@ -13,7 +13,7 @@ class CustomFieldValueService
     /**
      * @throws InvalidTypeException
      */
-    public static function store(int $rescueCompanyId, BaseOperation $baseReport, array $validatedData): void
+    public static function store(int $rescueCompanyId, ReportBase $baseReport, array $validatedData): void
     {
         $customFields = CustomField::where(
             [
@@ -35,7 +35,7 @@ class CustomFieldValueService
     }
 
 
-    private static function createCustomFieldValue(int $rescueCompanyId, CustomField $field, BaseOperation $baseReport, mixed $value): void
+    private static function createCustomFieldValue(int $rescueCompanyId, CustomField $field, ReportBase $baseReport, mixed $value): void
     {
         $column = CustomFieldValue::getStorableColumn($field->type);
 
@@ -48,7 +48,7 @@ class CustomFieldValueService
         ]);
     }
 
-    private static function handleMultipleChoiceEnumValue(array $values, CustomField $field, BaseOperation $baseReport, int $rescueCompanyId): void
+    private static function handleMultipleChoiceEnumValue(array $values, CustomField $field, ReportBase $baseReport, int $rescueCompanyId): void
     {
         foreach ($values as $value) {
             self::createCustomFieldValue($rescueCompanyId, $field, $baseReport, $value);

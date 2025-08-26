@@ -3,7 +3,7 @@
 namespace App\Http\Requests\V2\Report;
 
 use App\DTOs\ReportFilterFieldValidationDTO;
-use App\Models\BaseOperation;
+use App\Models\V2\Report\ReportBase;
 use Illuminate\Foundation\Http\FormRequest;
 
 abstract class BaseReportStoreRequest extends FormRequest
@@ -55,7 +55,7 @@ abstract class BaseReportStoreRequest extends FormRequest
      */
     abstract public function rules(): array;
 
-    protected function getRules(BaseOperation $operation): array
+    protected function getRules(ReportBase $operation): array
     {
         return ReportFilterFieldValidationDTO::fromArray($operation::fieldDefinitions(), 'creation');
     }

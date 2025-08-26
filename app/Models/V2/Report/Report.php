@@ -4,19 +4,19 @@ namespace App\Models\V2\Report;
 
 use App\Enums\CustomFieldParameter;
 use App\Enums\CustomFieldType;
-use App\Models\BaseOperation;
 use App\Models\BranchOffice;
 use App\Models\Company;
 use App\Models\EmergencyType;
 use App\Models\RescueCompany;
+use App\Traits\FormatsColumns;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Validation\Rule;
 
 
-class Report extends BaseOperation
+class Report extends ReportBase
 {
-    use HasFactory;
+    use HasFactory, FormatsColumns;
 
     public function __construct(array $attributes = []){
         parent::__construct($attributes);
@@ -367,10 +367,7 @@ class Report extends BaseOperation
 
     public function rescue_company()
     {
-        return $this->belongsToThrough(
-            RescueCompany::class,
-            BranchOffice::class,
-        );
+        return $this->hasOneThrough(RescueCompany::class, BranchOffice::class);
     }
 
     public function emergency()
@@ -421,4 +418,33 @@ class Report extends BaseOperation
             'count' => $group->sum('count'),
         ])->values()->toArray();
     }
+
+    public static function generateReportCode(int $branchOfficeId)
+    {
+        $reportCount = Report::where('branch_office_id', $branchOfficeId)->count() + 1;
+        return $branchOfficeId . '-' . $reportCount;
+    }
+
+    public function calculateTotals()
+    {
+        $this->minor_injury_total = $this->minor_injury_count;
+        $this->severe_injury_total = $this->severe_injury_count;
+        $this->fatal_injury_total = $this->fatal_injury_count;
+        $this->evacuated_people_total = $this->evacuated_people_count;
+        $this->provided_medical_total = $this->provided_medical_count;
+        $this->client_equipment_total = $this->client_equipment_count;
+        $this->third_parties_total = $this->third_parties_count;
+        $this->branch_worker_total = $this->branch_worker_count;
+
+        $this->save();
+    }
+
+    public function close(): void
+    {
+        if ($this->close_date && $this->worker_man_hours > 0) {
+            $this->is_closed = true;
+            $this->save();
+        }
+    }
+
 }

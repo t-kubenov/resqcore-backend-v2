@@ -4,14 +4,15 @@ namespace App\Models\V2\Survey;
 
 use App\Enums\CustomFieldParameter;
 use App\Enums\CustomFieldType;
-use App\Models\BaseEntity;
+use App\Models\Model;
+use App\Traits\FormatsColumns;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class Violation extends BaseEntity
+class Violation extends Model
 {
-    use HasFactory;
+    use HasFactory, FormatsColumns;
 
     protected $table = 'survey_violations';
 

@@ -32,7 +32,7 @@ class ViolationController
     {
         $survey = Survey::findOrFail($id);
 
-        $this->authorize('create', Survey::class); // todo: replace with survey, maybe move to middleware
+        $this->authorize('create', Survey::class);
 
         return new ViolationResource($this->violationService->store($request, $survey));
     }
@@ -41,7 +41,7 @@ class ViolationController
     {
         $violation = Violation::findOrFail($id);
 
-        $this->authorize('create', Survey::class); // todo: replace with survey, maybe move to middleware
+        $this->authorize('create', Survey::class);
 
         if ($violation->elimination_completion) {
             return response()->json(['message' => __('validation.survey.violations.close.already_closed')], 422);
