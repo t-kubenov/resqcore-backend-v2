@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\V2\Report\FilterReportRequest;
+use App\Http\Requests\Report\FilterReportRequest;
 use App\Http\Services\Report\ReportService;
-use App\Models\V2\Report\Report;
+use App\Models\Report\Report;
 use App\Traits\Cacheable;
 use Illuminate\Http\Request;
 

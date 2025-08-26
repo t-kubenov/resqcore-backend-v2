@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Models\V2\Report\Report;
+use App\Models\Report\Report;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class EmergencyType extends Model

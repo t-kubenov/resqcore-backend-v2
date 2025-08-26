@@ -2,7 +2,7 @@
 
 namespace App\Http\Resources\Survey;
 
-use App\Models\V2\Survey\Violation;
+use App\Models\Survey\Violation;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 

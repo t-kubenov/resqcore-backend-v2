@@ -7,8 +7,8 @@ use App\Models\BranchOffice;
 use App\Models\EmergencyType;
 use App\Models\TransportType;
 use App\Models\User;
-use App\Models\V2\CustomField\CustomField;
-use App\Models\V2\Report\Report;
+use App\Models\CustomField\CustomField;
+use App\Models\Report\Report;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 

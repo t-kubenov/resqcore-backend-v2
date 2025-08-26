@@ -2,10 +2,10 @@
 
 namespace App\Http\Services\Survey;
 
-use App\Http\Requests\V2\Survey\StoreSurveyRequest;
+use App\Http\Requests\Survey\StoreSurveyRequest;
 use App\Http\Services\GeneralService;
-use App\Models\V2\Survey\Survey;
-use App\Models\V2\Survey\SurveyLegalEntityUnit;
+use App\Models\Survey\Survey;
+use App\Models\Survey\SurveyLegalEntityUnit;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 

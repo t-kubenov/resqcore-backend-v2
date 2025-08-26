@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Report;
 
 use App\Http\Resources\Update\UpdateLogCollection;
 use App\Http\Services\UpdateLogService;
-use App\Models\V2\Report\Report;
+use App\Models\Report\Report;
 
 class UpdateLogController
 {

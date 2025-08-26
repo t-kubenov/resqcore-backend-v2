@@ -3,11 +3,11 @@
 namespace App\Http\Controllers\Report;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\V2\Report\StoreUpdateRequest;
+use App\Http\Requests\Report\StoreUpdateRequest;
 use App\Http\Resources\Update\UpdateResource;
 use App\Http\Services\Report\UpdateService;
-use App\Models\V2\Report\Report;
-use App\Models\V2\Report\Update;
+use App\Models\Report\Report;
+use App\Models\Report\Update;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Exceptions\ThrottleRequestsException;
 

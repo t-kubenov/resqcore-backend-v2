@@ -1,7 +1,7 @@
 <?php
 
-use App\Models\V2\CustomField\CustomField;
-use App\Models\V2\CustomField\CustomFieldOption;
+use App\Models\CustomField\CustomField;
+use App\Models\CustomField\CustomFieldOption;
 
 //test('saves custom field values when a report is created', function () {
 //    CustomField::factory()->create([

@@ -4,7 +4,7 @@ namespace App\Models;
 
 //use Illuminate\Database\Eloquent\Model;
 
-use App\Models\V2\Report\Report;
+use App\Models\Report\Report;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class BranchOffice extends Model

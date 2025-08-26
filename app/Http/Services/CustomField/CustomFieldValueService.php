@@ -3,9 +3,9 @@
 namespace App\Http\Services\CustomField;
 
 use App\Enums\CustomFieldType;
-use App\Models\V2\CustomField\CustomField;
-use App\Models\V2\CustomField\CustomFieldValue;
-use App\Models\V2\Report\ReportBase;
+use App\Models\CustomField\CustomField;
+use App\Models\CustomField\CustomFieldValue;
+use App\Models\Report\ReportBase;
 use Carbon\Exceptions\InvalidTypeException;
 
 class CustomFieldValueService

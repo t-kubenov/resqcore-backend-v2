@@ -3,7 +3,7 @@
 namespace App\Http\Resources\Survey;
 
 use App\Http\Resources\GenericRelationshipResource;
-use App\Models\V2\Survey\Survey;
+use App\Models\Survey\Survey;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 

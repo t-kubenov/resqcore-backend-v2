@@ -1,12 +1,12 @@
 <?php
 use App\Models\BranchOffice;
 use App\Models\User;
-use App\Models\V2\Survey\Survey;
-use App\Models\V2\Survey\SurveyFacilitySpokesman;
-use App\Models\V2\Survey\SurveyLegalEntity;
-use App\Models\V2\Survey\SurveyLegalEntityUnit;
-use App\Models\V2\Survey\SurveySender;
-use App\Models\V2\Survey\Violation;
+use App\Models\Survey\Survey;
+use App\Models\Survey\SurveyFacilitySpokesman;
+use App\Models\Survey\SurveyLegalEntity;
+use App\Models\Survey\SurveyLegalEntityUnit;
+use App\Models\Survey\SurveySender;
+use App\Models\Survey\Violation;
 use function Tests\Helpers\{getRandomCentralAndBranchUsers, getRandomBranchIdFromCentralOffice};
 
 

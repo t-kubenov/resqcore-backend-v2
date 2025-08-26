@@ -3,7 +3,7 @@
 namespace App\Observers\Survey;
 
 use App\Models\User;
-use App\Models\V2\Survey\Survey;
+use App\Models\Survey\Survey;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Log;
 

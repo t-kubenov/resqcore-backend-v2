@@ -3,11 +3,11 @@
 namespace App\Http\Services\Report;
 
 use App\Enums\CustomFieldType;
-use App\Http\Requests\V2\Report\StoreReportRequest;
+use App\Http\Requests\Report\StoreReportRequest;
 use App\Http\Services\CustomField\CustomFieldValueService;
 use App\Http\Services\GeneralService;
-use App\Models\V2\CustomField\CustomFieldValue;
-use App\Models\V2\Report\Report;
+use App\Models\CustomField\CustomFieldValue;
+use App\Models\Report\Report;
 use Illuminate\Http\Exceptions\ThrottleRequestsException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;

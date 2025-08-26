@@ -3,7 +3,7 @@
 namespace App\Models;
 
 use App\Enums\RoleEnum;
-use App\Models\V2\Report\Report;
+use App\Models\Report\Report;
 use App\Traits\AltersDisplayedDates;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;

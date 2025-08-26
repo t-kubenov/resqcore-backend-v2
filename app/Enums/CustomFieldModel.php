@@ -2,8 +2,8 @@
 
 namespace App\Enums;
 
-use App\Models\V2\Report\Report;
-use App\Models\V2\Report\Update;
+use App\Models\Report\Report;
+use App\Models\Report\Update;
 use App\Traits\EnumToArray;
 
 enum CustomFieldModel: string

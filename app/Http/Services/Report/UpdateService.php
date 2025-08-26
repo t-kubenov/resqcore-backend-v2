@@ -2,10 +2,10 @@
 
 namespace App\Http\Services\Report;
 
-use App\Http\Requests\V2\Report\StoreUpdateRequest;
+use App\Http\Requests\Report\StoreUpdateRequest;
 use App\Http\Services\CustomField\CustomFieldValueService;
 use App\Http\Services\GeneralService;
-use App\Models\V2\Report\Update;
+use App\Models\Report\Update;
 use Illuminate\Http\Exceptions\ThrottleRequestsException;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\RateLimiter;

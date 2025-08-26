@@ -2,11 +2,11 @@
 
 namespace App\Http\Services\Survey;
 
-use App\Http\Requests\V2\Survey\CloseViolationRequest;
-use App\Http\Requests\V2\Survey\StoreViolationRequest;
+use App\Http\Requests\Survey\CloseViolationRequest;
+use App\Http\Requests\Survey\StoreViolationRequest;
 use App\Http\Services\GeneralService;
-use App\Models\V2\Survey\Survey;
-use App\Models\V2\Survey\Violation;
+use App\Models\Survey\Survey;
+use App\Models\Survey\Violation;
 
 class ViolationService extends GeneralService
 {

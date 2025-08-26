@@ -3,8 +3,8 @@
 use App\Models\BranchOffice;
 use App\Models\Transport;
 use App\Models\User;
-use App\Models\V2\Report\Report;
-use App\Models\V2\Report\Update;
+use App\Models\Report\Report;
+use App\Models\Report\Update;
 use Carbon\Carbon;
 use function Tests\Helpers\{generateReport};
 

@@ -3,8 +3,8 @@
 namespace Database\Factories;
 
 use App\Models\TransportType;
-use App\Models\V2\Report\Report;
-use App\Models\V2\Report\Update;
+use App\Models\Report\Report;
+use App\Models\Report\Update;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**

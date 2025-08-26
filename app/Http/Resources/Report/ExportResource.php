@@ -3,7 +3,7 @@
 namespace App\Http\Resources\Report;
 
 use App\Models\User;
-use App\Models\V2\Sushi\DepartureType;
+use App\Models\Sushi\DepartureType;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 

@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers\Survey;
 
-use App\Http\Requests\V2\Survey\FilterSurveyRequest;
-use App\Http\Requests\V2\Survey\StoreSurveyRequest;
+use App\Http\Requests\Survey\FilterSurveyRequest;
+use App\Http\Requests\Survey\StoreSurveyRequest;
 use App\Http\Resources\Survey\PrintResource;
 use App\Http\Resources\Survey\SurveyCollection;
 use App\Http\Resources\Survey\SurveyResource;
 use App\Http\Services\Survey\SurveyService;
-use App\Models\V2\Survey\Survey;
+use App\Models\Survey\Survey;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Exceptions\ThrottleRequestsException;

@@ -2,8 +2,8 @@
 
 namespace Database\Seeders\Main;
 
-use App\Models\V2\Survey\SurveyLegalEntity;
-use App\Models\V2\Survey\SurveyLegalEntityUnit;
+use App\Models\Survey\SurveyLegalEntity;
+use App\Models\Survey\SurveyLegalEntityUnit;
 use Illuminate\Database\Seeder;
 
 class LegalEntitiesForProdTestSeeder extends Seeder

@@ -1,9 +1,9 @@
 <?php
 
 use App\Models\BranchOffice;
-use App\Models\V2\Survey\Survey;
-use App\Models\V2\Survey\SurveyLegalEntity;
-use App\Models\V2\Survey\SurveyLegalEntityUnit;
+use App\Models\Survey\Survey;
+use App\Models\Survey\SurveyLegalEntity;
+use App\Models\Survey\SurveyLegalEntityUnit;
 use function Tests\Helpers\{getRandomCentralAndBranchUsers, getRandomBranchIdFromCentralOffice};
 
 

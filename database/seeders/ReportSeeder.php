@@ -3,7 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\BranchOffice;
-use App\Models\V2\Report\Report;
+use App\Models\Report\Report;
 use Illuminate\Database\Seeder;
 
 class ReportSeeder extends Seeder

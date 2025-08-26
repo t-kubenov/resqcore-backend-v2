@@ -3,7 +3,7 @@
 namespace Tests\Helpers;
 
 use App\Models\BranchOffice;
-use App\Models\V2\Report\Report;
+use App\Models\Report\Report;
 use App\Models\User;
 use Carbon\Carbon;
 

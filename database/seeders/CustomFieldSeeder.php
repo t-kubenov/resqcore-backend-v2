@@ -4,9 +4,9 @@ namespace Database\Seeders;
 
 use App\Enums\CustomFieldType;
 use App\Models\RescueCompany;
-use App\Models\V2\CustomField\CustomField;
-use App\Models\V2\CustomField\CustomFieldOption;
-use App\Models\V2\CustomField\CustomFieldValue;
+use App\Models\CustomField\CustomField;
+use App\Models\CustomField\CustomFieldOption;
+use App\Models\CustomField\CustomFieldValue;
 use Illuminate\Database\Seeder;
 
 class CustomFieldSeeder extends Seeder

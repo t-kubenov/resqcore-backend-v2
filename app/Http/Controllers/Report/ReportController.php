@@ -3,13 +3,13 @@
 namespace App\Http\Controllers\Report;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\V2\Report\FilterReportRequest;
-use App\Http\Requests\V2\Report\StoreReportRequest;
+use App\Http\Requests\Report\FilterReportRequest;
+use App\Http\Requests\Report\StoreReportRequest;
 use App\Http\Resources\Report\ExportCollection;
 use App\Http\Resources\Report\ReportCollection;
 use App\Http\Resources\Report\ReportResource;
 use App\Http\Services\Report\ReportService;
-use App\Models\V2\Report\Report;
+use App\Models\Report\Report;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Exceptions\ThrottleRequestsException;
 

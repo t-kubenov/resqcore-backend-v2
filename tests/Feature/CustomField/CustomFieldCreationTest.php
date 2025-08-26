@@ -3,8 +3,8 @@
 use App\Enums\CustomFieldType;
 use App\Models\RescueCompany;
 use App\Models\User;
-use App\Models\V2\CustomField\CustomField;
-use App\Models\V2\Report\Report;
+use App\Models\CustomField\CustomField;
+use App\Models\Report\Report;
 
 
 beforeEach(function () {

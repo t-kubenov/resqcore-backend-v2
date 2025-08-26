@@ -3,8 +3,8 @@
 namespace App\Policies;
 
 use App\Models\User;
-use App\Models\V2\Report\Report;
-use App\Models\V2\Survey\Survey;
+use App\Models\Report\Report;
+use App\Models\Survey\Survey;
 
 class GeneralPolicy
 {

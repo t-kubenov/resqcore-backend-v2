@@ -8,7 +8,7 @@ use App\Http\Resources\TransportResource;
 use App\Http\Resources\Update\UpdateCollection;
 use App\Http\Resources\UserResource;
 use App\Models\User;
-use App\Models\V2\Sushi\DepartureType;
+use App\Models\Sushi\DepartureType;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
