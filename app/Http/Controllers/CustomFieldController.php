@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\V2;
+namespace App\Http\Controllers;
 
 use App\Enums\CustomFieldParameter;
 use App\Enums\CustomFieldType;

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\V2;
+namespace App\Http\Controllers;
 
 use App\Http\Requests\V2\Report\FilterReportRequest;
 use App\Http\Services\V2\Report\ReportService;

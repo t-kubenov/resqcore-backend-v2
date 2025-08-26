@@ -1,17 +1,17 @@
 <?php
 
-use App\Http\Controllers\V2\AuthController;
-use App\Http\Controllers\V2\AuxiliaryDataController;
-use App\Http\Controllers\V2\CompanyController;
-use App\Http\Controllers\V2\CustomFieldController;
-use App\Http\Controllers\V2\EmailController;
-use App\Http\Controllers\V2\ImageController;
-use App\Http\Controllers\V2\Report\ReportController;
-use App\Http\Controllers\V2\Report\UpdateController;
-use App\Http\Controllers\V2\Report\UpdateLogController;
-use App\Http\Controllers\V2\StatisticsController;
-use App\Http\Controllers\V2\Survey\SurveyController;
-use App\Http\Controllers\V2\Survey\ViolationController;
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\AuxiliaryDataController;
+use App\Http\Controllers\CompanyController;
+use App\Http\Controllers\CustomFieldController;
+use App\Http\Controllers\EmailController;
+use App\Http\Controllers\ImageController;
+use App\Http\Controllers\Report\ReportController;
+use App\Http\Controllers\Report\UpdateController;
+use App\Http\Controllers\Report\UpdateLogController;
+use App\Http\Controllers\StatisticsController;
+use App\Http\Controllers\Survey\SurveyController;
+use App\Http\Controllers\Survey\ViolationController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('throttle:global')->prefix('v2/')->group(function () {

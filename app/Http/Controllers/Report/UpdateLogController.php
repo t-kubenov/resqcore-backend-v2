@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\V2\Report;
+namespace App\Http\Controllers\Report;
 
 use App\Http\Resources\V2\Update\UpdateLogCollection;
 use App\Http\Services\V2\UpdateLogService;

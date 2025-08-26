@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Http\Controllers\V2\Report;
+namespace App\Http\Controllers\Report;
 
-use App\Http\Controllers\V2\Controller;
+use App\Http\Controllers\Controller;
 use App\Http\Requests\V2\Report\FilterReportRequest;
 use App\Http\Requests\V2\Report\StoreReportRequest;
 use App\Http\Resources\V2\Report\ExportCollection;
