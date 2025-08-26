@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\Report;
 
-use App\Http\Resources\V2\Update\UpdateLogCollection;
-use App\Http\Services\V2\UpdateLogService;
+use App\Http\Resources\Update\UpdateLogCollection;
+use App\Http\Services\UpdateLogService;
 use App\Models\V2\Report\Report;
 
 class UpdateLogController

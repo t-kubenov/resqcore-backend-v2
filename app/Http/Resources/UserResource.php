@@ -1,0 +1,42 @@
+<?php
+
+namespace App\Http\Resources;
+
+use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\JsonResource;
+
+class UserResource extends JsonResource
+{
+    protected $token;
+
+    public function __construct($resource, $token = null)
+    {
+        parent::__construct($resource);
+        $this->token = $token;
+    }
+    /**
+     * Transform the resource into an array.
+     *
+     * @return array<string, mixed>
+     */
+    public function toArray(Request $request): array
+    {
+        return [
+            'id' => $this->id,
+            'type' => 'user',
+            'attributes' => $this->getAttributes(),
+            'relationships' => $this->getRelations(),
+            'token' => $this->when($this->token, $this->token),
+        ];
+    }
+
+    protected function getAttributes()
+    {
+        $toRemove = ['password', 'remember_token', 'created_at', 'updated_at'];
+
+        $attributes = parent::getAttributes();
+
+        return array_diff_key($attributes, array_flip($toRemove));
+
+    }
+}

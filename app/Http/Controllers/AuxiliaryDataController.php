@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Enums\CustomFieldParameter;
-use App\Http\Resources\V2\GenericRelationshipCollection;
+use App\Http\Resources\GenericRelationshipCollection;
 use App\Models\BranchOffice;
 use App\Models\Egov\MineralField;
 use App\Models\Egov\OilField;

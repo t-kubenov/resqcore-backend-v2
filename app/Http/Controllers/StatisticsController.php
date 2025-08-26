@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\V2\Report\FilterReportRequest;
-use App\Http\Services\V2\Report\ReportService;
+use App\Http\Services\Report\ReportService;
 use App\Models\V2\Report\Report;
 use App\Traits\Cacheable;
 use Illuminate\Http\Request;

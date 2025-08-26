@@ -2,7 +2,7 @@
 
 namespace Database\Seeders\Egov;
 
-use App\Http\Services\V2\ApiDataService;
+use App\Http\Services\ApiDataService;
 use App\Models\Egov\MineralField;
 use Illuminate\Database\Seeder;
 
