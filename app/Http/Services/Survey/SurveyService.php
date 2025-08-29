@@ -112,7 +112,7 @@ class SurveyService extends GeneralService
         return $survey;
     }
 
-    private function validateLegalEntityUnitRelation(int $legalEntityId, int $unitId)
+    private function validateLegalEntityUnitRelation(int $legalEntityId, int $unitId): void
     {
         $branch_office_id = auth()->user()->branch_id;
 
@@ -127,13 +127,11 @@ class SurveyService extends GeneralService
     private function processSendersAndSpokesmen(Survey $survey, $data): void
     {
         if (isset($data['senders'])){
-            $senders = array_map(fn($name) => ['name' => $name], $data['senders']);
-            $survey->senders()->createMany($senders);
+            $survey->senders()->createMany($data['senders']);
         }
 
         if (isset($data['spokesmen'])) {
-            $spokesmen = array_map(fn($name) => ['name' => $name], $data['spokesmen']);
-            $survey->spokesmen()->createMany($spokesmen);
+            $survey->spokesmen()->createMany($data['spokesmen']);
         }
     }
 }

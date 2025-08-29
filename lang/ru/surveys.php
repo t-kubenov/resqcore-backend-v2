@@ -89,6 +89,11 @@ return [
             'alias' => '',
         ],
 
+        'position' => [
+            'name' => 'Должность',
+            'alias' => '',
+        ],
+
         'senders' => [
             'name' => 'Проверяющие',
             'alias' => '',

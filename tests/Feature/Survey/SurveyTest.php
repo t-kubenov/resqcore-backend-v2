@@ -16,8 +16,10 @@ function generateSurvey($user): array
         'data' => [
             'type' => Survey::class,
             'attributes' => [
-                'senders' => collect(range(1, 4))->map(fn() => fake()->name())->all(),
-                'spokesmen' => collect(range(1, 6))->map(fn() => fake()->name())->all(),
+                'senders' => collect(range(1, 4))
+                    ->map(fn() => ['name' => fake()->name(), 'position' => fake()->word()])->all(),
+                'spokesmen' => collect(range(1, 6))
+                    ->map(fn() => ['name' => fake()->name(), 'position' => fake()->word()])->all(),
                 'legal_entity_id' => $legalEntity?->id,
                 'legal_entity_unit_id' => $legalEntityUnit?->id,
                 'survey_date' => now()->subDay()->format('Y-m-d'),
@@ -92,6 +94,8 @@ beforeEach(function() {
 
 it('creates a survey', function () {
     $survey = generateSurvey($this->users['branch_user']);
+
+//    dd($survey);
 
     $response = $this->actingAs($this->users['branch_user'])
         ->postJson(route('surveys.store'), $survey);

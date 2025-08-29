@@ -40,7 +40,7 @@ Route::middleware('throttle:global')->prefix('v2/')->group(function () {
                 Route::get('/violation-fields', 'getViolationFields')->name('violation-fields');
                 Route::get('/report-filters', 'getReportFilters')->name('report-filters');
                 Route::get('/survey-filters', 'getSurveyFilters')->name('survey-filters');
-                Route::get('/mineral-fields', 'getMineralFields')->name('mineral-fields'); // todo: bruh i gotta unite these like the field options
+                Route::get('/mineral-fields', 'getMineralFields')->name('mineral-fields');
                 Route::get('/oil-fields', 'getOilFields')->name('oil-fields');
                 Route::get('/subsoil-contracts', 'getSubsoilContracts')->name('subsoil-contracts');
                 Route::get('/field-options/{field_name}', 'getFieldOptions')->name('field-options');
@@ -62,7 +62,7 @@ Route::middleware('throttle:global')->prefix('v2/')->group(function () {
 
         Route::prefix('reports')->name('reports.')->group(function () {
             Route::get('/', [ReportController::class, 'index'])->name('index');
-            Route::get('/export', [ReportController::class, 'export'])->name('export'); // todo: warn Maxim about this, changed from url/export
+            Route::get('/export', [ReportController::class, 'export'])->name('export');
             Route::get('/{id}', [ReportController::class, 'show'])->name('show');
             Route::get('/{id}/log', [UpdateLogController::class, 'show'])->name('id.log');
 

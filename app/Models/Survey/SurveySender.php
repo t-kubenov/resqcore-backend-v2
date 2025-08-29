@@ -13,6 +13,7 @@ class SurveySender extends Model
     protected $fillable = [
         'survey_id', //integer
         'name',
+        'position',
     ];
 
     public function survey(): BelongsTo

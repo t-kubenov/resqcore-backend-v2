@@ -47,7 +47,7 @@ trait FormatsColumns
                 'alias' => $field['alias'],
             ],
             array_filter(static::fieldDefinitions(), fn($field) =>
-            in_array(CustomFieldParameter::ShowInTable, $field['parameters'])
+                in_array(CustomFieldParameter::ShowInTable, $field['parameters'])
             )
         ));
     }
@@ -61,7 +61,7 @@ trait FormatsColumns
                 'alias' => $field['alias'],
             ],
             array_filter(static::fieldDefinitions(), fn($field) =>
-            in_array(CustomFieldParameter::ShowInExport, $field['parameters'])
+                in_array(CustomFieldParameter::ShowInExport, $field['parameters'])
             )
         ));
     }
@@ -75,7 +75,7 @@ trait FormatsColumns
                 'alias' => $field['alias'],
             ],
             array_filter(static::fieldDefinitions(), fn($field) =>
-            in_array(CustomFieldParameter::ShowInCard, $field['parameters'])
+                in_array(CustomFieldParameter::ShowInCard, $field['parameters'])
             )
         ));
     }
