@@ -13,6 +13,10 @@ class UpdatePolicy
             return $user->branch_id === $report->branch_office_id;
         }
 
+        if ($user->isAdmin()) {
+            return true;
+        }
+
         return false;
     }
 }
