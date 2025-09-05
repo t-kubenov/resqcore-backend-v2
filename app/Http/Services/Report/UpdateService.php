@@ -31,7 +31,7 @@ class UpdateService extends GeneralService
         }
 
         return $update;
-    }    //todo: basically duplicates same method in reports, you know what to do
+    }
 
     public function updateRequest(StoreUpdateRequest $request, $update, $attributes): Update
     {
@@ -50,7 +50,5 @@ class UpdateService extends GeneralService
         RateLimiter::hit($key, 60); // 60 seconds cooldown
 
         return $update;
-
-        //todo: same method is in reports, you know what to do
     }
 }

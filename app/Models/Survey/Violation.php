@@ -25,6 +25,7 @@ class Violation extends Model
     protected $fillable = [
         'survey_id',
         'description', //text
+        'clause_type_id',
         'clause', //text? string?
         'elimination_prescription_date', //date, no time
         'elimination_completion',  //boolean
@@ -60,6 +61,24 @@ class Violation extends Model
                     CustomFieldParameter::ShowInCard,
                 ],
             ],
+
+            'clause_type_id' =>
+                [
+                    'key' => 'data.attributes.clause_type_id',
+                    'name' => 'clause_type_id',
+                    'label' => __('surveys.fields.violations.clause_type.name'),
+                    'alias' => __('surveys.fields.violations.clause_type.alias'),
+                    'type' => CustomFieldType::SingleChoiceEnum,
+                    'required' => true,
+                    'options' => route('auxiliary.field-options', 'clause_type'),
+                    'parameters' => [
+                        CustomFieldParameter::CategoryId->value => 1,
+                        CustomFieldParameter::IsFilterable,
+                        CustomFieldParameter::IsFilterableForCA,
+                        CustomFieldParameter::ShowInTable,
+                        CustomFieldParameter::ShowInCard,
+                    ],
+                ],
 
             'clause' =>
             [
@@ -136,6 +155,7 @@ class Violation extends Model
     {
         return [
             'description' => $this->description,
+            'clause_type' => $this->clause_type->only(['name', 'link']),
             'clause' => $this->clause,
             'elimination_prescription_date' => Carbon::parse($this->elimination_prescription_date)->format('Y-m-d'),
             'elimination_completion' => $this->elimination_completion,
@@ -146,5 +166,10 @@ class Violation extends Model
     public function survey(): BelongsTo
     {
         return $this->belongsTo(Survey::class);
+    }
+
+    public function clause_type(): BelongsTo
+    {
+        return $this->belongsTo(ViolationClauseType::class);
     }
 }

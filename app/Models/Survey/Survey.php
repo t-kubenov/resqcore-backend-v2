@@ -96,8 +96,6 @@ class Survey extends Model
                 'rules' => ['max:4'],
                 'parameters' => [
                     CustomFieldParameter::CategoryId->value => 1,
-                    CustomFieldParameter::IsFilterable,
-                    CustomFieldParameter::IsFilterableForCA,
                     CustomFieldParameter::ShowInCard,
                 ],
                 'subfields' => [
@@ -125,8 +123,6 @@ class Survey extends Model
                         'type' => CustomFieldType::String,
                         'parameters' => [
                             CustomFieldParameter::CategoryId->value => 1,
-                            CustomFieldParameter::IsFilterable,
-                            CustomFieldParameter::IsFilterableForCA,
                             CustomFieldParameter::ShowInCard,
                         ],
                     ],

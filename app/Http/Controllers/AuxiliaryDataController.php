@@ -9,6 +9,7 @@ use App\Models\Egov\MineralField;
 use App\Models\Egov\OilField;
 use App\Models\Egov\SubsoilContract;
 use App\Models\EmergencyType;
+use App\Models\Survey\ViolationClauseType;
 use App\Models\TransportType;
 use App\Models\User;
 use App\Models\CustomField\CustomFieldOption;
@@ -137,6 +138,7 @@ class AuxiliaryDataController extends Controller
             whereHas('branch_office', function ($query) use ($companyId) {
                 $query->where('rescue_company_id', $companyId);
             }),
+            'clause_type' => ViolationClauseType::query(),
 
         ];
 
