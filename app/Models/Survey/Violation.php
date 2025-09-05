@@ -155,7 +155,8 @@ class Violation extends Model
     {
         return [
             'description' => $this->description,
-            'clause_type' => $this->clause_type->only(['name', 'link']),
+            'clause_type' => $this->clause_type->name,
+            'clause_type_link' => $this->clause_type->link,
             'clause' => $this->clause,
             'elimination_prescription_date' => Carbon::parse($this->elimination_prescription_date)->format('Y-m-d'),
             'elimination_completion' => $this->elimination_completion,
