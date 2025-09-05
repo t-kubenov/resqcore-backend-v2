@@ -62,10 +62,10 @@ class Violation extends Model
                 ],
             ],
 
-            'clause_type_id' =>
+            'clause_type' =>
                 [
                     'key' => 'data.attributes.clause_type_id',
-                    'name' => 'clause_type_id',
+                    'name' => 'clause_type',
                     'label' => __('surveys.fields.violations.clause_type.name'),
                     'alias' => __('surveys.fields.violations.clause_type.alias'),
                     'type' => CustomFieldType::SingleChoiceEnum,
