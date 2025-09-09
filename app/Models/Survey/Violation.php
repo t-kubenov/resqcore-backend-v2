@@ -62,10 +62,10 @@ class Violation extends Model
                 ],
             ],
 
-            'clause_type' =>
+            'clause_type_id' =>
                 [
                     'key' => 'data.attributes.clause_type_id',
-                    'name' => 'clause_type',
+                    'name' => 'clause_type_id',
                     'label' => __('surveys.fields.violations.clause_type.name'),
                     'alias' => __('surveys.fields.violations.clause_type.alias'),
                     'type' => CustomFieldType::SingleChoiceEnum,
@@ -155,7 +155,7 @@ class Violation extends Model
     {
         return [
             'description' => $this->description,
-            'clause_type' => $this->clause_type->name,
+            'clause_type_id' => $this->clause_type->name,
             'clause_type_link' => $this->clause_type->link,
             'clause' => $this->clause,
             'elimination_prescription_date' => Carbon::parse($this->elimination_prescription_date)->format('Y-m-d'),
