@@ -92,7 +92,7 @@ class ReportService extends GeneralService
             unset($data['emergency_type']);
         }
 
-        if (isset($data['branch_office']) && auth()->user()->isCentralOffice()) {
+        if (isset($data['branch_office'])) {
             $query->whereIn('branch_office_id', $data['branch_office']);
             unset($data['branch_office']);
         }
