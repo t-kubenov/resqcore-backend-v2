@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Str;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\RescueCompany>
@@ -18,8 +19,8 @@ class RescueCompanyFactory extends Factory
     {
         return [
             'name' => $this->faker->company(),
-            'alias' => $this->faker->unique()->word,
-            'key' => $this->faker->unique()->word,
+            'alias' => $this->faker->word,
+            'key' => Str::random(16),
         ];
     }
 }
