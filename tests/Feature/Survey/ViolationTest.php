@@ -1,11 +1,6 @@
 <?php
 use App\Models\BranchOffice;
-use App\Models\User;
 use App\Models\Survey\Survey;
-use App\Models\Survey\SurveyFacilitySpokesman;
-use App\Models\Survey\SurveyLegalEntity;
-use App\Models\Survey\SurveyLegalEntityUnit;
-use App\Models\Survey\SurveySender;
 use App\Models\Survey\Violation;
 use function Tests\Helpers\{getRandomCentralAndBranchUsers, getRandomBranchIdFromCentralOffice};
 
@@ -48,6 +43,7 @@ beforeEach(function() {
             'type',
             'attributes' => [
                 'description',
+                'clause_type_id',
                 'clause',
                 'elimination_prescription_date',
                 'elimination_completion',
@@ -84,6 +80,7 @@ function formatViolationDataForCreate(Violation $violation): array
             'attributes' => [
                 'survey_id' => $violation['survey_id'],
                 'description' => $violation['description'],
+                'clause_type_id' => $violation['clause_type_id'],
                 'clause' => $violation['clause'],
                 'elimination_prescription_date' => $violation['elimination_prescription_date']->format('Y-m-d'),
                 'elimination_completion' => $violation['elimination_completion'],

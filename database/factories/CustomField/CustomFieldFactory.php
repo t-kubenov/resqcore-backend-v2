@@ -6,6 +6,7 @@ use App\Enums\CustomFieldType;
 use App\Models\RescueCompany;
 use App\Models\CustomField\CustomField;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Str;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\CustomField\CustomField>
@@ -22,7 +23,7 @@ class CustomFieldFactory extends Factory
         return [
             'rescue_company_id' => RescueCompany::inRandomOrder()->first()->id,
             'parent_field' => null,
-            'name' => $this->faker->word,
+            'name' => Str::random(16),
             'label' => $this->faker->word,
             'model' => 'App\Models\Report\Report',
             'required' => $this->faker->boolean(20),

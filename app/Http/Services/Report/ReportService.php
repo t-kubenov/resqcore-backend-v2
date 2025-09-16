@@ -82,8 +82,7 @@ class ReportService extends GeneralService
     {
         $data = $request->all();
 
-        $query = $this->filterRescueCompany($query);
-        $query = $this->filterBranchOffice($query);
+        $query = $this->filterByRoles($query);
 
         $filters = Report::filters();
 
@@ -154,29 +153,6 @@ class ReportService extends GeneralService
             });
         }
 
-        return $query;
-    }
-
-    private function filterRescueCompany($query)
-    {
-        $user = Auth::user();
-
-        if ($user->isAdmin()) {
-            return $query;
-        }
-
-        return $query->whereHas('branch_office', function ($q) use ($user) {
-            $q->where('rescue_company_id', $user->branch_office->rescue_company_id);
-        });
-    }
-
-    private function filterBranchOffice($query)
-    {
-        $user = Auth::user();
-
-        if ($user->isBranchOffice()) {
-            $query->where('branch_office_id', $user->branch_id);
-        }
         return $query;
     }
 

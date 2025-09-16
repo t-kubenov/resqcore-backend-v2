@@ -63,22 +63,22 @@ class Violation extends Model
             ],
 
             'clause_type_id' =>
-                [
-                    'key' => 'data.attributes.clause_type_id',
-                    'name' => 'clause_type_id',
-                    'label' => __('surveys.fields.violations.clause_type.name'),
-                    'alias' => __('surveys.fields.violations.clause_type.alias'),
-                    'type' => CustomFieldType::SingleChoiceEnum,
-                    'required' => true,
-                    'options' => route('auxiliary.field-options', 'clause_type'),
-                    'parameters' => [
-                        CustomFieldParameter::CategoryId->value => 1,
-                        CustomFieldParameter::IsFilterable,
-                        CustomFieldParameter::IsFilterableForCA,
-                        CustomFieldParameter::ShowInTable,
-                        CustomFieldParameter::ShowInCard,
-                    ],
+            [
+                'key' => 'data.attributes.clause_type_id',
+                'name' => 'clause_type_id',
+                'label' => __('surveys.fields.violations.clause_type.name'),
+                'alias' => __('surveys.fields.violations.clause_type.alias'),
+                'type' => CustomFieldType::SingleChoiceEnum,
+                'required' => true,
+                'options' => route('auxiliary.field-options', 'clause_type'),
+                'parameters' => [
+                    CustomFieldParameter::CategoryId->value => 1,
+                    CustomFieldParameter::IsFilterable,
+                    CustomFieldParameter::IsFilterableForCA,
+                    CustomFieldParameter::ShowInTable,
+                    CustomFieldParameter::ShowInCard,
                 ],
+            ],
 
             'clause' =>
             [

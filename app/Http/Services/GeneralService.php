@@ -37,4 +37,21 @@ abstract class GeneralService
             $query->whereDate($field, '<=', $endDate);
         }
     }
+
+    protected function filterByRoles($query)
+    {
+        $user = auth()->user();
+
+        if ($user->isBranchOffice()) {
+            $query->where('branch_office_id', $user->branch_id);
+        }
+
+        if ($user->isCentralOffice()){
+            $query->whereHas('branch_office', function($q) use ($user){
+                $q->where('rescue_company_id', $user['rescue_company_id']);
+            });
+        }
+
+        return $query;
+    }
 }

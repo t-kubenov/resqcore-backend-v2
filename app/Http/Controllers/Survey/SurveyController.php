@@ -27,12 +27,16 @@ class SurveyController
 
     public function index(FilterSurveyRequest $request)
     {
-        return new SurveyCollection($this->surveyService->index($request));
+        $collection = $this->surveyService->index($request);
+
+        return new SurveyCollection($collection);
     }
 
     public function export(FilterSurveyRequest $request)
     {
-        return new SurveyCollection($this->surveyService->index($request));
+        $collection = $this->surveyService->index($request);
+
+        return new SurveyCollection($collection);
     }
 
     /**

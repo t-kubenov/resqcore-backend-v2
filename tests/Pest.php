@@ -11,6 +11,8 @@
 |
 */
 
+use Illuminate\Foundation\Testing\DatabaseTransactions;
+
 pest()->extend(Tests\TestCase::class)
  // ->use(Illuminate\Foundation\Testing\RefreshDatabase::class)
     ->in('Feature');
@@ -45,3 +47,6 @@ function something()
 {
     // ..
 }
+
+
+uses(DatabaseTransactions::class)->in('Feature', 'Unit');
