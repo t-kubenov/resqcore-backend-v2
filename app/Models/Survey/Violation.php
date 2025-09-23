@@ -164,6 +164,18 @@ class Violation extends Model
         ];
     }
 
+    public function getPrintData(): array
+    {
+        return [
+            'survey_id' => $this->survey_id,
+            'description' => $this->description,
+            'clause' => $this->clause_type->name . ' - ' . $this->clause,
+            'elimination_prescription_date' => Carbon::parse($this->elimination_prescription_date)->format('Y-m-d'),
+            'elimination_completion' => $this->elimination_completion,
+            'elimination_completion_date' => $this->elimination_completion ? Carbon::parse($this->elimination_completion_date)->format('Y-m-d') : null,
+        ];
+    }
+
     public function survey(): BelongsTo
     {
         return $this->belongsTo(Survey::class);

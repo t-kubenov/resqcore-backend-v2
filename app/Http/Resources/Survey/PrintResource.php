@@ -15,7 +15,7 @@ class PrintResource extends GenericResource
     public function toArray(Request $request): array
     {
         return array_merge(
-            self::generatePrintColumns(),[
+            self::generatePrintColumns(), [
             'data' => [
                 'id' => $this->id,
                 'type' => 'survey_print',
@@ -28,7 +28,7 @@ class PrintResource extends GenericResource
                             'id' => $violation->id,
                             'type' => 'violation',
                             'attributes' => [
-                                $violation->toArray(),
+                                $violation->getPrintData(),
                             ]
                         ];
                     })->toArray(),
