@@ -2,22 +2,7 @@
 
 namespace App\Models\Survey;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-
-class SurveySender extends Model
+class SurveySender extends SurveyParticipant
 {
-    use HasFactory;
-
-    protected $fillable = [
-        'survey_id', //integer
-        'name',
-        'position',
-    ];
-
-    public function survey(): BelongsTo
-    {
-        return $this->belongsTo(Survey::class);
-    }
+    protected static string $type = 'sender';
 }

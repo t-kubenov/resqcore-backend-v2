@@ -55,6 +55,9 @@ enum CustomFieldType: string
     #[ComplexType]
     case StringArray = 'string_array';
 
+    #[ComplexType]
+    case DoubleInput = 'double_input';
+
     public function creationValidationRule(): string
     {
         return match ($this) {
@@ -64,7 +67,7 @@ enum CustomFieldType: string
             self::Date => 'date_format:Y-m-d',
             self::Datetime => 'date',
             self::Boolean => 'boolean',
-            self::MultipleChoiceEnum, self::MultiValue, self::StringArray => 'array',
+            self::MultipleChoiceEnum, self::MultiValue, self::StringArray, self::DoubleInput => 'array',
         };
     }
 
@@ -76,7 +79,7 @@ enum CustomFieldType: string
             self::String, self::Text, self::StringArray  => 'string',
             self::Date, self::Datetime => new DateRangeRule(),
             self::Boolean => 'boolean',
-            self::SingleChoiceEnum, self::MultipleChoiceEnum, self::MultiValue => 'array',
+            self::SingleChoiceEnum, self::MultipleChoiceEnum, self::MultiValue, self::DoubleInput => 'array',
         };
     }
 

@@ -48,6 +48,13 @@ class SurveyService extends GeneralService
             unset($data['spokesmen']);
         }
 
+        if (isset($data['reviewer'])) {
+            $query->whereHas('reviewer', function ($q) use ($data) {
+                $q->where('name', 'ILIKE', "%{$data['reviewer']}%");
+            });
+            unset($data['reviewer']);
+        }
+
         if (isset($data['survey_date'])) {
             $this->filterDates($query, 'survey_date', $data['survey_date']);
             unset($data['survey_date']);
@@ -132,6 +139,10 @@ class SurveyService extends GeneralService
 
         if (isset($data['spokesmen'])) {
             $survey->spokesmen()->createMany($data['spokesmen']);
+        }
+
+        if (isset($data['reviewer'])) {
+            $survey->reviewer()->create($data['reviewer'][0]);
         }
     }
 }

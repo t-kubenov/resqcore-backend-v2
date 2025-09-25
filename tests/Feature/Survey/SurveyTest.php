@@ -20,6 +20,7 @@ function generateSurvey($user): array
                     ->map(fn() => ['name' => fake()->name(), 'position' => fake()->word()])->all(),
                 'spokesmen' => collect(range(1, 6))
                     ->map(fn() => ['name' => fake()->name(), 'position' => fake()->word()])->all(),
+                'reviewer' => [['name' => fake()->name(), 'position' => fake()->word()]],
                 'legal_entity_id' => $legalEntity?->id,
                 'legal_entity_unit_id' => $legalEntityUnit?->id,
                 'survey_date' => now()->subDay()->format('Y-m-d'),
@@ -83,7 +84,7 @@ beforeEach(function() {
             'type',
             'attributes' => [
                 '*' => [ // todo: get rid of this, solve in SurveyCollection
-                    'survey_code',
+//                    'survey_code',
                     // etc.
                 ]
             ]
@@ -95,14 +96,18 @@ beforeEach(function() {
 it('creates a survey', function () {
     $survey = generateSurvey($this->users['branch_user']);
 
-//    dd($survey);
-
     $response = $this->actingAs($this->users['branch_user'])
         ->postJson(route('surveys.store'), $survey);
 
     $senders = $survey['data']['attributes']['senders'];
     $spokesmen = $survey['data']['attributes']['spokesmen'];
-    unset($survey['data']['attributes']['senders'], $survey['data']['attributes']['spokesmen']);
+    $reviewer = $survey['data']['attributes']['reviewer'];
+
+    unset(
+        $survey['data']['attributes']['senders'],
+        $survey['data']['attributes']['spokesmen'],
+        $survey['data']['attributes']['reviewer'],
+    );
 
     $response->assertStatus(201);
 
@@ -110,18 +115,26 @@ it('creates a survey', function () {
     $this->assertDatabaseHas('surveys', $survey['data']['attributes']);
 
     foreach($senders as $sender) {
-        $this->assertDatabaseHas('survey_senders', [
+        $this->assertDatabaseHas('survey_participants', [
             'survey_id' => $response->json('data.id'),
             'name' => $sender,
+            'type' => 'sender',
         ]);
     }
 
     foreach($spokesmen as $spokesman) {
-        $this->assertDatabaseHas('survey_facility_spokesman', [
+        $this->assertDatabaseHas('survey_participants', [
             'survey_id' => $response->json('data.id'),
             'name' => $spokesman,
+            'type' => 'spokesman',
         ]);
     }
+
+    $this->assertDatabaseHas('survey_participants', [
+        'survey_id' => $response->json('data.id'),
+        'name' => $reviewer,
+        'type' => 'reviewer',
+    ]);
 });
 
 
