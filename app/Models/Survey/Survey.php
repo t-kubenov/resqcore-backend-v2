@@ -94,7 +94,8 @@ class Survey extends Model
                 'label' => __('surveys.fields.senders.name'),
                 'alias' => __('surveys.fields.senders.alias'),
                 'type' => CustomFieldType::MultiValue,
-                'rules' => ['max:4'],
+                'rules' => ['min:1', 'max:4'],
+                'required' => true,
                 'parameters' => [
                     CustomFieldParameter::CategoryId->value => 1,
                     CustomFieldParameter::ShowInCard,
@@ -107,6 +108,7 @@ class Survey extends Model
                         'label' => __('surveys.fields.senders.name'),
                         'alias' => __('surveys.fields.senders.alias'),
                         'type' => CustomFieldType::String,
+                        'rules' => ['required_with:data.attributes.senders'],
                         'parameters' => [
                             CustomFieldParameter::CategoryId->value => 1,
                             CustomFieldParameter::IsFilterable,
@@ -122,6 +124,7 @@ class Survey extends Model
                         'label' => __('surveys.fields.position.name'),
                         'alias' => __('surveys.fields.position.alias'),
                         'type' => CustomFieldType::String,
+                        'rules' => ['required_with:data.attributes.senders'],
                         'parameters' => [
                             CustomFieldParameter::CategoryId->value => 1,
                             CustomFieldParameter::ShowInCard,
@@ -139,6 +142,7 @@ class Survey extends Model
                 'alias' => __('surveys.fields.spokesmen.alias'),
                 'type' => CustomFieldType::MultiValue,
                 'rules' => ['min:1', 'max:6'],
+                'required' => true,
                 'parameters' => [
                     CustomFieldParameter::CategoryId->value => 1,
                     CustomFieldParameter::IsFilterable,
@@ -153,6 +157,7 @@ class Survey extends Model
                         'label' => __('surveys.fields.spokesmen.name'),
                         'alias' => __('surveys.fields.spokesmen.alias'),
                         'type' => CustomFieldType::String,
+                        'rules' => ['required_with:data.attributes.spokesmen'],
                         'parameters' => [
                             CustomFieldParameter::CategoryId->value => 1,
                             CustomFieldParameter::IsFilterable,
@@ -167,6 +172,7 @@ class Survey extends Model
                         'label' => __('surveys.fields.position.name'),
                         'alias' => __('surveys.fields.position.alias'),
                         'type' => CustomFieldType::String,
+                        'rules' => ['required_with:data.attributes.spokesmen'],
                         'parameters' => [
                             CustomFieldParameter::CategoryId->value => 1,
                             CustomFieldParameter::IsFilterable,
@@ -199,6 +205,7 @@ class Survey extends Model
                                 'label' => __('surveys.fields.reviewer.name'),
                                 'alias' => __('surveys.fields.reviewer.alias'),
                                 'type' => CustomFieldType::String,
+                                'rules' => ['required_with:data.attributes.reviewer'],
                                 'parameters' => [
                                     CustomFieldParameter::CategoryId->value => 1,
                                     CustomFieldParameter::IsFilterable,
@@ -213,6 +220,7 @@ class Survey extends Model
                                 'label' => __('surveys.fields.position.name'),
                                 'alias' => __('surveys.fields.position.alias'),
                                 'type' => CustomFieldType::String,
+                                'rules' => ['required_with:data.attributes.reviewer'],
                                 'parameters' => [
                                     CustomFieldParameter::CategoryId->value => 1,
                                     CustomFieldParameter::IsFilterable,

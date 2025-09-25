@@ -132,7 +132,7 @@ class SurveyService extends GeneralService
     }
 
     private function processSendersAndSpokesmen(Survey $survey, $data): void
-    {
+    { //todo: separate with a function with try catch clauses and improve
         if (isset($data['senders'])){
             $survey->senders()->createMany($data['senders']);
         }
@@ -142,7 +142,7 @@ class SurveyService extends GeneralService
         }
 
         if (isset($data['reviewer'])) {
-            $survey->reviewer()->create($data['reviewer'][0]);
+            $survey->reviewer()->createMany($data['reviewer']);
         }
     }
 }

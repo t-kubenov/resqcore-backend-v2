@@ -16,13 +16,13 @@ abstract class GeneralService
             return;
         }
 
-        $key = 'survey-create:' . (auth()->user()?->id ?: $request->ip());
+        $key = 'create:' . (auth()->user()?->id ?: $request->ip());
 
         if (RateLimiter::tooManyAttempts($key, 1)) {
             throw new ThrottleRequestsException(__('throttle.report-create'));
         }
 
-        RateLimiter::hit($key, 60);
+        RateLimiter::hit($key, 5);
     }
 
     public function filterDates(Builder $query, string $field, string $dates): void
