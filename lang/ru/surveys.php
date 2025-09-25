@@ -13,10 +13,6 @@ return [
             ],
         ],
         'columns' => [
-            'survey_code' => [
-                'name' => '',
-                'alias' => '',
-            ],
             'senders' => [
                 'name' => 'Мен/Біз/Мною/Нами',
                 'alias' => '',
