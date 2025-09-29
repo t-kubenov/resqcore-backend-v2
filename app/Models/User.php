@@ -104,12 +104,4 @@ class User extends Authenticatable
     {
         return $this->role->name === RoleEnum::BranchOfficeUser->value;
     }
-
-    public function scopeWithFullName(Builder $query): Builder
-    {
-        return $query->select([
-            'id',
-            \DB::raw("CONCAT(last_name, ' ', first_name, ' ', patronymic) as name")
-        ]);
-    }
 }
