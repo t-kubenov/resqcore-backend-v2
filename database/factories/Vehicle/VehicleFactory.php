@@ -24,7 +24,7 @@ class VehicleFactory extends Factory
     {
         return [
             'branch_office_id' => BranchOffice::factory(),
-            'name' => ucwords($this->faker->word() . ' ' . $this->faker->word()),
+            'brand' => ucwords($this->faker->word() . ' ' . $this->faker->word()),
             'vehicle_type_id' => VehicleType::factory(),
             'plate_number' => strtoupper($this->faker->bothify('?###???')), // Example: AB123CD
             'year' => $this->faker->numberBetween(1990, now()->year),

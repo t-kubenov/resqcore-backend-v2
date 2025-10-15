@@ -12,6 +12,7 @@ use App\Http\Controllers\Report\UpdateLogController;
 use App\Http\Controllers\StatisticsController;
 use App\Http\Controllers\Survey\SurveyController;
 use App\Http\Controllers\Survey\ViolationController;
+use App\Http\Controllers\Vehicle\VehicleController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('throttle:global')->prefix('v2/')->group(function () {
@@ -86,6 +87,8 @@ Route::middleware('throttle:global')->prefix('v2/')->group(function () {
                 Route::post('/close-violation/{id}', [ViolationController::class, 'close'])->name('close');
             });
         });
+
+        Route::resource('vehicles', VehicleController::class)->only('index', 'show');
     });
 });
 

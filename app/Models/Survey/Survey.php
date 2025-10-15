@@ -10,7 +10,6 @@ use App\Models\RescueCompany;
 use App\Models\User;
 use App\Observers\Survey\SurveyObserver;
 use App\Traits\FormatsColumns;
-use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -258,8 +257,8 @@ class Survey extends Model
             'spokesmen' => $this->spokesmen->select('name', 'position'),
             'legal_entity_id' => $this->legal_entity->name,
             'legal_entity_unit_id' => $this->legal_entity_unit->name,
-            'survey_date' => Carbon::parse($this->survey_date)->format('Y-m-d'),
-            'hazardous_facility_name' => $this->hazardous_facility_name, // maybe: move to mutators?
+            'survey_date' => $this->survey_date,
+            'hazardous_facility_name' => $this->hazardous_facility_name,
         ];
     }
 

@@ -425,7 +425,7 @@ class Report extends ReportBase
         return $branchOfficeId . '-' . $reportCount;
     }
 
-    public function calculateTotals()
+    public function calculateTotals(): void
     {
         $this->minor_injury_total = $this->minor_injury_count;
         $this->severe_injury_total = $this->severe_injury_count;

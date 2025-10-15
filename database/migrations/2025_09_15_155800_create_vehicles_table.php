@@ -43,7 +43,7 @@ return new class extends Migration
                 'faulty'
             ])->nullable();
 
-            $table->string('name'); // Марка автомашины
+            $table->string('brand'); // Марка автомашины
             $table->string('plate_number')->unique(); // Гос. номер
             $table->string('image_path')->nullable();
             $table->year('year')->nullable();    // Год выпуска

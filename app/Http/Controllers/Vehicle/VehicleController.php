@@ -1,8 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Vehicle;
 
+use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreVehicleRequest;
+use App\Http\Resources\Vehicle\VehicleCollection;
+use App\Http\Resources\Vehicle\VehicleResource;
 use App\Models\Vehicle\Vehicle;
 use Illuminate\Http\Request;
 
@@ -13,7 +16,7 @@ class VehicleController extends Controller
      */
     public function index()
     {
-        //
+        return new VehicleCollection(Vehicle::paginate());
     }
 
     /**
@@ -37,7 +40,7 @@ class VehicleController extends Controller
      */
     public function show(Vehicle $vehicle)
     {
-        //
+        return new VehicleResource($vehicle);
     }
 
     /**

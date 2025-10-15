@@ -7,6 +7,8 @@ use App\Enums\CustomFieldParameter;
 
 trait FormatsColumns
 {
+    use AltersDisplayedDates;
+
     /**
      * Get field definitions.
      *
@@ -44,7 +46,6 @@ trait FormatsColumns
             fn($field) => [
                 'key' => $field['name'],
                 'name' => $field['label'],
-                'alias' => $field['alias'],
             ],
             array_filter(static::fieldDefinitions(), fn($field) =>
                 in_array(CustomFieldParameter::ShowInTable, $field['parameters'])
@@ -58,7 +59,6 @@ trait FormatsColumns
             fn($field) => [
                 'key' => $field['name'],
                 'name' => $field['label'],
-                'alias' => $field['alias'],
             ],
             array_filter(static::fieldDefinitions(), fn($field) =>
                 in_array(CustomFieldParameter::ShowInExport, $field['parameters'])
@@ -72,7 +72,6 @@ trait FormatsColumns
             fn($field) => [
                 'key' => $field['name'],
                 'name' => $field['label'],
-                'alias' => $field['alias'],
             ],
             array_filter(static::fieldDefinitions(), fn($field) =>
                 in_array(CustomFieldParameter::ShowInCard, $field['parameters'])
