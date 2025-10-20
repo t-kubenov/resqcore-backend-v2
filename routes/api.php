@@ -88,7 +88,7 @@ Route::middleware('throttle:global')->prefix('v2/')->group(function () {
             });
         });
 
-        Route::resource('vehicles', VehicleController::class)->only('index', 'show');
+        Route::resource('vehicles', VehicleController::class)->only('index', 'show', 'store', 'update', 'destroy');
     });
 });
 

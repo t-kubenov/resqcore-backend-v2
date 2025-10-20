@@ -4,63 +4,32 @@ namespace App\Policies;
 
 use App\Models\User;
 use App\Models\Vehicle\Vehicle;
-use Illuminate\Auth\Access\Response;
 
-class VehiclePolicy
+class VehiclePolicy extends GeneralPolicy
 {
-    /**
-     * Determine whether the user can view any models.
-     */
-    public function viewAny(User $user): bool
-    {
-        return false;
-    }
-
-    /**
-     * Determine whether the user can view the model.
-     */
-    public function view(User $user, Vehicle $vehicle): bool
-    {
-        return false;
-    }
-
-    /**
-     * Determine whether the user can create models.
-     */
-    public function create(User $user): bool
-    {
-        return false;
-    }
-
-    /**
-     * Determine whether the user can update the model.
-     */
     public function update(User $user, Vehicle $vehicle): bool
     {
+        if ($user->isAdmin()){
+            return true;
+        }
+
+        if ($user->isCentralOffice()){
+            return $user->rescue_company()->id === $vehicle->rescue_company()->id;
+        }
+
         return false;
     }
 
-    /**
-     * Determine whether the user can delete the model.
-     */
     public function delete(User $user, Vehicle $vehicle): bool
     {
-        return false;
-    }
+        if ($user->isAdmin()){
+            return true;
+        }
 
-    /**
-     * Determine whether the user can restore the model.
-     */
-    public function restore(User $user, Vehicle $vehicle): bool
-    {
-        return false;
-    }
+        if ($user->isCentralOffice()){
+            return $user->rescue_company()->id === $vehicle->rescue_company()->id;
+        }
 
-    /**
-     * Determine whether the user can permanently delete the model.
-     */
-    public function forceDelete(User $user, Vehicle $vehicle): bool
-    {
         return false;
     }
 }

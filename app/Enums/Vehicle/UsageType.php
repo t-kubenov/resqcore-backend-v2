@@ -2,11 +2,11 @@
 
 namespace App\Enums\Vehicle;
 
-enum UsageType: string
+enum UsageType: int
 {
-    case Rental = 'rental'; // Аренда
-    case CustomerRental = 'customer_rental'; // Аренда у заказчика
-    case Owned = 'owned'; // Собственность
-    case CustomerOwned = 'customer_owned'; // Собственность заказчика
-    case TransferredOwnership = 'transferred_ownership'; // Собственность передан
+    case Owned = 0; // Собственность
+    case Rental = 1; // Аренда
+    case CustomerRental = 2; // Аренда у заказчика
+    case CustomerOwned = 3; // Собственность заказчика
+    case TransferredOwnership = 4; // Собственность передан
 }

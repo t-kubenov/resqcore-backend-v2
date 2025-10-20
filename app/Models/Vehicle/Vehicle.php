@@ -8,12 +8,16 @@ use App\Enums\Vehicle\ActionType;
 use App\Enums\Vehicle\TechnicalCondition;
 use App\Enums\Vehicle\UsageType;
 use App\Models\BranchOffice;
+use App\Models\RescueCompany;
+use App\Observers\Vehicle\VehicleObserver;
 use App\Traits\FormatsColumns;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
+#[ObservedBy(VehicleObserver::class)]
 class Vehicle extends Model
 {
     use HasFactory, formatsColumns;
@@ -23,6 +27,7 @@ class Vehicle extends Model
         'brand',                       // Марка автомашины
         'vehicle_type_id',             // Тип
         'plate_number',                // Гос. номер
+        'image_path',
         'year',                        // Год выпуска
         'location',                    // Место дислокации / обслуживаемый объект
         'vehicle_owner_id',            // Владелец
@@ -101,6 +106,7 @@ class Vehicle extends Model
                 'type' => CustomFieldType::String,
                 'rules' => [
                     'max:255',
+                    'unique:vehicles,plate_number'
                 ],
                 'required' => true,
                 'parameters' => [
@@ -114,9 +120,13 @@ class Vehicle extends Model
                 'key' => 'data.attributes.year',
                 'name' => 'year',
                 'label' => __('vehicles.fields.year'),
-                'type' => CustomFieldType::String,
+                'type' => CustomFieldType::Int,
                 'rules' => [
-                    "required|digits:4|integer|min:1900|max:{{ date('Y') + 1 }}",
+                    'required',
+                    'integer',
+                    'digits:4',
+                    'min:1900',
+                    'max:' . date('Y'),
                 ],
                 'required' => true,
                 'parameters' => [
@@ -130,7 +140,7 @@ class Vehicle extends Model
                 'key' => 'data.attributes.location',
                 'name' => 'location',
                 'label' => __('vehicles.fields.location'),
-                'type' => CustomFieldType::Int,
+                'type' => CustomFieldType::String,
                 'rules' => [
                     'max:255',
                 ],
@@ -299,15 +309,16 @@ class Vehicle extends Model
     public function getReadableData(): array
     {
         return [
-            'branch_office_id' => $this->branchOffice?->name,
+            'branch_office_id' => $this->branch_office?->name,
             'brand' => $this->brand,
-            'vehicle_type_id' => $this->vehicleType?->name,
+            'vehicle_type_id' => $this->vehicle_type?->name,
             'plate_number' => $this->plate_number,
+            'image_path' => $this->image_path,
             'year' => $this->year,
             'location' => $this->location,
-            'vehicle_owner_id' => $this->vehicleOwner?->name,
+            'vehicle_owner_id' => $this->vehicle_owner?->name,
             'usage_type' => $this->usage_type?->name,
-            'vehicle_user_id' => $this->vehicleUser?->name,
+            'vehicle_user_id' => $this->vehicle_user?->name,
             'rental_contract' => $this->rental_contract,
             'rental_price' => $this->rental_price,
             'technical_condition' => $this->technical_condition?->name,
@@ -326,10 +337,14 @@ class Vehicle extends Model
     }
 
 
-
     public function branch_office(): BelongsTo
     {
         return $this->belongsTo(BranchOffice::class);
+    }
+
+    public function rescue_company()
+    {
+        return $this->hasOneThrough(RescueCompany::class, BranchOffice::class);
     }
 
     public function vehicle_type(): BelongsTo

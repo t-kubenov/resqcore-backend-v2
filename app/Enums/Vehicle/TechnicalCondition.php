@@ -2,8 +2,8 @@
 
 namespace App\Enums\Vehicle;
 
-enum TechnicalCondition: string
+enum TechnicalCondition: int
 {
-    case Operational = 'operational'; // Исправен
-    case Faulty = 'faulty'; // Неисправен
+    case Operational = 0; // Исправен
+    case Faulty = 1; // Неисправен
 }

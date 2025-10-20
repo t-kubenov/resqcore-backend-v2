@@ -2,27 +2,19 @@
 
 namespace App\Http\Requests;
 
+use App\DTOs\ReportFilterFieldValidationDTO;
+use App\Models\Vehicle\Vehicle;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreVehicleRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     */
-    public function authorize(): bool
+    public function rules():array
     {
-        return false;
+        return $this->getRules(new Vehicle());
     }
 
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
-     */
-    public function rules(): array
+    protected function getRules(Vehicle $class): array
     {
-        return [
-            //
-        ];
+        return ReportFilterFieldValidationDTO::fromArray($class->fieldDefinitions(), 'creation');
     }
 }

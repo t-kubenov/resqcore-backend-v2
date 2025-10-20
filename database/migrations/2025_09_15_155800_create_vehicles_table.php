@@ -22,26 +22,11 @@ return new class extends Migration
                 ->constrained()
                 ->cascadeOnDelete();
             // Вид пользования
-            $table->enum('usage_type', [
-                'rental',
-                'customer_rental',
-                'owned',
-                'customer_owned',
-                'transferred_ownership',
-            ]);
+            $table->unsignedTinyInteger('usage_type')->default(0);
             // Действия
-            $table->enum('action', [
-                'for_sale',
-                'transfer',
-                'acquired',
-                'reserved',
-                'none',
-            ])->default('none');
+            $table->unsignedTinyInteger('action')->default(0);
             // Тех. состояние
-            $table->enum('technical_condition', [
-                'operational',
-                'faulty'
-            ])->nullable();
+            $table->unsignedTinyInteger('technical_condition')->default(0);
 
             $table->string('brand'); // Марка автомашины
             $table->string('plate_number')->unique(); // Гос. номер

@@ -2,11 +2,11 @@
 
 namespace App\Enums\Vehicle;
 
-enum ActionType: string
+enum ActionType: int
 {
-    case ForSale = 'for_sale'; // НА РЕАЛИЗАЦИЮ
-    case Transfer = 'transfer'; // ПЕРЕМЕШЕНИЕ
-    case Acquired = 'acquired'; // ПРИОБРЕТЕН
-    case Reserved = 'reserved'; // РЕЗЕРВ
-    case None = 'none'; // (Пустые)
+    case None = 0; // (Пустые)
+    case ForSale = 1; // НА РЕАЛИЗАЦИЮ
+    case Transfer = 2; // ПЕРЕМЕШЕНИЕ
+    case Acquired = 3; // ПРИОБРЕТЕН
+    case Reserved = 4; // РЕЗЕРВ
 }

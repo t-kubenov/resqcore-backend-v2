@@ -4,66 +4,63 @@ namespace App\Http\Controllers\Vehicle;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreVehicleRequest;
+use App\Http\Requests\Vehicle\UpdateVehicleRequest;
 use App\Http\Resources\Vehicle\VehicleCollection;
 use App\Http\Resources\Vehicle\VehicleResource;
+use App\Http\Services\Vehicle\VehicleService;
 use App\Models\Vehicle\Vehicle;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Http\Exceptions\ThrottleRequestsException;
 use Illuminate\Http\Request;
 
 class VehicleController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    use AuthorizesRequests;
+
+    public function __construct(
+        protected VehicleService $vehicleService
+    ){}
+
     public function index()
     {
-        return new VehicleCollection(Vehicle::paginate());
+        $collection = $this->vehicleService->index();
+
+        return new VehicleCollection($collection);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(StoreVehicleRequest $request)
     {
-        //
-    }
+        $this->authorize('create', Vehicle::class);
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Vehicle $vehicle)
-    {
+        $vehicle = $this->vehicleService->store($request);
+
         return new VehicleResource($vehicle);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Vehicle $vehicle)
+    public function show(Vehicle $vehicle)
     {
-        //
+        $this->authorize('view');
+
+        return new VehicleResource($vehicle);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Vehicle $vehicle)
+    public function update(UpdateVehicleRequest $request, Vehicle $vehicle)
     {
-        //
+        $this->authorize('update', $vehicle);
+
+        $vehicle = $this->vehicleService->update($request, $vehicle);
+
+        return new VehicleResource($vehicle);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(Vehicle $vehicle)
     {
-        //
+        $this->authorize('delete', $vehicle);
+
+        $vehicle->delete();
+
+        return response()->json([
+           "message" => __('documents.delete.success')
+        ], 200);
     }
 }
