@@ -45,10 +45,8 @@ beforeEach(function() {
                 'id',
                 'type',
                 'attributes' => [
-                    '*' => [ // todo: get rid of this, solve in SurveyCollection
-                        'survey_code',
-                        // etc.
-                    ]
+                    'survey_code',
+                    // etc.
                 ]
             ]
         ],
@@ -82,10 +80,8 @@ beforeEach(function() {
             'id',
             'type',
             'attributes' => [
-                '*' => [ // todo: get rid of this, solve in SurveyCollection
-                    'survey_code',
-                    // etc.
-                ]
+                'survey_code',
+               // etc.
             ]
         ]
     ];

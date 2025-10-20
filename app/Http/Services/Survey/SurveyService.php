@@ -58,17 +58,17 @@ class SurveyService extends GeneralService
 
             $query->whereHas('violations', function ($q) use ($search) {
                 $q
-                    ->where('description', 'ILIKE', "%{$search}%")
-                    ->orWhere('clause', 'ILIKE', "%{$search}%");
+                    ->where('description', 'ILIKE', "%$search%")
+                    ->orWhere('clause', 'ILIKE', "%$search%");
             })
                 ->orWhereHas('legal_entity', function ($q) use ($search) {
-                    $q->where('name', 'ILIKE', "%{$search}%");
+                    $q->where('name', 'ILIKE',  "%$search%");
                 })
                 ->orWhereHas('legal_entity_unit', function ($q) use ($search) {
-                    $q->where('name', 'ILIKE', "%{$search}%");
+                    $q->where('name', 'ILIKE',  "%$search%");
                 })
-                ->orWhere('hazardous_facility_name', 'ILIKE', "%{$search}%")
-                ->orWhere('survey_code', 'ILIKE', "%{$search}%");
+                ->orWhere('hazardous_facility_name', 'ILIKE',  "%$search%")
+                ->orWhere('survey_code', 'ILIKE',  "%$search%");
 
             unset($data['search']);
         }
