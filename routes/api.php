@@ -5,7 +5,6 @@ use App\Http\Controllers\AuxiliaryDataController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\CustomFieldController;
 use App\Http\Controllers\EmailController;
-use App\Http\Controllers\ImageController;
 use App\Http\Controllers\Report\ReportController;
 use App\Http\Controllers\Report\UpdateController;
 use App\Http\Controllers\Report\UpdateLogController;
@@ -21,7 +20,6 @@ Route::middleware('throttle:global')->prefix('v2/')->group(function () {
 
     Route::middleware('auth:sanctum')->group(function () {
         Route::get('/user', [AuthController::class, 'user'])->name('profile.show');
-        Route::get('/image', [ImageController::class, 'show'])->name('image.show');
         Route::get('/companies', [CompanyController::class, 'index'])->name('companies.index');
         Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
         Route::post('/send-feedback', [EmailController::class, 'send'])->name('send-feedback');
