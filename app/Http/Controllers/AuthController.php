@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Services\AuthService;
+use App\Http\Services\ImageUploadService;
 use Illuminate\Http\Request;
 
 class AuthController extends Controller
@@ -45,13 +46,22 @@ class AuthController extends Controller
         return $this->authService->changePassword($validated);
     }
 
-    public function uploadAvatar(Request $request)
+    public function uploadAvatar(Request $request, ImageUploadService $imageService)
     {
         $request->validate([
-            "avatar" => "required|image|mimes:jpeg,png,jpg,svg,webp|max:2048"
+            "image" => "required|image|mimes:jpeg,png,jpg,svg,webp|max:2048"
         ]);
 
-        return $this->authService->uploadAvatar($request->file('avatar'));
+        $success = $imageService->uploadAndReplace(
+            auth()->user(),
+            $request->file('image'),
+            'avatars',
+            'avatar',
+        );
+
+        return ["message" => $success
+            ? __("documents.image.upload_success")
+            : __("documents.image.upload_failure")];
     }
 
     public function login(Request $request)

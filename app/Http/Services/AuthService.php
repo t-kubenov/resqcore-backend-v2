@@ -3,10 +3,8 @@
 namespace App\Http\Services;
 
 use App\Http\Resources\UserResource;
-use App\Models\RescueCompany;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rules\Password;
 
@@ -61,25 +59,6 @@ class AuthService
 
         return ["message" => __("passwords.changed")];
 
-    }
-
-    public function uploadAvatar($avatar)
-    {
-        $user = auth()->user();
-
-        if (!$avatar) {
-            return ["message" => __("auth.avatar.upload_failure")];
-        }
-
-        if ($user->avatar) {
-            Storage::disk('public')->delete($user->avatar);
-        }
-
-        $user->avatar = $avatar? $avatar->store('avatars', 'public'): null;
-
-        $user->save();
-
-        return ["message" => __("auth.avatar.upload_success")];
     }
 
     public function validatePassword($password) // used in the controller

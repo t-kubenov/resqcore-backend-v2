@@ -16,6 +16,7 @@ use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Facades\Storage;
 
 #[ObservedBy(VehicleObserver::class)]
 class Vehicle extends Model
@@ -313,7 +314,7 @@ class Vehicle extends Model
             'brand' => $this->brand,
             'vehicle_type_id' => $this->vehicle_type?->name,
             'plate_number' => $this->plate_number,
-            'image_path' => $this->image_path,
+            'image_path' => $this->image_path? Storage::disk()->url($this->image_path): null,
             'year' => $this->year,
             'location' => $this->location,
             'vehicle_owner_id' => $this->vehicle_owner?->name,
