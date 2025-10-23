@@ -5,9 +5,9 @@ namespace App\Models;
 use App\Enums\RoleEnum;
 use App\Models\Report\Report;
 use App\Traits\AltersDisplayedDates;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\HasOneThrough;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
@@ -19,11 +19,6 @@ class User extends Authenticatable
 {
     use HasFactory, Notifiable, HasApiTokens, HasRoles, AltersDisplayedDates;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
-     */
     protected $fillable = [
         'first_name',
         'last_name',
@@ -36,22 +31,14 @@ class User extends Authenticatable
         'avatar'
     ];
 
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var array<int, string>
-     */
     protected $hidden = [
         'company_id',
         'password',
         'remember_token',
+        'created_at',
+        'updated_at'
     ];
 
-    /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
-     */
     protected function casts(): array
     {
         return [
@@ -60,29 +47,33 @@ class User extends Authenticatable
         ];
     }
 
-    public function branch_office()
+    protected static function booted(): void
+    {
+        static::creating(function ($user) {
+            if (!$user->rescue_company_id && $user->branch_id) {
+                $user->rescue_company_id = BranchOffice::find($user->branch_id)->rescue_company_id;
+            }
+        });
+    }
+
+    public function rescue_company(): BelongsTo
+    {
+        return $this->belongsTo(RescueCompany::class);
+    }
+
+    public function branch_office(): BelongsTo
     {
         return $this->belongsTo(BranchOffice::class, 'branch_id');
     }
 
-    public function rescue_company(): HasOneThrough
-    {
-        return $this->hasOneThrough(RescueCompany::class, BranchOffice::class, localKey: 'branch_id');
-    }
-
-    public function reports()
+    public function reports(): HasMany
     {
         return $this->hasMany(Report::class);
     }
 
-    public function role()
+    public function role(): BelongsTo
     {
         return $this->belongsTo(Role::class);
-    }
-
-    public function getRescueCompanyIdAttribute(): int
-    {
-        return $this->branch_office->rescue_company_id;
     }
 
     public function getFullNameAttribute(): string

@@ -3,7 +3,6 @@
 namespace Database\Factories;
 
 use App\Models\BranchOffice;
-use App\Models\Company;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
@@ -26,14 +25,11 @@ class UserFactory extends Factory
      */
     public function definition(): array
     {
-
-
         return [
             'first_name' => fake()->firstName(),
             'last_name' => fake()->lastName(),
             'patronymic' => fake()->lastName(),
-            // 'company' => $is_company? Company::factory(): null,
-//             'branch_id' =>  BranchOffice::inRandomOrder()->first()->id,
+            'branch_id' => BranchOffice::factory(),
             // 'role_id' => Role::random()->id,
             'email' => fake()->unique()->safeEmail(),
             'email_verified_at' => now(),

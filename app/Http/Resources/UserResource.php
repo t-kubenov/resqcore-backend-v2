@@ -4,6 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\Storage;
 
 class UserResource extends JsonResource
 {
@@ -24,19 +25,23 @@ class UserResource extends JsonResource
         return [
             'id' => $this->id,
             'type' => 'user',
-            'attributes' => $this->getAttributes(),
-            'relationships' => $this->getRelations(),
+            'attributes' => $this->getAttributes($request),
             'token' => $this->when($this->token, $this->token),
         ];
     }
 
-    protected function getAttributes()
+    private function getAttributes(Request $request): array
     {
-        $toRemove = ['password', 'remember_token', 'created_at', 'updated_at'];
-
-        $attributes = parent::getAttributes();
-
-        return array_diff_key($attributes, array_flip($toRemove));
-
+        return [
+            'first_name'            => $this->first_name,
+            'last_name'             => $this->last_name,
+            'patronymic'            => $this->patronymic,
+            'email'                 => $this->email,
+            'role_id'               => $this->role?->name,
+            'rescue_company_id'     => $this->rescue_company?->alias,
+            'branch_id'             => $this->branch_office?->name,
+            'position'              => $this->position,
+            'avatar'                => $this->avatar? Storage::disk()->url($this->avatar): null,
+        ];
     }
 }
