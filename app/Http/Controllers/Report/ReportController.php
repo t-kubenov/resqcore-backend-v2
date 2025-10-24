@@ -8,6 +8,7 @@ use App\Http\Requests\Report\StoreReportRequest;
 use App\Http\Resources\Report\ExportCollection;
 use App\Http\Resources\Report\ReportCollection;
 use App\Http\Resources\Report\ReportResource;
+use App\Http\Services\DocumentFormService;
 use App\Http\Services\Report\ReportService;
 use App\Models\Report\Report;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
@@ -18,13 +19,7 @@ class ReportController extends Controller
 {
     use AuthorizesRequests;
 
-    protected $reportService;
-
-    public function __construct(ReportService $reportService)
-    {
-        $this->reportService = $reportService;
-    }
-
+    public function __construct(protected ReportService $reportService){}
 
     public function index(FilterReportRequest $request)
     {
@@ -42,6 +37,15 @@ class ReportController extends Controller
         $report = $this->reportService->show($report);
 
         return new ReportResource($report);
+    }
+
+    public function create(DocumentFormService $service)
+    {
+        $fields = $service->getCategorizedCreateFields(Report::class);
+
+        return response()->json([
+            'fields' => $fields
+        ]);
     }
 
     public function store(StoreReportRequest $request)

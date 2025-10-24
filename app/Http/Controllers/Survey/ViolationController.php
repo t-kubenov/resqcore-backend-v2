@@ -6,10 +6,10 @@ use App\Http\Requests\Survey\CloseViolationRequest;
 use App\Http\Requests\Survey\StoreViolationRequest;
 use App\Http\Resources\Survey\ViolationCollection;
 use App\Http\Resources\Survey\ViolationResource;
+use App\Http\Services\DocumentFormService;
 use App\Http\Services\Survey\ViolationService;
 use App\Models\Survey\Survey;
 use App\Models\Survey\Violation;
-use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\JsonResponse;
 
@@ -24,9 +24,15 @@ class ViolationController
         $this->violationService = $violationService;
     }
 
-    /**
-     * @throws AuthorizationException
-     */
+    public function create(DocumentFormService $service)
+    {
+        $fields = $service->getCategorizedCreateFields(Violation::class);
+
+        return response()->json([
+            'fields' => $fields
+        ]);
+    }
+
     public function store(StoreViolationRequest $request, int $id): ViolationResource
     {
         $survey = Survey::findOrFail($id);

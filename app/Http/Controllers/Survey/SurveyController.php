@@ -7,6 +7,7 @@ use App\Http\Requests\Survey\StoreSurveyRequest;
 use App\Http\Resources\Survey\PrintResource;
 use App\Http\Resources\Survey\SurveyCollection;
 use App\Http\Resources\Survey\SurveyResource;
+use App\Http\Services\DocumentFormService;
 use App\Http\Services\Survey\SurveyService;
 use App\Models\Survey\Survey;
 use Illuminate\Auth\Access\AuthorizationException;
@@ -18,12 +19,7 @@ class SurveyController
 {
     use AuthorizesRequests;
 
-    protected SurveyService $surveyService;
-
-    public function __construct(SurveyService $surveyService)
-    {
-        $this->surveyService = $surveyService;
-    }
+    public function __construct(protected SurveyService $surveyService){}
 
     public function index(FilterSurveyRequest $request)
     {
@@ -32,28 +28,6 @@ class SurveyController
         return new SurveyCollection($collection);
     }
 
-    public function export(FilterSurveyRequest $request)
-    {
-        $collection = $this->surveyService->index($request);
-
-        return new SurveyCollection($collection);
-    }
-
-    /**
-     * @throws AuthorizationException
-     */
-    public function print(int $id)
-    {
-        $survey = Survey::findOrFail($id);
-
-        $this->authorize('view', $survey);
-
-        return new PrintResource($survey);
-    }
-
-    /**
-     * @throws AuthorizationException
-     */
     public function show(int $id)
     {
         $survey = Survey::findOrFail($id);
@@ -61,6 +35,15 @@ class SurveyController
         $this->authorize('view', $survey);
 
         return new SurveyResource($survey);
+    }
+
+    public function create(DocumentFormService $service)
+    {
+        $fields = $service->getCategorizedCreateFields(Survey::class);
+
+        return response()->json([
+            'fields' => $fields
+        ]);
     }
 
     public function store(StoreSurveyRequest $request): SurveyResource|JsonResponse
@@ -74,5 +57,21 @@ class SurveyController
         }
 
         return new SurveyResource($survey);
+    }
+
+    public function export(FilterSurveyRequest $request)
+    {
+        $collection = $this->surveyService->index($request);
+
+        return new SurveyCollection($collection);
+    }
+
+    public function print(int $id)
+    {
+        $survey = Survey::findOrFail($id);
+
+        $this->authorize('view', $survey);
+
+        return new PrintResource($survey);
     }
 }

@@ -7,6 +7,7 @@ use App\Http\Requests\StoreVehicleRequest;
 use App\Http\Requests\Vehicle\UpdateVehicleRequest;
 use App\Http\Resources\Vehicle\VehicleCollection;
 use App\Http\Resources\Vehicle\VehicleResource;
+use App\Http\Services\DocumentFormService;
 use App\Http\Services\ImageUploadService;
 use App\Http\Services\Vehicle\VehicleService;
 use App\Models\Vehicle\Vehicle;
@@ -26,6 +27,15 @@ class VehicleController extends Controller
         $collection = $this->vehicleService->index();
 
         return new VehicleCollection($collection);
+    }
+
+    public function create(DocumentFormService $service)
+    {
+        $fields = $service->getCategorizedCreateFields(Vehicle::class);
+
+        return response()->json([
+            'fields' => $fields
+        ]);
     }
 
     public function store(StoreVehicleRequest $request)

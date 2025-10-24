@@ -33,10 +33,6 @@ Route::middleware('throttle:global')->prefix('v2/')->group(function () {
 
         Route::prefix('auxiliary')->name('auxiliary.')->controller(AuxiliaryDataController::class)
             ->group(function () {
-                Route::get('/report-fields', 'getReportFields')->name('report-fields');
-                Route::get('/update-fields', 'getUpdateFields')->name('update-fields');
-                Route::get('/survey-fields', 'getSurveyFields')->name('survey-fields');
-                Route::get('/violation-fields', 'getViolationFields')->name('violation-fields');
                 Route::get('/report-filters', 'getReportFilters')->name('report-filters');
                 Route::get('/survey-filters', 'getSurveyFilters')->name('survey-filters');
                 Route::get('/mineral-fields', 'getMineralFields')->name('mineral-fields');
@@ -59,16 +55,21 @@ Route::middleware('throttle:global')->prefix('v2/')->group(function () {
                 Route::get('/transport-usage', 'getTransportUsage')->name('transport-usage');
             });
 
+
+        Route::resource('reports', ReportController::class)->only('create');
         Route::prefix('reports')->name('reports.')->group(function () {
             Route::get('/', [ReportController::class, 'index'])->name('index');
             Route::get('/export', [ReportController::class, 'export'])->name('export');
             Route::get('/{id}', [ReportController::class, 'show'])->name('show');
             Route::get('/{id}/log', [UpdateLogController::class, 'show'])->name('id.log');
 
+
+            Route::resource('updates', UpdateController::class)->only('create');
             Route::post('/', [ReportController::class, 'store'])->name('store');
             Route::post('/update/{id}', [UpdateController::class, 'store'])->name('updates.store');
         });
 
+        Route::resource('surveys', SurveyController::class)->only('create');
         Route::prefix('surveys')->name('surveys.')->group(function () {
             Route::get('/', [SurveyController::class, 'index'])->name('index');
             Route::get('/export', [SurveyController::class, 'export'])->name('export');
@@ -77,6 +78,7 @@ Route::middleware('throttle:global')->prefix('v2/')->group(function () {
 
             Route::post('/', [SurveyController::class, 'store'])->name('store');
 
+            Route::resource('violations', ViolationController::class)->only('create');
             Route::name('violations.')->group(function () {
                 Route::get('/violations/{id}', [ViolationController::class, 'show'])->name('show');
                 Route::get('/{id}/violations', [ViolationController::class, 'index'])->name('index');
@@ -86,7 +88,7 @@ Route::middleware('throttle:global')->prefix('v2/')->group(function () {
             });
         });
 
-        Route::resource('vehicles', VehicleController::class)->only('index', 'show', 'store', 'update', 'destroy');
+        Route::resource('vehicles', VehicleController::class)->only('index', 'show', 'create', 'store', 'update', 'destroy');
         Route::post('vehicles/{vehicle}/upload-image', [VehicleController::class, 'uploadImage'])->name('vehicles.upload-image');
     });
 });
