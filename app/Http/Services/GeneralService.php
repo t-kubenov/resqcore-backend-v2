@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\RateLimiter;
 
 abstract class GeneralService
 {
-    public function throttle(Request $request): void // maybe: move to middleware
+    public function throttle(Request $request): void
     {
         if (config('app.debug')) {
             return;

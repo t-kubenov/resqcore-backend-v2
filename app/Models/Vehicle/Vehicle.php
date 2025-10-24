@@ -30,6 +30,10 @@ class Vehicle extends Model
         'plate_number',                // Гос. номер
         'image_path',
         'year',                        // Год выпуска
+        'engine_size',
+        'fuel_type',
+        'gearbox',
+        'drive',
         'location',                    // Место дислокации / обслуживаемый объект
         'vehicle_owner_id',            // Владелец
         'usage_type',                  // Вид пользования
@@ -37,7 +41,7 @@ class Vehicle extends Model
         'rental_contract',             // Договор аренды
         'rental_price',                // Стоимость в месяц
         'technical_condition',         // Тех. состояние
-        'action',                     // Действия
+        'action',                      // Действия
         'notes',                       // Уточнения
         'insurance_expiration_date',   // Дата окончания страхового полиса
         'inspection_expiration_date',  // Дата окончания тех. осмотра
@@ -130,6 +134,62 @@ class Vehicle extends Model
                     'max:' . date('Y'),
                 ],
                 'required' => true,
+                'parameters' => [
+                    CustomFieldParameter::IsFilterableForCA,
+                    CustomFieldParameter::IsFilterable,
+                    CustomFieldParameter::ShowInTable,
+                    CustomFieldParameter::ShowInCard,
+                ],
+            ],
+            'engine_size' => [
+                'key' => 'data.attributes.engine_size',
+                'name' => 'engine_size',
+                'label' => __('vehicles.fields.engine_size'),
+                'type' => CustomFieldType::Float,
+                'rules' => [
+                    'min: 0.5',
+                    'max: 50.0',
+                ],
+                'parameters' => [
+                    CustomFieldParameter::IsFilterableForCA,
+                    CustomFieldParameter::IsFilterable,
+                    CustomFieldParameter::ShowInTable,
+                    CustomFieldParameter::ShowInCard,
+                ],
+            ],
+            'fuel_type' => [
+                'key' => 'data.attributes.fuel_type',
+                'name' => 'fuel_type',
+                'label' => __('vehicles.fields.fuel_type'),
+                'type' => CustomFieldType::SingleChoiceEnum,
+                'options' => route('auxiliary.field-options', 'fuel_type'),
+                'parameters' => [
+                    CustomFieldParameter::IsFilterableForCA,
+                    CustomFieldParameter::IsFilterable,
+                    CustomFieldParameter::ShowInTable,
+                    CustomFieldParameter::ShowInCard,
+                ],
+            ],
+            'gearbox' => [
+                'key' => 'data.attributes.gearbox',
+                'name' => 'gearbox',
+                'label' => __('vehicles.fields.gearbox'),
+                'type' => CustomFieldType::SingleChoiceEnum,
+                'required' => true,
+                'options' => route('auxiliary.field-options', 'gearbox'),
+                'parameters' => [
+                    CustomFieldParameter::IsFilterableForCA,
+                    CustomFieldParameter::IsFilterable,
+                    CustomFieldParameter::ShowInTable,
+                    CustomFieldParameter::ShowInCard,
+                ],
+            ],
+            'drive' => [
+                'key' => 'data.attributes.drive',
+                'name' => 'drive',
+                'label' => __('vehicles.fields.drive'),
+                'type' => CustomFieldType::SingleChoiceEnum,
+                'options' => route('auxiliary.field-options', 'drive'),
                 'parameters' => [
                     CustomFieldParameter::IsFilterableForCA,
                     CustomFieldParameter::IsFilterable,

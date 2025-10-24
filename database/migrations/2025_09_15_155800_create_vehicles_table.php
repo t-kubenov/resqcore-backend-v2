@@ -32,13 +32,17 @@ return new class extends Migration
             $table->string('plate_number')->unique(); // Гос. номер
             $table->string('image_path')->nullable();
             $table->year('year')->nullable();    // Год выпуска
+            $table->decimal('engine_size', 3, 1)->nullable(); // Объем двигателя
+            $table->unsignedTinyInteger('fuel_type')->nullable(); // Вид топлива
+            $table->unsignedTinyInteger('gearbox')->nullable(); // Коробка передач
+            $table->unsignedTinyInteger('drive')->nullable(); // Привод
 
             $table->string('location')->nullable(); // Место дислокации
             $table->foreignId('vehicle_owner_id')->constrained('vehicle_companies')->cascadeOnDelete();    // Владелец
             $table->foreignId('vehicle_user_id')->constrained('vehicle_companies')->cascadeOnDelete(); // Организация-эксплуатант
 
             $table->string('rental_contract')->nullable(); // Договор аренды (номер/ссылка)
-            $table->decimal('rental_price', 10, 2)->nullable(); // Стоимость в месяц
+            $table->decimal('rental_price', 15, 2)->nullable(); // Стоимость в месяц
 
             $table->text('notes')->nullable(); // Уточнения
 

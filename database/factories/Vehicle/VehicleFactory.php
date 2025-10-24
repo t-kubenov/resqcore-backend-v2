@@ -3,6 +3,9 @@
 namespace Database\Factories\Vehicle;
 
 use App\Enums\Vehicle\ActionType;
+use App\Enums\Vehicle\DriveType;
+use App\Enums\Vehicle\FuelType;
+use App\Enums\Vehicle\GearboxType;
 use App\Enums\Vehicle\TechnicalCondition;
 use App\Enums\Vehicle\UsageType;
 use App\Models\BranchOffice;
@@ -26,8 +29,14 @@ class VehicleFactory extends Factory
             'branch_office_id' => BranchOffice::factory(),
             'brand' => ucwords($this->faker->word() . ' ' . $this->faker->word()),
             'vehicle_type_id' => VehicleType::factory(),
-            'plate_number' => strtoupper($this->faker->bothify('?###???')), // Example: AB123CD
+            'plate_number' => strtoupper($this->faker->bothify('?###???')), // Example: A123CDB
             'year' => $this->faker->numberBetween(1990, now()->year),
+
+            'engine_size' => $this->faker->randomFloat(min: 0.5, max: 4.0),
+            'fuel_type' => $this->faker->randomElement(FuelType::cases()),
+            'gearbox' => $this->faker->randomElement(GearboxType::cases()),
+            'drive' => $this->faker->randomElement(DriveType::cases()),
+
             'location' => $this->faker->address(),
             'vehicle_owner_id' => VehicleCompany::factory(),
             'usage_type' => $this->faker->randomElement(UsageType::cases()),
