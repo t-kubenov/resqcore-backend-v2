@@ -5,7 +5,7 @@ namespace App\Http\Resources\Survey;
 use App\Http\Resources\GenericResource;
 use Illuminate\Http\Request;
 
-class PrintResource extends GenericResource
+class SurveyPrintResource extends GenericResource
 {
     /**
      * Transform the resource into an array.
@@ -25,7 +25,7 @@ class PrintResource extends GenericResource
                         return [
                             'id' => $violation->id,
                             'type' => 'violation',
-                            'attributes' => $violation->toArray(),
+                            'attributes' => $violation->getPrintData(),
                         ];
                     })->toArray(),
             ]]

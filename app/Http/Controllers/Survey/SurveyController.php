@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Survey;
 
 use App\Http\Requests\Survey\FilterSurveyRequest;
 use App\Http\Requests\Survey\StoreSurveyRequest;
-use App\Http\Resources\Survey\PrintResource;
+use App\Http\Resources\Survey\SurveyPrintResource;
 use App\Http\Resources\Survey\SurveyCollection;
 use App\Http\Resources\Survey\SurveyResource;
 use App\Http\Services\DocumentFormService;
@@ -72,6 +72,6 @@ class SurveyController
 
         $this->authorize('view', $survey);
 
-        return new PrintResource($survey);
+        return new SurveyPrintResource($survey);
     }
 }

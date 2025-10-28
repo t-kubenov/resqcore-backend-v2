@@ -14,6 +14,7 @@ use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 
 #[ObservedBy(SurveyObserver::class)]
@@ -92,7 +93,8 @@ class Survey extends Model
                 'label' => __('surveys.fields.senders.name'),
                 'alias' => __('surveys.fields.senders.alias'),
                 'type' => CustomFieldType::MultiValue,
-                'rules' => ['max:4'],
+                'rules' => ['min:1', 'max:4'],
+                'required' => true,
                 'parameters' => [
                     CustomFieldParameter::CategoryId->value => 1,
                     CustomFieldParameter::ShowInCard,
@@ -105,6 +107,7 @@ class Survey extends Model
                         'label' => __('surveys.fields.senders.name'),
                         'alias' => __('surveys.fields.senders.alias'),
                         'type' => CustomFieldType::String,
+                        'rules' => ['required_with:data.attributes.senders'],
                         'parameters' => [
                             CustomFieldParameter::CategoryId->value => 1,
                             CustomFieldParameter::IsFilterable,
@@ -120,6 +123,7 @@ class Survey extends Model
                         'label' => __('surveys.fields.position.name'),
                         'alias' => __('surveys.fields.position.alias'),
                         'type' => CustomFieldType::String,
+                        'rules' => ['required_with:data.attributes.senders'],
                         'parameters' => [
                             CustomFieldParameter::CategoryId->value => 1,
                             CustomFieldParameter::ShowInCard,
@@ -137,6 +141,7 @@ class Survey extends Model
                 'alias' => __('surveys.fields.spokesmen.alias'),
                 'type' => CustomFieldType::MultiValue,
                 'rules' => ['min:1', 'max:6'],
+                'required' => true,
                 'parameters' => [
                     CustomFieldParameter::CategoryId->value => 1,
                     CustomFieldParameter::IsFilterable,
@@ -151,6 +156,7 @@ class Survey extends Model
                         'label' => __('surveys.fields.spokesmen.name'),
                         'alias' => __('surveys.fields.spokesmen.alias'),
                         'type' => CustomFieldType::String,
+                        'rules' => ['required_with:data.attributes.spokesmen'],
                         'parameters' => [
                             CustomFieldParameter::CategoryId->value => 1,
                             CustomFieldParameter::IsFilterable,
@@ -165,6 +171,7 @@ class Survey extends Model
                         'label' => __('surveys.fields.position.name'),
                         'alias' => __('surveys.fields.position.alias'),
                         'type' => CustomFieldType::String,
+                        'rules' => ['required_with:data.attributes.spokesmen'],
                         'parameters' => [
                             CustomFieldParameter::CategoryId->value => 1,
                             CustomFieldParameter::IsFilterable,
@@ -174,6 +181,54 @@ class Survey extends Model
                     ],
                 ]
             ],
+
+            'reviewer' =>
+                [
+                    'key' => 'data.attributes.reviewer',
+                    'name' => 'reviewer',
+                    'label' => __('surveys.fields.reviewer.name'),
+                    'alias' => __('surveys.fields.reviewer.alias'),
+                    'type' => CustomFieldType::DoubleInput,
+                    'rules' => ['max:1'],
+                    'parameters' => [
+                        CustomFieldParameter::CategoryId->value => 1,
+                        CustomFieldParameter::IsFilterable,
+                        CustomFieldParameter::IsFilterableForCA,
+                        CustomFieldParameter::ShowInCard,
+                    ],
+                    'subfields' => [
+                        'reviewer_name' =>
+                            [
+                                'key' => 'data.attributes.reviewer.*.name',
+                                'name' => 'reviewer',
+                                'label' => __('surveys.fields.reviewer.name'),
+                                'alias' => __('surveys.fields.reviewer.alias'),
+                                'type' => CustomFieldType::String,
+                                'rules' => ['required_with:data.attributes.reviewer'],
+                                'parameters' => [
+                                    CustomFieldParameter::CategoryId->value => 1,
+                                    CustomFieldParameter::IsFilterable,
+                                    CustomFieldParameter::IsFilterableForCA,
+                                    CustomFieldParameter::ShowInCard,
+                                ],
+                            ],
+                        'reviewer_position' =>
+                            [
+                                'key' => 'data.attributes.reviewer.*.position',
+                                'name' => 'reviewer_position',
+                                'label' => __('surveys.fields.position.name'),
+                                'alias' => __('surveys.fields.position.alias'),
+                                'type' => CustomFieldType::String,
+                                'rules' => ['required_with:data.attributes.reviewer'],
+                                'parameters' => [
+                                    CustomFieldParameter::CategoryId->value => 1,
+                                    CustomFieldParameter::IsFilterable,
+                                    CustomFieldParameter::IsFilterableForCA,
+                                    CustomFieldParameter::ShowInCard,
+                                ],
+                            ],
+                    ]
+                ],
 
             'legal_entity_id' => [
                 'key' => 'data.attributes.legal_entity_id',
@@ -255,6 +310,7 @@ class Survey extends Model
             'created_by' => $this->user->full_name,
             'senders' => $this->senders->select('name', 'position'),
             'spokesmen' => $this->spokesmen->select('name', 'position'),
+            'reviewer' => $this->reviewer->select('name', 'position'),
             'legal_entity_id' => $this->legal_entity->name,
             'legal_entity_unit_id' => $this->legal_entity_unit->name,
             'survey_date' => $this->survey_date,
@@ -264,10 +320,17 @@ class Survey extends Model
 
     public function getPrintData(): array
     {
-        $data = $this->getReadableData();
-        $data['branch_office_id'] = $this->branch_office_id;
-
-        return $data;
+        return [
+            'branch_office_id' => $this->branch_office_id,
+            'created_by' => $this->user->full_name,
+            'senders' => $this->senders->select('name', 'position'),
+            'spokesmen' => $this->spokesmen->select('name', 'position'),
+            'reviewer' => $this->reviewer->select('name', 'position'),
+            'legal_entity_id' => $this->legal_entity->name,
+            'legal_entity_unit_id' => $this->legal_entity_unit->name,
+            'survey_date' => Carbon::parse($this->survey_date)->format('Y-m-d'),
+            'hazardous_facility_name' => $this->hazardous_facility_name,
+        ];
     }
 
     public static function generatePrintColumns(): array
@@ -298,6 +361,11 @@ class Survey extends Model
     public function spokesmen(): HasMany
     {
         return $this->hasMany(SurveyFacilitySpokesman::class);
+    }
+
+    public function reviewer(): HasMany
+    {
+        return $this->hasMany(SurveyReviewer::class);
     }
 
     public function violations(): HasMany

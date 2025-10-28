@@ -48,6 +48,13 @@ class SurveyService extends GeneralService
             unset($data['spokesmen']);
         }
 
+        if (isset($data['reviewer'])) {
+            $query->whereHas('reviewer', function ($q) use ($data) {
+                $q->where('name', 'ILIKE', "%{$data['reviewer']}%");
+            });
+            unset($data['reviewer']);
+        }
+
         if (isset($data['survey_date'])) {
             $this->filterDates($query, 'survey_date', $data['survey_date']);
             unset($data['survey_date']);
@@ -108,13 +115,17 @@ class SurveyService extends GeneralService
     }
 
     private function processSendersAndSpokesmen(Survey $survey, $data): void
-    {
+    { //todo: separate with a function with try catch clauses and improve
         if (isset($data['senders'])){
             $survey->senders()->createMany($data['senders']);
         }
 
         if (isset($data['spokesmen'])) {
             $survey->spokesmen()->createMany($data['spokesmen']);
+        }
+
+        if (isset($data['reviewer'])) {
+            $survey->reviewer()->createMany($data['reviewer']);
         }
     }
 }

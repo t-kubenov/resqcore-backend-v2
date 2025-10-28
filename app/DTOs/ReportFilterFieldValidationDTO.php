@@ -73,16 +73,30 @@ class ReportFilterFieldValidationDTO
     {
         return collect($fields)->map(function ($field, $key) use ($model, $context) {
 
-            return match ($context) {
+            $dto = match ($context) {
                 'filtering' => self::forFiltering($key, $field),
                 'creation' => self::forCreation($key, $field),
                 'updating' => self::forUpdating($key, $field, $model),
                 default => throw new \InvalidArgumentException('Unknown context: ' . $context),
             };
+
+            // If subfields exist, process them recursively
+            if (!empty($field['subfields'])) {
+                $subRules = self::fromArray($field['subfields'], $context);
+
+                // Merge: treat subfields as nested validation (dot notation)
+                $dtoRules = [$dto->field => $dto->rules];
+                foreach ($subRules as $subKey => $rules) {
+                    $dtoRules[$subKey] = $rules;
+                }
+
+                return $dtoRules;
+            }
+
+            return [$dto->field => $dto->rules];
         })
-            ->mapWithKeys(function (ReportFilterFieldValidationDTO $dto) {
-                return [$dto->field => $dto->rules];
-        })->toArray();
+            ->collapse() // flatten nested arrays
+            ->toArray();
     }
 
     public function toArray(): array
