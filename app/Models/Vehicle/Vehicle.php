@@ -121,6 +121,18 @@ class Vehicle extends Model
                     CustomFieldParameter::ShowInCard,
                 ],
             ],
+            'image_path' => [
+                'key' => 'data.attributes.image_path',
+                'name' => 'image_path',
+                'label' => __('vehicles.fields.image'),
+                'type' => CustomFieldType::String,
+                'options' => route('auxiliary.field-options', 'action_type'),
+                'parameters' => [
+                    CustomFieldParameter::IsFilterableForCA,
+                    CustomFieldParameter::IsFilterable,
+                    CustomFieldParameter::ShowInCard,
+                ],
+            ],
             'year' => [
                 'key' => 'data.attributes.year',
                 'name' => 'year',
@@ -175,7 +187,6 @@ class Vehicle extends Model
                 'name' => 'gearbox',
                 'label' => __('vehicles.fields.gearbox'),
                 'type' => CustomFieldType::SingleChoiceEnum,
-                'required' => true,
                 'options' => route('auxiliary.field-options', 'gearbox'),
                 'parameters' => [
                     CustomFieldParameter::IsFilterableForCA,

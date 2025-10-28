@@ -6,6 +6,7 @@ return [
         'brand' => 'Марка автомашины',
         'vehicle_type_id' => 'Тип',
         'plate_number' => 'Гос. номер',
+        'image' => 'Изображение',
         'year' => 'Год выпуска',
         'engine_size' => 'Объем двигателя',
         'fuel_type' => 'Тип топлива',
