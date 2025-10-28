@@ -81,7 +81,7 @@ beforeEach(function() {
             'id',
             'type',
             'attributes' => [
-                'survey_code',
+                'branch_office_id',
                // etc.
             ]
         ]
