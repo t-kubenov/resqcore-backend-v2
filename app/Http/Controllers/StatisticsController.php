@@ -56,7 +56,7 @@ class StatisticsController extends Controller
                 'open_reports' => (clone $filterQuery)->where('is_closed', false)->count(),
                 'closed_reports' => (clone $filterQuery)->count() - (clone $filterQuery)->where('is_closed', false)->count(),
                 'worker_hours_total' => number_format((clone $filterQuery)->sum('worker_man_hours'), 1, '.', ''),
-                'workers_total' => number_format((clone $filterQuery)->sum('branch_worker_total'), 1, '.', ''),
+                'workers_total' => number_format((clone $filterQuery)->sum('branch_worker_total'), 0, '.', ''),
                 'emergency_line_reports' => (clone $filterQuery)->where('is_emergency_line', true)->count(),
                 'contract_reports' => (clone $filterQuery)->count() - (clone $filterQuery)->where('is_emergency_line', true)->count(),
             ];
