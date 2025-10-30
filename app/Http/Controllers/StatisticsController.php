@@ -7,6 +7,7 @@ use App\Http\Services\Report\ReportService;
 use App\Models\Report\Report;
 use App\Traits\Cacheable;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class StatisticsController extends Controller
 {
@@ -219,12 +220,51 @@ class StatisticsController extends Controller
         $data = $this->cacheResponse("statistics:getTransportUsage:r{$this->roleId}:b{$this->branchId}", $request, function () use ($request) {
             $filterQuery = $this->reportService->filterQuery(Report::query(), $request);
 
-            return $filterQuery->join('transports', 'reports.id', '=', 'transports.report_id')
+            // Base filtered reports
+            $reportIds = $filterQuery->pluck('reports.id');
+
+            // Query transports directly from reports
+            $reportTransports = DB::table('transports')
                 ->join('transport_types', 'transports.type', '=', 'transport_types.id')
-                ->selectRaw('transports.type, transport_types.name as name, transport_types.alias as alias, SUM(transports.count) as total_count')
-                ->groupBy('transports.type', 'name', 'alias')
+                ->whereIn('transports.report_id', $reportIds)
+                ->selectRaw('
+                transports.type,
+                transport_types.name as name,
+                transport_types.alias as alias,
+                SUM(transports.count) as total_count
+            ')
+                ->groupBy('transports.type', 'name', 'alias');
+
+            // Query transports from updates related to those reports
+            $updateTransports = DB::table('transports')
+                ->join('updates', 'updates.id', '=', 'transports.update_id')
+                ->join('transport_types', 'transports.type', '=', 'transport_types.id')
+                ->whereIn('updates.report_id', $reportIds)
+                ->selectRaw('
+                transports.type,
+                transport_types.name as name,
+                transport_types.alias as alias,
+                SUM(transports.count) as total_count
+            ')
+                ->groupBy('transports.type', 'name', 'alias');
+
+            // Combine both queries
+            $data = DB::query()
+                ->fromSub(
+                    $reportTransports->unionAll($updateTransports),
+                    'combined'
+                )
+                ->selectRaw('
+                type,
+                name,
+                alias,
+                SUM(total_count) as total_count
+            ')
+                ->groupBy('type', 'name', 'alias')
                 ->orderBy('type')
                 ->get();
+
+            return $data;
         });
 
         return response()->json(['data' => $data], 200);
