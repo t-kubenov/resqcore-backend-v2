@@ -44,7 +44,7 @@ class ReportController extends Controller
         $fields = $service->getCategorizedCreateFields(Report::class);
 
         return response()->json([
-            'fields' => $fields
+            'categories' => $fields
         ]);
     }
 

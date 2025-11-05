@@ -28,7 +28,7 @@ class UpdateController extends Controller
         $fields = $service->getCategorizedCreateFields(Update::class);
 
         return response()->json([
-            'fields' => $fields
+            'categories' => $fields
         ]);
     }
 

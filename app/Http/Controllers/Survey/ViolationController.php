@@ -29,7 +29,7 @@ class ViolationController
         $fields = $service->getCategorizedCreateFields(Violation::class);
 
         return response()->json([
-            'fields' => $fields
+            'categories' => $fields
         ]);
     }
 

@@ -10,7 +10,6 @@ use App\Http\Resources\Survey\SurveyResource;
 use App\Http\Services\DocumentFormService;
 use App\Http\Services\Survey\SurveyService;
 use App\Models\Survey\Survey;
-use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Exceptions\ThrottleRequestsException;
 use Illuminate\Http\JsonResponse;
@@ -42,7 +41,7 @@ class SurveyController
         $fields = $service->getCategorizedCreateFields(Survey::class);
 
         return response()->json([
-            'fields' => $fields
+            'categories' => $fields
         ]);
     }
 

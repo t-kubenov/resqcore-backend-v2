@@ -22,9 +22,9 @@ class VehicleController extends Controller
         protected VehicleService $vehicleService
     ){}
 
-    public function index()
+    public function index(Request $request)
     {
-        $collection = $this->vehicleService->index();
+        $collection = $this->vehicleService->index($request);
 
         return new VehicleCollection($collection);
     }
@@ -34,7 +34,7 @@ class VehicleController extends Controller
         $fields = $service->getCategorizedCreateFields(Vehicle::class);
 
         return response()->json([
-            'fields' => $fields
+            'categories' => $fields
         ]);
     }
 
