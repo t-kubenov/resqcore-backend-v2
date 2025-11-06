@@ -3,7 +3,8 @@
 namespace App\Http\Controllers\Vehicle;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\StoreVehicleRequest;
+use App\Http\Requests\Vehicle\FilterVehicleRequest;
+use App\Http\Requests\Vehicle\StoreVehicleRequest;
 use App\Http\Requests\Vehicle\UpdateVehicleRequest;
 use App\Http\Resources\Vehicle\VehicleCollection;
 use App\Http\Resources\Vehicle\VehicleResource;
@@ -22,7 +23,7 @@ class VehicleController extends Controller
         protected VehicleService $vehicleService
     ){}
 
-    public function index(Request $request)
+    public function index(FilterVehicleRequest $request)
     {
         $collection = $this->vehicleService->index($request);
 

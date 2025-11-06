@@ -10,6 +10,9 @@ use App\Enums\Vehicle\UsageType;
 use App\Models\BranchOffice;
 use App\Models\RescueCompany;
 use App\Observers\Vehicle\VehicleObserver;
+use App\Services\Filters\Filters\LikeFilter;
+use App\Services\Filters\Filters\RelationSearchFilter;
+use App\Services\Filters\Filters\WhereInFilter;
 use App\Traits\FormatsColumns;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
@@ -84,8 +87,6 @@ class Vehicle extends Model
                 ],
                 'required' => true,
                 'parameters' => [
-                    CustomFieldParameter::IsFilterableForCA,
-                    CustomFieldParameter::IsFilterable,
                     CustomFieldParameter::ShowInTable,
                     CustomFieldParameter::ShowInCard,
                 ],
@@ -115,8 +116,6 @@ class Vehicle extends Model
                 ],
                 'required' => true,
                 'parameters' => [
-                    CustomFieldParameter::IsFilterableForCA,
-                    CustomFieldParameter::IsFilterable,
                     CustomFieldParameter::ShowInTable,
                     CustomFieldParameter::ShowInCard,
                 ],
@@ -128,8 +127,6 @@ class Vehicle extends Model
                 'type' => FieldType::String,
                 'options' => route('auxiliary.field-options', 'action_type'),
                 'parameters' => [
-                    CustomFieldParameter::IsFilterableForCA,
-                    CustomFieldParameter::IsFilterable,
                     CustomFieldParameter::ShowInCard,
                 ],
             ],
@@ -147,9 +144,6 @@ class Vehicle extends Model
                 ],
                 'required' => true,
                 'parameters' => [
-                    CustomFieldParameter::IsFilterableForCA,
-                    CustomFieldParameter::IsFilterable,
-                    CustomFieldParameter::ShowInTable,
                     CustomFieldParameter::ShowInCard,
                 ],
             ],
@@ -163,9 +157,6 @@ class Vehicle extends Model
                     'max: 50.0',
                 ],
                 'parameters' => [
-                    CustomFieldParameter::IsFilterableForCA,
-                    CustomFieldParameter::IsFilterable,
-                    CustomFieldParameter::ShowInTable,
                     CustomFieldParameter::ShowInCard,
                 ],
             ],
@@ -176,9 +167,6 @@ class Vehicle extends Model
                 'type' => FieldType::SingleChoiceEnum,
                 'options' => route('auxiliary.field-options', 'fuel_type'),
                 'parameters' => [
-                    CustomFieldParameter::IsFilterableForCA,
-                    CustomFieldParameter::IsFilterable,
-                    CustomFieldParameter::ShowInTable,
                     CustomFieldParameter::ShowInCard,
                 ],
             ],
@@ -189,9 +177,6 @@ class Vehicle extends Model
                 'type' => FieldType::SingleChoiceEnum,
                 'options' => route('auxiliary.field-options', 'gearbox'),
                 'parameters' => [
-                    CustomFieldParameter::IsFilterableForCA,
-                    CustomFieldParameter::IsFilterable,
-                    CustomFieldParameter::ShowInTable,
                     CustomFieldParameter::ShowInCard,
                 ],
             ],
@@ -202,9 +187,6 @@ class Vehicle extends Model
                 'type' => FieldType::SingleChoiceEnum,
                 'options' => route('auxiliary.field-options', 'drive'),
                 'parameters' => [
-                    CustomFieldParameter::IsFilterableForCA,
-                    CustomFieldParameter::IsFilterable,
-                    CustomFieldParameter::ShowInTable,
                     CustomFieldParameter::ShowInCard,
                 ],
             ],
@@ -218,9 +200,6 @@ class Vehicle extends Model
                 ],
                 'required' => true,
                 'parameters' => [
-                    CustomFieldParameter::IsFilterableForCA,
-                    CustomFieldParameter::IsFilterable,
-                    CustomFieldParameter::ShowInTable,
                     CustomFieldParameter::ShowInCard,
                 ],
             ],
@@ -232,8 +211,6 @@ class Vehicle extends Model
                 'required' => true,
                 'options' => route('auxiliary.field-options', 'vehicle_companies'),
                 'parameters' => [
-                    CustomFieldParameter::IsFilterableForCA,
-                    CustomFieldParameter::IsFilterable,
                     CustomFieldParameter::ShowInTable,
                     CustomFieldParameter::ShowInCard,
                 ],
@@ -261,8 +238,6 @@ class Vehicle extends Model
                 'type' => FieldType::SingleChoiceEnum,
                 'options' => route('auxiliary.field-options', 'vehicle_companies'),
                 'parameters' => [
-                    CustomFieldParameter::IsFilterableForCA,
-                    CustomFieldParameter::IsFilterable,
                     CustomFieldParameter::ShowInTable,
                     CustomFieldParameter::ShowInCard,
                 ],
@@ -277,9 +252,6 @@ class Vehicle extends Model
                     'max:255',
                 ],
                 'parameters' => [
-                    CustomFieldParameter::IsFilterable,
-                    CustomFieldParameter::IsFilterableForCA,
-                    CustomFieldParameter::ShowInTable,
                     CustomFieldParameter::ShowInCard,
                 ],
             ],
@@ -322,6 +294,7 @@ class Vehicle extends Model
                 'parameters' => [
                     CustomFieldParameter::IsFilterableForCA,
                     CustomFieldParameter::IsFilterable,
+                    CustomFieldParameter::ShowInTable,
                     CustomFieldParameter::ShowInCard,
                 ],
             ],
@@ -340,11 +313,8 @@ class Vehicle extends Model
                 'key' => 'data.attributes.insurance_expiration_date',
                 'name' => 'insurance_expiration_date',
                 'label' => __('vehicles.fields.insurance_expiration_date'),
-                'type' => CustomFieldType::Date,
+                'type' => FieldType::Date,
                 'parameters' => [
-                    CustomFieldParameter::IsFilterable,
-                    CustomFieldParameter::IsFilterableForCA,
-                    CustomFieldParameter::ShowInTable,
                     CustomFieldParameter::ShowInCard,
                 ],
             ],
@@ -355,9 +325,6 @@ class Vehicle extends Model
                 'label' => __('vehicles.fields.inspection_expiration_date'),
                 'type' => FieldType::Date,
                 'parameters' => [
-                    CustomFieldParameter::IsFilterable,
-                    CustomFieldParameter::IsFilterableForCA,
-                    CustomFieldParameter::ShowInTable,
                     CustomFieldParameter::ShowInCard,
                 ],
             ],
@@ -366,11 +333,8 @@ class Vehicle extends Model
                 'key' => 'data.attributes.inspection_date',
                 'name' => 'inspection_date',
                 'label' => __('vehicles.fields.inspection_date'),
-                'type' => CustomFieldType::Date,
+                'type' => FieldType::Date,
                 'parameters' => [
-                    CustomFieldParameter::IsFilterable,
-                    CustomFieldParameter::IsFilterableForCA,
-                    CustomFieldParameter::ShowInTable,
                     CustomFieldParameter::ShowInCard,
                 ],
             ],

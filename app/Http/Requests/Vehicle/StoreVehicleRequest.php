@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Vehicle;
 
 use App\DTOs\ReportFilterFieldValidationDTO;
 use App\Models\Vehicle\Vehicle;

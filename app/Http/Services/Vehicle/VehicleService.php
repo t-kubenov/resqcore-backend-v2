@@ -2,19 +2,29 @@
 
 namespace App\Http\Services\Vehicle;
 
-use App\Http\Requests\StoreVehicleRequest;
+use App\Http\Requests\Vehicle\StoreVehicleRequest;
 use App\Http\Requests\Vehicle\UpdateVehicleRequest;
 use App\Http\Services\GeneralService;
 use App\Models\Vehicle\Vehicle;
+use App\Services\Filters\Configurations\VehicleFilterConfig;
+use Illuminate\Http\Request;
 
 class VehicleService extends GeneralService
 {
-    public function index()
+    public function __construct(
+        protected VehicleFilterConfig $filterConfig
+    ){}
+
+    public function index(Request $request)
     {
         $query = Vehicle::query()
             ->orderBy('created_at', 'desc');
 
-        return $this->filterByRoles($query)->paginate(15);
+        $this->filterByRoles($query);
+
+        $this->filterConfig->apply($query, $request->all());
+
+        return $query->paginate(15);
     }
 
     public function store(StoreVehicleRequest $request): Vehicle
