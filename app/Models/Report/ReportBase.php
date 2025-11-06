@@ -2,7 +2,7 @@
 
 namespace App\Models\Report;
 
-use App\Enums\CustomFieldParameter;
+use App\Enums\FieldParameter;
 use App\Enums\FieldType;
 use App\Models\Model;
 use App\Models\Transport;
@@ -55,7 +55,7 @@ abstract class ReportBase extends Model
                 'required' => false,
                 'rules' => ['min:0', 'max:10000'],
                 'parameters' => [
-                    CustomFieldParameter::CategoryId->value => 2,
+                    FieldParameter::CategoryId->value => 2,
                 ]
             ],
             'work_scope' => [
@@ -66,7 +66,7 @@ abstract class ReportBase extends Model
                 'type' => FieldType::Text,
                 'required' => true,
                 'parameters' => [
-                    CustomFieldParameter::CategoryId->value => 2,
+                    FieldParameter::CategoryId->value => 2,
                 ]
             ],
             'situation_during_filing' => [
@@ -77,7 +77,7 @@ abstract class ReportBase extends Model
                 'type' => FieldType::Text,
                 'required' => true,
                 'parameters' => [
-                    CustomFieldParameter::CategoryId->value => 2,
+                    FieldParameter::CategoryId->value => 2,
                 ]
             ],
             'minor_injury_count' => [
@@ -89,7 +89,7 @@ abstract class ReportBase extends Model
                 'required' => false,
                 'rules' => ['min:0', 'max:10000'],
                 'parameters' => [
-                    CustomFieldParameter::CategoryId->value => 3,
+                    FieldParameter::CategoryId->value => 3,
                 ]
             ],
             'severe_injury_count' => [
@@ -101,7 +101,7 @@ abstract class ReportBase extends Model
                 'required' => false,
                 'rules' => ['min:0', 'max:10000'],
                 'parameters' => [
-                    CustomFieldParameter::CategoryId->value => 3,
+                    FieldParameter::CategoryId->value => 3,
                 ]
             ],
             'fatal_injury_count' => [
@@ -113,7 +113,7 @@ abstract class ReportBase extends Model
                 'required' => false,
                 'rules' => ['min:0', 'max:10000'],
                 'parameters' => [
-                    CustomFieldParameter::CategoryId->value => 3,
+                    FieldParameter::CategoryId->value => 3,
                 ]
             ],
             'evacuated_people_count' => [
@@ -125,7 +125,7 @@ abstract class ReportBase extends Model
                 'required' => false,
                 'rules' => ['min:0', 'max:10000'],
                 'parameters' => [
-                    CustomFieldParameter::CategoryId->value => 3,
+                    FieldParameter::CategoryId->value => 3,
                 ]
             ],
             'provided_medical_count' => [
@@ -137,7 +137,7 @@ abstract class ReportBase extends Model
                 'required' => false,
                 'rules' => ['min:0', 'max:10000'],
                 'parameters' => [
-                    CustomFieldParameter::CategoryId->value => 3,
+                    FieldParameter::CategoryId->value => 3,
                 ]
             ],
             'client_equipment_count' => [
@@ -149,7 +149,7 @@ abstract class ReportBase extends Model
                 'required' => false,
                 'rules' => ['min:0', 'max:10000'],
                 'parameters' => [
-                    CustomFieldParameter::CategoryId->value => 2,
+                    FieldParameter::CategoryId->value => 2,
                 ]
             ],
             'third_parties_count' => [
@@ -161,7 +161,7 @@ abstract class ReportBase extends Model
                 'required' => false,
                 'rules' => ['min:0', 'max:10000'],
                 'parameters' => [
-                    CustomFieldParameter::CategoryId->value => 2,
+                    FieldParameter::CategoryId->value => 2,
                 ]
             ],
             'worker_man_hours' => [
@@ -177,7 +177,7 @@ abstract class ReportBase extends Model
                     'max:1000000'
                 ],
                 'parameters' => [
-                    CustomFieldParameter::CategoryId->value => 4,
+                    FieldParameter::CategoryId->value => 4,
                 ]
             ],
             'close_date' => [
@@ -193,7 +193,7 @@ abstract class ReportBase extends Model
                     'before_or_equal:tomorrow',
                 ],
                 'parameters' => [
-                    CustomFieldParameter::CategoryId->value => 4,
+                    FieldParameter::CategoryId->value => 4,
                 ]
             ],
             'transport' => [
@@ -205,7 +205,7 @@ abstract class ReportBase extends Model
                 'rules' => ['array', 'min:1'],
                 'options' => route('auxiliary.field-options', 'transport_type'),
                 'parameters' => [
-                    CustomFieldParameter::CategoryId->value => 2,
+                    FieldParameter::CategoryId->value => 2,
                 ],
                 'subfields' => [
                     'transport_id' => [
@@ -221,7 +221,7 @@ abstract class ReportBase extends Model
                             })
                         ],
                         'parameters' => [
-                            CustomFieldParameter::CategoryId->value => 2,
+                            FieldParameter::CategoryId->value => 2,
                         ]
                     ],
                     'transport_count' => [
@@ -233,7 +233,7 @@ abstract class ReportBase extends Model
                         'required' => true,
                         'rules' => ['min:1', 'max:10000'],
                         'parameters' => [
-                            CustomFieldParameter::CategoryId->value => 2,
+                            FieldParameter::CategoryId->value => 2,
                         ]
                     ],
                 ]
@@ -247,8 +247,8 @@ abstract class ReportBase extends Model
                 'required' => false,
                 'rules' => ['date'],
                 'parameters' => [
-                    CustomFieldParameter::CategoryId->value => 1,
-                    CustomFieldParameter::IsHidden,
+                    FieldParameter::CategoryId->value => 1,
+                    FieldParameter::IsHidden,
                 ]
             ],
         ]);
@@ -288,7 +288,7 @@ abstract class ReportBase extends Model
     {
         return $this->customFieldValues()
             ->whereHas('customField', function ($query) {
-                $query->whereJsonContains('parameters', CustomFieldParameter::IncludeToUpdates);
+                $query->whereJsonContains('parameters', FieldParameter::IncludeToUpdates);
         })
             ->get();
     }

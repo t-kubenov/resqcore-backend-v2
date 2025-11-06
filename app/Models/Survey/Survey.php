@@ -2,7 +2,7 @@
 
 namespace App\Models\Survey;
 
-use App\Enums\CustomFieldParameter;
+use App\Enums\FieldParameter;
 use App\Enums\FieldType;
 use App\Models\BranchOffice;
 use App\Models\Model;
@@ -46,9 +46,9 @@ class Survey extends Model
                     'max:255',
                 ],
                 'parameters' => [
-                    CustomFieldParameter::IsHidden,
-                    CustomFieldParameter::ShowInTable,
-                    CustomFieldParameter::ShowInCard,
+                    FieldParameter::IsHidden,
+                    FieldParameter::ShowInTable,
+                    FieldParameter::ShowInCard,
                 ],
             ],
 
@@ -63,10 +63,10 @@ class Survey extends Model
                     'max:255',
                 ],
                 'parameters' => [
-                    CustomFieldParameter::IsHidden,
-                    CustomFieldParameter::IsFilterableForCA,
-                    CustomFieldParameter::ShowInTable,
-                    CustomFieldParameter::ShowInCard,
+                    FieldParameter::IsHidden,
+                    FieldParameter::IsFilterableForCA,
+                    FieldParameter::ShowInTable,
+                    FieldParameter::ShowInCard,
                 ],
             ],
 
@@ -78,11 +78,11 @@ class Survey extends Model
                 'type' => FieldType::SingleChoiceEnum,
                 'options' => route('auxiliary.field-options', 'created_by'),
                 'parameters' => [
-                    CustomFieldParameter::IsHidden,
-                    CustomFieldParameter::IsFilterable,
-                    CustomFieldParameter::IsFilterableForCA,
-                    CustomFieldParameter::ShowInTable,
-                    CustomFieldParameter::ShowInCard,
+                    FieldParameter::IsHidden,
+                    FieldParameter::IsFilterable,
+                    FieldParameter::IsFilterableForCA,
+                    FieldParameter::ShowInTable,
+                    FieldParameter::ShowInCard,
                 ],
             ],
 
@@ -96,8 +96,8 @@ class Survey extends Model
                 'rules' => ['min:1', 'max:4'],
                 'required' => true,
                 'parameters' => [
-                    CustomFieldParameter::CategoryId->value => 1,
-                    CustomFieldParameter::ShowInCard,
+                    FieldParameter::CategoryId->value => 1,
+                    FieldParameter::ShowInCard,
                 ],
                 'subfields' => [
                     'sender_name' =>
@@ -109,10 +109,10 @@ class Survey extends Model
                         'type' => FieldType::String,
                         'rules' => ['required_with:data.attributes.senders'],
                         'parameters' => [
-                            CustomFieldParameter::CategoryId->value => 1,
-                            CustomFieldParameter::IsFilterable,
-                            CustomFieldParameter::IsFilterableForCA,
-                            CustomFieldParameter::ShowInCard,
+                            FieldParameter::CategoryId->value => 1,
+                            FieldParameter::IsFilterable,
+                            FieldParameter::IsFilterableForCA,
+                            FieldParameter::ShowInCard,
                         ],
                     ],
 
@@ -125,8 +125,8 @@ class Survey extends Model
                         'type' => FieldType::String,
                         'rules' => ['required_with:data.attributes.senders'],
                         'parameters' => [
-                            CustomFieldParameter::CategoryId->value => 1,
-                            CustomFieldParameter::ShowInCard,
+                            FieldParameter::CategoryId->value => 1,
+                            FieldParameter::ShowInCard,
                         ],
                     ],
                 ]
@@ -143,10 +143,10 @@ class Survey extends Model
                 'rules' => ['min:1', 'max:6'],
                 'required' => true,
                 'parameters' => [
-                    CustomFieldParameter::CategoryId->value => 1,
-                    CustomFieldParameter::IsFilterable,
-                    CustomFieldParameter::IsFilterableForCA,
-                    CustomFieldParameter::ShowInCard,
+                    FieldParameter::CategoryId->value => 1,
+                    FieldParameter::IsFilterable,
+                    FieldParameter::IsFilterableForCA,
+                    FieldParameter::ShowInCard,
                 ],
                 'subfields' => [ //todo: subfields are not validated in any way, this is also probably the case for transport.
                     'spokesman_name' =>
@@ -158,10 +158,10 @@ class Survey extends Model
                         'type' => FieldType::String,
                         'rules' => ['required_with:data.attributes.spokesmen'],
                         'parameters' => [
-                            CustomFieldParameter::CategoryId->value => 1,
-                            CustomFieldParameter::IsFilterable,
-                            CustomFieldParameter::IsFilterableForCA,
-                            CustomFieldParameter::ShowInCard,
+                            FieldParameter::CategoryId->value => 1,
+                            FieldParameter::IsFilterable,
+                            FieldParameter::IsFilterableForCA,
+                            FieldParameter::ShowInCard,
                         ],
                     ],
                     'spokesman_position' =>
@@ -173,10 +173,10 @@ class Survey extends Model
                         'type' => FieldType::String,
                         'rules' => ['required_with:data.attributes.spokesmen'],
                         'parameters' => [
-                            CustomFieldParameter::CategoryId->value => 1,
-                            CustomFieldParameter::IsFilterable,
-                            CustomFieldParameter::IsFilterableForCA,
-                            CustomFieldParameter::ShowInCard,
+                            FieldParameter::CategoryId->value => 1,
+                            FieldParameter::IsFilterable,
+                            FieldParameter::IsFilterableForCA,
+                            FieldParameter::ShowInCard,
                         ],
                     ],
                 ]
@@ -191,10 +191,10 @@ class Survey extends Model
                     'type' => FieldType::DoubleInput,
                     'rules' => ['max:1'],
                     'parameters' => [
-                        CustomFieldParameter::CategoryId->value => 1,
-                        CustomFieldParameter::IsFilterable,
-                        CustomFieldParameter::IsFilterableForCA,
-                        CustomFieldParameter::ShowInCard,
+                        FieldParameter::CategoryId->value => 1,
+                        FieldParameter::IsFilterable,
+                        FieldParameter::IsFilterableForCA,
+                        FieldParameter::ShowInCard,
                     ],
                     'subfields' => [
                         'reviewer_name' =>
@@ -206,10 +206,10 @@ class Survey extends Model
                                 'type' => FieldType::String,
                                 'rules' => ['required_with:data.attributes.reviewer'],
                                 'parameters' => [
-                                    CustomFieldParameter::CategoryId->value => 1,
-                                    CustomFieldParameter::IsFilterable,
-                                    CustomFieldParameter::IsFilterableForCA,
-                                    CustomFieldParameter::ShowInCard,
+                                    FieldParameter::CategoryId->value => 1,
+                                    FieldParameter::IsFilterable,
+                                    FieldParameter::IsFilterableForCA,
+                                    FieldParameter::ShowInCard,
                                 ],
                             ],
                         'reviewer_position' =>
@@ -221,10 +221,10 @@ class Survey extends Model
                                 'type' => FieldType::String,
                                 'rules' => ['required_with:data.attributes.reviewer'],
                                 'parameters' => [
-                                    CustomFieldParameter::CategoryId->value => 1,
-                                    CustomFieldParameter::IsFilterable,
-                                    CustomFieldParameter::IsFilterableForCA,
-                                    CustomFieldParameter::ShowInCard,
+                                    FieldParameter::CategoryId->value => 1,
+                                    FieldParameter::IsFilterable,
+                                    FieldParameter::IsFilterableForCA,
+                                    FieldParameter::ShowInCard,
                                 ],
                             ],
                     ]
@@ -242,9 +242,9 @@ class Survey extends Model
                 ],
                 'options' => route('auxiliary.field-options', 'legal_entity'),
                 'parameters' => [
-                    CustomFieldParameter::CategoryId->value => 1,
-                    CustomFieldParameter::ShowInTable,
-                    CustomFieldParameter::ShowInCard,
+                    FieldParameter::CategoryId->value => 1,
+                    FieldParameter::ShowInTable,
+                    FieldParameter::ShowInCard,
                 ],
             ],
 
@@ -260,10 +260,10 @@ class Survey extends Model
                 ],
                 'options' => route('auxiliary.field-options', 'legal_entity_unit'),
                 'parameters' => [
-                    CustomFieldParameter::CategoryId->value => 1,
-                    CustomFieldParameter::FilterByField->value => 'legal_entity_id',
-                    CustomFieldParameter::ShowInTable,
-                    CustomFieldParameter::ShowInCard,
+                    FieldParameter::CategoryId->value => 1,
+                    FieldParameter::FilterByField->value => 'legal_entity_id',
+                    FieldParameter::ShowInTable,
+                    FieldParameter::ShowInCard,
                 ],
             ],
 
@@ -275,11 +275,11 @@ class Survey extends Model
                 'type' => FieldType::Datetime,
                 'required' => true,
                 'parameters' => [
-                    CustomFieldParameter::CategoryId->value => 1,
-                    CustomFieldParameter::IsFilterable,
-                    CustomFieldParameter::IsFilterableForCA,
-                    CustomFieldParameter::ShowInTable,
-                    CustomFieldParameter::ShowInCard,
+                    FieldParameter::CategoryId->value => 1,
+                    FieldParameter::IsFilterable,
+                    FieldParameter::IsFilterableForCA,
+                    FieldParameter::ShowInTable,
+                    FieldParameter::ShowInCard,
                 ],
             ],
 
@@ -294,9 +294,9 @@ class Survey extends Model
                 ],
                 'required' => true,
                 'parameters' => [
-                    CustomFieldParameter::CategoryId->value => 1,
-                    CustomFieldParameter::ShowInTable,
-                    CustomFieldParameter::ShowInCard,
+                    FieldParameter::CategoryId->value => 1,
+                    FieldParameter::ShowInTable,
+                    FieldParameter::ShowInCard,
                 ],
             ],
         ];

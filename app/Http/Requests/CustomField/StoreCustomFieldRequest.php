@@ -3,7 +3,7 @@
 namespace App\Http\Requests\CustomField;
 
 use App\Enums\CustomFieldModel;
-use App\Enums\CustomFieldParameter;
+use App\Enums\FieldParameter;
 use App\Enums\FieldType;
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -26,7 +26,7 @@ class StoreCustomFieldRequest extends FormRequest
     {
         $modelValues = implode(',', CustomFieldModel::values());
         $typeValues = implode(',', FieldType::values());
-        $parameterValues = implode(',', CustomFieldParameter::values());
+        $parameterValues = implode(',', FieldParameter::values());
 
         return array_merge([
             'rescue_company_id'        => ['required', 'integer', 'exists:rescue_companies,id'],

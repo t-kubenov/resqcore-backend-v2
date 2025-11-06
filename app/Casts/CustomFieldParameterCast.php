@@ -2,7 +2,7 @@
 
 namespace App\Casts;
 
-use App\Enums\CustomFieldParameter;
+use App\Enums\FieldParameter;
 use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
 use Illuminate\Database\Eloquent\Model;
 
@@ -17,7 +17,7 @@ class CustomFieldParameterCast implements CastsAttributes
     {
         $parameters = json_decode($value, true);
 
-        return array_map(fn($item) => CustomFieldParameter::from($item), $parameters ?? []);
+        return array_map(fn($item) => FieldParameter::from($item), $parameters ?? []);
     }
 
     /**
@@ -27,7 +27,7 @@ class CustomFieldParameterCast implements CastsAttributes
      */
     public function set(Model $model, string $key, mixed $value, array $attributes): mixed
     {
-        $data = array_map(fn($item) => $item instanceof CustomFieldParameter ? $item->value : $item, $value);
+        $data = array_map(fn($item) => $item instanceof FieldParameter ? $item->value : $item, $value);
 
         return [
             $key => json_encode($data),

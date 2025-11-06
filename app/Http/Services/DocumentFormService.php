@@ -2,7 +2,7 @@
 
 namespace App\Http\Services;
 
-use App\Enums\CustomFieldParameter;
+use App\Enums\FieldParameter;
 use App\Models\Sushi\ReportFieldCategory;
 
 class DocumentFormService
@@ -12,14 +12,14 @@ class DocumentFormService
         $fields = $model::fieldDefinitions();
 
         $fields = array_filter($fields, function ($field) {
-            return !in_array(CustomFieldParameter::IsHidden, $field['parameters'] ?? []);
+            return !in_array(FieldParameter::IsHidden, $field['parameters'] ?? []);
         });
 
         // Group fields by category
         $groupedFields = [];
 
         foreach ($fields as $field) {
-            $category = ReportFieldCategory::find($field['parameters'][CustomFieldParameter::CategoryId->value] ?? 2);
+            $category = ReportFieldCategory::find($field['parameters'][FieldParameter::CategoryId->value] ?? 2);
             $catName = $category->name;
 
             if (!isset($groupedFields[$catName])) {

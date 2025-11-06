@@ -2,7 +2,7 @@
 
 namespace App\Traits;
 
-use App\Enums\CustomFieldParameter;
+use App\Enums\FieldParameter;
 
 
 trait FormatsColumns
@@ -21,7 +21,7 @@ trait FormatsColumns
      *     required: ?bool,
      *     rules: ?array<string, string>,
      *     options: ?string,
-     *     parameters?: array<int, CustomFieldParameter>
+     *     parameters?: array<int, FieldParameter>
      * }>
      */
     public static function fieldDefinitions(): array
@@ -34,7 +34,7 @@ trait FormatsColumns
         return array_filter(static::fieldDefinitions(), function ($field) {
 
             $needle = auth()->user()->isBranchOffice()?
-                CustomFieldParameter::IsFilterable: CustomFieldParameter::IsFilterableForCA;
+                FieldParameter::IsFilterable: FieldParameter::IsFilterableForCA;
 
             return in_array($needle, $field['parameters'] ?? []);
         });
@@ -48,7 +48,7 @@ trait FormatsColumns
                 'name' => $field['label'],
             ],
             array_filter(static::fieldDefinitions(), fn($field) =>
-                in_array(CustomFieldParameter::ShowInTable, $field['parameters'])
+                in_array(FieldParameter::ShowInTable, $field['parameters'])
             )
         ));
     }
@@ -61,7 +61,7 @@ trait FormatsColumns
                 'name' => $field['label'],
             ],
             array_filter(static::fieldDefinitions(), fn($field) =>
-                in_array(CustomFieldParameter::ShowInExport, $field['parameters'])
+                in_array(FieldParameter::ShowInExport, $field['parameters'])
             )
         ));
     }
@@ -74,7 +74,7 @@ trait FormatsColumns
                 'name' => $field['label'],
             ],
             array_filter(static::fieldDefinitions(), fn($field) =>
-                in_array(CustomFieldParameter::ShowInCard, $field['parameters'])
+                in_array(FieldParameter::ShowInCard, $field['parameters'])
             )
         ));
     }

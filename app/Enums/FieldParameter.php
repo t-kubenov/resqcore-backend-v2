@@ -4,7 +4,7 @@ namespace App\Enums;
 
 use App\Traits\EnumToArray;
 
-enum CustomFieldParameter: string
+enum FieldParameter: string
 {
     use EnumToArray;
 

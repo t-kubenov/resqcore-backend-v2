@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Enums\CustomFieldParameter;
+use App\Enums\FieldParameter;
 use App\Enums\FieldType;
 use App\Http\Requests\CustomField\StoreCustomFieldRequest;
 use App\Models\CustomField\CustomField;
@@ -39,7 +39,7 @@ class CustomFieldController
             $this->storeSubfields($customField, $attributes['subfields']);
         }
 
-        if (isset($attributes['parameters']) && in_array(CustomFieldParameter::IncludeToUpdates->value, $attributes['parameters'])) {
+        if (isset($attributes['parameters']) && in_array(FieldParameter::IncludeToUpdates->value, $attributes['parameters'])) {
             $this->createWithAttributes(array_merge($attributes, [
                 'model' => Update::class,
                 'parameters' => [],

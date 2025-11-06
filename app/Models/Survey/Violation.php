@@ -2,7 +2,7 @@
 
 namespace App\Models\Survey;
 
-use App\Enums\CustomFieldParameter;
+use App\Enums\FieldParameter;
 use App\Enums\FieldType;
 use App\Models\Model;
 use App\Traits\FormatsColumns;
@@ -54,11 +54,11 @@ class Violation extends Model
                 'type' => FieldType::Text,
                 'required' => true,
                 'parameters' => [
-                    CustomFieldParameter::CategoryId->value => 1,
-                    CustomFieldParameter::IsFilterable,
-                    CustomFieldParameter::IsFilterableForCA,
-                    CustomFieldParameter::ShowInTable,
-                    CustomFieldParameter::ShowInCard,
+                    FieldParameter::CategoryId->value => 1,
+                    FieldParameter::IsFilterable,
+                    FieldParameter::IsFilterableForCA,
+                    FieldParameter::ShowInTable,
+                    FieldParameter::ShowInCard,
                 ],
             ],
 
@@ -72,11 +72,11 @@ class Violation extends Model
                 'required' => true,
                 'options' => route('auxiliary.field-options', 'clause_type'),
                 'parameters' => [
-                    CustomFieldParameter::CategoryId->value => 1,
-                    CustomFieldParameter::IsFilterable,
-                    CustomFieldParameter::IsFilterableForCA,
-                    CustomFieldParameter::ShowInTable,
-                    CustomFieldParameter::ShowInCard,
+                    FieldParameter::CategoryId->value => 1,
+                    FieldParameter::IsFilterable,
+                    FieldParameter::IsFilterableForCA,
+                    FieldParameter::ShowInTable,
+                    FieldParameter::ShowInCard,
                 ],
             ],
 
@@ -92,11 +92,11 @@ class Violation extends Model
                     'max:255',
                 ],
                 'parameters' => [
-                    CustomFieldParameter::CategoryId->value => 1,
-                    CustomFieldParameter::IsFilterable,
-                    CustomFieldParameter::IsFilterableForCA,
-                    CustomFieldParameter::ShowInTable,
-                    CustomFieldParameter::ShowInCard,
+                    FieldParameter::CategoryId->value => 1,
+                    FieldParameter::IsFilterable,
+                    FieldParameter::IsFilterableForCA,
+                    FieldParameter::ShowInTable,
+                    FieldParameter::ShowInCard,
                 ],
             ],
 
@@ -109,11 +109,11 @@ class Violation extends Model
                 'type' => FieldType::Date,
                 'required' => true,
                 'parameters' => [
-                    CustomFieldParameter::CategoryId->value => 1,
-                    CustomFieldParameter::IsFilterable,
-                    CustomFieldParameter::IsFilterableForCA,
-                    CustomFieldParameter::ShowInTable,
-                    CustomFieldParameter::ShowInCard,
+                    FieldParameter::CategoryId->value => 1,
+                    FieldParameter::IsFilterable,
+                    FieldParameter::IsFilterableForCA,
+                    FieldParameter::ShowInTable,
+                    FieldParameter::ShowInCard,
                 ],
             ],
 
@@ -125,11 +125,11 @@ class Violation extends Model
                 'alias' => __('surveys.fields.violations.elimination_completion.alias'),
                 'type' => FieldType::Boolean,
                 'parameters' => [
-                    CustomFieldParameter::IsFilterable,
-                    CustomFieldParameter::IsFilterableForCA,
-                    CustomFieldParameter::ShowInTable,
-                    CustomFieldParameter::IsHidden,
-                    CustomFieldParameter::ShowInCard,
+                    FieldParameter::IsFilterable,
+                    FieldParameter::IsFilterableForCA,
+                    FieldParameter::ShowInTable,
+                    FieldParameter::IsHidden,
+                    FieldParameter::ShowInCard,
                 ],
             ],
 
@@ -141,11 +141,11 @@ class Violation extends Model
                 'alias' => __('surveys.fields.violations.elimination_completion_date.alias'),
                 'type' => FieldType::Date,
                 'parameters' => [
-                    CustomFieldParameter::IsFilterable,
-                    CustomFieldParameter::IsFilterableForCA,
-                    CustomFieldParameter::ShowInTable,
-                    CustomFieldParameter::IsHidden,
-                    CustomFieldParameter::ShowInCard,
+                    FieldParameter::IsFilterable,
+                    FieldParameter::IsFilterableForCA,
+                    FieldParameter::ShowInTable,
+                    FieldParameter::IsHidden,
+                    FieldParameter::ShowInCard,
                 ],
             ],
         ];

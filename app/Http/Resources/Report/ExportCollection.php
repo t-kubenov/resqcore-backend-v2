@@ -2,7 +2,7 @@
 
 namespace App\Http\Resources\Report;
 
-use App\Enums\CustomFieldParameter;
+use App\Enums\FieldParameter;
 use App\Models\Report\Report;
 use Illuminate\Http\Request;
 
@@ -40,7 +40,7 @@ class ExportCollection extends ReportCollection
                 'is_closed',
             ],
             array_keys(array_filter(Report::fieldDefinitions(), fn($field) =>
-            in_array(CustomFieldParameter::ShowInExport, $field['parameters'])
+            in_array(FieldParameter::ShowInExport, $field['parameters'])
             )
         ));
 
