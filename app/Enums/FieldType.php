@@ -6,7 +6,6 @@ use App\Rules\DateRangeRule;
 use App\Traits\EnumToArray;
 use Attribute;
 use Illuminate\Contracts\Validation\ValidationRule;
-use Illuminate\Validation\Rule;
 
 #[Attribute(Attribute::TARGET_CLASS_CONSTANT)]
 final class PlainType {}
@@ -18,7 +17,7 @@ final class ComplexType {}
 final class EnumType {}
 
 
-enum CustomFieldType: string
+enum FieldType: string
 {
     use EnumToArray;
 
@@ -53,9 +52,6 @@ enum CustomFieldType: string
     case MultiValue = 'multi_value';
 
     #[ComplexType]
-    case StringArray = 'string_array';
-
-    #[ComplexType]
     case DoubleInput = 'double_input';
 
     public function creationValidationRule(): string
@@ -67,16 +63,16 @@ enum CustomFieldType: string
             self::Date => 'date_format:Y-m-d',
             self::Datetime => 'date',
             self::Boolean => 'boolean',
-            self::MultipleChoiceEnum, self::MultiValue, self::StringArray, self::DoubleInput => 'array',
+            self::MultipleChoiceEnum, self::MultiValue, self::DoubleInput => 'array',
         };
     }
 
     public function filteringValidationRule(): string|ValidationRule
     {
         return match ($this) {
-            self::Int,  => 'integer',
+            self::Int => 'integer',
             self::Float => 'numeric',
-            self::String, self::Text, self::StringArray  => 'string',
+            self::String, self::Text  => 'string',
             self::Date, self::Datetime => new DateRangeRule(),
             self::Boolean => 'boolean',
             self::SingleChoiceEnum, self::MultipleChoiceEnum, self::MultiValue, self::DoubleInput => 'array',

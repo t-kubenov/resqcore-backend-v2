@@ -3,7 +3,7 @@
 namespace App\Models\Vehicle;
 
 use App\Enums\CustomFieldParameter;
-use App\Enums\CustomFieldType;
+use App\Enums\FieldType;
 use App\Enums\Vehicle\ActionType;
 use App\Enums\Vehicle\TechnicalCondition;
 use App\Enums\Vehicle\UsageType;
@@ -65,7 +65,7 @@ class Vehicle extends Model
                 'key' => 'data.attributes.branch_office_id',
                 'name' => 'branch_office_id',
                 'label' => __('vehicles.fields.branch_office_id'),
-                'type' => CustomFieldType::SingleChoiceEnum,
+                'type' => FieldType::SingleChoiceEnum,
                 'options' => route('auxiliary.field-options', 'branch_office'),
                 'parameters' => [
                     CustomFieldParameter::IsHidden,
@@ -78,7 +78,7 @@ class Vehicle extends Model
                 'key' => 'data.attributes.brand',
                 'name' => 'brand',
                 'label' => __('vehicles.fields.brand'),
-                'type' => CustomFieldType::String,
+                'type' => FieldType::String,
                 'rules' => [
                     'max:255',
                 ],
@@ -94,7 +94,7 @@ class Vehicle extends Model
                 'key' => 'data.attributes.vehicle_type_id',
                 'name' => 'vehicle_type_id',
                 'label' => __('vehicles.fields.vehicle_type_id'),
-                'type' => CustomFieldType::SingleChoiceEnum,
+                'type' => FieldType::SingleChoiceEnum,
                 'required' => true,
                 'options' => route('auxiliary.field-options', 'vehicle_type_id'),
                 'parameters' => [
@@ -108,7 +108,7 @@ class Vehicle extends Model
                 'key' => 'data.attributes.plate_number',
                 'name' => 'plate_number',
                 'label' => __('vehicles.fields.plate_number'),
-                'type' => CustomFieldType::String,
+                'type' => FieldType::String,
                 'rules' => [
                     'max:255',
                     'unique:vehicles,plate_number'
@@ -125,7 +125,7 @@ class Vehicle extends Model
                 'key' => 'data.attributes.image_path',
                 'name' => 'image_path',
                 'label' => __('vehicles.fields.image'),
-                'type' => CustomFieldType::String,
+                'type' => FieldType::String,
                 'options' => route('auxiliary.field-options', 'action_type'),
                 'parameters' => [
                     CustomFieldParameter::IsFilterableForCA,
@@ -137,7 +137,7 @@ class Vehicle extends Model
                 'key' => 'data.attributes.year',
                 'name' => 'year',
                 'label' => __('vehicles.fields.year'),
-                'type' => CustomFieldType::Int,
+                'type' => FieldType::Int,
                 'rules' => [
                     'required',
                     'integer',
@@ -157,7 +157,7 @@ class Vehicle extends Model
                 'key' => 'data.attributes.engine_size',
                 'name' => 'engine_size',
                 'label' => __('vehicles.fields.engine_size'),
-                'type' => CustomFieldType::Float,
+                'type' => FieldType::Float,
                 'rules' => [
                     'min: 0.5',
                     'max: 50.0',
@@ -173,7 +173,7 @@ class Vehicle extends Model
                 'key' => 'data.attributes.fuel_type',
                 'name' => 'fuel_type',
                 'label' => __('vehicles.fields.fuel_type'),
-                'type' => CustomFieldType::SingleChoiceEnum,
+                'type' => FieldType::SingleChoiceEnum,
                 'options' => route('auxiliary.field-options', 'fuel_type'),
                 'parameters' => [
                     CustomFieldParameter::IsFilterableForCA,
@@ -186,7 +186,7 @@ class Vehicle extends Model
                 'key' => 'data.attributes.gearbox',
                 'name' => 'gearbox',
                 'label' => __('vehicles.fields.gearbox'),
-                'type' => CustomFieldType::SingleChoiceEnum,
+                'type' => FieldType::SingleChoiceEnum,
                 'options' => route('auxiliary.field-options', 'gearbox'),
                 'parameters' => [
                     CustomFieldParameter::IsFilterableForCA,
@@ -199,7 +199,7 @@ class Vehicle extends Model
                 'key' => 'data.attributes.drive',
                 'name' => 'drive',
                 'label' => __('vehicles.fields.drive'),
-                'type' => CustomFieldType::SingleChoiceEnum,
+                'type' => FieldType::SingleChoiceEnum,
                 'options' => route('auxiliary.field-options', 'drive'),
                 'parameters' => [
                     CustomFieldParameter::IsFilterableForCA,
@@ -212,7 +212,7 @@ class Vehicle extends Model
                 'key' => 'data.attributes.location',
                 'name' => 'location',
                 'label' => __('vehicles.fields.location'),
-                'type' => CustomFieldType::String,
+                'type' => FieldType::String,
                 'rules' => [
                     'max:255',
                 ],
@@ -228,7 +228,7 @@ class Vehicle extends Model
                 'key' => 'data.attributes.vehicle_owner_id',
                 'name' => 'vehicle_owner_id',
                 'label' => __('vehicles.fields.vehicle_owner_id'),
-                'type' => CustomFieldType::SingleChoiceEnum,
+                'type' => FieldType::SingleChoiceEnum,
                 'required' => true,
                 'options' => route('auxiliary.field-options', 'vehicle_companies'),
                 'parameters' => [
@@ -243,7 +243,7 @@ class Vehicle extends Model
                 'key' => 'data.attributes.usage_type',
                 'name' => 'usage_type',
                 'label' => __('vehicles.fields.usage_type'),
-                'type' => CustomFieldType::SingleChoiceEnum,
+                'type' => FieldType::SingleChoiceEnum,
                 'required' => true,
                 'options' => route('auxiliary.field-options', 'usage_type'),
                 'parameters' => [
@@ -258,7 +258,7 @@ class Vehicle extends Model
                 'key' => 'data.attributes.vehicle_user_id',
                 'name' => 'vehicle_user_id',
                 'label' => __('vehicles.fields.vehicle_user_id'),
-                'type' => CustomFieldType::SingleChoiceEnum,
+                'type' => FieldType::SingleChoiceEnum,
                 'options' => route('auxiliary.field-options', 'vehicle_companies'),
                 'parameters' => [
                     CustomFieldParameter::IsFilterableForCA,
@@ -272,7 +272,7 @@ class Vehicle extends Model
                 'key' => 'data.attributes.rental_contract',
                 'name' => 'rental_contract',
                 'label' => __('vehicles.fields.rental_contract'),
-                'type' => CustomFieldType::String,
+                'type' => FieldType::String,
                 'rules' => [
                     'max:255',
                 ],
@@ -288,7 +288,7 @@ class Vehicle extends Model
                 'key' => 'data.attributes.rental_price',
                 'name' => 'rental_price',
                 'label' => __('vehicles.fields.rental_price'),
-                'type' => CustomFieldType::Float,
+                'type' => FieldType::Float,
                 'rules' => [
                     'numeric',
                     'min:0',
@@ -302,7 +302,7 @@ class Vehicle extends Model
                 'key' => 'data.attributes.technical_condition',
                 'name' => 'technical_condition',
                 'label' => __('vehicles.fields.technical_condition'),
-                'type' => CustomFieldType::SingleChoiceEnum,
+                'type' => FieldType::SingleChoiceEnum,
                 'required' => true,
                 'options' => route('auxiliary.field-options', 'technical_condition'),
                 'parameters' => [
@@ -317,7 +317,7 @@ class Vehicle extends Model
                 'key' => 'data.attributes.action',
                 'name' => 'action',
                 'label' => __('vehicles.fields.action'),
-                'type' => CustomFieldType::SingleChoiceEnum,
+                'type' => FieldType::SingleChoiceEnum,
                 'options' => route('auxiliary.field-options', 'action_type'),
                 'parameters' => [
                     CustomFieldParameter::IsFilterableForCA,
@@ -330,7 +330,7 @@ class Vehicle extends Model
                 'key' => 'data.attributes.notes',
                 'name' => 'notes',
                 'label' => __('vehicles.fields.notes'),
-                'type' => CustomFieldType::Text,
+                'type' => FieldType::Text,
                 'parameters' => [
                     CustomFieldParameter::ShowInCard,
                 ],
@@ -353,7 +353,7 @@ class Vehicle extends Model
                 'key' => 'data.attributes.inspection_expiration_date',
                 'name' => 'inspection_expiration_date',
                 'label' => __('vehicles.fields.inspection_expiration_date'),
-                'type' => CustomFieldType::Date,
+                'type' => FieldType::Date,
                 'parameters' => [
                     CustomFieldParameter::IsFilterable,
                     CustomFieldParameter::IsFilterableForCA,

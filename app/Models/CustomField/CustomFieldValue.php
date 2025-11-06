@@ -2,7 +2,7 @@
 
 namespace App\Models\CustomField;
 
-use App\Enums\CustomFieldType;
+use App\Enums\FieldType;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -56,28 +56,28 @@ class CustomFieldValue extends Model
         }
 
         return match ($this->customField->type) {
-            CustomFieldType::Int => $this->value_int,
-            CustomFieldType::SingleChoiceEnum,
-            CustomFieldType::MultipleChoiceEnum => CustomFieldOption::find($this->value_int)->label,
-            CustomFieldType::Float => $this->value_float,
-            CustomFieldType::Boolean => $this->value_boolean? __('etc.boolean.true'): __('etc.boolean.false'),
-            CustomFieldType::Datetime => $this->value_datetime,
-            CustomFieldType::Text => $this->value_text,
+            FieldType::Int => $this->value_int,
+            FieldType::SingleChoiceEnum,
+            FieldType::MultipleChoiceEnum => CustomFieldOption::find($this->value_int)->label,
+            FieldType::Float => $this->value_float,
+            FieldType::Boolean => $this->value_boolean? __('etc.boolean.true'): __('etc.boolean.false'),
+            FieldType::Datetime => $this->value_datetime,
+            FieldType::Text => $this->value_text,
             default => $this->value_string, // 'string', 'enum', etc.
         };
     }
 
-    public static function getStorableColumn(CustomFieldType $customFieldType): string
+    public static function getStorableColumn(FieldType $customFieldType): string
     {
         return match ($customFieldType) {
-            CustomFieldType::Int,
-            CustomFieldType::SingleChoiceEnum,
-            CustomFieldType::MultipleChoiceEnum, => 'value_int',
-            CustomFieldType::Float => 'value_float',
-            CustomFieldType::String => 'value_string',
-            CustomFieldType::Text => 'value_text',
-            CustomFieldType::Datetime => 'value_datetime',
-            CustomFieldType::Boolean => 'value_boolean',
+            FieldType::Int,
+            FieldType::SingleChoiceEnum,
+            FieldType::MultipleChoiceEnum, => 'value_int',
+            FieldType::Float => 'value_float',
+            FieldType::String => 'value_string',
+            FieldType::Text => 'value_text',
+            FieldType::Datetime => 'value_datetime',
+            FieldType::Boolean => 'value_boolean',
 
             default => '',
         };

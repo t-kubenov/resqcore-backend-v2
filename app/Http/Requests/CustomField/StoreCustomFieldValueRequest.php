@@ -3,7 +3,7 @@
 namespace App\Http\Requests\CustomField;
 
 use App\Enums\CustomFieldModel;
-use App\Enums\CustomFieldType;
+use App\Enums\FieldType;
 use App\Models\CustomField\CustomField;
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -48,13 +48,13 @@ class StoreCustomFieldValueRequest extends FormRequest
         }
 
         return match ($customField->type) {
-            CustomFieldType::Int->value => 'integer',
-            CustomFieldType::Float->value => 'numeric',
-            CustomFieldType::String->value => 'string|max:255',
-            CustomFieldType::Text->value => 'string',
-            CustomFieldType::Datetime->value => 'date',
-            CustomFieldType::Boolean->value => 'boolean',
-            CustomFieldType::SingleChoiceEnum->value, CustomFieldType::MultipleChoiceEnum->value => 'array|exists:custom_field_options,id',
+            FieldType::Int->value => 'integer',
+            FieldType::Float->value => 'numeric',
+            FieldType::String->value => 'string|max:255',
+            FieldType::Text->value => 'string',
+            FieldType::Datetime->value => 'date',
+            FieldType::Boolean->value => 'boolean',
+            FieldType::SingleChoiceEnum->value, FieldType::MultipleChoiceEnum->value => 'array|exists:custom_field_options,id',
             default => 'nullable',
         };
     }

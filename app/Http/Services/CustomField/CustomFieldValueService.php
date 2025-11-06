@@ -2,7 +2,7 @@
 
 namespace App\Http\Services\CustomField;
 
-use App\Enums\CustomFieldType;
+use App\Enums\FieldType;
 use App\Models\CustomField\CustomField;
 use App\Models\CustomField\CustomFieldValue;
 use App\Models\Report\ReportBase;
@@ -23,10 +23,10 @@ class CustomFieldValueService
             ->get();
 
         foreach ($customFields as $field) {
-            if (!isset($validatedData[$field->name]) || $field->type === CustomFieldType::MultiValue->value) {
+            if (!isset($validatedData[$field->name]) || $field->type === FieldType::MultiValue->value) {
                 continue;
             }
-            if($field->type === CustomFieldType::MultipleChoiceEnum){
+            if($field->type === FieldType::MultipleChoiceEnum){
                 self::handleMultipleChoiceEnumValue($validatedData[$field->name], $field, $baseReport, $rescueCompanyId);
                 continue;
             }

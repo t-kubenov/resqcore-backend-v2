@@ -2,7 +2,7 @@
 
 namespace Database\Seeders\Main;
 
-use App\Enums\CustomFieldType;
+use App\Enums\FieldType;
 use App\Models\BranchOffice;
 use App\Models\EmergencyType;
 use App\Models\TransportType;
@@ -42,7 +42,7 @@ class SemserMergeSeeder extends Seeder
                 'label' => 'Пожарная часть',
                 'model' => Report::class,
                 'required' => true,
-                'type' => CustomFieldType::String,
+                'type' => FieldType::String,
             ],
             [
                 'rescue_company_id' => 2,
@@ -50,7 +50,7 @@ class SemserMergeSeeder extends Seeder
                 'label' => 'Пострадавшие рабочие',
                 'model' => Report::class,
                 'required' => false,
-                'type' => CustomFieldType::Text,
+                'type' => FieldType::Text,
             ],
             [
                 'rescue_company_id' => 2,
@@ -58,7 +58,7 @@ class SemserMergeSeeder extends Seeder
                 'label' => 'Использовано воды (литры)',
                 'model' => Report::class,
                 'required' => false,
-                'type' => CustomFieldType::Float,
+                'type' => FieldType::Float,
             ],
             [
                 'rescue_company_id' => 2,
@@ -66,7 +66,7 @@ class SemserMergeSeeder extends Seeder
                 'label' => 'Использовано пены (литры)',
                 'model' => Report::class,
                 'required' => false,
-                'type' => CustomFieldType::Float,
+                'type' => FieldType::Float,
             ],
             [
                 'rescue_company_id' => 2,
@@ -74,7 +74,7 @@ class SemserMergeSeeder extends Seeder
                 'label' => 'Общее расстояние (км)',
                 'model' => Report::class,
                 'required' => false,
-                'type' => CustomFieldType::Float,
+                'type' => FieldType::Float,
                 'validation' => 'min:0',
             ],
             [
@@ -83,7 +83,7 @@ class SemserMergeSeeder extends Seeder
                 'label' => 'Ложный вызов',
                 'model' => Report::class,
                 'required' => true,
-                'type' => CustomFieldType::Boolean,
+                'type' => FieldType::Boolean,
             ],
         ];
 

@@ -4,7 +4,7 @@ namespace App\Http\Requests\CustomField;
 
 use App\Enums\CustomFieldModel;
 use App\Enums\CustomFieldParameter;
-use App\Enums\CustomFieldType;
+use App\Enums\FieldType;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreCustomFieldRequest extends FormRequest
@@ -25,7 +25,7 @@ class StoreCustomFieldRequest extends FormRequest
     public function rules(): array
     {
         $modelValues = implode(',', CustomFieldModel::values());
-        $typeValues = implode(',', CustomFieldType::values());
+        $typeValues = implode(',', FieldType::values());
         $parameterValues = implode(',', CustomFieldParameter::values());
 
         return array_merge([
@@ -40,9 +40,9 @@ class StoreCustomFieldRequest extends FormRequest
             'parameters'               => ['sometimes', 'array'],
             'parameters.*'             => ['sometimes', 'string', "in:$parameterValues"],
             'options'                  => ['array', 'min:2', 'required_if:type,' .
-                CustomFieldType::SingleChoiceEnum->value . ',' . CustomFieldType::MultipleChoiceEnum->value
+                FieldType::SingleChoiceEnum->value . ',' . FieldType::MultipleChoiceEnum->value
             ],
-            'subfields'         => ['array', 'min:2', 'required_if:type,' . CustomFieldType::MultiValue->value],
+            'subfields'         => ['array', 'min:2', 'required_if:type,' . FieldType::MultiValue->value],
         ],
             StoreCustomFieldOptionRequest::bareRules(),
             self::subFieldRules()
@@ -54,8 +54,8 @@ class StoreCustomFieldRequest extends FormRequest
         return [
             'subfields.*.name'  => ['required', 'string'],
             'subfields.*.label' => ['required', 'string'],
-            'subfields.*.type'  => ['required', 'in:' . implode(',', CustomFieldType::values()),
-                'prohibited_if:subfields.*.type,' . CustomFieldType::MultiValue->value // MultiValue can't have subfields
+            'subfields.*.type'  => ['required', 'in:' . implode(',', FieldType::values()),
+                'prohibited_if:subfields.*.type,' . FieldType::MultiValue->value // MultiValue can't have subfields
             ],
             'subfields.*.required' => ['required', 'boolean'],
             'subfields.*.parent_field' => ['required', 'integer', 'exists:custom_fields,id'],
@@ -63,7 +63,7 @@ class StoreCustomFieldRequest extends FormRequest
                 'sometimes',
                 'array',
                 'min:2',
-                'required_if:subfields.*.type,' . CustomFieldType::SingleChoiceEnum->value . ',' . CustomFieldType::MultipleChoiceEnum->value
+                'required_if:subfields.*.type,' . FieldType::SingleChoiceEnum->value . ',' . FieldType::MultipleChoiceEnum->value
             ],
         ];
     }

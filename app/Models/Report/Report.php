@@ -3,7 +3,7 @@
 namespace App\Models\Report;
 
 use App\Enums\CustomFieldParameter;
-use App\Enums\CustomFieldType;
+use App\Enums\FieldType;
 use App\Models\BranchOffice;
 use App\Models\Company;
 use App\Models\EmergencyType;
@@ -59,7 +59,7 @@ class Report extends ReportBase
                 'name' => 'branch_office',
                 'label' => __('reports.fields.branch_office_id.name'),
                 'alias' => __('reports.fields.branch_office_id.alias'),
-                'type' => CustomFieldType::SingleChoiceEnum,
+                'type' => FieldType::SingleChoiceEnum,
                 'rules' => ['exists:branch_offices,id'],
                 'required' => false,
                 'options' => route('auxiliary.field-options', 'branch_office'),
@@ -73,7 +73,7 @@ class Report extends ReportBase
                 'name' => 'reported_by',
                 'label' => __('reports.fields.reported_by.name'),
                 'alias' => __('reports.fields.reported_by.alias'),
-                'type' => CustomFieldType::String,
+                'type' => FieldType::String,
                 'parameters' => [
                     CustomFieldParameter::IsHidden,
                 ]
@@ -83,7 +83,7 @@ class Report extends ReportBase
                 'name' => 'facility_owner',
                 'label' => __('reports.fields.facility_owner.name'),
                 'alias' => __('reports.fields.facility_owner.alias'),
-                'type' => CustomFieldType::SingleChoiceEnum,
+                'type' => FieldType::SingleChoiceEnum,
                 'rules' => ['exists:companies,id'],
                 'required' => false,
                 'parameters' => [
@@ -97,7 +97,7 @@ class Report extends ReportBase
                 'name' => 'caller',
                 'label' => __('reports.fields.caller.name'),
                 'alias' => __('reports.fields.caller.alias'),
-                'type' => CustomFieldType::String,
+                'type' => FieldType::String,
                 'required' => true,
                 'rules' => ['max:255'],
                 'parameters' => [
@@ -109,7 +109,7 @@ class Report extends ReportBase
                 'name' => 'call_date',
                 'label' => __('reports.fields.call_date.name'),
                 'alias' => __('reports.fields.call_date.alias'),
-                'type' => CustomFieldType::Datetime,
+                'type' => FieldType::Datetime,
                 'required' => true,
                 'rules' => [
                     'before_or_equal:data.attributes.work_start_date',
@@ -126,7 +126,7 @@ class Report extends ReportBase
                 'name' => 'work_start_date',
                 'label' => __('reports.fields.work_start_date.name'),
                 'alias' => __('reports.fields.work_start_date.alias'),
-                'type' => CustomFieldType::Datetime,
+                'type' => FieldType::Datetime,
                 'required' => true,
                 'rules' => [
                     'after_or_equal:data.attributes.call_date',
@@ -141,7 +141,7 @@ class Report extends ReportBase
                 'name' => 'emergency_type',
                 'label' => __('reports.fields.emergency_type.name'),
                 'alias' => __('reports.fields.emergency_type.alias'),
-                'type' => CustomFieldType::SingleChoiceEnum,
+                'type' => FieldType::SingleChoiceEnum,
                 'required' => true,
                 'rules' => [
                     Rule::exists('emergency_types', 'id')
@@ -164,7 +164,7 @@ class Report extends ReportBase
                 'name' => 'is_emergency_line',
                 'label' => __('reports.fields.is_emergency_line.name'),
                 'alias' => __('reports.fields.is_emergency_line.alias'),
-                'type' => CustomFieldType::Boolean,
+                'type' => FieldType::Boolean,
                 'required' => true,
                 'options' => route('auxiliary.field-options', 'departure_type'),
                 'parameters' => [
@@ -178,7 +178,7 @@ class Report extends ReportBase
                 'name' => 'line_facility_owner',
                 'label' => __('reports.fields.line_facility_owner.name'),
                 'alias' => __('reports.fields.line_facility_owner.alias'),
-                'type' => CustomFieldType::String,
+                'type' => FieldType::String,
                 'required' => true,
                 'rules' => ['required', 'string', 'max:255'],
                 'parameters' => [
@@ -190,7 +190,7 @@ class Report extends ReportBase
                 'name' => 'emergency_location',
                 'label' => __('reports.fields.emergency_location.name'),
                 'alias' => __('reports.fields.emergency_location.alias'),
-                'type' => CustomFieldType::String,
+                'type' => FieldType::String,
                 'required' => true,
                 'rules' => ['required', 'string', 'max:255'],
                 'parameters' => [
@@ -204,7 +204,7 @@ class Report extends ReportBase
                 'name' => 'emergency_info',
                 'label' => __('reports.fields.emergency_info.name'),
                 'alias' => __('reports.fields.emergency_info.alias'),
-                'type' => CustomFieldType::String,
+                'type' => FieldType::String,
                 'rules' => ['nullable', 'string', 'max:255'],
                 'parameters' => [
                     CustomFieldParameter::CategoryId->value => 1,
@@ -218,7 +218,7 @@ class Report extends ReportBase
                 'name' => 'is_closed',
                 'label' => __('reports.fields.is_closed.name'),
                 'alias' => __('reports.fields.is_closed.alias'),
-                'type' => CustomFieldType::Boolean,
+                'type' => FieldType::Boolean,
                 'options' => route('auxiliary.field-options', 'boolean'),
                 'parameters' => [
                     CustomFieldParameter::IsFilterable,
@@ -231,7 +231,7 @@ class Report extends ReportBase
                 'name' => 'report_code',
                 'label' => __('reports.fields.report_code.name'),
                 'alias' => __('reports.fields.report_code.alias'),
-                'type' => CustomFieldType::String,
+                'type' => FieldType::String,
                 'rules' => ['max:255'],
                 'parameters' => [
                     CustomFieldParameter::IsHidden,
@@ -242,7 +242,7 @@ class Report extends ReportBase
                 'name' => 'minor_injury_total',
                 'label' => __('reports.fields.minor_injury_total.name'),
                 'alias' => __('reports.fields.minor_injury_total.alias'),
-                'type' => CustomFieldType::Int,
+                'type' => FieldType::Int,
                 'parameters' => [
                     CustomFieldParameter::IsHidden,
                     CustomFieldParameter::IsTotalField,
@@ -253,7 +253,7 @@ class Report extends ReportBase
                 'name' => 'severe_injury_total',
                 'label' => __('reports.fields.severe_injury_total.name'),
                 'alias' => __('reports.fields.severe_injury_total.alias'),
-                'type' => CustomFieldType::Int,
+                'type' => FieldType::Int,
                 'parameters' => [
                     CustomFieldParameter::IsHidden,
                     CustomFieldParameter::IsTotalField,
@@ -264,7 +264,7 @@ class Report extends ReportBase
                 'name' => 'fatal_injury_total',
                 'label' => __('reports.fields.fatal_injury_total.name'),
                 'alias' => __('reports.fields.fatal_injury_total.alias'),
-                'type' => CustomFieldType::Int,
+                'type' => FieldType::Int,
                 'parameters' => [
                     CustomFieldParameter::IsHidden,
                     CustomFieldParameter::IsTotalField,
@@ -275,7 +275,7 @@ class Report extends ReportBase
                 'name' => 'evacuated_people_total',
                 'label' => __('reports.fields.evacuated_people_total.name'),
                 'alias' => __('reports.fields.evacuated_people_total.alias'),
-                'type' => CustomFieldType::Int,
+                'type' => FieldType::Int,
                 'parameters' => [
                     CustomFieldParameter::IsHidden,
                     CustomFieldParameter::IsTotalField,
@@ -286,7 +286,7 @@ class Report extends ReportBase
                 'name' => 'provided_medical_total',
                 'label' => __('reports.fields.provided_medical_total.name'),
                 'alias' => __('reports.fields.provided_medical_total.alias'),
-                'type' => CustomFieldType::Int,
+                'type' => FieldType::Int,
                 'parameters' => [
                     CustomFieldParameter::IsHidden,
                     CustomFieldParameter::IsTotalField,
@@ -297,7 +297,7 @@ class Report extends ReportBase
                 'name' => 'client_equipment_total',
                 'label' => __('reports.fields.client_equipment_total.name'),
                 'alias' => __('reports.fields.client_equipment_total.alias'),
-                'type' => CustomFieldType::Int,
+                'type' => FieldType::Int,
                 'parameters' => [
                     CustomFieldParameter::IsHidden,
                     CustomFieldParameter::IsTotalField,
@@ -308,7 +308,7 @@ class Report extends ReportBase
                 'name' => 'third_parties_total',
                 'label' => __('reports.fields.third_parties_total.name'),
                 'alias' => __('reports.fields.third_parties_total.alias'),
-                'type' => CustomFieldType::Int,
+                'type' => FieldType::Int,
                 'parameters' => [
                     CustomFieldParameter::IsHidden,
                     CustomFieldParameter::IsTotalField,
@@ -319,7 +319,7 @@ class Report extends ReportBase
                 'name' => 'branch_worker_total',
                 'label' => __('reports.fields.branch_worker_total.name'),
                 'alias' => __('reports.fields.branch_worker_total.alias'),
-                'type' => CustomFieldType::Int,
+                'type' => FieldType::Int,
                 'parameters' => [
                     CustomFieldParameter::IsHidden,
                     CustomFieldParameter::IsTotalField,
@@ -330,7 +330,7 @@ class Report extends ReportBase
                 'name' => 'other_info',
                 'label' => __('reports.fields.other_info.name'),
                 'alias' => __('reports.fields.other_info.alias'),
-                'type' => CustomFieldType::Text,
+                'type' => FieldType::Text,
                 'parameters' => [
                     CustomFieldParameter::CategoryId->value => 2,
                 ]
@@ -340,7 +340,7 @@ class Report extends ReportBase
                 'name' => 'last_update_created_at',
                 'label' => __('reports.fields.last_update_created_at.name'),
                 'alias' => __('reports.fields.last_update_created_at.alias'),
-                'type' => CustomFieldType::Datetime,
+                'type' => FieldType::Datetime,
                 'parameters' => [
                     CustomFieldParameter::IsHidden,
                 ]

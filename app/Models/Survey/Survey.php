@@ -3,7 +3,7 @@
 namespace App\Models\Survey;
 
 use App\Enums\CustomFieldParameter;
-use App\Enums\CustomFieldType;
+use App\Enums\FieldType;
 use App\Models\BranchOffice;
 use App\Models\Model;
 use App\Models\RescueCompany;
@@ -41,7 +41,7 @@ class Survey extends Model
                 'name' => 'survey_code',
                 'label' => __('surveys.fields.survey_code.name'),
                 'alias' => __('surveys.fields.survey_code.alias'),
-                'type' => CustomFieldType::String,
+                'type' => FieldType::String,
                 'rules' => [
                     'max:255',
                 ],
@@ -57,7 +57,7 @@ class Survey extends Model
                 'name' => 'branch_office_id',
                 'label' => __('surveys.fields.branch_office_id.name'),
                 'alias' => __('surveys.fields.branch_office_id.alias'),
-                'type' => CustomFieldType::SingleChoiceEnum,
+                'type' => FieldType::SingleChoiceEnum,
                 'options' => route('auxiliary.field-options', 'branch_office'),
                 'rules' => [
                     'max:255',
@@ -75,7 +75,7 @@ class Survey extends Model
                 'name' => 'created_by',
                 'label' => __('surveys.fields.created_by.name'),
                 'alias' => __('surveys.fields.created_by.alias'),
-                'type' => CustomFieldType::SingleChoiceEnum,
+                'type' => FieldType::SingleChoiceEnum,
                 'options' => route('auxiliary.field-options', 'created_by'),
                 'parameters' => [
                     CustomFieldParameter::IsHidden,
@@ -92,7 +92,7 @@ class Survey extends Model
                 'name' => 'senders',
                 'label' => __('surveys.fields.senders.name'),
                 'alias' => __('surveys.fields.senders.alias'),
-                'type' => CustomFieldType::MultiValue,
+                'type' => FieldType::MultiValue,
                 'rules' => ['min:1', 'max:4'],
                 'required' => true,
                 'parameters' => [
@@ -106,7 +106,7 @@ class Survey extends Model
                         'name' => 'senders',
                         'label' => __('surveys.fields.senders.name'),
                         'alias' => __('surveys.fields.senders.alias'),
-                        'type' => CustomFieldType::String,
+                        'type' => FieldType::String,
                         'rules' => ['required_with:data.attributes.senders'],
                         'parameters' => [
                             CustomFieldParameter::CategoryId->value => 1,
@@ -122,7 +122,7 @@ class Survey extends Model
                         'name' => 'senders_position',
                         'label' => __('surveys.fields.position.name'),
                         'alias' => __('surveys.fields.position.alias'),
-                        'type' => CustomFieldType::String,
+                        'type' => FieldType::String,
                         'rules' => ['required_with:data.attributes.senders'],
                         'parameters' => [
                             CustomFieldParameter::CategoryId->value => 1,
@@ -139,7 +139,7 @@ class Survey extends Model
                 'name' => 'spokesmen',
                 'label' => __('surveys.fields.spokesmen.name'),
                 'alias' => __('surveys.fields.spokesmen.alias'),
-                'type' => CustomFieldType::MultiValue,
+                'type' => FieldType::MultiValue,
                 'rules' => ['min:1', 'max:6'],
                 'required' => true,
                 'parameters' => [
@@ -155,7 +155,7 @@ class Survey extends Model
                         'name' => 'spokesmen',
                         'label' => __('surveys.fields.spokesmen.name'),
                         'alias' => __('surveys.fields.spokesmen.alias'),
-                        'type' => CustomFieldType::String,
+                        'type' => FieldType::String,
                         'rules' => ['required_with:data.attributes.spokesmen'],
                         'parameters' => [
                             CustomFieldParameter::CategoryId->value => 1,
@@ -170,7 +170,7 @@ class Survey extends Model
                         'name' => 'spokesmen_position',
                         'label' => __('surveys.fields.position.name'),
                         'alias' => __('surveys.fields.position.alias'),
-                        'type' => CustomFieldType::String,
+                        'type' => FieldType::String,
                         'rules' => ['required_with:data.attributes.spokesmen'],
                         'parameters' => [
                             CustomFieldParameter::CategoryId->value => 1,
@@ -188,7 +188,7 @@ class Survey extends Model
                     'name' => 'reviewer',
                     'label' => __('surveys.fields.reviewer.name'),
                     'alias' => __('surveys.fields.reviewer.alias'),
-                    'type' => CustomFieldType::DoubleInput,
+                    'type' => FieldType::DoubleInput,
                     'rules' => ['max:1'],
                     'parameters' => [
                         CustomFieldParameter::CategoryId->value => 1,
@@ -203,7 +203,7 @@ class Survey extends Model
                                 'name' => 'reviewer',
                                 'label' => __('surveys.fields.reviewer.name'),
                                 'alias' => __('surveys.fields.reviewer.alias'),
-                                'type' => CustomFieldType::String,
+                                'type' => FieldType::String,
                                 'rules' => ['required_with:data.attributes.reviewer'],
                                 'parameters' => [
                                     CustomFieldParameter::CategoryId->value => 1,
@@ -218,7 +218,7 @@ class Survey extends Model
                                 'name' => 'reviewer_position',
                                 'label' => __('surveys.fields.position.name'),
                                 'alias' => __('surveys.fields.position.alias'),
-                                'type' => CustomFieldType::String,
+                                'type' => FieldType::String,
                                 'rules' => ['required_with:data.attributes.reviewer'],
                                 'parameters' => [
                                     CustomFieldParameter::CategoryId->value => 1,
@@ -235,7 +235,7 @@ class Survey extends Model
                 'name' => 'legal_entity_id',
                 'label' => __('surveys.fields.legal_entity_id.name'),
                 'alias' => __('surveys.fields.legal_entity_id.alias'),
-                'type' => CustomFieldType::SingleChoiceEnum,
+                'type' => FieldType::SingleChoiceEnum,
                 'required' => true,
                 'rules' => [
                     'exists:legal_entities,id',
@@ -253,7 +253,7 @@ class Survey extends Model
                 'name' => 'legal_entity_unit_id',
                 'label' => __('surveys.fields.legal_entity_unit_id.name'),
                 'alias' => __('surveys.fields.legal_entity_unit_id.alias'),
-                'type' => CustomFieldType::SingleChoiceEnum,
+                'type' => FieldType::SingleChoiceEnum,
                 'required' => true,
                 'rules' => [
                     'exists:legal_entity_units,id',
@@ -272,7 +272,7 @@ class Survey extends Model
                 'name' => 'survey_date',
                 'label' => __('surveys.fields.survey_date.name'),
                 'alias' => __('surveys.fields.survey_date.alias'),
-                'type' => CustomFieldType::Datetime,
+                'type' => FieldType::Datetime,
                 'required' => true,
                 'parameters' => [
                     CustomFieldParameter::CategoryId->value => 1,
@@ -288,7 +288,7 @@ class Survey extends Model
                 'name' => 'hazardous_facility_name',
                 'label' => __('surveys.fields.hazardous_facility_name.name'),
                 'alias' => __('surveys.fields.hazardous_facility_name.alias'),
-                'type' => CustomFieldType::String,
+                'type' => FieldType::String,
                 'rules' => [
                     'max:255',
                 ],

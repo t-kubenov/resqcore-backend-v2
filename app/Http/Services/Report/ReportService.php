@@ -2,7 +2,7 @@
 
 namespace App\Http\Services\Report;
 
-use App\Enums\CustomFieldType;
+use App\Enums\FieldType;
 use App\Http\Requests\Report\StoreReportRequest;
 use App\Http\Services\CustomField\CustomFieldValueService;
 use App\Http\Services\GeneralService;
@@ -127,16 +127,16 @@ class ReportService extends GeneralService
                     $filter['type']->isEnum() => $q->whereIn('value_int', $value),
 
                     // Datetime
-                    $filter['type'] === CustomFieldType::Datetime => function () use ($q, $value) {
+                    $filter['type'] === FieldType::Datetime => function () use ($q, $value) {
                         $this->filterDates($q,'value_datetime', $value);
                     },
 
                     // String/Text
-                    in_array($filter['type'], [CustomFieldType::String, CustomFieldType::Text]) =>
+                    in_array($filter['type'], [FieldType::String, FieldType::Text]) =>
                     $q->where($column, 'ILIKE', "%{$value}%"),
 
                     // Boolean, Int, Float
-                    in_array($filter['type'], [CustomFieldType::Boolean, CustomFieldType::Int, CustomFieldType::Float]) =>
+                    in_array($filter['type'], [FieldType::Boolean, FieldType::Int, FieldType::Float]) =>
                     $q->where($column, $value),
                 };
             });

@@ -3,7 +3,7 @@
 namespace App\Models\Survey;
 
 use App\Enums\CustomFieldParameter;
-use App\Enums\CustomFieldType;
+use App\Enums\FieldType;
 use App\Models\Model;
 use App\Traits\FormatsColumns;
 use Carbon\Carbon;
@@ -51,7 +51,7 @@ class Violation extends Model
                 'name' => 'description',
                 'label' => __('surveys.fields.violations.description.name'),
                 'alias' => __('surveys.fields.violations.description.alias'),
-                'type' => CustomFieldType::Text,
+                'type' => FieldType::Text,
                 'required' => true,
                 'parameters' => [
                     CustomFieldParameter::CategoryId->value => 1,
@@ -68,7 +68,7 @@ class Violation extends Model
                 'name' => 'clause_type_id',
                 'label' => __('surveys.fields.violations.clause_type.name'),
                 'alias' => __('surveys.fields.violations.clause_type.alias'),
-                'type' => CustomFieldType::SingleChoiceEnum,
+                'type' => FieldType::SingleChoiceEnum,
                 'required' => true,
                 'options' => route('auxiliary.field-options', 'clause_type'),
                 'parameters' => [
@@ -86,7 +86,7 @@ class Violation extends Model
                 'name' => 'clause',
                 'label' => __('surveys.fields.violations.clause.name'),
                 'alias' => __('surveys.fields.violations.clause.alias'),
-                'type' => CustomFieldType::String,
+                'type' => FieldType::String,
                 'required' => true,
                 'rules' => [
                     'max:255',
@@ -106,7 +106,7 @@ class Violation extends Model
                 'name' => 'elimination_prescription_date',
                 'label' => __('surveys.fields.violations.elimination_prescription_date.name'),
                 'alias' => __('surveys.fields.violations.elimination_prescription_date.alias'),
-                'type' => CustomFieldType::Date,
+                'type' => FieldType::Date,
                 'required' => true,
                 'parameters' => [
                     CustomFieldParameter::CategoryId->value => 1,
@@ -123,7 +123,7 @@ class Violation extends Model
                 'name' => 'elimination_completion',
                 'label' => __('surveys.fields.violations.elimination_completion.name'),
                 'alias' => __('surveys.fields.violations.elimination_completion.alias'),
-                'type' => CustomFieldType::Boolean,
+                'type' => FieldType::Boolean,
                 'parameters' => [
                     CustomFieldParameter::IsFilterable,
                     CustomFieldParameter::IsFilterableForCA,
@@ -139,7 +139,7 @@ class Violation extends Model
                 'name' => 'elimination_completion_date',
                 'label' => __('surveys.fields.violations.elimination_completion_date.name'),
                 'alias' => __('surveys.fields.violations.elimination_completion_date.alias'),
-                'type' => CustomFieldType::Date,
+                'type' => FieldType::Date,
                 'parameters' => [
                     CustomFieldParameter::IsFilterable,
                     CustomFieldParameter::IsFilterableForCA,
