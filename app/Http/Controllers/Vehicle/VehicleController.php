@@ -94,4 +94,9 @@ class VehicleController extends Controller
             ? __("documents.image.upload_success")
             : __("documents.image.upload_failure")];
     }
+
+    public function export(FilterVehicleRequest $request)
+    {
+        return $this->index($request);
+    }
 }

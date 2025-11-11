@@ -88,8 +88,13 @@ Route::middleware('throttle:global')->prefix('v2/')->group(function () {
             });
         });
 
+        Route::prefix('vehicles')->name('vehicles.')->group(function () {
+            Route::get('export', [VehicleController::class, 'export'])->name('export');
+            Route::post('{vehicle}/upload-image', [VehicleController::class, 'uploadImage'])->name('upload-image');
+        });
+
         Route::resource('vehicles', VehicleController::class)->only('index', 'show', 'create', 'store', 'update', 'destroy');
-        Route::post('vehicles/{vehicle}/upload-image', [VehicleController::class, 'uploadImage'])->name('vehicles.upload-image');
+
     });
 });
 
