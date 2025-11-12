@@ -2,7 +2,6 @@
 
 namespace App\Providers;
 
-use App\Services\FieldOptions\Contracts\FieldOptionHandler;
 use Illuminate\Support\ServiceProvider;
 use App\Services\FieldOptions\FieldOptionService;
 use App\Services\FieldOptions\Handlers\{
@@ -15,6 +14,9 @@ use App\Services\FieldOptions\Handlers\{
     Survey\ClauseTypeFieldHandler,
     Survey\LegalEntityFieldHandler,
     Survey\LegalEntityUnitFieldHandler,
+    Vehicle\VehicleCompanyFieldHandler,
+    Vehicle\VehicleTypeFieldHandler,
+    EnumFieldHandler,
 };
 
 class FieldHandlerServiceProvider extends ServiceProvider
@@ -33,6 +35,10 @@ class FieldHandlerServiceProvider extends ServiceProvider
             LegalEntityFieldHandler::class,
             LegalEntityUnitFieldHandler::class,
             CreatedByFieldHandler::class,
+            VehicleTypeFieldHandler::class,
+            VehicleCompanyFieldHandler::class,
+            EnumFieldHandler::class,
+
             CustomFieldHandler::class,
         ], 'handlers');
 

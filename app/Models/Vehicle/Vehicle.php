@@ -5,14 +5,14 @@ namespace App\Models\Vehicle;
 use App\Enums\FieldParameter;
 use App\Enums\FieldType;
 use App\Enums\Vehicle\ActionType;
+use App\Enums\Vehicle\DriveType;
+use App\Enums\Vehicle\FuelType;
+use App\Enums\Vehicle\GearboxType;
 use App\Enums\Vehicle\TechnicalCondition;
 use App\Enums\Vehicle\UsageType;
 use App\Models\BranchOffice;
 use App\Models\RescueCompany;
 use App\Observers\Vehicle\VehicleObserver;
-use App\Services\Filters\Filters\LikeFilter;
-use App\Services\Filters\Filters\RelationSearchFilter;
-use App\Services\Filters\Filters\WhereInFilter;
 use App\Traits\FormatsColumns;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
@@ -55,6 +55,9 @@ class Vehicle extends Model
         'usage_type' => UsageType::class,
         'action' => ActionType::class,
         'technical_condition' => TechnicalCondition::class,
+        'fuel_type' => FuelType::class,
+        'gearbox' => GearboxType::class,
+        'drive' => DriveType::class,
         'insurance_expiration_date' => 'date',
         'inspection_expiration_date' => 'date',
         'inspection_date' => 'date',
@@ -125,7 +128,6 @@ class Vehicle extends Model
                 'name' => 'image_path',
                 'label' => __('vehicles.fields.image'),
                 'type' => FieldType::String,
-                'options' => route('auxiliary.field-options', 'action_type'),
                 'parameters' => [
                     FieldParameter::ShowInCard,
                 ],
@@ -351,14 +353,17 @@ class Vehicle extends Model
             'plate_number' => $this->plate_number,
             'image_path' => $this->image_path? Storage::disk()->url($this->image_path): null,
             'year' => $this->year,
+            'fuel_type' => $this->fuel_type? __('etc.enum_options.' . $this->fuel_type->name): null,
+            'gearbox' => $this->gearbox? __('etc.enum_options.' . $this->gearbox->name): null,
+            'drive' => $this->drive? __('etc.enum_options.' . $this->drive->name): null,
             'location' => $this->location,
             'vehicle_owner_id' => $this->vehicle_owner?->name,
-            'usage_type' => $this->usage_type?->name,
+            'usage_type' => $this->usage_type? __('etc.enum_options.' . $this->usage_type->name): null,
             'vehicle_user_id' => $this->vehicle_user?->name,
             'rental_contract' => $this->rental_contract,
             'rental_price' => $this->rental_price,
-            'technical_condition' => $this->technical_condition?->name,
-            'action' => $this->action?->name,
+            'technical_condition' => $this->technical_condition? __('etc.enum_options.' . $this->technical_condition->name): null,
+            'action' => $this->action? __('etc.enum_options.' . $this->action->name): null,
             'notes' => $this->notes,
             'insurance_expiration_date' => $this->insurance_expiration_date
                 ? Carbon::parse($this->insurance_expiration_date)->format('d.m.Y')
@@ -371,7 +376,6 @@ class Vehicle extends Model
                 : null,
         ];
     }
-
 
     public function branch_office(): BelongsTo
     {
