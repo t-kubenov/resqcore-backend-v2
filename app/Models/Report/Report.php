@@ -402,11 +402,6 @@ class Report extends ReportBase
         );
     }
 
-    /**
-     * Group and sum transport data by 'name'.
-     *
-     * @return array
-     */
     protected function groupAndSumTransport(): array
     {
         $updateTransports = $this->updates->flatMap(fn($update) => $update->transport);
@@ -419,10 +414,12 @@ class Report extends ReportBase
         ])->values()->toArray();
     }
 
-    public static function generateReportCode(int $branchOfficeId)
+    public static function generateReportCode(int $branchOfficeId): string
     {
-        $reportCount = Report::where('branch_office_id', $branchOfficeId)->count() + 1;
-        return $branchOfficeId . '-' . $reportCount;
+        $lastReport = Report::where('branch_office_id', $branchOfficeId)->latest('id')->first();
+        $reportCount = $lastReport? (int)explode('-', $lastReport->report_code)[1]: 0;
+
+        return $branchOfficeId . '-' . ++$reportCount;
     }
 
     public function calculateTotals()

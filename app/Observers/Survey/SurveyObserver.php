@@ -2,10 +2,8 @@
 
 namespace App\Observers\Survey;
 
-use App\Models\User;
 use App\Models\Survey\Survey;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\Log;
 
 class SurveyObserver
 {
@@ -28,10 +26,17 @@ class SurveyObserver
 
     private function generateSurveyCode(Survey $survey): string
     {
-        $year = Carbon::create($survey->survey_date)->format('y');
+        $year = Carbon::now()->format('y');
         $branchId = $survey->branch_office_id;
-        $surveyCount = Survey::where('branch_office_id', $branchId)->count() + 1;
 
-        return "{$branchId}-{$year}-{$surveyCount}"; //todo: need to make it so that the surveyCount resets on the new year
+        $lastSurvey = Survey::where('branch_office_id', $branchId)
+            ->whereYear('created_at', Carbon::now()->year)
+            ->latest('id')
+            ->first();
+
+        $nextCount = $lastSurvey? explode('-', $lastSurvey->survey_code)[2]: 0;
+
+        return $branchId . '-' . $year . '-'. ++$nextCount;
     }
+
 }
