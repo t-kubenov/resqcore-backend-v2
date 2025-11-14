@@ -94,7 +94,7 @@ Route::middleware('throttle:global')->prefix('v2/')->group(function () {
             Route::post('{vehicle}/upload-image', [VehicleController::class, 'uploadImage'])->name('upload-image');
         });
 
-        Route::resource('vehicles', VehicleController::class)->only('index', 'show', 'create', 'store', 'update', 'destroy');
+        Route::resource('vehicles', VehicleController::class)->only('index', 'show', 'create', 'store', 'edit', 'update', 'destroy');
 
     });
 });

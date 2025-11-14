@@ -55,6 +55,14 @@ class VehicleController extends Controller
         return new VehicleResource($vehicle);
     }
 
+    public function edit(Vehicle $vehicle, DocumentFormService $service)
+    {
+        return response()->json([
+            'categories' => $service->getCategorizedCreateFields(Vehicle::class),
+            'data' => $vehicle,
+        ]);
+    }
+
     public function update(UpdateVehicleRequest $request, Vehicle $vehicle)
     {
         $this->authorize('update', $vehicle);
