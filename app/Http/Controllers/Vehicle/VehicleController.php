@@ -75,6 +75,11 @@ class VehicleController extends Controller
         ], 200);
     }
 
+    public function filter()
+    {
+        return response()->json(['data' => Vehicle::filters()]);
+    }
+
     public function uploadImage(Request $request, Vehicle $vehicle, ImageUploadService $service)
     {
         $this->authorize('update', $vehicle);

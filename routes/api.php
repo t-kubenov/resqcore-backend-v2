@@ -89,6 +89,7 @@ Route::middleware('throttle:global')->prefix('v2/')->group(function () {
         });
 
         Route::prefix('vehicles')->name('vehicles.')->group(function () {
+            Route::get('filter', [VehicleController::class, 'filter'])->name('filter');
             Route::get('export', [VehicleController::class, 'export'])->name('export');
             Route::post('{vehicle}/upload-image', [VehicleController::class, 'uploadImage'])->name('upload-image');
         });
