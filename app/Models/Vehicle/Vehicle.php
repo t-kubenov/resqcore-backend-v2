@@ -67,6 +67,19 @@ class Vehicle extends Model
     public static function fieldDefinitions(): array
     {
         return [
+            'id' => [
+                'key' => 'data.attributes.id',
+                'name' => 'id',
+                'label' => __('vehicles.fields.id'),
+                'type' => FieldType::String,
+                'parameters' => [
+                    FieldParameter::IsHidden,
+                    FieldParameter::IsFilterable,
+                    FieldParameter::IsFilterableForCA,
+                    FieldParameter::ShowInTable,
+                    FieldParameter::ShowInCard,
+                ],
+            ],
             'branch_office_id' => [
                 'key' => 'data.attributes.branch_office_id',
                 'name' => 'branch_office_id',
@@ -347,6 +360,7 @@ class Vehicle extends Model
     public function getReadableData(): array
     {
         return [
+            'id' => $this->id,
             'branch_office_id' => $this->branch_office?->name,
             'brand' => $this->brand,
             'vehicle_type_id' => $this->vehicle_type?->name,

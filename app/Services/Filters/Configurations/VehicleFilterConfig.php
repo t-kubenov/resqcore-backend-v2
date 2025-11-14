@@ -3,6 +3,7 @@
 namespace App\Services\Filters\Configurations;
 
 use App\Services\Filters\Filters\SearchFilter;
+use App\Services\Filters\Filters\WhereFilter;
 use App\Services\Filters\Filters\WhereInFilter;
 use App\Services\Filters\QueryFilterService;
 use Illuminate\Database\Eloquent\Builder;
@@ -18,6 +19,7 @@ class VehicleFilterConfig
     protected function configure(): void
     {
         $filters = [
+            'id' => new WhereFilter('id'),
             'branch_office_id' => new WhereInFilter('branch_office_id'),
             'vehicle_type_id' => new WhereInFilter('vehicle_type_id'),
             'usage_type' => new WhereInFilter('usage_type'),

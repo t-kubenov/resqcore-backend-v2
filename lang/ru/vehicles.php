@@ -2,7 +2,8 @@
 
 return [
     'fields' => [
-        'branch_office_id' => 'Наименование филиалов',
+        'id' => 'ID',
+        'branch_office_id' => 'Филиал',
         'brand' => 'Марка автомашины',
         'vehicle_type_id' => 'Тип',
         'plate_number' => 'Гос. номер',
