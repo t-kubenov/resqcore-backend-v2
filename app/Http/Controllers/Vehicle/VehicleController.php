@@ -11,6 +11,7 @@ use App\Http\Resources\Vehicle\VehicleResource;
 use App\Http\Services\DocumentFormService;
 use App\Http\Services\ImageUploadService;
 use App\Http\Services\Vehicle\VehicleService;
+use App\Http\Services\Vehicle\VehicleAlertService;
 use App\Models\Vehicle\Vehicle;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Request;
@@ -48,11 +49,15 @@ class VehicleController extends Controller
         return new VehicleResource($vehicle);
     }
 
-    public function show(Vehicle $vehicle)
+    public function show(Vehicle $vehicle, VehicleAlertService $alertService)
     {
         $this->authorize('view', $vehicle);
 
-        return new VehicleResource($vehicle);
+        $alerts = $alertService->getAlerts($vehicle);
+
+        return VehicleResource::make($vehicle)->additional([
+            ...($alerts? ['alerts' => $alerts]: []),
+        ]);
     }
 
     public function edit(Vehicle $vehicle, DocumentFormService $service)

@@ -25,5 +25,11 @@ return [
         'insurance_expiration_date' => 'Дата окончания страхового полиса',
         'inspection_expiration_date' => 'Дата окончания тех. осмотра',
         'inspection_date' => 'Дата прохождения тех. осмотра',
-    ]
+    ],
+    'alerts' => [
+        'expiration' => [
+            'expired' => ':field истекла.',
+            'expires_in' => 'Через :count день истекает :field|Через :count дня истекает :field|Через :count дней истекает :field',
+        ],
+    ],
 ];

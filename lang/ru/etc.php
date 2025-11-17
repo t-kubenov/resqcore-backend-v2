@@ -13,7 +13,7 @@ return [
     ],
     'enum_options' => [
         // ActionType
-        'None' => 'Пустые',
+        'None' => 'Нет',
         'ForSale' => 'На реализацию',
         'Transfer' => 'Перемещение',
         'Acquired' => 'Приобретен',
