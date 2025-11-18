@@ -7,6 +7,11 @@ use App\Models\Vehicle\Vehicle;
 
 class VehiclePolicy extends GeneralPolicy
 {
+    public function create(User $user): bool
+    {
+        return $user->isAdmin() || $user->isCentralOffice();
+    }
+
     public function update(User $user, Vehicle $vehicle): bool
     {
         if ($user->isAdmin()){

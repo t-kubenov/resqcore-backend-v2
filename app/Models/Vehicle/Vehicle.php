@@ -136,15 +136,6 @@ class Vehicle extends Model
                     FieldParameter::ShowInCard,
                 ],
             ],
-            'image_path' => [
-                'key' => 'data.attributes.image_path',
-                'name' => 'image_path',
-                'label' => __('vehicles.fields.image'),
-                'type' => FieldType::String,
-                'parameters' => [
-                    FieldParameter::ShowInCard,
-                ],
-            ],
             'year' => [
                 'key' => 'data.attributes.year',
                 'name' => 'year',
@@ -354,6 +345,15 @@ class Vehicle extends Model
                 ],
             ],
 
+            'image_path' => [
+                'key' => 'data.attributes.image_path',
+                'name' => 'image_path',
+                'label' => __('vehicles.fields.image'),
+                'type' => FieldType::String,
+                'parameters' => [
+                    FieldParameter::ShowInCard,
+                ],
+            ],
         ];
     }
 

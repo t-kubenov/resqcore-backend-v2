@@ -18,7 +18,7 @@ class VehicleService extends GeneralService
     public function index(Request $request)
     {
         $query = Vehicle::query()
-            ->orderBy('created_at', 'desc');
+            ->orderBy('updated_at', 'desc');
 
         $this->filterByRoles($query);
 
