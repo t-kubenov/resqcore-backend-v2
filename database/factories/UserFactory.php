@@ -13,16 +13,8 @@ use Illuminate\Support\Str;
  */
 class UserFactory extends Factory
 {
-    /**
-     * The current password being used by the factory.
-     */
     protected static ?string $password;
 
-    /**
-     * Define the model's default state.
-     *
-     * @return array<string, mixed>
-     */
     public function definition(): array
     {
         return [
@@ -38,30 +30,6 @@ class UserFactory extends Factory
         ];
     }
 
-    /**
-     * Indicate that the model's email address should be unverified.
-     */
-    public function unverified(): static
-    {
-        return $this->state(fn (array $attributes) => [
-            'email_verified_at' => null,
-        ]);
-    }
-
-    // branch office employee
-    public function branch_office_employee_by_id(int $branch_office_id): static
-    {
-
-        return $this->state(fn (array $attributes) => [
-            'company_id' => null,
-            'branch_id' => $branch_office_id,
-            'role_id' => 3,
-        ])
-        ->afterCreating(function (User $user) {
-            $user->assignRole('branch_office_user');
-        });
-    }
-
     public function branch_office_employee(): static
     {
         return $this->state(fn (array $attributes) => [
@@ -74,17 +42,26 @@ class UserFactory extends Factory
             });
     }
 
-    // central office user
-
-    public function central_office_user_by_id(int $branch_office_id): static
+    public function branch_office(): static
     {
         return $this->state(fn (array $attributes) => [
-            'company_id' => null,
-            'branch_id' => $branch_office_id,
-            'role_id' => 2,
+            'role_id' => 3,
+            'branch_id' => BranchOffice::factory(),
         ])
-        ->afterCreating(function (User $user) {
+            ->afterCreating(function (User $user) {
+            $user->assignRole('branch_office_user');
+        });
+    }
+
+    public function central_office(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'role_id' => 2,
+            'branch_id' => BranchOffice::factory()->central_office(),
+        ])
+            ->afterCreating(function (User $user) {
             $user->assignRole('central_office_user');
         });
     }
+
 }

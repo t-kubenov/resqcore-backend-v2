@@ -25,4 +25,11 @@ class BranchOfficeFactory extends Factory
             'is_central_office' => false,
         ];
     }
+
+    public function central_office(): static
+    {
+        return $this->state(fn(array $attributes) => [
+            'is_central_office' => true,
+        ]);
+    }
 }

@@ -19,11 +19,17 @@ class UserSeeder extends Seeder
         $branch_offices = BranchOffice::where('is_central_office', false)->get();
 
         foreach ($central_offices as $branch_office) {
-            User::factory()->central_office_user_by_id($branch_office->id)->count(3)->create();
+            User::factory([
+                'branch_id' => $branch_office->id,
+                'role_id' => 2,
+            ])->count(3)->create();
         }
 
         foreach ($branch_offices as $branch_office) {
-            User::factory()->branch_office_employee_by_id($branch_office->id)->count(2)->create();
+            User::factory([
+                'branch_id' => $branch_office->id,
+                'role_id' => 3,
+            ])->count(3)->create();
         }
     }
 }

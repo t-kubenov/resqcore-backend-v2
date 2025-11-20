@@ -5,7 +5,7 @@ use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 
 beforeEach(function () {
-    $this->user = User::factory()->branch_office_employee()->create();
+    $this->user = User::factory()->branch_office()->create();
 });
 
 afterEach(function () {
