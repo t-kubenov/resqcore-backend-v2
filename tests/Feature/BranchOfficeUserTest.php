@@ -180,12 +180,12 @@ test('can create reports', function () {
 
 
 test('can create updates', function () {
-    $report = Report::where([
+    $report = Report::factory([
         'branch_office_id' => $this->user->branch_id,
         'is_closed' => false,
-    ])->inRandomOrder()->first();
+    ])->create();
 
-    $update = Update::factory()->make()->toArray();
+    $update = Update::factory()->for($report)->make()->toArray();
 
     $this->actingAs($this->user)
         ->postJson(route('reports.updates.store', $report->id), [

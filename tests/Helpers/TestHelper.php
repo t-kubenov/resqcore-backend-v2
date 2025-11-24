@@ -48,7 +48,7 @@ function getRandomCentralAndBranchUsers(): array
 function loadAdmin ()
 {
     return User::where('role_id', 1)->inRandomOrder()->first();
-};
+}
 
 
 function assertUsersCanAccessEndpoint ($test_instance, $route, $data): void

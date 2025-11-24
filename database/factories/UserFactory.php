@@ -7,13 +7,14 @@ use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
+use Spatie\Permission\Models\Role;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\User>
  */
 class UserFactory extends Factory
 {
-    protected static ?string $password;
+    protected static ?string $password = 'password';
 
     public function definition(): array
     {
@@ -22,10 +23,10 @@ class UserFactory extends Factory
             'last_name' => fake()->lastName(),
             'patronymic' => fake()->lastName(),
             'branch_id' => BranchOffice::factory(),
-            // 'role_id' => Role::random()->id,
+            'role_id' => Role::findByName('branch_office_user')->id,
             'email' => fake()->unique()->safeEmail(),
             'email_verified_at' => now(),
-            'password' => static::$password ??= Hash::make('password'),
+            'password' => Hash::make(static::$password),
             'remember_token' => Str::random(10),
         ];
     }
@@ -57,7 +58,6 @@ class UserFactory extends Factory
     {
         return $this->state(fn (array $attributes) => [
             'role_id' => 2,
-            'branch_id' => BranchOffice::factory()->central_office(),
         ])
             ->afterCreating(function (User $user) {
             $user->assignRole('central_office_user');
