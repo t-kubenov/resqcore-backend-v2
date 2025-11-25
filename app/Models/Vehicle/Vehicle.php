@@ -74,8 +74,6 @@ class Vehicle extends Model
                 'type' => FieldType::String,
                 'parameters' => [
                     FieldParameter::IsHidden,
-                    FieldParameter::IsFilterable,
-                    FieldParameter::IsFilterableForCA,
                     FieldParameter::ShowInTable,
                     FieldParameter::ShowInCard,
                 ],
@@ -350,6 +348,7 @@ class Vehicle extends Model
                 'label' => __('vehicles.fields.image'),
                 'type' => FieldType::String,
                 'parameters' => [
+                    FieldParameter::IsHidden,
                     FieldParameter::ShowInCard,
                 ],
             ],
