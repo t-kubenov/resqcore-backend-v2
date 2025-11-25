@@ -84,6 +84,7 @@ class Vehicle extends Model
                 'label' => __('vehicles.fields.branch_office_id'),
                 'type' => FieldType::SingleChoiceEnum,
                 'options' => route('auxiliary.field-options', 'branch_office'),
+                'required' => true,
                 'parameters' => [
                     FieldParameter::IsFilterableForCA,
                     FieldParameter::ShowInTable,
@@ -240,6 +241,7 @@ class Vehicle extends Model
                 'label' => __('vehicles.fields.vehicle_user_id'),
                 'type' => FieldType::SingleChoiceEnum,
                 'options' => route('auxiliary.field-options', 'vehicle_companies'),
+                'required' => true,
                 'parameters' => [
                     FieldParameter::ShowInTable,
                     FieldParameter::ShowInCard,
