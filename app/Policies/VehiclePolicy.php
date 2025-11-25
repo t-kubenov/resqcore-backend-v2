@@ -19,7 +19,7 @@ class VehiclePolicy extends GeneralPolicy
         }
 
         if ($user->isCentralOffice()){
-            return $user->rescue_company()->id === $vehicle->rescue_company()->id;
+            return $user->rescue_company_id === $vehicle->rescue_company->id;
         }
 
         return false;
@@ -32,7 +32,7 @@ class VehiclePolicy extends GeneralPolicy
         }
 
         if ($user->isCentralOffice()){
-            return $user->rescue_company()->id === $vehicle->rescue_company()->id;
+            return $user->rescue_company_id === $vehicle->rescue_company->id;
         }
 
         return false;

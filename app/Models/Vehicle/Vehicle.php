@@ -87,7 +87,6 @@ class Vehicle extends Model
                 'type' => FieldType::SingleChoiceEnum,
                 'options' => route('auxiliary.field-options', 'branch_office'),
                 'parameters' => [
-                    FieldParameter::IsHidden,
                     FieldParameter::IsFilterableForCA,
                     FieldParameter::ShowInTable,
                     FieldParameter::ShowInCard,
@@ -396,9 +395,9 @@ class Vehicle extends Model
         return $this->belongsTo(BranchOffice::class);
     }
 
-    public function rescue_company()
+    public function rescue_company(): BelongsTo
     {
-        return $this->hasOneThrough(RescueCompany::class, BranchOffice::class);
+        return $this->branch_office->rescue_company();
     }
 
     public function vehicle_type(): BelongsTo
