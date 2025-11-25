@@ -48,7 +48,7 @@ class ReportFilterFieldValidationDTO
 
     public static function forUpdating(string $key, array $validationField, $model): self
     {
-        $required = !empty($validationField['required']) ? ['required'] : [];
+        $required = !empty($validationField['required']) ? ['required'] : ['nullable'];
         $typeValidation = [$validationField['type']->creationValidationRule()];
         $rules = $validationField['rules'] ?? [];
 
