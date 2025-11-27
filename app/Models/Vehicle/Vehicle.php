@@ -367,6 +367,7 @@ class Vehicle extends Model
             'plate_number' => $this->plate_number,
             'image_path' => $this->image_path? Storage::disk()->url($this->image_path): null,
             'year' => $this->year,
+            'engine_size' => $this->engine_size,
             'fuel_type' => $this->fuel_type? __('etc.enum_options.' . $this->fuel_type->name): null,
             'gearbox' => $this->gearbox? __('etc.enum_options.' . $this->gearbox->name): null,
             'drive' => $this->drive? __('etc.enum_options.' . $this->drive->name): null,

@@ -266,7 +266,7 @@ return [
                 'usage_type' => 'Вид пользования',
                 'vehicle_user_id' => 'Организация-эксплуатант',
                 'rental_contract' => 'Договор аренды',
-                'rental_price' => 'Стоимость в месяц',
+                'rental_price' => 'Стоимость в месяц (тг.)',
                 'technical_condition' => 'Тех. состояние',
                 'action' => 'Действия',
                 'notes' => 'Уточнения',
