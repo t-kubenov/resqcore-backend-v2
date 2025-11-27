@@ -18,6 +18,11 @@ class SurveyLegalEntity extends Model
         'branch_office_id', //integer
     ];
 
+    protected $hidden = [
+        'created_at',
+        'updated_at',
+    ];
+
     public function branch_office(): BelongsTo
     {
         return $this->belongsTo(BranchOffice::class);

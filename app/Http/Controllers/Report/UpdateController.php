@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Report;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Report\StoreUpdateRequest;
 use App\Http\Resources\Update\UpdateResource;
+use App\Http\Services\DocumentFormService;
 use App\Http\Services\Report\UpdateService;
 use App\Models\Report\Report;
 use App\Models\Report\Update;
@@ -20,6 +21,15 @@ class UpdateController extends Controller
     public function __construct(UpdateService $updateService)
     {
         $this->updateService = $updateService;
+    }
+
+    public function create(DocumentFormService $service)
+    {
+        $fields = $service->getCategorizedCreateFields(Update::class);
+
+        return response()->json([
+            'categories' => $fields
+        ]);
     }
 
     public function store(StoreUpdateRequest $request)

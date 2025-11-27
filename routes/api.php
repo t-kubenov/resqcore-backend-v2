@@ -5,13 +5,13 @@ use App\Http\Controllers\AuxiliaryDataController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\CustomFieldController;
 use App\Http\Controllers\EmailController;
-use App\Http\Controllers\ImageController;
 use App\Http\Controllers\Report\ReportController;
 use App\Http\Controllers\Report\UpdateController;
 use App\Http\Controllers\Report\UpdateLogController;
 use App\Http\Controllers\StatisticsController;
 use App\Http\Controllers\Survey\SurveyController;
 use App\Http\Controllers\Survey\ViolationController;
+use App\Http\Controllers\Vehicle\VehicleController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('throttle:global')->prefix('v2/')->group(function () {
@@ -20,7 +20,6 @@ Route::middleware('throttle:global')->prefix('v2/')->group(function () {
 
     Route::middleware('auth:sanctum')->group(function () {
         Route::get('/user', [AuthController::class, 'user'])->name('profile.show');
-        Route::get('/image', [ImageController::class, 'show'])->name('image.show');
         Route::get('/companies', [CompanyController::class, 'index'])->name('companies.index');
         Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
         Route::post('/send-feedback', [EmailController::class, 'send'])->name('send-feedback');
@@ -34,10 +33,6 @@ Route::middleware('throttle:global')->prefix('v2/')->group(function () {
 
         Route::prefix('auxiliary')->name('auxiliary.')->controller(AuxiliaryDataController::class)
             ->group(function () {
-                Route::get('/report-fields', 'getReportFields')->name('report-fields');
-                Route::get('/update-fields', 'getUpdateFields')->name('update-fields');
-                Route::get('/survey-fields', 'getSurveyFields')->name('survey-fields');
-                Route::get('/violation-fields', 'getViolationFields')->name('violation-fields');
                 Route::get('/report-filters', 'getReportFilters')->name('report-filters');
                 Route::get('/survey-filters', 'getSurveyFilters')->name('survey-filters');
                 Route::get('/mineral-fields', 'getMineralFields')->name('mineral-fields');
@@ -60,16 +55,21 @@ Route::middleware('throttle:global')->prefix('v2/')->group(function () {
                 Route::get('/transport-usage', 'getTransportUsage')->name('transport-usage');
             });
 
+
+        Route::resource('reports', ReportController::class)->only('create');
         Route::prefix('reports')->name('reports.')->group(function () {
             Route::get('/', [ReportController::class, 'index'])->name('index');
             Route::get('/export', [ReportController::class, 'export'])->name('export');
             Route::get('/{id}', [ReportController::class, 'show'])->name('show');
             Route::get('/{id}/log', [UpdateLogController::class, 'show'])->name('id.log');
 
+
+            Route::resource('updates', UpdateController::class)->only('create');
             Route::post('/', [ReportController::class, 'store'])->name('store');
             Route::post('/update/{id}', [UpdateController::class, 'store'])->name('updates.store');
         });
 
+        Route::resource('surveys', SurveyController::class)->only('create');
         Route::prefix('surveys')->name('surveys.')->group(function () {
             Route::get('/', [SurveyController::class, 'index'])->name('index');
             Route::get('/export', [SurveyController::class, 'export'])->name('export');
@@ -78,6 +78,7 @@ Route::middleware('throttle:global')->prefix('v2/')->group(function () {
 
             Route::post('/', [SurveyController::class, 'store'])->name('store');
 
+            Route::resource('violations', ViolationController::class)->only('create');
             Route::name('violations.')->group(function () {
                 Route::get('/violations/{id}', [ViolationController::class, 'show'])->name('show');
                 Route::get('/{id}/violations', [ViolationController::class, 'index'])->name('index');
@@ -86,6 +87,15 @@ Route::middleware('throttle:global')->prefix('v2/')->group(function () {
                 Route::post('/close-violation/{id}', [ViolationController::class, 'close'])->name('close');
             });
         });
+
+        Route::prefix('vehicles')->name('vehicles.')->group(function () {
+            Route::get('filter', [VehicleController::class, 'filter'])->name('filter');
+            Route::get('export', [VehicleController::class, 'export'])->name('export');
+            Route::post('{vehicle}/upload-image', [VehicleController::class, 'uploadImage'])->name('upload-image');
+        });
+
+        Route::resource('vehicles', VehicleController::class)->only('index', 'show', 'create', 'store', 'edit', 'update', 'destroy');
+
     });
 });
 

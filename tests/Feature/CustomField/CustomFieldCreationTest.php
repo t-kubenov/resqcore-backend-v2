@@ -1,6 +1,6 @@
 <?php
 
-use App\Enums\CustomFieldType;
+use App\Enums\FieldType;
 use App\Models\RescueCompany;
 use App\Models\User;
 use App\Models\CustomField\CustomField;
@@ -24,7 +24,7 @@ test('custom field create', function () {
         'label' => 'Custom Field Example',
         'model' => Report::class,
         'required' => true,
-        'type' => CustomFieldType::String->value,
+        'type' => FieldType::String->value,
     ];
 
     $response = $this
@@ -74,7 +74,7 @@ it('requires options for single and multiple choice enums', function () {
             'name' => 'custom_field_example',
             'model' => Report::class,
             'required' => true,
-            'type' => CustomFieldType::SingleChoiceEnum->value,
+            'type' => FieldType::SingleChoiceEnum->value,
         ])
         ->assertStatus(422)
         ->assertJsonValidationErrors(['options']);
@@ -101,7 +101,7 @@ it('stores custom field options when enum type is created', function()
             'name' => fake()->word(),
             'model' => Report::class,
             'required' => false,
-            'type' => CustomFieldType::SingleChoiceEnum->value,
+            'type' => FieldType::SingleChoiceEnum->value,
             'options' => $options
         ]);
 
@@ -121,12 +121,12 @@ it('fails when MultiValue fields contain subfields of type MultiValue', function
         'name' => 'multi_value_field',
         'model' => Report::class,
         'required' => true,
-        'type' => CustomFieldType::MultiValue->value,
+        'type' => FieldType::MultiValue->value,
         'subfields' => [
             [
                 'name' => 'invalid_subfield',
                 'label' => 'Invalid Subfield',
-                'type' => CustomFieldType::MultiValue->value, // not allowed
+                'type' => FieldType::MultiValue->value, // not allowed
                 'required' => false,
             ],
         ],

@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Enums\CustomFieldType;
+use App\Enums\FieldType;
 use App\Models\RescueCompany;
 use App\Models\CustomField\CustomField;
 use App\Models\CustomField\CustomFieldOption;
@@ -18,7 +18,7 @@ class CustomFieldSeeder extends Seeder
     {
         $rescueCompany = RescueCompany::where('key', 'test')->first();
 
-        foreach (CustomFieldType::cases() as $type) {
+        foreach (FieldType::cases() as $type) {
 
             $field = CustomField::factory()
                 ->create([
@@ -26,12 +26,12 @@ class CustomFieldSeeder extends Seeder
                     'type' => $type->value,
                 ]);
 
-            if ($type === CustomFieldType::SingleChoiceEnum || $type === CustomFieldType::MultipleChoiceEnum) {
+            if ($type === FieldType::SingleChoiceEnum || $type === FieldType::MultipleChoiceEnum) {
                 $this->createOptions($field->id);
-                $this->createValues(CustomFieldType::Int, $field->id, array_rand($field->option_ids));
+                $this->createValues(FieldType::Int, $field->id, array_rand($field->option_ids));
             }
 
-            elseif ($type === CustomFieldType::MultiValue) {
+            elseif ($type === FieldType::MultiValue) {
                 $this->createSubfield($rescueCompany->id, $field->id);
             }
 
@@ -50,7 +50,7 @@ class CustomFieldSeeder extends Seeder
                 'parent_field' => $customFieldId,
             ]);
 
-        $this->createValues(CustomFieldType::plainTypes()[array_rand(CustomFieldType::plainTypes())], $customFieldId);
+        $this->createValues(FieldType::plainTypes()[array_rand(FieldType::plainTypes())], $customFieldId);
     }
 
     private function createOptions(int $customFieldId): void
@@ -62,7 +62,7 @@ class CustomFieldSeeder extends Seeder
             ]);
     }
 
-    private function createValues(CustomFieldType $type, int $customFieldId, $value = null): void
+    private function createValues(FieldType $type, int $customFieldId, $value = null): void
     {
         $type = $type->value;
 

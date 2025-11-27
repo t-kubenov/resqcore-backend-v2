@@ -3,8 +3,7 @@
 namespace App\Models\CustomField;
 
 use App\Casts\CustomFieldParameterCast;
-use App\Enums\CustomFieldParameter;
-use App\Enums\CustomFieldType;
+use App\Enums\FieldType;
 use App\Models\RescueCompany;
 use Database\Factories\CustomField\CustomFieldFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -29,7 +28,7 @@ class CustomField extends Model
     ];
 
     protected $casts = [
-        'type' => CustomFieldType::class,
+        'type' => FieldType::class,
         'parameters' => CustomFieldParameterCast::class,
     ];
 
@@ -98,7 +97,7 @@ class CustomField extends Model
                     'type' => $field->type,
                     'required' => $field->required,
                     'rules' => $field->generateValidationString(),
-                    ...($field->type == CustomFieldType::Boolean? ['options' => route('auxiliary.field-options', 'boolean')]: []),
+                    ...($field->type == FieldType::Boolean? ['options' => route('auxiliary.field-options', 'boolean')]: []),
                     ...($field->type->isEnum()? ['options' => route('auxiliary.field-options', $field->name)]: []),
                     'parameters' => array_merge($field->parameters, [
 //                        CustomFieldParameter::IsCustom,

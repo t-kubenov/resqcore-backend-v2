@@ -18,42 +18,66 @@ class ReportFilterFieldValidationDTO
 //string $field, CustomFieldType $type, bool $required = false, array $extraRules = []
     public static function forFiltering(string $key, array $field): self
     {
-        $condition = ['sometimes'];
-        $type = [$field['type']->filteringValidationRule()];
+        $required = ['sometimes'];
+        $typeValidation = [$field['type']->filteringValidationRule()];
         $rules = [];
 
         return new self(
             $key,
             array_merge(
-                $condition,
-                $type,
+                $required,
+                $typeValidation,
                 $rules
             ));
     }
 
     public static function forCreation(string $key, array $field): self
     {
-        $condition = !empty($field['required']) ? ['required'] : [];
-        $type = [$field['type']->creationValidationRule()];
+        $required = !empty($field['required']) ? ['required'] : [];
+        $typeValidation = [$field['type']->creationValidationRule()];
         $rules = $field['rules'] ?? [];
 
         return new self(
             $field['key'],
             array_merge(
-                $condition,
-                $type,
+                $required,
+                $typeValidation,
                 $rules
             ));
     }
 
-    public static function fromArray(array $fields, string $context)
+    public static function forUpdating(string $key, array $validationField, $model): self
     {
-        return collect($fields)->map(function ($field, $key) use ($context) {
+        $required = !empty($validationField['required']) ? ['required'] : ['nullable'];
+        $typeValidation = [$validationField['type']->creationValidationRule()];
+        $rules = $validationField['rules'] ?? [];
+
+        $rules = array_map(function ($rule) use ($model) {
+            if (is_string($rule) && str_starts_with($rule, 'unique:')) {
+                $rule .= ',' . $model->id;
+            }
+            return $rule;
+        }, $rules);
+
+        return new self(
+            $validationField['key'],
+            array_merge(
+                $required,
+                $typeValidation,
+                $rules
+            )
+        );
+    }
+
+    public static function fromArray(array $fields, string $context, $model = null)
+    {
+        return collect($fields)->map(function ($field, $key) use ($model, $context) {
 
             $dto = match ($context) {
                 'filtering' => self::forFiltering($key, $field),
-                'creation'  => self::forCreation($key, $field),
-                default     => throw new \InvalidArgumentException('Unknown context: ' . $context),
+                'creation' => self::forCreation($key, $field),
+                'updating' => self::forUpdating($key, $field, $model),
+                default => throw new \InvalidArgumentException('Unknown context: ' . $context),
             };
 
             // If subfields exist, process them recursively

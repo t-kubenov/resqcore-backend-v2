@@ -5,10 +5,11 @@ namespace App\Policies;
 use App\Models\User;
 use App\Models\Report\Report;
 use App\Models\Survey\Survey;
+use App\Models\Vehicle\Vehicle;
 
 class GeneralPolicy
 {
-    public function view(User $user, Report|Survey $report): bool
+    public function view(User $user, Report|Survey|Vehicle $report): bool
     {
         if ($user->isAdmin()) {
             return true;

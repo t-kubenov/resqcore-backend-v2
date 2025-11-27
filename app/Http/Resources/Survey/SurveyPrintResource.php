@@ -19,17 +19,13 @@ class SurveyPrintResource extends GenericResource
             'data' => [
                 'id' => $this->id,
                 'type' => 'survey_print',
-                'attributes' => [
-                    $this->getPrintData(),
-                ],
+                'attributes' => $this->getPrintData(),
                 'relationships' =>
                     $this->violations->map(function($violation){
                         return [
                             'id' => $violation->id,
                             'type' => 'violation',
-                            'attributes' => [
-                                $violation->getPrintData(),
-                            ]
+                            'attributes' => $violation->getPrintData(),
                         ];
                     })->toArray(),
             ]]

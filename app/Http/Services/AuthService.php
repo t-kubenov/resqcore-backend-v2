@@ -3,10 +3,8 @@
 namespace App\Http\Services;
 
 use App\Http\Resources\UserResource;
-use App\Models\RescueCompany;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rules\Password;
 
@@ -15,8 +13,6 @@ class AuthService
     public function getUser()
     {
         $user = auth()->user();
-
-        $this->loadRelationships($user);
 
         return new UserResource($user);
     }
@@ -28,8 +24,6 @@ class AuthService
         $user->assignRole($fields['role_id']);
 
         $token = $user->createToken($fields['first_name']);
-
-        $this->loadRelationships($user);
 
         return new UserResource($user, $token->plainTextToken);
     }
@@ -45,8 +39,6 @@ class AuthService
         }
 
         $token = $user->createToken($user->first_name);
-
-        $this->loadRelationships($user);
 
         return new UserResource($user, $token->plainTextToken);
     }
@@ -69,25 +61,6 @@ class AuthService
 
     }
 
-    public function uploadAvatar($avatar)
-    {
-        $user = auth()->user();
-
-        if (!$avatar) {
-            return ["message" => __("auth.avatar.upload_failure")];
-        }
-
-        if ($user->avatar) {
-            Storage::disk('public')->delete($user->avatar);
-        }
-
-        $user->avatar = $avatar? $avatar->store('avatars', 'public'): null;
-
-        $user->save();
-
-        return ["message" => __("auth.avatar.upload_success")];
-    }
-
     public function validatePassword($password) // used in the controller
     {
         $password = Validator::make(["password" => $password], [
@@ -95,32 +68,6 @@ class AuthService
         ]);
 
         return $password->validated()['password'];
-    }
-
-    public function loadRelationships($user)
-    {
-        $user->load([
-            'role' => function ($query) {
-                $query->select('id', 'name');
-            },
-            'branch_office' => function ($query) {
-                $query->select('id', 'name', 'rescue_company_id');
-            },
-            'role.permissions' => function ($query) {
-                $query->select('id', 'name');
-            },
-        ]);
-
-
-        $rescueCompanyId = $user->branch_office?->rescue_company_id;
-
-        if ($rescueCompanyId) {
-            $rescueCompany = RescueCompany::where('rescue_companies.id', $rescueCompanyId)->first();
-
-            $user->setRelation('rescue_company', $rescueCompany);
-        }
-
-        $user->role?->permissions->makeHidden('pivot');
     }
 
     public function logout($user)

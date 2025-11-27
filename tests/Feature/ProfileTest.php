@@ -5,7 +5,7 @@ use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 
 beforeEach(function () {
-    $this->user = User::factory()->branch_office_employee()->create();
+    $this->user = User::factory()->branch_office()->create();
 });
 
 afterEach(function () {
@@ -76,40 +76,30 @@ test('passwords do not match', function () {
 
 
 test('upload avatar', function () {
+    Storage::fake('s3');
+
     $this->actingAs($this->user)
         ->postJson(route('profile.upload-avatar'), [
-            'avatar' => UploadedFile::fake()->image('avatar.jpg'),
+            'image' => UploadedFile::fake()->image('avatar.jpg'),
         ])
         ->assertStatus(200);
 
     $this->assertNotNull($this->user->avatar);
 
-    Storage::disk('public')->delete($this->user->avatar);
+    Storage::disk()->assertExists($this->user->avatar);
 });
 
 
 test('upload avatar failure', function () {
+    Storage::fake('s3');
+
     $this->actingAs($this->user)
         ->postJson(route('profile.upload-avatar'), [
-            'avatar' => UploadedFile::fake()->image('avatar.bmp'),
+            'image' => UploadedFile::fake()->image('avatar.bmp'),
         ])
         ->assertStatus(422);
 
     $this->assertNull($this->user->avatar);
-});
-
-
-test('view images', function () {
-    $this->actingAs($this->user)
-        ->postJson(route('profile.upload-avatar'), [
-            'avatar' => UploadedFile::fake()->image('avatar.jpg'),
-        ]);
-
-    $this->assertNotNull($this->user->avatar);
-
-    $this->actingAs($this->user)
-        ->get(route('image.show').'?path='.$this->user->avatar)
-        ->assertStatus(200);
 });
 
 

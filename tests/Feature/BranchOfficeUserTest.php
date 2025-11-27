@@ -111,7 +111,7 @@ test('can view all reports with filters', function () {
 
 
 test('can view single report of own branch', function () {
-    $report = Report::where('branch_office_id', $this->user->branch_id)->inRandomOrder()->first();
+    $report = Report::factory(['branch_office_id' => $this->user->branch_id])->create();
 
     $this->actingAs($this->user)
         ->get(route('reports.show', $report->id))
@@ -167,8 +167,9 @@ test('can create reports', function () {
         'id' => $response->json('data.id'),
         'branch_office_id' => $this->user->branch_id,
         'reported_by' => $this->user->id,
-    ]))
-        ->assertDatabaseHas('transports', [
+    ]));
+
+    $this->assertDatabaseHas('transports', [
             'report_id' => $response->json('data.id'),
             'type' => $transport[0]['id'],
             'count' => $transport[0]['count'],
@@ -180,12 +181,12 @@ test('can create reports', function () {
 
 
 test('can create updates', function () {
-    $report = Report::where([
+    $report = Report::factory([
         'branch_office_id' => $this->user->branch_id,
         'is_closed' => false,
-    ])->inRandomOrder()->first();
+    ])->create();
 
-    $update = Update::factory()->make()->toArray();
+    $update = Update::factory()->for($report)->make()->toArray();
 
     $this->actingAs($this->user)
         ->postJson(route('reports.updates.store', $report->id), [

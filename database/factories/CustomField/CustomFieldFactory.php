@@ -2,10 +2,11 @@
 
 namespace Database\Factories\CustomField;
 
-use App\Enums\CustomFieldType;
+use App\Enums\FieldType;
 use App\Models\RescueCompany;
 use App\Models\CustomField\CustomField;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Str;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\CustomField\CustomField>
@@ -22,12 +23,12 @@ class CustomFieldFactory extends Factory
         return [
             'rescue_company_id' => RescueCompany::inRandomOrder()->first()->id,
             'parent_field' => null,
-            'name' => $this->faker->word,
+            'name' => Str::random(16),
             'label' => $this->faker->word,
             'model' => 'App\Models\Report\Report',
             'required' => $this->faker->boolean(20),
             'validation' => $this->faker->word,
-            'type' => $this->faker->randomElement(CustomFieldType::values()),
+            'type' => $this->faker->randomElement(FieldType::values()),
         ];
     }
 
@@ -35,7 +36,7 @@ class CustomFieldFactory extends Factory
     {
         return $this->state([
             'parent_field' => CustomField::where('type', 'multi_value')->inRandomOrder()->first()->id,
-            'type' => $this->faker->randomElement(CustomFieldType::plainTypes()),
+            'type' => $this->faker->randomElement(FieldType::plainTypes()),
         ]);
     }
 }

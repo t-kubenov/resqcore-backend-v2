@@ -2,8 +2,8 @@
 
 namespace App\Models\Survey;
 
-use App\Enums\CustomFieldParameter;
-use App\Enums\CustomFieldType;
+use App\Enums\FieldParameter;
+use App\Enums\FieldType;
 use App\Models\Model;
 use App\Traits\FormatsColumns;
 use Carbon\Carbon;
@@ -51,34 +51,34 @@ class Violation extends Model
                 'name' => 'description',
                 'label' => __('surveys.fields.violations.description.name'),
                 'alias' => __('surveys.fields.violations.description.alias'),
-                'type' => CustomFieldType::Text,
+                'type' => FieldType::Text,
                 'required' => true,
                 'parameters' => [
-                    CustomFieldParameter::CategoryId->value => 1,
-                    CustomFieldParameter::IsFilterable,
-                    CustomFieldParameter::IsFilterableForCA,
-                    CustomFieldParameter::ShowInTable,
-                    CustomFieldParameter::ShowInCard,
+                    FieldParameter::CategoryId->value => 1,
+                    FieldParameter::IsFilterable,
+                    FieldParameter::IsFilterableForCA,
+                    FieldParameter::ShowInTable,
+                    FieldParameter::ShowInCard,
                 ],
             ],
 
             'clause_type_id' =>
-                [
-                    'key' => 'data.attributes.clause_type_id',
-                    'name' => 'clause_type_id',
-                    'label' => __('surveys.fields.violations.clause_type.name'),
-                    'alias' => __('surveys.fields.violations.clause_type.alias'),
-                    'type' => CustomFieldType::SingleChoiceEnum,
-                    'required' => true,
-                    'options' => route('auxiliary.field-options', 'clause_type'),
-                    'parameters' => [
-                        CustomFieldParameter::CategoryId->value => 1,
-                        CustomFieldParameter::IsFilterable,
-                        CustomFieldParameter::IsFilterableForCA,
-                        CustomFieldParameter::ShowInTable,
-                        CustomFieldParameter::ShowInCard,
-                    ],
+            [
+                'key' => 'data.attributes.clause_type_id',
+                'name' => 'clause_type_id',
+                'label' => __('surveys.fields.violations.clause_type.name'),
+                'alias' => __('surveys.fields.violations.clause_type.alias'),
+                'type' => FieldType::SingleChoiceEnum,
+                'required' => true,
+                'options' => route('auxiliary.field-options', 'clause_type'),
+                'parameters' => [
+                    FieldParameter::CategoryId->value => 1,
+                    FieldParameter::IsFilterable,
+                    FieldParameter::IsFilterableForCA,
+                    FieldParameter::ShowInTable,
+                    FieldParameter::ShowInCard,
                 ],
+            ],
 
             'clause' =>
             [
@@ -86,17 +86,17 @@ class Violation extends Model
                 'name' => 'clause',
                 'label' => __('surveys.fields.violations.clause.name'),
                 'alias' => __('surveys.fields.violations.clause.alias'),
-                'type' => CustomFieldType::String,
+                'type' => FieldType::String,
                 'required' => true,
                 'rules' => [
                     'max:255',
                 ],
                 'parameters' => [
-                    CustomFieldParameter::CategoryId->value => 1,
-                    CustomFieldParameter::IsFilterable,
-                    CustomFieldParameter::IsFilterableForCA,
-                    CustomFieldParameter::ShowInTable,
-                    CustomFieldParameter::ShowInCard,
+                    FieldParameter::CategoryId->value => 1,
+                    FieldParameter::IsFilterable,
+                    FieldParameter::IsFilterableForCA,
+                    FieldParameter::ShowInTable,
+                    FieldParameter::ShowInCard,
                 ],
             ],
 
@@ -106,14 +106,14 @@ class Violation extends Model
                 'name' => 'elimination_prescription_date',
                 'label' => __('surveys.fields.violations.elimination_prescription_date.name'),
                 'alias' => __('surveys.fields.violations.elimination_prescription_date.alias'),
-                'type' => CustomFieldType::Date,
+                'type' => FieldType::Date,
                 'required' => true,
                 'parameters' => [
-                    CustomFieldParameter::CategoryId->value => 1,
-                    CustomFieldParameter::IsFilterable,
-                    CustomFieldParameter::IsFilterableForCA,
-                    CustomFieldParameter::ShowInTable,
-                    CustomFieldParameter::ShowInCard,
+                    FieldParameter::CategoryId->value => 1,
+                    FieldParameter::IsFilterable,
+                    FieldParameter::IsFilterableForCA,
+                    FieldParameter::ShowInTable,
+                    FieldParameter::ShowInCard,
                 ],
             ],
 
@@ -123,13 +123,13 @@ class Violation extends Model
                 'name' => 'elimination_completion',
                 'label' => __('surveys.fields.violations.elimination_completion.name'),
                 'alias' => __('surveys.fields.violations.elimination_completion.alias'),
-                'type' => CustomFieldType::Boolean,
+                'type' => FieldType::Boolean,
                 'parameters' => [
-                    CustomFieldParameter::IsFilterable,
-                    CustomFieldParameter::IsFilterableForCA,
-                    CustomFieldParameter::ShowInTable,
-                    CustomFieldParameter::IsHidden,
-                    CustomFieldParameter::ShowInCard,
+                    FieldParameter::IsFilterable,
+                    FieldParameter::IsFilterableForCA,
+                    FieldParameter::ShowInTable,
+                    FieldParameter::IsHidden,
+                    FieldParameter::ShowInCard,
                 ],
             ],
 
@@ -139,13 +139,13 @@ class Violation extends Model
                 'name' => 'elimination_completion_date',
                 'label' => __('surveys.fields.violations.elimination_completion_date.name'),
                 'alias' => __('surveys.fields.violations.elimination_completion_date.alias'),
-                'type' => CustomFieldType::Date,
+                'type' => FieldType::Date,
                 'parameters' => [
-                    CustomFieldParameter::IsFilterable,
-                    CustomFieldParameter::IsFilterableForCA,
-                    CustomFieldParameter::ShowInTable,
-                    CustomFieldParameter::IsHidden,
-                    CustomFieldParameter::ShowInCard,
+                    FieldParameter::IsFilterable,
+                    FieldParameter::IsFilterableForCA,
+                    FieldParameter::ShowInTable,
+                    FieldParameter::IsHidden,
+                    FieldParameter::ShowInCard,
                 ],
             ],
         ];
@@ -158,9 +158,9 @@ class Violation extends Model
             'clause_type_id' => $this->clause_type->name,
             'clause_type_link' => $this->clause_type->link,
             'clause' => $this->clause,
-            'elimination_prescription_date' => Carbon::parse($this->elimination_prescription_date)->format('Y-m-d'),
+            'elimination_prescription_date' => $this->elimination_prescription_date,
             'elimination_completion' => $this->elimination_completion,
-            'elimination_completion_date' => $this->elimination_completion ? Carbon::parse($this->elimination_completion_date)->format('Y-m-d') : null,
+            'elimination_completion_date' => $this->elimination_completion ? $this->elimination_completion_date : null,
         ];
     }
 

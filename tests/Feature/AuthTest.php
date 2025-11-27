@@ -14,7 +14,7 @@ beforeEach(function () {
 
 
 test('valid email, valid password login with token in result', function () {
-    $user = User::factory()->branch_office_employee()->create();
+    $user = User::factory()->branch_office()->create();
 
     $this->postJson($this->login_route, [
         'email' => $user->email,

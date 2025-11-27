@@ -2,30 +2,23 @@
 
 namespace App\Http\Controllers;
 
-use App\Enums\CustomFieldParameter;
 use App\Http\Resources\GenericRelationshipCollection;
-use App\Models\BranchOffice;
 use App\Models\Egov\MineralField;
 use App\Models\Egov\OilField;
 use App\Models\Egov\SubsoilContract;
-use App\Models\EmergencyType;
-use App\Models\Survey\ViolationClauseType;
-use App\Models\TransportType;
-use App\Models\User;
-use App\Models\CustomField\CustomFieldOption;
 use App\Models\Report\Report;
-use App\Models\Report\Update;
 use App\Models\Survey\Survey;
-use App\Models\Survey\SurveyLegalEntity;
-use App\Models\Survey\SurveyLegalEntityUnit;
-use App\Models\Survey\Violation;
-use App\Models\Sushi\DepartureType;
-use App\Models\Sushi\ReportFieldCategory;
+use App\Services\FieldOptions\FieldOptionService;
+use App\Services\FieldOptions\Support\FieldOptionContext;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class AuxiliaryDataController extends Controller
 {
+    public function __construct(
+        private readonly FieldOptionService $service
+    ){}
+
     public function getReportFilters(): JsonResponse
     {
         return response()->json(['data' => Report::filters()]);
@@ -34,66 +27,6 @@ class AuxiliaryDataController extends Controller
     public function getSurveyFilters(): JsonResponse
     {
         return response()->json(['data' => Survey::filters()]);
-    }
-
-    public function getReportFields(): JsonResponse
-    {
-        $fields = Report::fieldDefinitions();
-
-        return response()->json(['data' => $this->filterAndCategorizeFields($fields)]);
-    }
-
-    public function getUpdateFields(): JsonResponse
-    {
-        $fields = Update::fieldDefinitions();
-
-        return response()->json(['data' => $this->filterAndCategorizeFields($fields)]);
-    }
-
-    public function getSurveyFields(): JsonResponse
-    {
-        $fields = Survey::fieldDefinitions();
-
-        return response()->json(['data' => $this->filterAndCategorizeFields($fields)]);
-    }
-
-    public function getViolationFields()
-    {
-        $fields = Violation::fieldDefinitions();
-
-        return response()->json(['data' => $this->filterAndCategorizeFields($fields)]);
-    }
-
-    private function filterAndCategorizeFields(array $fields): array
-    {
-        $fields = array_filter($fields, function ($field) {
-            return !in_array(CustomFieldParameter::IsHidden, $field['parameters'] ?? []);
-        });
-
-        // Group fields by category
-        $groupedFields = [];
-
-        foreach ($fields as $field) {
-            $category = ReportFieldCategory::find($field['parameters'][CustomFieldParameter::CategoryId->value] ?? 2);
-            $catName = $category->name;
-
-            if (!isset($groupedFields[$catName])) {
-                $groupedFields[$catName] = [
-                    'category' => $catName,
-                    'order' => $category->id,
-                    ...(isset($category->note) ? ['note' => $category->note] : []),
-                    'fields' => []
-                ];
-            }
-
-            $groupedFields[$catName]['fields'][] = $field;
-        }
-
-        usort($groupedFields, function ($a, $b) {
-            return $a['order'] <=> $b['order'];
-        });
-
-        return array_values($groupedFields);
     }
 
     public function getMineralFields(): JsonResponse
@@ -117,79 +50,22 @@ class AuxiliaryDataController extends Controller
         return response()->json(['data' => $subsoilContracts], 200);
     }
 
-    public function getFieldOptions(string $fieldName, Request $request) //todo: break this down
+    public function getFieldOptions(string $fieldName, Request $request)
     {
-        $companyId = auth()->user()->rescue_company_id;
-        $branchId = auth()->user()->branch_id;
-        $legalEntityId = $request->input('legal_entity_id', null);
-        $search = $request->input('search', null);
-
-        $models = [
-            'branch_office' => BranchOffice::where('is_central_office', false)
-                ->where('rescue_company_id', $companyId),
-            'emergency_type' => EmergencyType::where('rescue_company_id', $companyId),
-            'transport_type' => TransportType::where('rescue_company_id', $companyId),
-            'departure_type' => DepartureType::where('rescue_company_id', $companyId),
-            'legal_entity' => SurveyLegalEntity::where('branch_office_id', $branchId),
-            'legal_entity_unit' => $legalEntityId?
-                SurveyLegalEntityUnit::where('legal_entity_id', $legalEntityId):
-                SurveyLegalEntityUnit::whereRaw('1 = 0'),
-            'created_by' => User::withFullName()->
-            whereHas('branch_office', function ($query) use ($companyId) {
-                $query->where('rescue_company_id', $companyId);
-            }),
-            'clause_type' => ViolationClauseType::query(),
-
-        ];
+        $context = FieldOptionContext::fromAuth();
+        $search = $request->input('search');
 
         if ($fieldName === 'boolean') {
             return response()->json([
                 'data' => [
                     ['id' => 1, 'name' => __('etc.boolean.true')],
                     ['id' => 0, 'name' => __('etc.boolean.false')],
-                ]
-            ], 200);
+                ],
+            ]);
         }
 
-        if (array_key_exists($fieldName, $models))
-        {
-            if ($search) {
-                if ($fieldName == 'created_by') {
-                    $models[$fieldName]->whereRaw("CONCAT(last_name, ' ', first_name, ' ', patronymic) ILIKE ?", ["%{$search}%"]);
-                }
-                else {
-                    $models[$fieldName]->where('name', 'ILIKE', "%{$search}%");
-                }
-            }
+        $options = $this->service->getOptions($fieldName, $search, $context);
 
-            $data = $models[$fieldName];
-        }
-
-        else
-        {
-            $query = CustomFieldOption::whereHas('customField', function ($query) use ($fieldName, $companyId) {
-                $query->where('name', $fieldName)
-                    ->where('rescue_company_id', $companyId);
-            });
-
-            if ($search) {
-                $query->where('label', 'ILIKE', "%{$search}%");
-            }
-
-            $paginated = $query->paginate();
-
-            $transformed = $paginated->through(function ($item) {
-                return [
-                    'id' => $item->id,
-                    'key' => $item->name,
-                    'name' => $item->label,
-                    'order' => $item->order,
-                ];
-            });
-
-            return new GenericRelationshipCollection($transformed);
-        }
-
-        return new GenericRelationshipCollection($data->paginate());
+        return new GenericRelationshipCollection($options);
     }
 }

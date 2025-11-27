@@ -22,7 +22,7 @@ class SurveyService extends GeneralService
     private function filterQuery(Request $request, Builder $query)
     {
         $data = $request->all();
-        $query = $this->filterBranchOffice($query);
+        $query = $this->filterByRoles($query);
 
         if (isset($data['branch_office_id']) && auth()->user()->isCentralOffice()) {
             $query->whereIn('branch_office_id', $data['branch_office_id']);
@@ -65,36 +65,19 @@ class SurveyService extends GeneralService
 
             $query->whereHas('violations', function ($q) use ($search) {
                 $q
-                    ->where('description', 'ILIKE', "%{$search}%")
-                    ->orWhere('clause', 'ILIKE', "%{$search}%");
+                    ->where('description', 'ILIKE', "%$search%")
+                    ->orWhere('clause', 'ILIKE', "%$search%");
             })
                 ->orWhereHas('legal_entity', function ($q) use ($search) {
-                    $q->where('name', 'ILIKE', "%{$search}%");
+                    $q->where('name', 'ILIKE',  "%$search%");
                 })
                 ->orWhereHas('legal_entity_unit', function ($q) use ($search) {
-                    $q->where('name', 'ILIKE', "%{$search}%");
+                    $q->where('name', 'ILIKE',  "%$search%");
                 })
-                ->orWhere('hazardous_facility_name', 'ILIKE', "%{$search}%")
-                ->orWhere('survey_code', 'ILIKE', "%{$search}%");
+                ->orWhere('hazardous_facility_name', 'ILIKE',  "%$search%")
+                ->orWhere('survey_code', 'ILIKE',  "%$search%");
 
             unset($data['search']);
-        }
-
-        return $query;
-    }
-
-    private function filterBranchOffice($query) //todo: duplicate with ReportService, should be moved to BaseService
-    {
-        $user = auth()->user();
-
-        if ($user->hasRole('branch_office_user')) {
-            $query->where('branch_office_id', $user->branch_id);
-        }
-
-        if ($user->hasRole('central_office_user')){
-            $query->whereHas('branch_office', function($q) use ($user){
-                $q->where('rescue_company_id', $user['rescue_company_id']);
-            });
         }
 
         return $query;

@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Enums\CustomFieldParameter;
-use App\Enums\CustomFieldType;
+use App\Enums\FieldParameter;
+use App\Enums\FieldType;
 use App\Http\Requests\CustomField\StoreCustomFieldRequest;
 use App\Models\CustomField\CustomField;
 use App\Models\Report\Update;
@@ -28,8 +28,8 @@ class CustomFieldController
         $customField = CustomField::create($attributes);
 
         if (in_array($attributes['type'],[
-                CustomFieldType::SingleChoiceEnum->value,
-                CustomFieldType::MultipleChoiceEnum->value
+                FieldType::SingleChoiceEnum->value,
+                FieldType::MultipleChoiceEnum->value
             ])
             && isset($attributes['options'])) {
             $this->storeCustomFieldOptions($customField, $attributes['options']);
@@ -39,7 +39,7 @@ class CustomFieldController
             $this->storeSubfields($customField, $attributes['subfields']);
         }
 
-        if (isset($attributes['parameters']) && in_array(CustomFieldParameter::IncludeToUpdates->value, $attributes['parameters'])) {
+        if (isset($attributes['parameters']) && in_array(FieldParameter::IncludeToUpdates->value, $attributes['parameters'])) {
             $this->createWithAttributes(array_merge($attributes, [
                 'model' => Update::class,
                 'parameters' => [],
