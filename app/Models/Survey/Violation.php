@@ -158,9 +158,9 @@ class Violation extends Model
             'clause_type_id' => $this->clause_type->name,
             'clause_type_link' => $this->clause_type->link,
             'clause' => $this->clause,
-            'elimination_prescription_date' => $this->elimination_prescription_date,
+            'elimination_prescription_date' => $this->elimination_prescription_date? $this->serializeDate($this->elimination_prescription_date): null,
             'elimination_completion' => $this->elimination_completion,
-            'elimination_completion_date' => $this->elimination_completion ? $this->elimination_completion_date : null,
+            'elimination_completion_date' => $this->elimination_completion ? $this->serializeDate($this->elimination_completion_date) : null,
         ];
     }
 

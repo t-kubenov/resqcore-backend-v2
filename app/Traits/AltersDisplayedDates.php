@@ -8,6 +8,10 @@ trait AltersDisplayedDates
 {
     protected function serializeDate(DateTimeInterface $date): string
     {
-        return $date->format(config('app.date_format')); // Customize the format as needed
+        $formatted = $date->hour || $date->minute
+            ? $date->format('d.m.Y H:i')
+            : $date->format('d.m.Y');
+
+        return $formatted;
     }
 }

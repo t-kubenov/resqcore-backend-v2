@@ -32,6 +32,10 @@ class Survey extends Model
         'hazardous_facility_name', //string
     ];
 
+    protected $casts = [
+        'survey_date' => 'datetime',
+    ];
+
 
     public static function fieldDefinitions(): array
     {
@@ -313,7 +317,7 @@ class Survey extends Model
             'reviewer' => $this->reviewer->select('name', 'position'),
             'legal_entity_id' => $this->legal_entity->name,
             'legal_entity_unit_id' => $this->legal_entity_unit->name,
-            'survey_date' => $this->survey_date,
+            'survey_date' => $this->serializeDate($this->survey_date),
             'hazardous_facility_name' => $this->hazardous_facility_name,
         ];
     }
