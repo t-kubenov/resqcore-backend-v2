@@ -43,6 +43,6 @@ return [
         'Rental' => 'Аренда',
         'CustomerRental' => 'Аренда у заказчика',
         'CustomerOwned' => 'Собственность заказчика',
-        'TransferredOwnership' => 'Передана в аренду',
+        'TransferredOwnership' => 'Собственность передана в аренду',
     ],
 ];

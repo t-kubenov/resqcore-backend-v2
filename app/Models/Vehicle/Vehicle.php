@@ -205,6 +205,7 @@ class Vehicle extends Model
                 'required' => true,
                 'parameters' => [
                     FieldParameter::ShowInCard,
+                    FieldParameter::ShowInTable,
                 ],
             ],
             'vehicle_owner_id' => [
