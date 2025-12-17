@@ -26,6 +26,8 @@ class VehicleController extends Controller
 
     public function index(FilterVehicleRequest $request)
     {
+        $this->authorize('view-any', Vehicle::class);
+
         $collection = $this->vehicleService->index($request);
 
         return new VehicleCollection($collection);
@@ -33,6 +35,8 @@ class VehicleController extends Controller
 
     public function create(DocumentFormService $service)
     {
+        $this->authorize('create', Vehicle::class);
+
         $fields = $service->getCategorizedCreateFields(Vehicle::class);
 
         return response()->json([
@@ -62,6 +66,8 @@ class VehicleController extends Controller
 
     public function edit(Vehicle $vehicle, DocumentFormService $service)
     {
+        $this->authorize('update', $vehicle);
+
         return response()->json([
             'categories' => $service->getCategorizedCreateFields(Vehicle::class),
             'data' => $vehicle,

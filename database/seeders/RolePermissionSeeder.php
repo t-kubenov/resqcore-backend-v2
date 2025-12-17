@@ -3,41 +3,66 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
+use Spatie\Permission\PermissionRegistrar;
 
 class RolePermissionSeeder extends Seeder
 {
     public function run(): void
     {
         // Reset cached roles and permissions
-        app()[\Spatie\Permission\PermissionRegistrar::class]->forgetCachedPermissions();
+        app()[PermissionRegistrar::class]->forgetCachedPermissions();
+
+        DB::table('permissions')->truncate();
+
+        $permissions = [
+            'view report',
+            'create report',
+            'update report',
+            'delete report',
+
+            'view survey',
+            'create survey',
+            'update survey',
+            'delete survey',
+
+            'view vehicle',
+            'create vehicle',
+            'update vehicle',
+            'delete vehicle',
+        ];
+
+        $central_office_permissions = [
+            'view report',
+            'view survey',
+        ];
+
+        $branch_office_permissions = [
+            'view report',
+            'create report',
+
+            'view survey',
+            'create survey',
+        ];
 
         // create permissions
-        Permission::createOrFirst(['name' => 'departure_view']);
-        Permission::createOrFirst(['name' => 'branch_update_create']);
-        Permission::createOrFirst(['name' => 'branch_report_view']);
-        Permission::createOrFirst(['name' => 'branch_report_create']);
-        Permission::createOrFirst(['name' => 'user_register']);
+        foreach ($permissions as $permission) {
+            Permission::createOrFirst(['name' => $permission]);
+        }
 
         // update cache to know about the newly created permissions (required if using WithoutModelEvents in seeders)
-        app()[\Spatie\Permission\PermissionRegistrar::class]->forgetCachedPermissions();
-
-
-        // create roles and assign created permissions
+        app()[PermissionRegistrar::class]->forgetCachedPermissions();
 
 
         Role::createOrFirst(['name' => 'admin'])
             ->givePermissionTo(Permission::all());
 
         Role::createOrFirst(['name' => 'central_office_user'])
-            ->givePermissionTo(['departure_view', 'branch_report_view']);
+            ->givePermissionTo($central_office_permissions);
 
         Role::createOrFirst(['name' => 'branch_office_user'])
-            ->givePermissionTo(['branch_update_create', 'branch_report_view', 'branch_report_create']);
-
-        Role::createOrFirst(['name' => 'company_user']);
-
-        Role::createOrFirst(['name' => 'ministry_user']);
+            ->givePermissionTo($branch_office_permissions);
     }
 }

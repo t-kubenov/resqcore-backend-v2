@@ -11,7 +11,6 @@ use App\Enums\Vehicle\GearboxType;
 use App\Enums\Vehicle\TechnicalCondition;
 use App\Enums\Vehicle\UsageType;
 use App\Models\BranchOffice;
-use App\Models\RescueCompany;
 use App\Observers\Vehicle\VehicleObserver;
 use App\Traits\FormatsColumns;
 use Carbon\Carbon;

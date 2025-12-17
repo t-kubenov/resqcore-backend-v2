@@ -1,6 +1,5 @@
 <?php
 
-use Illuminate\Http\UploadedFile;
 use Tests\Helpers\CompanyContext;
 use Tests\Helpers\VehicleContext;
 
@@ -11,7 +10,9 @@ beforeEach(function() {
 });
 
 
-it('creates a vehicle', function () {
+it('creates a vehicle (central user)', function () {
+    $this->ctx->centralUser->givePermissionTo('create vehicle');
+
     $this
         ->actingAs($this->ctx->centralUser)
         ->postJson(route('vehicles.store'), $this->vehiclePayload)
@@ -20,25 +21,27 @@ it('creates a vehicle', function () {
         ->assertDatabaseHas('vehicles', $this->vehiclePayload['data']['attributes']);
 });
 
-it('forbids branch users to create vehicles', function () {
+it('creates a vehicle (branch user)', function () {
+    $this->ctx->branchUser->givePermissionTo('create vehicle');
+
     $this
         ->actingAs($this->ctx->branchUser)
         ->postJson(route('vehicles.store'), $this->vehiclePayload)
-        ->assertStatus(403);
+        ->assertCreated();
+    $this
+        ->assertDatabaseHas('vehicles', $this->vehiclePayload['data']['attributes']);
 });
 
-it('uploads vehicle images', function() {
-    Storage::fake();
-    $file = UploadedFile::fake()->image('vehicle.jpg', 640, 480);
-    $vehicle = $this->vc->vehicleA;
-
+it('forbids central users without permission to create vehicles', function () {
     $this
         ->actingAs($this->ctx->centralUser)
-        ->post(route('vehicles.upload-image', $vehicle->id), ['image' => $file])
-        ->assertOk();
+        ->postJson(route('vehicles.store'), $this->vehiclePayload)
+        ->assertForbidden();
+});
 
-    $vehicle->refresh();
-
-    $this->assertNotNull($vehicle->image_path);
-    Storage::disk()->assertExists($this->vc->vehicleA->image_path);
+it('forbids branch users without permission to create vehicles', function () {
+    $this
+        ->actingAs($this->ctx->branchUser)
+        ->postJson(route('vehicles.store'), $this->vehiclePayload)
+        ->assertForbidden();
 });

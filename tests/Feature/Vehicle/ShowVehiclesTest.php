@@ -13,8 +13,9 @@ beforeEach(function() {
 });
 
 
-it('shows a list of company vehicles to central office users', function() {
+it('shows a list of company vehicles to central users', function() {
     $user = $this->ctx->centralUser;
+    $user->givePermissionTo('view vehicle');
 
     $total = Vehicle::whereHas('branch_office', function($q) use($user){
         $q->where('rescue_company_id', $user['rescue_company_id']);
@@ -28,13 +29,25 @@ it('shows a list of company vehicles to central office users', function() {
 });
 
 it('shows a vehicle to a central office user', function() {
+    $this->ctx->centralUser->givePermissionTo('view vehicle');
+
     $this->actingAs($this->ctx->centralUser)
         ->getJson(route('vehicles.show', $this->vc->vehicleA['id']))
         ->assertOk()
         ->assertJsonStructure($this->vc->showStructure);
 });
 
+it('shows a vehicle to a branch office user', function() {
+    $this->ctx->branchUser->givePermissionTo('view vehicle');
+
+    $this->actingAs($this->ctx->branchUser)
+        ->getJson(route('vehicles.show', $this->vc->vehicleA['id']))
+        ->assertOk()
+        ->assertJsonStructure($this->vc->showStructure);
+});
+
 it('shows a list of branch vehicles to branch office users', function() {
+    $this->ctx->branchUser->givePermissionTo('view vehicle');
     $total = Vehicle::where('branch_office_id', $this->ctx->branchA->id)->count();
 
     $this->actingAs($this->ctx->branchUser)
@@ -42,13 +55,6 @@ it('shows a list of branch vehicles to branch office users', function() {
         ->assertOk()
         ->assertJsonStructure($this->vc->indexStructure)
         ->assertJsonFragment(['total' => $total]);
-});
-
-it('shows a vehicle to a branch office user', function() {
-    $this->actingAs($this->ctx->branchUser)
-        ->getJson(route('vehicles.show', $this->vc->vehicleA['id']))
-        ->assertOk()
-        ->assertJsonStructure($this->vc->showStructure);
 });
 
 it('forbids branch users to view other branches\' vehicles', function (){
