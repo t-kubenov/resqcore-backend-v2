@@ -21,11 +21,13 @@ class AuthController extends Controller
             "first_name" => "required|max:255",
             "last_name" => "required|max:255",
             "patronymic" => "max:255",
-            "email" => "required|email|unique:users",
+            "email" => "required|email|lowercase|unique:users",
             "password" => "required|confirmed",
             "role_id" => "required|exists:roles,id",
             "branch_id" => "required_if:role_id,3|exists:branch_offices,id",
-            "position" => "sometimes|max:255"
+            "position" => "sometimes|max:255",
+            "permissions" => "nullable|array",
+            "permissions.*" => "string|exists:permissions,name"
         ]);
 
         $validated['password'] = $this->authService->validatePassword($validated['password']);

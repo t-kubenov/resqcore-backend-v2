@@ -42,6 +42,7 @@ class UserResource extends JsonResource
             'branch_id'             => $this->branch_office?->name,
             'position'              => $this->position,
             'avatar'                => $this->avatar? Storage::disk()->url($this->avatar): null,
+            'permissions'           => $this->permissions->pluck('name')
         ];
     }
 }

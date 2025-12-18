@@ -4,6 +4,7 @@ namespace App\Http\Services;
 
 use App\Http\Resources\UserResource;
 use App\Models\User;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rules\Password;
@@ -17,11 +18,21 @@ class AuthService
         return new UserResource($user);
     }
 
-    public function register(array $fields)
+    public function register(array $fields): UserResource
     {
-        $user = User::create($fields);
+        $user = DB::transaction(function() use ($fields){
 
-        $user->assignRole($fields['role_id']);
+            $user = User::create($fields);
+
+            $user->assignRole($fields['role_id']);
+
+            if (isset($fields['permissions']))
+            {
+                $user->syncPermissions($fields['permissions']);
+            }
+
+            return $user;
+        });
 
         $token = $user->createToken($fields['first_name']);
 
@@ -35,7 +46,7 @@ class AuthService
         if (!$user || !Hash::check($credentials['password'], $user->password)) {
             return response()->json([
                 "message" => __("auth.password"),
-            ], 422); // 422 is the status code for unprocessable entity
+            ], 422);
         }
 
         $token = $user->createToken($user->first_name);
