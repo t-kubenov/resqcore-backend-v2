@@ -45,4 +45,7 @@ return [
         'CustomerOwned' => 'Собственность заказчика',
         'TransferredOwnership' => 'Собственность передана в аренду',
     ],
+    'permissions' => [
+        'sync_success' => 'Привилегии выданы успешно.'
+    ]
 ];

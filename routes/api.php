@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\UserPermissionController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AuxiliaryDataController;
 use App\Http\Controllers\CompanyController;
@@ -29,6 +30,7 @@ Route::middleware('throttle:global')->prefix('v2/')->group(function () {
         Route::prefix('admin')->name('admin.')->middleware('role:admin')->group(function () {
             Route::resource('custom-fields', CustomFieldController::class)->only(['store']);
             Route::post('register', [AuthController::class, 'register'])->name('register');
+            Route::put('sync-permissions/{user}', [UserPermissionController::class, 'sync'])->name('sync-permissions');
         });
 
         Route::prefix('auxiliary')->name('auxiliary.')->controller(AuxiliaryDataController::class)
