@@ -52,13 +52,6 @@ class CustomField extends Model
         return $this->belongsTo(CustomField::class);
     }
 
-//    public function getValueAttribute(): mixed
-//    {
-//        if (!$this->type->isComplexType()) {
-//            return $this->values->;
-//        }
-//    }
-
     public function getOptionIdsAttribute(): array
     {
         return $this->options->pluck('id')->toArray();
