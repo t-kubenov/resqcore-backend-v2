@@ -19,11 +19,13 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Facades\Storage;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 #[ObservedBy(VehicleObserver::class)]
 class Vehicle extends Model
 {
-    use HasFactory, formatsColumns;
+    use HasFactory, formatsColumns, LogsActivity;
 
     protected $perPage = 20;
 
@@ -419,4 +421,11 @@ class Vehicle extends Model
         return $this->belongsTo(VehicleCompany::class);
     }
 
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->logFillable()
+            ->logOnlyDirty() // only log changed fields
+            ->dontSubmitEmptyLogs(); // skip if nothing changed
+    }
 }

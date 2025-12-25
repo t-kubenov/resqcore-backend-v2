@@ -13,11 +13,13 @@ use App\Traits\AltersDisplayedDates;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\Rule;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 
 abstract class ReportBase extends Model
 {
-    use AltersDisplayedDates;
+    use AltersDisplayedDates, LogsActivity;
 
     protected $perPage = 20;
 
@@ -307,5 +309,13 @@ abstract class ReportBase extends Model
         } catch (\Exception $e) {
             Log::error($e->getMessage());
         }
+    }
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->logFillable()
+            ->logOnlyDirty() // only log changed fields
+            ->dontSubmitEmptyLogs(); // skip if nothing changed
     }
 }

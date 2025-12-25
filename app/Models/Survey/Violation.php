@@ -9,10 +9,12 @@ use App\Traits\FormatsColumns;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class Violation extends Model
 {
-    use HasFactory, FormatsColumns;
+    use HasFactory, FormatsColumns, LogsActivity;
 
     protected $table = 'survey_violations';
 
@@ -186,5 +188,13 @@ class Violation extends Model
     public function clause_type(): BelongsTo
     {
         return $this->belongsTo(ViolationClauseType::class);
+    }
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->logFillable()
+            ->logOnlyDirty() // only log changed fields
+            ->dontSubmitEmptyLogs(); // skip if nothing changed
     }
 }

@@ -16,11 +16,13 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOneThrough;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 #[ObservedBy(SurveyObserver::class)]
 class Survey extends Model
 {
-    use HasFactory, FormatsColumns;
+    use HasFactory, FormatsColumns, LogsActivity;
 
     protected $perPage = 20;
 
@@ -394,4 +396,11 @@ class Survey extends Model
         return $this->hasOneThrough(RescueCompany::class, BranchOffice::class, localKey: 'branch_id');
     }
 
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->logFillable()
+            ->logOnlyDirty() // only log changed fields
+            ->dontSubmitEmptyLogs(); // skip if nothing changed
+    }
 }
