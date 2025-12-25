@@ -19,6 +19,8 @@ abstract class ReportBase extends Model
 {
     use AltersDisplayedDates;
 
+    protected $perPage = 20;
+
     protected $fillable = [
         'minor_injury_count',
         'severe_injury_count',

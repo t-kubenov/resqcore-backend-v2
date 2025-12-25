@@ -22,6 +22,8 @@ class Survey extends Model
 {
     use HasFactory, FormatsColumns;
 
+    protected $perPage = 20;
+
     protected $fillable = [
         'branch_office_id',
         'created_by', //integer

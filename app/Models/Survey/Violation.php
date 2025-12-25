@@ -16,6 +16,8 @@ class Violation extends Model
 
     protected $table = 'survey_violations';
 
+    protected $perPage = 20;
+
     protected $hidden = [
         'created_at',
         'updated_at',

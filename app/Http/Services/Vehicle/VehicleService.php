@@ -25,7 +25,7 @@ class VehicleService extends GeneralService
 
         $this->filterConfig->apply($query, $request->all());
 
-        return $query->paginate(15);
+        return $query->paginate();
     }
 
     public function store(StoreVehicleRequest $request): Vehicle

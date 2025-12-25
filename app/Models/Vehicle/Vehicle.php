@@ -25,6 +25,8 @@ class Vehicle extends Model
 {
     use HasFactory, formatsColumns;
 
+    protected $perPage = 20;
+
     protected $fillable = [
         'branch_office_id',            // Наименование филиалов
         'brand',                       // Марка автомашины

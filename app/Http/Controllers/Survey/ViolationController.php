@@ -64,7 +64,7 @@ class ViolationController
         $violations = Violation::query()
             ->where('survey_id', $surveyId)
             ->orderBy('created_at', 'desc')
-            ->paginate(15);
+            ->paginate();
 
 
         return new ViolationCollection($violations);

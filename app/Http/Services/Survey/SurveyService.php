@@ -16,7 +16,7 @@ class SurveyService extends GeneralService
         $query = Survey::query()
             ->orderBy('created_at', 'desc');
 
-        return $this->filterQuery($request, $query)->paginate(15);
+        return $this->filterQuery($request, $query)->paginate();
     }
 
     private function filterQuery(Request $request, Builder $query)
