@@ -2,10 +2,15 @@
 
 namespace App\Http\Resources\Activity;
 
+use App\Enums\Vehicle\DriveType;
+use App\Enums\Vehicle\FuelType;
+use App\Enums\Vehicle\GearboxType;
+use App\Enums\Vehicle\TechnicalCondition;
+use App\Enums\Vehicle\UsageType;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class ActivityResource extends JsonResource
+class ActivityResource extends JsonResource // de-facto VehicleActivityResource
 {
     /**
      * Transform the resource into an array.
@@ -15,30 +20,79 @@ class ActivityResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'by' => $this->causer->full_name,
+            'by' => $this->causer->full_name?? null,
             'when' => $this->created_at->diffForHumans(),
             'description' => $this->composeDescription(),
+            ...($this->event == 'updated'? ['changes' => $this->composeChanges()]: [])
         ];
     }
 
     private function composeDescription(): string
     {
-        if ($this->event != 'updated')
-        {
-            return __('activities.event.' . $this->event, ['document' => __('documents.types.' . $this->subject_type)]);
-        }
+        return __('activities.event.' . $this->event, ['document' => __('documents.types.' . $this->subject_type)]);
+    }
 
-        $changes = __('activities.event.updated_head');
+    private function composeChanges()
+    {
+        $changes = [];
 
         foreach ($this->update_description as $change)
         {
-            $changes .= __('activities.event.updated_body', [
-                'old' => $change['old'],
-                'new' => $change['new'],
+            $changes[] = __('activities.event.update_change', [
                 'field' => __('validation.attributes.data.attributes.' . $change['field']),
+                'old' => $this->localizeFieldValue($change['field'], $change['old']),
+                'new' => $this->localizeFieldValue($change['field'], $change['new']),
             ]);
         }
 
         return $changes;
+    }
+
+    private function localizeFieldValue(string $field, mixed $value): string
+    {
+        return match(true){
+            $this->isEnumField($field) => $this->localizeEnum($field, $value),
+            $this->isForeignKey($field) => $this->getForeignKeyName($value),
+            default => $value,
+        };
+    }
+
+    private function getForeignKeyName($field): string
+    {
+        return $this->$field->name;
+    }
+
+    private function localizeEnum($field, $value): string
+    {
+        $enums = [
+            'fuel_type' => FuelType::class,
+            'gearbox' => GearboxType::class,
+            'drive' => DriveType::class,
+            'usage_type' => UsageType::class,
+            'technical_condition' => TechnicalCondition::class,
+        ];
+
+        return __('etc.enum_options.'. $enums[$field]::tryFrom($value)->name);
+    }
+
+    private function isForeignKey($field): bool
+    {
+        return in_array($field, [
+            'branch_office_id',
+            'vehicle_type_id',
+            'vehicle_owner_id',
+            'vehicle_user_id',
+        ]);
+    }
+
+    private function isEnumField($field): bool
+    {
+        return in_array($field, [
+            'fuel_type',
+            'gearbox',
+            'drive',
+            'usage_type',
+            'technical_condition',
+        ]);
     }
 }

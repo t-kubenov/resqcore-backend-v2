@@ -4,7 +4,7 @@ return [
     'event' => [
         'created' => 'Создал(-а) :document',
         'deleted' => 'Удалил(-а) :document',
-        'updated_head' => 'Изменил(-а) ',
-        'updated_body' => ":old на :new в поле \":field\"\n",
+        'updated' => 'Изменил(-а) :document:',
+        'update_change' => 'В поле :field - ":old" на ":new"',
     ],
 ];
