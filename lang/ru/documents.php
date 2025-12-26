@@ -1,6 +1,13 @@
 <?php
 
 return [
+    'types' => [
+        'App\Models\Report\Report'          => 'донесение',
+        'App\Models\Survey\Survey'          => 'проф. выезд',
+        'App\Models\Survey\Violation'       => 'нарушение',
+        'App\Models\Vehicle\Vehicle'        => 'транспорт',
+    ],
+
     'show' => [
         'not-found' => 'Запись не найдена.',
         'not-allowed' => 'Запись не принадлежит вашему филиалу.',

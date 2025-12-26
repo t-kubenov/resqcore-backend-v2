@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Vehicle\FilterVehicleRequest;
 use App\Http\Requests\Vehicle\StoreVehicleRequest;
 use App\Http\Requests\Vehicle\UpdateVehicleRequest;
+use App\Http\Resources\Activity\ActivityCollection;
 use App\Http\Resources\Vehicle\VehicleCollection;
 use App\Http\Resources\Vehicle\VehicleResource;
 use App\Http\Services\DocumentFormService;
@@ -59,8 +60,14 @@ class VehicleController extends Controller
 
         $alerts = $alertService->getAlerts($vehicle);
 
+        $activities = $vehicle->activities;
+
         return VehicleResource::make($vehicle)->additional([
-            ...($alerts? ['alerts' => $alerts]: []),
+            ...($alerts ? ['alerts' => $alerts] : []),
+            ...($activities ? ['activities' => ActivityCollection::make($activities)] : []),
+            // todo: move this to the Resource once I write a parent resource for all documents.
+            //       The controller should decide what resource to show,
+            //       the resource decides what to show.
         ]);
     }
 
