@@ -36,6 +36,8 @@ class ActivityResource extends JsonResource // de-facto VehicleActivityResource
     {
         $changes = [];
 
+//        dd($this->update_description);
+
         foreach ($this->update_description as $change)
         {
             $changes[] = __('activities.event.update_change', [
@@ -50,6 +52,8 @@ class ActivityResource extends JsonResource // de-facto VehicleActivityResource
 
     private function localizeFieldValue(string $field, mixed $value): string
     {
+        if (!$value) $value = __('validation.null');
+
         return match(true){
             $this->isEnumField($field) => $this->localizeEnum($field, $value),
             $this->isForeignKey($field) => $this->getForeignKeyName($value),
