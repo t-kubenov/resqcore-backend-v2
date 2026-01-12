@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources\Activity;
 
+use App\Enums\Vehicle\ActionType;
 use App\Enums\Vehicle\DriveType;
 use App\Enums\Vehicle\FuelType;
 use App\Enums\Vehicle\GearboxType;
@@ -73,10 +74,11 @@ class ActivityResource extends JsonResource // de-facto VehicleActivityResource
             'gearbox' => GearboxType::class,
             'drive' => DriveType::class,
             'usage_type' => UsageType::class,
+            'action' => ActionType::class,
             'technical_condition' => TechnicalCondition::class,
         ];
 
-        return __('etc.enum_options.'. $enums[$field]::tryFrom($value)->name);
+        return __('etc.enum_options.'. $enums[$field]::tryFrom((int)$value)->name);
     }
 
     private function isForeignKey($field): bool
