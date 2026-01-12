@@ -10,12 +10,10 @@ use App\Http\Resources\Activity\ActivityCollection;
 use App\Http\Resources\Vehicle\VehicleCollection;
 use App\Http\Resources\Vehicle\VehicleResource;
 use App\Http\Services\DocumentFormService;
-use App\Http\Services\ImageUploadService;
 use App\Http\Services\Vehicle\VehicleService;
 use App\Http\Services\Vehicle\VehicleAlertService;
 use App\Models\Vehicle\Vehicle;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
-use Illuminate\Http\Request;
 
 class VehicleController extends Controller
 {
@@ -62,9 +60,13 @@ class VehicleController extends Controller
 
         $activities = $vehicle->activities;
 
+        $images = $vehicle->image_links;
+
         return VehicleResource::make($vehicle)->additional([
             ...($alerts ? ['alerts' => $alerts] : []),
             ...($activities ? ['activities' => ActivityCollection::make($activities)] : []),
+            ...($images ? ['images' => $images]: [])
+
             // todo: move this to the Resource once I write a parent resource for all documents.
             //       The controller should decide what resource to show,
             //       the resource decides what to show.
@@ -104,26 +106,6 @@ class VehicleController extends Controller
     public function filter()
     {
         return response()->json(['data' => Vehicle::filters()]);
-    }
-
-    public function uploadImage(Request $request, Vehicle $vehicle, ImageUploadService $service)
-    {
-        $this->authorize('update', $vehicle);
-
-        $request->validate([
-            "image" => "required|image|mimes:jpeg,png,jpg,svg,webp|max:2048"
-        ]);
-
-        $success = $service->uploadAndReplace(
-            $vehicle,
-            $request->file('image'),
-            'vehicles',
-            'image_path',
-        );
-
-        return ["message" => $success
-            ? __("documents.image.upload_success")
-            : __("documents.image.upload_failure")];
     }
 
     public function export(FilterVehicleRequest $request)

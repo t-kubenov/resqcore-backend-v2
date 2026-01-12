@@ -11,6 +11,7 @@ use App\Enums\Vehicle\GearboxType;
 use App\Enums\Vehicle\TechnicalCondition;
 use App\Enums\Vehicle\UsageType;
 use App\Models\BranchOffice;
+use App\Models\Image;
 use App\Observers\Vehicle\VehicleObserver;
 use App\Traits\FormatsColumns;
 use Carbon\Carbon;
@@ -18,6 +19,7 @@ use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Support\Facades\Storage;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
@@ -369,7 +371,6 @@ class Vehicle extends Model
             'brand' => $this->brand,
             'vehicle_type_id' => $this->vehicle_type?->name,
             'plate_number' => $this->plate_number,
-            'image_path' => $this->image_path? Storage::disk()->url($this->image_path): null,
             'year' => $this->year,
             'engine_size' => $this->engine_size,
             'fuel_type' => $this->fuel_type? __('etc.enum_options.' . $this->fuel_type->name): null,
@@ -419,6 +420,24 @@ class Vehicle extends Model
     public function vehicle_user(): BelongsTo
     {
         return $this->belongsTo(VehicleCompany::class);
+    }
+
+    public function images(): MorphMany
+    {
+        return $this->morphMany(Image::class, 'model');
+    }
+
+    public function getImageLinksAttribute()
+    {
+        $links = $this->images->pluck('url')->toArray();
+
+        $image_path = $this->image_path? Storage::disk(config('filesystems.default'))->url($this->image_path): null;
+
+        if ($image_path) {
+            array_unshift($links, $image_path);
+        }
+
+        return $links;
     }
 
     public function getActivitylogOptions(): LogOptions

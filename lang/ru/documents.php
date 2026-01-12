@@ -34,6 +34,7 @@ return [
     'image' => [
         'upload_success' => 'Изображение успешно загружено',
         'upload_failure' => 'Не удалось загрузить изображение',
+        'model_not_found' => 'Неверный тип документа'
     ],
 
     'policy' => [

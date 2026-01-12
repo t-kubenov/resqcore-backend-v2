@@ -6,6 +6,7 @@ use App\Http\Controllers\AuxiliaryDataController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\CustomFieldController;
 use App\Http\Controllers\EmailController;
+use App\Http\Controllers\ImageController;
 use App\Http\Controllers\Report\ReportController;
 use App\Http\Controllers\Report\UpdateController;
 use App\Http\Controllers\Report\UpdateLogController;
@@ -93,10 +94,11 @@ Route::middleware('throttle:global')->prefix('v2/')->group(function () {
         Route::prefix('vehicles')->name('vehicles.')->group(function () {
             Route::get('filter', [VehicleController::class, 'filter'])->name('filter');
             Route::get('export', [VehicleController::class, 'export'])->name('export');
-            Route::post('{vehicle}/upload-image', [VehicleController::class, 'uploadImage'])->name('upload-image');
         });
-
         Route::resource('vehicles', VehicleController::class)->only('index', 'show', 'create', 'store', 'edit', 'update', 'destroy');
+
+        Route::post('/images/{directory}/{id}', [ImageController::class, 'store'])->name('images.store');
+        Route::resource('images', ImageController::class)->only('destroy');
 
     });
 });
