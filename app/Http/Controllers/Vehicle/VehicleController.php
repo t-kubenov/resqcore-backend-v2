@@ -58,7 +58,7 @@ class VehicleController extends Controller
 
         $alerts = $alertService->getAlerts($vehicle);
 
-        $activities = $vehicle->activities;
+        $activities = $vehicle->activities->reverse()->values();
 
         $images = $vehicle->image_links;
 

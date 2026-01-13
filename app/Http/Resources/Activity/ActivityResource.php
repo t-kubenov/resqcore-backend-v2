@@ -8,6 +8,9 @@ use App\Enums\Vehicle\FuelType;
 use App\Enums\Vehicle\GearboxType;
 use App\Enums\Vehicle\TechnicalCondition;
 use App\Enums\Vehicle\UsageType;
+use App\Models\BranchOffice;
+use App\Models\Vehicle\VehicleCompany;
+use App\Models\Vehicle\VehicleType;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -37,8 +40,6 @@ class ActivityResource extends JsonResource // de-facto VehicleActivityResource
     {
         $changes = [];
 
-//        dd($this->update_description);
-
         foreach ($this->update_description as $change)
         {
             $changes[] = __('activities.event.update_change', [
@@ -57,14 +58,42 @@ class ActivityResource extends JsonResource // de-facto VehicleActivityResource
 
         return match(true){
             $this->isEnumField($field) => $this->localizeEnum($field, $value),
-            $this->isForeignKey($field) => $this->getForeignKeyName($value),
+            $this->isForeignKey($field) => $this->getForeignKeyName($field, $value),
             default => $value,
         };
     }
 
-    private function getForeignKeyName($field): string
+    private function isForeignKey($field): bool
     {
-        return $this->$field->name;
+        return in_array($field, [
+            'branch_office_id',
+            'vehicle_type_id',
+            'vehicle_owner_id',
+            'vehicle_user_id',
+        ]);
+    }
+
+    private function getForeignKeyName($field, $value): ?string
+    {
+        $relationships = [
+            'branch_office_id' => BranchOffice::class,
+            'vehicle_type_id' => VehicleType::class,
+            'vehicle_owner_id' => VehicleCompany::class,
+            'vehicle_user_id' => VehicleCompany::class,
+            ];
+
+        return $relationships[$field]::find($value)->name;
+    }
+
+    private function isEnumField($field): bool
+    {
+        return in_array($field, [
+            'fuel_type',
+            'gearbox',
+            'drive',
+            'usage_type',
+            'technical_condition',
+        ]);
     }
 
     private function localizeEnum($field, $value): string
@@ -81,24 +110,4 @@ class ActivityResource extends JsonResource // de-facto VehicleActivityResource
         return __('etc.enum_options.'. $enums[$field]::tryFrom((int)$value)->name);
     }
 
-    private function isForeignKey($field): bool
-    {
-        return in_array($field, [
-            'branch_office_id',
-            'vehicle_type_id',
-            'vehicle_owner_id',
-            'vehicle_user_id',
-        ]);
-    }
-
-    private function isEnumField($field): bool
-    {
-        return in_array($field, [
-            'fuel_type',
-            'gearbox',
-            'drive',
-            'usage_type',
-            'technical_condition',
-        ]);
-    }
 }
