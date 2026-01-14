@@ -17,12 +17,11 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 use Spatie\Activitylog\LogOptions;
-use Spatie\Activitylog\Traits\LogsActivity;
 
 #[ObservedBy(SurveyObserver::class)]
 class Survey extends Model
 {
-    use HasFactory, FormatsColumns, LogsActivity;
+    use HasFactory, FormatsColumns;
 
     protected $perPage = 20;
 

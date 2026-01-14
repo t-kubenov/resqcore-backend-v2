@@ -14,12 +14,11 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\Rule;
 use Spatie\Activitylog\LogOptions;
-use Spatie\Activitylog\Traits\LogsActivity;
 
 
 abstract class ReportBase extends Model
 {
-    use AltersDisplayedDates, LogsActivity;
+    use AltersDisplayedDates;
 
     protected $perPage = 20;
 
