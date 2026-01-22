@@ -14,6 +14,7 @@ use App\Http\Controllers\StatisticsController;
 use App\Http\Controllers\Survey\SurveyController;
 use App\Http\Controllers\Survey\ViolationController;
 use App\Http\Controllers\Vehicle\VehicleController;
+use App\Http\Controllers\VehicleStatisticsController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('throttle:global')->prefix('v2/')->group(function () {
@@ -94,6 +95,7 @@ Route::middleware('throttle:global')->prefix('v2/')->group(function () {
         Route::prefix('vehicles')->name('vehicles.')->group(function () {
             Route::get('filter', [VehicleController::class, 'filter'])->name('filter');
             Route::get('export', [VehicleController::class, 'export'])->name('export');
+            Route::get('statistics/{graphName}', [VehicleStatisticsController::class, 'show'])->name('statistics');
         });
         Route::resource('vehicles', VehicleController::class)->only('index', 'show', 'create', 'store', 'edit', 'update', 'destroy');
 

@@ -7,6 +7,7 @@ use App\Http\Requests\Vehicle\UpdateVehicleRequest;
 use App\Http\Services\GeneralService;
 use App\Models\Vehicle\Vehicle;
 use App\Services\Filters\Configurations\VehicleFilterConfig;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 
 class VehicleService extends GeneralService
@@ -21,9 +22,7 @@ class VehicleService extends GeneralService
             ->orderBy('updated_at', 'desc')
             ->orderBy('id');
 
-        $this->filterByRoles($query);
-
-        $this->filterConfig->apply($query, $request->all());
+        $this->filter($query, $request->all());
 
         return $query->paginate();
     }
@@ -50,5 +49,12 @@ class VehicleService extends GeneralService
         $vehicle->update($data);
 
         return $vehicle;
+    }
+
+    public function filter(Builder $query, $parameters): void
+    {
+        $this->filterByRoles($query);
+
+        $this->filterConfig->apply($query, $parameters);
     }
 }

@@ -38,7 +38,7 @@ abstract class GeneralService
         }
     }
 
-    protected function filterByRoles($query)
+    protected function filterByRoles($query) //todo: rename to scopeForUser
     {
         $user = auth()->user();
 
