@@ -429,12 +429,12 @@ class Vehicle extends Model
 
     public function getImageLinksAttribute()
     {
-        $links = $this->images->pluck('url')->toArray();
+        $links = $this->images->map->only(['id', 'url'])->toArray();
 
         $image_path = $this->image_path? Storage::disk(config('filesystems.default'))->url($this->image_path): null;
 
         if ($image_path) {
-            array_unshift($links, $image_path);
+            array_unshift($links, ['url' => $image_path]);
         }
 
         return $links;
