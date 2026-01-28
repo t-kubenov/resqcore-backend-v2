@@ -21,9 +21,7 @@ class UpdateService extends GeneralService
         $update = $report->updates()->create($attributes);
 
         CustomFieldValueService::store($user->rescue_company_id, $update, $attributes);
-        $update->close();
-        $update->calculateTotals();
-        $update->updateReportTimestamp();
+        $update->apply();
 
         if (isset($attributes['transport'])) {
             $update->parseTransport($attributes['transport']);

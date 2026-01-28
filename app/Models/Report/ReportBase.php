@@ -26,16 +26,16 @@ abstract class ReportBase extends Model
         'minor_injury_count',
         'severe_injury_count',
         'fatal_injury_count',
-        'evacuated_people_count', // ex people_evacuated
+        'evacuated_people_count',
         'provided_medical_count',
-        'client_equipment_count', // ex customer_technology
-        'third_parties_count', // ex party_authority other organizations involved
-        'branch_worker_count', // ex branch_workers varchar
+        'client_equipment_count',
+        'third_parties_count',
+        'branch_worker_count',
 
-        'work_scope', // ex scope_work
-        'situation_during_filing', // ex situation_filing
-        'worker_man_hours', // used to be merged with branch worker count
-        'close_date', // ex finish_work_date
+        'work_scope',
+        'situation_during_filing',
+        'worker_man_hours',
+        'close_date',
         'reported_by'
     ];
 
@@ -267,17 +267,16 @@ abstract class ReportBase extends Model
         return $this->hasMany(Transport::class);
     }
 
-    public static function customFields(): Builder
-    {
-        return CustomField::where([
-            ['model', static::class],
-            ['rescue_company_id', auth()->user()->rescue_company_id]
-        ]);
-    }
-
     public function customFieldValues()
     {
         return $this->morphMany(CustomFieldValue::class, 'model');
+    }
+
+    public static function customFields(): Builder
+    {
+        return CustomField
+            ::where('model', static::class)
+            ->where('rescue_company_id', auth()->user()->rescue_company_id);
     }
 
     public function customFieldValueArray(): array
@@ -314,7 +313,7 @@ abstract class ReportBase extends Model
     {
         return LogOptions::defaults()
             ->logFillable()
-            ->logOnlyDirty() // only log changed fields
-            ->dontSubmitEmptyLogs(); // skip if nothing changed
+            ->logOnlyDirty()
+            ->dontSubmitEmptyLogs();
     }
 }

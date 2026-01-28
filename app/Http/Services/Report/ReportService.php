@@ -57,8 +57,8 @@ class ReportService extends GeneralService
         $report = Report::create($attributes);
 
         CustomFieldValueService::store($user->rescue_company_id, $report, $attributes);
-        $report->close();
-        $report->calculateTotals($report);
+        $report->closeIfApplicable();
+        $report->initializeTotals();
 
         if (isset($attributes['transport'])) {
             $report->parseTransport($attributes['transport']);

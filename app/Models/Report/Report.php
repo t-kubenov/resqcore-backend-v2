@@ -5,10 +5,10 @@ namespace App\Models\Report;
 use App\Enums\FieldParameter;
 use App\Enums\FieldType;
 use App\Models\BranchOffice;
-use App\Models\Company;
 use App\Models\EmergencyType;
 use App\Models\RescueCompany;
 use App\Traits\FormatsColumns;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Validation\Rule;
@@ -370,29 +370,19 @@ class Report extends ReportBase
         return $this->hasOneThrough(RescueCompany::class, BranchOffice::class);
     }
 
+    public function branch_office()
+    {
+        return $this->belongsTo(BranchOffice::class, 'branch_office_id');
+    }
+
     public function emergency()
     {
         return $this->belongsTo(EmergencyType::class, 'emergency_type');
     }
 
-    public function emergency_name()
-    {
-        return $this->emergency->name;
-    }
-
     public function updates()
     {
         return $this->hasMany(Update::class, 'report_id');
-    }
-
-    public function facility_owner()
-    {
-        return $this->belongsTo(Company::class, 'facility_owner_id');
-    }
-
-    public function branch_office()
-    {
-        return $this->belongsTo(BranchOffice::class, 'branch_office_id');
     }
 
     public function transportTotals(): Attribute
@@ -422,7 +412,7 @@ class Report extends ReportBase
         return $branchOfficeId . '-' . ++$reportCount;
     }
 
-    public function calculateTotals(): void
+    public function initializeTotals(): void
     {
         $this->minor_injury_total = $this->minor_injury_count;
         $this->severe_injury_total = $this->severe_injury_count;
@@ -436,12 +426,54 @@ class Report extends ReportBase
         $this->save();
     }
 
-    public function close(): void
+    public function applyUpdateTotals(Update $update): void
     {
-        if ($this->close_date && $this->worker_man_hours > 0) {
-            $this->is_closed = true;
-            $this->save();
+        $this->minor_injury_total += $update->minor_injury_count;
+        $this->severe_injury_total += $update->severe_injury_count;
+        $this->fatal_injury_total += $update->fatal_injury_count;
+        $this->evacuated_people_total += $update->evacuated_people_count;
+        $this->provided_medical_total += $update->provided_medical_count;
+        $this->client_equipment_total += $update->client_equipment_count;
+        $this->third_parties_total += $update->third_parties_count;
+        $this->branch_worker_total += $update->branch_worker_count;
+
+        $this->save();
+    }
+
+    public function closeIfApplicable(): void
+    {
+        if (!$this->canBeClosed()) {
+            return;
         }
+
+        $this->is_closed = true;
+        $this->save();
+    }
+
+    public function canBeClosed(): bool
+    {
+        return $this->close_date
+            && $this->worker_man_hours > 0;
+    }
+
+    public function applyUpdate(Update $update): void
+    {
+        $this->closeFromUpdate($update);
+        $this->applyUpdateTotals($update);
+        $this->markLastUpdateAt($update->created_at);
+    }
+
+    public function closeFromUpdate(Update $update): void
+    {
+        $this->close_date = $update->close_date;
+        $this->worker_man_hours = $update->worker_man_hours;
+        $this->closeIfApplicable();
+    }
+
+    public function markLastUpdateAt(Carbon $date): void
+    {
+        $this->last_update_created_at = $date;
+        $this->save();
     }
 
 }
