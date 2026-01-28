@@ -4,19 +4,18 @@ namespace App\Models\Report;
 
 use App\Enums\FieldParameter;
 use App\Enums\FieldType;
-use App\Models\BranchOffice;
 use App\Models\EmergencyType;
-use App\Models\RescueCompany;
-use App\Traits\FormatsColumns;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Validation\Rule;
 
 
 class Report extends ReportBase
 {
-    use HasFactory, FormatsColumns;
+    use HasFactory;
 
     public function __construct(array $attributes = []){
         parent::__construct($attributes);
@@ -365,24 +364,14 @@ class Report extends ReportBase
         ];
     }
 
-    public function rescue_company()
-    {
-        return $this->hasOneThrough(RescueCompany::class, BranchOffice::class);
-    }
-
-    public function branch_office()
-    {
-        return $this->belongsTo(BranchOffice::class, 'branch_office_id');
-    }
-
-    public function emergency()
-    {
-        return $this->belongsTo(EmergencyType::class, 'emergency_type');
-    }
-
-    public function updates()
+    public function updates(): HasMany
     {
         return $this->hasMany(Update::class, 'report_id');
+    }
+
+    public function emergency(): BelongsTo
+    {
+        return $this->belongsTo(EmergencyType::class, 'emergency_type');
     }
 
     public function transportTotals(): Attribute

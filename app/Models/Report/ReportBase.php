@@ -4,24 +4,20 @@ namespace App\Models\Report;
 
 use App\Enums\FieldParameter;
 use App\Enums\FieldType;
-use App\Models\Model;
+use App\Models\Document;
 use App\Models\Transport;
 use App\Models\User;
 use App\Models\CustomField\CustomField;
 use App\Models\CustomField\CustomFieldValue;
-use App\Traits\AltersDisplayedDates;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\Rule;
 use Spatie\Activitylog\LogOptions;
 
 
-abstract class ReportBase extends Model
+abstract class ReportBase extends Document
 {
-    use AltersDisplayedDates;
-
-    protected $perPage = 20;
-
     protected $fillable = [
         'minor_injury_count',
         'severe_injury_count',
@@ -267,9 +263,31 @@ abstract class ReportBase extends Model
         return $this->hasMany(Transport::class);
     }
 
-    public function customFieldValues()
+    public function customFieldValues(): MorphMany
     {
         return $this->morphMany(CustomFieldValue::class, 'model');
+    }
+
+    public function parseTransport(array $transport): void
+    {
+        try {
+            foreach ($transport as $vehicle) {
+                $this->transport()->create([
+                    'type' => $vehicle['id'],
+                    'count' => $vehicle['count'],
+                ]);
+            }
+        } catch (\Exception $e) {
+            Log::error($e->getMessage());
+        }
+    }
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->logFillable()
+            ->logOnlyDirty()
+            ->dontSubmitEmptyLogs();
     }
 
     public static function customFields(): Builder
@@ -293,27 +311,5 @@ abstract class ReportBase extends Model
                 $query->whereJsonContains('parameters', FieldParameter::IncludeToUpdates);
         })
             ->get();
-    }
-
-    public function parseTransport(array $transport): void
-    {
-        try {
-            foreach ($transport as $vehicle) {
-                $this->transport()->create([
-                    'type' => $vehicle['id'],
-                    'count' => $vehicle['count'],
-                ]);
-            }
-        } catch (\Exception $e) {
-            Log::error($e->getMessage());
-        }
-    }
-
-    public function getActivitylogOptions(): LogOptions
-    {
-        return LogOptions::defaults()
-            ->logFillable()
-            ->logOnlyDirty()
-            ->dontSubmitEmptyLogs();
     }
 }

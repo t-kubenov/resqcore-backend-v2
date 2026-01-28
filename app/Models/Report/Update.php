@@ -3,6 +3,7 @@
 namespace App\Models\Report;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Update extends ReportBase
 {
@@ -16,7 +17,12 @@ class Update extends ReportBase
         ]);
     }
 
-    public function report()
+    public function branch_office(): BelongsTo
+    {
+        return $this->report->branch_office();
+    }
+
+    public function report(): BelongsTo
     {
         return $this->belongsTo(Report::class, 'report_id');
     }
