@@ -19,7 +19,7 @@ enum FieldParameter: string
     case CategoryId = 'category_id';
     case FilterByField = 'filter_by_field';
     case ShowInTable = 'show_in_table';
-    case ShowInCard = 'show_in_card';
+    case HideFromCard = 'hide_from_card';
     case ShowInExport = 'show_in_export';
     case TableOrder = 'table_order';
 }

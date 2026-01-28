@@ -61,7 +61,6 @@ class Violation extends Model
                     FieldParameter::IsFilterable,
                     FieldParameter::IsFilterableForCA,
                     FieldParameter::ShowInTable,
-                    FieldParameter::ShowInCard,
                 ],
             ],
 
@@ -79,7 +78,6 @@ class Violation extends Model
                     FieldParameter::IsFilterable,
                     FieldParameter::IsFilterableForCA,
                     FieldParameter::ShowInTable,
-                    FieldParameter::ShowInCard,
                 ],
             ],
 
@@ -99,7 +97,6 @@ class Violation extends Model
                     FieldParameter::IsFilterable,
                     FieldParameter::IsFilterableForCA,
                     FieldParameter::ShowInTable,
-                    FieldParameter::ShowInCard,
                 ],
             ],
 
@@ -116,7 +113,6 @@ class Violation extends Model
                     FieldParameter::IsFilterable,
                     FieldParameter::IsFilterableForCA,
                     FieldParameter::ShowInTable,
-                    FieldParameter::ShowInCard,
                 ],
             ],
 
@@ -132,7 +128,6 @@ class Violation extends Model
                     FieldParameter::IsFilterableForCA,
                     FieldParameter::ShowInTable,
                     FieldParameter::IsHidden,
-                    FieldParameter::ShowInCard,
                 ],
             ],
 
@@ -148,7 +143,6 @@ class Violation extends Model
                     FieldParameter::IsFilterableForCA,
                     FieldParameter::ShowInTable,
                     FieldParameter::IsHidden,
-                    FieldParameter::ShowInCard,
                 ],
             ],
         ];

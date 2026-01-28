@@ -74,7 +74,7 @@ trait FormatsColumns
                 'name' => $field['label'],
             ],
             array_filter(static::fieldDefinitions(), fn($field) =>
-                in_array(FieldParameter::ShowInCard, $field['parameters'])
+                !in_array(FieldParameter::HideFromCard, $field['parameters'])
             )
         ));
     }

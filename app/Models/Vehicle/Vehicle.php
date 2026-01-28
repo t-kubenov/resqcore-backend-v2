@@ -80,7 +80,6 @@ class Vehicle extends Model
                 'parameters' => [
                     FieldParameter::IsHidden,
                     FieldParameter::ShowInTable,
-                    FieldParameter::ShowInCard,
                 ],
             ],
             'branch_office_id' => [
@@ -93,7 +92,6 @@ class Vehicle extends Model
                 'parameters' => [
                     FieldParameter::IsFilterableForCA,
                     FieldParameter::ShowInTable,
-                    FieldParameter::ShowInCard,
                 ],
             ],
             'brand' => [
@@ -107,7 +105,6 @@ class Vehicle extends Model
                 'required' => true,
                 'parameters' => [
                     FieldParameter::ShowInTable,
-                    FieldParameter::ShowInCard,
                 ],
             ],
             'vehicle_type_id' => [
@@ -121,7 +118,6 @@ class Vehicle extends Model
                     FieldParameter::IsFilterableForCA,
                     FieldParameter::IsFilterable,
                     FieldParameter::ShowInTable,
-                    FieldParameter::ShowInCard,
                 ],
             ],
             'plate_number' => [
@@ -136,7 +132,6 @@ class Vehicle extends Model
                 'required' => true,
                 'parameters' => [
                     FieldParameter::ShowInTable,
-                    FieldParameter::ShowInCard,
                 ],
             ],
             'year' => [
@@ -153,7 +148,6 @@ class Vehicle extends Model
                 ],
                 'required' => true,
                 'parameters' => [
-                    FieldParameter::ShowInCard,
                 ],
             ],
             'engine_size' => [
@@ -166,7 +160,6 @@ class Vehicle extends Model
                     'max: 50.0',
                 ],
                 'parameters' => [
-                    FieldParameter::ShowInCard,
                 ],
             ],
             'fuel_type' => [
@@ -176,7 +169,6 @@ class Vehicle extends Model
                 'type' => FieldType::SingleChoiceEnum,
                 'options' => route('auxiliary.field-options', 'fuel_type'),
                 'parameters' => [
-                    FieldParameter::ShowInCard,
                 ],
             ],
             'gearbox' => [
@@ -186,7 +178,6 @@ class Vehicle extends Model
                 'type' => FieldType::SingleChoiceEnum,
                 'options' => route('auxiliary.field-options', 'gearbox'),
                 'parameters' => [
-                    FieldParameter::ShowInCard,
                 ],
             ],
             'drive' => [
@@ -196,7 +187,6 @@ class Vehicle extends Model
                 'type' => FieldType::SingleChoiceEnum,
                 'options' => route('auxiliary.field-options', 'drive'),
                 'parameters' => [
-                    FieldParameter::ShowInCard,
                 ],
             ],
             'location' => [
@@ -209,7 +199,6 @@ class Vehicle extends Model
                 ],
                 'required' => true,
                 'parameters' => [
-                    FieldParameter::ShowInCard,
                     FieldParameter::ShowInTable,
                 ],
             ],
@@ -222,7 +211,6 @@ class Vehicle extends Model
                 'options' => route('auxiliary.field-options', 'vehicle_companies'),
                 'parameters' => [
                     FieldParameter::ShowInTable,
-                    FieldParameter::ShowInCard,
                 ],
             ],
 
@@ -237,7 +225,6 @@ class Vehicle extends Model
                     FieldParameter::IsFilterableForCA,
                     FieldParameter::IsFilterable,
                     FieldParameter::ShowInTable,
-                    FieldParameter::ShowInCard,
                 ],
             ],
 
@@ -250,7 +237,6 @@ class Vehicle extends Model
                 'required' => true,
                 'parameters' => [
                     FieldParameter::ShowInTable,
-                    FieldParameter::ShowInCard,
                 ],
             ],
 
@@ -263,7 +249,6 @@ class Vehicle extends Model
                     'max:255',
                 ],
                 'parameters' => [
-                    FieldParameter::ShowInCard,
                 ],
             ],
 
@@ -277,7 +262,6 @@ class Vehicle extends Model
                     'min:0',
                 ],
                 'parameters' => [
-                    FieldParameter::ShowInCard,
                 ],
             ],
 
@@ -292,7 +276,6 @@ class Vehicle extends Model
                     FieldParameter::IsFilterableForCA,
                     FieldParameter::IsFilterable,
                     FieldParameter::ShowInTable,
-                    FieldParameter::ShowInCard,
                 ],
             ],
 
@@ -306,7 +289,6 @@ class Vehicle extends Model
                     FieldParameter::IsFilterableForCA,
                     FieldParameter::IsFilterable,
                     FieldParameter::ShowInTable,
-                    FieldParameter::ShowInCard,
                 ],
             ],
 
@@ -316,7 +298,6 @@ class Vehicle extends Model
                 'label' => __('vehicles.fields.notes'),
                 'type' => FieldType::Text,
                 'parameters' => [
-                    FieldParameter::ShowInCard,
                 ],
             ],
 
@@ -326,7 +307,6 @@ class Vehicle extends Model
                 'label' => __('vehicles.fields.insurance_expiration_date'),
                 'type' => FieldType::Date,
                 'parameters' => [
-                    FieldParameter::ShowInCard,
                 ],
             ],
 
@@ -336,7 +316,6 @@ class Vehicle extends Model
                 'label' => __('vehicles.fields.inspection_expiration_date'),
                 'type' => FieldType::Date,
                 'parameters' => [
-                    FieldParameter::ShowInCard,
                 ],
             ],
 
@@ -346,7 +325,6 @@ class Vehicle extends Model
                 'label' => __('vehicles.fields.inspection_date'),
                 'type' => FieldType::Date,
                 'parameters' => [
-                    FieldParameter::ShowInCard,
                 ],
             ],
 
@@ -357,7 +335,7 @@ class Vehicle extends Model
                 'type' => FieldType::String,
                 'parameters' => [
                     FieldParameter::IsHidden,
-                    FieldParameter::ShowInCard,
+                    FieldParameter::HideFromCard,
                 ],
             ],
         ];
