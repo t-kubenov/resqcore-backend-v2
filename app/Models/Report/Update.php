@@ -31,4 +31,9 @@ class Update extends ReportBase
     {
         $this->report->applyUpdate($this);
     }
+
+    public function getReadableData(): array
+    {
+        // TODO: Implement getReadableData() method.
+    }
 }

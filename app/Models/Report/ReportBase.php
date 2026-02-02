@@ -10,6 +10,7 @@ use App\Models\User;
 use App\Models\CustomField\CustomField;
 use App\Models\CustomField\CustomFieldValue;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\Rule;
@@ -55,6 +56,7 @@ abstract class ReportBase extends Document
                 'rules' => ['min:0', 'max:10000'],
                 'parameters' => [
                     FieldParameter::CategoryId->value => 2,
+                    FieldParameter::HideFromCard
                 ]
             ],
             'work_scope' => [
@@ -66,6 +68,7 @@ abstract class ReportBase extends Document
                 'required' => true,
                 'parameters' => [
                     FieldParameter::CategoryId->value => 2,
+                    FieldParameter::HideFromCard,
                 ]
             ],
             'situation_during_filing' => [
@@ -77,6 +80,7 @@ abstract class ReportBase extends Document
                 'required' => true,
                 'parameters' => [
                     FieldParameter::CategoryId->value => 2,
+                    FieldParameter::HideFromCard,
                 ]
             ],
             'minor_injury_count' => [
@@ -89,6 +93,7 @@ abstract class ReportBase extends Document
                 'rules' => ['min:0', 'max:10000'],
                 'parameters' => [
                     FieldParameter::CategoryId->value => 3,
+                    FieldParameter::HideFromCard,
                 ]
             ],
             'severe_injury_count' => [
@@ -101,6 +106,7 @@ abstract class ReportBase extends Document
                 'rules' => ['min:0', 'max:10000'],
                 'parameters' => [
                     FieldParameter::CategoryId->value => 3,
+                    FieldParameter::HideFromCard,
                 ]
             ],
             'fatal_injury_count' => [
@@ -113,6 +119,7 @@ abstract class ReportBase extends Document
                 'rules' => ['min:0', 'max:10000'],
                 'parameters' => [
                     FieldParameter::CategoryId->value => 3,
+                    FieldParameter::HideFromCard,
                 ]
             ],
             'evacuated_people_count' => [
@@ -125,6 +132,7 @@ abstract class ReportBase extends Document
                 'rules' => ['min:0', 'max:10000'],
                 'parameters' => [
                     FieldParameter::CategoryId->value => 3,
+                    FieldParameter::HideFromCard,
                 ]
             ],
             'provided_medical_count' => [
@@ -137,6 +145,7 @@ abstract class ReportBase extends Document
                 'rules' => ['min:0', 'max:10000'],
                 'parameters' => [
                     FieldParameter::CategoryId->value => 3,
+                    FieldParameter::HideFromCard,
                 ]
             ],
             'client_equipment_count' => [
@@ -149,6 +158,7 @@ abstract class ReportBase extends Document
                 'rules' => ['min:0', 'max:10000'],
                 'parameters' => [
                     FieldParameter::CategoryId->value => 2,
+                    FieldParameter::HideFromCard,
                 ]
             ],
             'third_parties_count' => [
@@ -161,6 +171,7 @@ abstract class ReportBase extends Document
                 'rules' => ['min:0', 'max:10000'],
                 'parameters' => [
                     FieldParameter::CategoryId->value => 2,
+                    FieldParameter::HideFromCard,
                 ]
             ],
             'worker_man_hours' => [
@@ -177,6 +188,7 @@ abstract class ReportBase extends Document
                 ],
                 'parameters' => [
                     FieldParameter::CategoryId->value => 4,
+                    FieldParameter::HideFromCard,
                 ]
             ],
             'close_date' => [
@@ -205,6 +217,7 @@ abstract class ReportBase extends Document
                 'options' => route('auxiliary.field-options', 'transport_type'),
                 'parameters' => [
                     FieldParameter::CategoryId->value => 2,
+                    FieldParameter::HideFromCard,
                 ],
                 'subfields' => [
                     'transport_id' => [
@@ -221,6 +234,7 @@ abstract class ReportBase extends Document
                         ],
                         'parameters' => [
                             FieldParameter::CategoryId->value => 2,
+                            FieldParameter::HideFromCard,
                         ]
                     ],
                     'transport_count' => [
@@ -233,6 +247,7 @@ abstract class ReportBase extends Document
                         'rules' => ['min:1', 'max:10000'],
                         'parameters' => [
                             FieldParameter::CategoryId->value => 2,
+                            FieldParameter::HideFromCard,
                         ]
                     ],
                 ]
@@ -247,6 +262,7 @@ abstract class ReportBase extends Document
                 'rules' => ['date'],
                 'parameters' => [
                     FieldParameter::CategoryId->value => 1,
+                    FieldParameter::HideFromCard,
                     FieldParameter::IsHidden,
                 ]
             ],
@@ -304,7 +320,7 @@ abstract class ReportBase extends Document
         })->toArray();
     }
 
-    public function customFieldValuesUsedInUpdates()
+    public function customFieldValuesUsedInUpdates(): Collection
     {
         return $this->customFieldValues()
             ->whereHas('customField', function ($query) {

@@ -28,6 +28,7 @@ abstract class Document extends Model
      * }>
      */
     protected static abstract function fieldDefinitions(): array;
+    public abstract function getReadableData(): array;
 
     public function branch_office(): BelongsTo
     {
@@ -50,7 +51,7 @@ abstract class Document extends Model
         });
     }
 
-    public static function tableColumns(): array
+    public static function columns(): array
     {
         return array_values(array_map(
             fn($field) => [

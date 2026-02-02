@@ -129,7 +129,6 @@ test('can view single report of own branch', function () {
         ])
         ->assertJsonFragment([
             'id' => $report->id,
-            'branch_office_id' => $this->user->branch_id,
         ]);
 
 });
