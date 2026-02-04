@@ -197,6 +197,7 @@ class Report extends ReportBase
                 'rules' => ['required', 'string', 'max:255'],
                 'parameters' => [
                     FieldParameter::CategoryId->value => 1,
+                    FieldParameter::HideFromCard,
                 ]
             ],
             'emergency_location' => [

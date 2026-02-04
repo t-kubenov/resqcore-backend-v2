@@ -6,7 +6,7 @@ use App\Http\Resources\GenericResource;
 
 class ReportResource extends GenericResource
 {
-    protected array $cardColumnOrder = [
+    protected ?array $columnOrder = [
         'branch_office',
         'reported_by',
         'report_code',

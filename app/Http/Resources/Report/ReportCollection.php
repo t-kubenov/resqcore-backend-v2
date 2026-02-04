@@ -8,7 +8,7 @@ use App\Models\Report\Report;
 
 class ReportCollection extends GenericCollection
 {
-    protected array $tableColumnOrder = [
+    protected ?array $columnOrder = [
         'report_code',
         'facility_owner',
         'emergency_type',
@@ -18,5 +18,5 @@ class ReportCollection extends GenericCollection
         // custom fields here
     ];
 
-    protected string $modelName = Report::class; //todo: order columns
+    protected string $modelName = Report::class;
 }

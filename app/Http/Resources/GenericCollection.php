@@ -9,6 +9,8 @@ use Illuminate\Support\Collection;
 abstract class GenericCollection extends ResourceCollection
 {
     protected string $modelName;
+    protected ?array $columnOrder = null;
+
 
     public function toArray(Request $request): array
     {
@@ -17,10 +19,26 @@ abstract class GenericCollection extends ResourceCollection
 
     protected function formatResponse(array $columns): array
     {
+        if ($this->columnOrder){
+            $columns = $this->orderColumns($columns);
+        }
+
         return [
             ...($columns? ['columns' => $columns]: []),
             'data' => $this->formatItems(),
         ];
+    }
+
+    protected function orderColumns(array $columns): array
+    {
+        $order = array_flip($this->columnOrder);
+
+        usort($columns, function ($a, $b) use ($order) {
+            return ($order[$a['key']] ?? PHP_INT_MAX)
+                <=> ($order[$b['key']] ?? PHP_INT_MAX);
+        });
+
+        return $columns;
     }
 
     protected function formatItems(): Collection
