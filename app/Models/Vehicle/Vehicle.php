@@ -11,6 +11,7 @@ use App\Enums\Vehicle\GearboxType;
 use App\Enums\Vehicle\TechnicalCondition;
 use App\Enums\Vehicle\UsageType;
 use App\Models\BranchOffice;
+use App\Models\Document;
 use App\Models\Image;
 use App\Observers\Vehicle\VehicleObserver;
 use App\Traits\FormatsColumns;
@@ -25,9 +26,9 @@ use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
 
 #[ObservedBy(VehicleObserver::class)]
-class Vehicle extends Model
+class Vehicle extends Document
 {
-    use HasFactory, formatsColumns, LogsActivity;
+    use HasFactory, LogsActivity;
 
     protected $perPage = 20;
 
@@ -373,16 +374,6 @@ class Vehicle extends Model
                 ? Carbon::parse($this->inspection_date)->format('d.m.Y')
                 : null,
         ];
-    }
-
-    public function branch_office(): BelongsTo
-    {
-        return $this->belongsTo(BranchOffice::class);
-    }
-
-    public function rescue_company(): BelongsTo
-    {
-        return $this->branch_office->rescue_company();
     }
 
     public function vehicle_type(): BelongsTo

@@ -5,6 +5,7 @@ namespace App\Models\Survey;
 use App\Enums\FieldParameter;
 use App\Enums\FieldType;
 use App\Models\BranchOffice;
+use App\Models\Document;
 use App\Models\Model;
 use App\Models\RescueCompany;
 use App\Models\User;
@@ -19,9 +20,9 @@ use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 use Spatie\Activitylog\LogOptions;
 
 #[ObservedBy(SurveyObserver::class)]
-class Survey extends Model
+class Survey extends Document
 {
-    use HasFactory, FormatsColumns;
+    use HasFactory;
 
     protected $perPage = 20;
 
@@ -334,11 +335,6 @@ class Survey extends Model
             ->toArray();
     }
 
-    public function branch_office(): BelongsTo
-    {
-        return $this->belongsTo(BranchOffice::class);
-    }
-
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class, 'created_by');
@@ -372,11 +368,6 @@ class Survey extends Model
     public function legal_entity_unit(): BelongsTo
     {
         return $this->belongsTo(SurveyLegalEntityUnit::class);
-    }
-
-    public function rescue_company(): HasOneThrough
-    {
-        return $this->hasOneThrough(RescueCompany::class, BranchOffice::class, localKey: 'branch_id');
     }
 
     public function getActivitylogOptions(): LogOptions
