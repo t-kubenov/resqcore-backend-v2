@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use App\Enums\FieldParameter;
-use App\Models\CustomField\CustomField;
 use App\Traits\AltersDisplayedDates;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 

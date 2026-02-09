@@ -5,8 +5,6 @@ namespace App\Models\Survey;
 use App\Enums\FieldParameter;
 use App\Enums\FieldType;
 use App\Models\Document;
-use App\Models\Model;
-use App\Traits\FormatsColumns;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;

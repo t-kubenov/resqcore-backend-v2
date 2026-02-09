@@ -4,19 +4,14 @@ namespace App\Models\Survey;
 
 use App\Enums\FieldParameter;
 use App\Enums\FieldType;
-use App\Models\BranchOffice;
 use App\Models\Document;
-use App\Models\Model;
-use App\Models\RescueCompany;
 use App\Models\User;
 use App\Observers\Survey\SurveyObserver;
-use App\Traits\FormatsColumns;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 use Spatie\Activitylog\LogOptions;
 
 #[ObservedBy(SurveyObserver::class)]
