@@ -31,6 +31,10 @@ class ReportResource extends GenericResource
         'worker_man_hours',
         'close_date',
         'is_closed',
-        // custom fields
     ];
+
+    protected function formatColumns()
+    {
+        return $this::resolveColumns($this->columnOrder);
+    }
 }

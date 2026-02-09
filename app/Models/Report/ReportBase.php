@@ -328,4 +328,17 @@ abstract class ReportBase extends Document
         })
             ->get();
     }
+
+    public static function resolveColumns(array $order, FieldParameter $parameter = null): array
+    {
+        $customFields = CustomField::getFormattedFields(auth()->user()->rescue_company_id, static::class);
+
+        $orderedColumns = static::orderColumns($order);
+
+        $customColumns = $parameter?
+            static::columnsByParameter($parameter, $customFields):
+            static::columnsByPredicate(fn() => true, $customFields);
+
+        return array_merge($orderedColumns, $customColumns);
+    }
 }

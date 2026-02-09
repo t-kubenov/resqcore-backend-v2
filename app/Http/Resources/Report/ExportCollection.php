@@ -2,14 +2,15 @@
 
 namespace App\Http\Resources\Report;
 
+use App\Enums\FieldParameter;
 use App\Http\Resources\GenericCollection;
 use App\Models\Report\Report;
 
 class ExportCollection extends GenericCollection
 {
-    protected string $modelName = Report::class; //todo: order columns
+    protected string $modelName = Report::class;
 
-    protected array $tableColumnOrder = [
+    protected ?array $columnOrder = [
         'report_code',
         'call_date',
         'work_start_date',
@@ -22,7 +23,10 @@ class ExportCollection extends GenericCollection
         'worker_man_hours',
         'branch_office',
         'is_closed',
-        'emergency_resolved_by',
-        // custom fields here
     ];
+
+    protected function formatColumns()
+    {
+        return $this->modelName::resolveColumns($this->columnOrder, FieldParameter::ShowInExport);
+    }
 }

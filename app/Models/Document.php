@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums\FieldParameter;
+use App\Models\CustomField\CustomField;
 use App\Traits\AltersDisplayedDates;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
@@ -28,7 +29,7 @@ abstract class Document extends Model
      * }>
      */
     protected static abstract function fieldDefinitions(): array;
-    public abstract function getReadableData(): array;
+    public abstract function getReadableData(): array; //todo: avoid displaying fields not present in columns
 
     public function branch_office(): BelongsTo
     {
@@ -51,42 +52,63 @@ abstract class Document extends Model
         });
     }
 
-    public static function columns(): array
+    public static function columnsByPredicate(callable $predicate, array $fields = null): array
     {
+        $fields ??= static::fieldDefinitions();
+
         return array_values(array_map(
             fn($field) => [
                 'key' => $field['name'],
                 'name' => $field['label'],
             ],
-            array_filter(static::fieldDefinitions(), fn($field) =>
-            in_array(FieldParameter::ShowInTable, $field['parameters'])
-            )
+            array_filter($fields, $predicate)
         ));
+    }
+
+    public static function columnsByParameter(?FieldParameter $parameter, array $fields = null): array
+    {
+        return static::columnsByPredicate(
+            fn ($column) => in_array($parameter, $column['parameters'], true),
+            $fields
+        );
+    }
+
+    public static function columnsByKeys(array $keys): array
+    {
+        $keys = array_flip($keys);
+
+        return static::columnsByPredicate(fn ($column) => isset($keys[$column['name']]));
+    }
+
+    public static function orderColumns(array $order): array
+    {
+        $columns = static::columnsByKeys($order);
+        $order = array_flip($order);
+
+        return collect($columns)
+            ->sortBy(fn($columns) => $order[$columns['key']])
+            ->values()
+            ->toArray();
+    }
+
+    public static function tableColumns(): array
+    {
+        return static::columnsByPredicate(
+            fn($field) => in_array(FieldParameter::ShowInTable, $field['parameters'])
+        );
     }
 
     public static function exportColumns(): array
     {
-        return array_values(array_map(
-            fn($field) => [
-                'key' => $field['name'],
-                'name' => $field['label'],
-            ],
-            array_filter(static::fieldDefinitions(), fn($field) =>
-            in_array(FieldParameter::ShowInExport, $field['parameters'])
-            )
-        ));
+        return static::columnsByPredicate(
+            fn($field) => in_array(FieldParameter::ShowInExport, $field['parameters'])
+        );
     }
 
     public static function cardColumns(): array
     {
-        return array_values(array_map(
-            fn($field) => [
-                'key' => $field['name'],
-                'name' => $field['label'],
-            ],
-            array_filter(static::fieldDefinitions(), fn($field) =>
-            !in_array(FieldParameter::HideFromCard, $field['parameters'])
-            )
-        ));
+        return static::columnsByPredicate(
+            fn($field) => !in_array(FieldParameter::HideFromCard, $field['parameters'])
+        );
     }
 }

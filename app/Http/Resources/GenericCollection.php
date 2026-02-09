@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Enums\FieldParameter;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 use Illuminate\Support\Collection;
@@ -9,39 +10,22 @@ use Illuminate\Support\Collection;
 abstract class GenericCollection extends ResourceCollection
 {
     protected string $modelName;
-    protected ?array $columnOrder = null;
 
 
     public function toArray(Request $request): array
     {
-        return $this->formatResponse($this->modelName::columns());
-    }
-
-    protected function formatResponse(array $columns): array
-    {
-        if ($this->columnOrder){
-            $columns = $this->orderColumns($columns);
-        }
-
         return [
-            ...($columns? ['columns' => $columns]: []),
-            'data' => $this->formatItems(),
+            'columns' => $this->formatColumns(),
+            'data' => $this->formatData(),
         ];
     }
 
-    protected function orderColumns(array $columns): array
+    protected function formatColumns()
     {
-        $order = array_flip($this->columnOrder);
-
-        usort($columns, function ($a, $b) use ($order) {
-            return ($order[$a['key']] ?? PHP_INT_MAX)
-                <=> ($order[$b['key']] ?? PHP_INT_MAX);
-        });
-
-        return $columns;
+        return $this->modelName::tableColumns();
     }
 
-    protected function formatItems(): Collection
+    protected function formatData(): Collection // todo: this should be managed in the Resource
     {
         return $this->collection->map(function ($item) {
             return [
