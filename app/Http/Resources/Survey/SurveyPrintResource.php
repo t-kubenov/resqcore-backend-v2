@@ -3,15 +3,11 @@
 namespace App\Http\Resources\Survey;
 
 use App\Http\Resources\GenericResource;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class SurveyPrintResource extends GenericResource
 {
-    /**
-     * Transform the resource into an array.
-     *
-     * @return array<string, mixed>
-     */
     public function toArray(Request $request): array
     {
         return array_merge(
@@ -30,5 +26,27 @@ class SurveyPrintResource extends GenericResource
                     })->toArray(),
             ]]
         );
+    }
+
+    public static function generatePrintColumns(): array
+    {
+        return collect(\Lang::get('surveys.print', [], 'ru'))
+            ->map(fn($group) => collect($group)
+                ->map(fn($value, $key) => ['key' => $key] + $value)
+                ->values()
+            )
+            ->toArray();
+    }
+
+    public function getPrintData(): array
+    {
+        $data = $this->getReadableData();
+
+        unset($data['survey_code']);
+
+        return array_replace($data, [
+            'branch_office_id' => $this->branch_office_id,
+            'survey_date' => Carbon::parse($this->survey_date)->format('Y-m-d'),
+        ]);
     }
 }

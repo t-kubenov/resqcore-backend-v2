@@ -28,7 +28,7 @@ abstract class Document extends Model
      * }>
      */
     protected static abstract function fieldDefinitions(): array;
-    public abstract function getReadableData(): array; //todo: avoid displaying fields not present in columns
+    public abstract function getReadableData(): array; //todo: avoid displaying fields not present in columns, rename to toReadableArray()
 
     public function branch_office(): BelongsTo
     {

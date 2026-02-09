@@ -7,12 +7,10 @@ use App\Enums\FieldType;
 use App\Models\Document;
 use App\Models\User;
 use App\Observers\Survey\SurveyObserver;
-use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Spatie\Activitylog\LogOptions;
 
 #[ObservedBy(SurveyObserver::class)]
 class Survey extends Document
@@ -305,31 +303,6 @@ class Survey extends Document
         ];
     }
 
-    public function getPrintData(): array
-    {
-        return [
-            'branch_office_id' => $this->branch_office_id,
-            'created_by' => $this->user->full_name,
-            'senders' => $this->senders->select('name', 'position'),
-            'spokesmen' => $this->spokesmen->select('name', 'position'),
-            'reviewer' => $this->reviewer->select('name', 'position'),
-            'legal_entity_id' => $this->legal_entity->name,
-            'legal_entity_unit_id' => $this->legal_entity_unit->name,
-            'survey_date' => Carbon::parse($this->survey_date)->format('Y-m-d'),
-            'hazardous_facility_name' => $this->hazardous_facility_name,
-        ];
-    }
-
-    public static function generatePrintColumns(): array
-    {
-        return collect(\Lang::get('surveys.print', [], 'ru'))
-            ->map(fn($group) => collect($group)
-                ->map(fn($value, $key) => ['key' => $key] + $value)
-                ->values()
-            )
-            ->toArray();
-    }
-
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class, 'created_by');
@@ -363,13 +336,5 @@ class Survey extends Document
     public function legal_entity_unit(): BelongsTo
     {
         return $this->belongsTo(SurveyLegalEntityUnit::class);
-    }
-
-    public function getActivitylogOptions(): LogOptions
-    {
-        return LogOptions::defaults()
-            ->logFillable()
-            ->logOnlyDirty() // only log changed fields
-            ->dontSubmitEmptyLogs(); // skip if nothing changed
     }
 }
