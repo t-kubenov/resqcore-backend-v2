@@ -2,35 +2,9 @@
 
 namespace App\Http\Resources\Update;
 
-use App\Http\Resources\TransportCollection;
-use Illuminate\Http\Request;
-use Illuminate\Http\Resources\Json\JsonResource;
+use App\Http\Resources\GenericResource;
 
-class UpdateResource extends JsonResource
+class UpdateResource extends GenericResource
 {
-    /**
-     * Transform the resource into an array.
-     *
-     * @return array<string, mixed>
-     */
-    public function toArray(Request $request): array
-    {
-        return [
-            'id' => $this->id,
-            'type' => 'update',
-            'attributes' => $this->getAttributes(),
-        ];
-    }
 
-    public function getAttributes()
-    {
-        return array_merge(parent::getAttributes(), $this->getRelationships(),$this->customFieldValueArray());
-    }
-
-    protected function getRelationships()
-    {
-        return [
-            'transport' => new TransportCollection($this->transport??[]),
-        ];
-    }
 }
