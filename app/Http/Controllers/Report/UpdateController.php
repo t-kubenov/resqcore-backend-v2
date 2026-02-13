@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Report;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Report\StoreUpdateRequest;
+use App\Http\Resources\Update\UpdateCollection;
 use App\Http\Resources\Update\UpdateResource;
 use App\Http\Services\DocumentFormService;
 use App\Http\Services\Report\UpdateService;
@@ -21,6 +22,17 @@ class UpdateController extends Controller
     public function __construct(UpdateService $updateService)
     {
         $this->updateService = $updateService;
+    }
+
+    public function index(int $id)
+    {
+        $report = Report::find($id);
+
+        if (!$report) {
+            return response()->json(['message' => __('reports.show.not-found')], 404);
+        }
+
+        return new UpdateCollection($this->updateService->getUpdateLog($report));
     }
 
     public function create(DocumentFormService $service)

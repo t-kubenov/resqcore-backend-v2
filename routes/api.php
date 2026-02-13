@@ -65,7 +65,7 @@ Route::middleware('throttle:global')->prefix('v2/')->group(function () {
             Route::get('/', [ReportController::class, 'index'])->name('index');
             Route::get('/export', [ReportController::class, 'export'])->name('export');
             Route::get('/{id}', [ReportController::class, 'show'])->name('show');
-            Route::get('/{id}/log', [UpdateLogController::class, 'show'])->name('id.log');
+            Route::get('/{id}/log', [UpdateController::class, 'index'])->name('id.log');
 
 
             Route::resource('updates', UpdateController::class)->only('create');

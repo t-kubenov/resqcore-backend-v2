@@ -19,13 +19,12 @@ class UpdateResource extends JsonResource
             'id' => $this->id,
             'type' => 'update',
             'attributes' => $this->getAttributes(),
-            'relationships' => $this->getRelationships(),
         ];
     }
 
     public function getAttributes()
     {
-        return array_merge(parent::getAttributes(), $this->customFieldValueArray());
+        return array_merge(parent::getAttributes(), $this->getRelationships(),$this->customFieldValueArray());
     }
 
     protected function getRelationships()
