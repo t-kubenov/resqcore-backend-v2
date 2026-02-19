@@ -8,11 +8,20 @@ class DateRangeFilter extends BaseFilter
 {
     public function apply(Builder $query, mixed $value): void
     {
-        if (isset($value['from'])) {
-            $query->whereDate($this->column, '>=', $value['from']);
+        $dates = $this->splitDates($value);
+
+        if ($dates['from']) {
+            $query->whereDate($this->column, '>=', $dates['from']);
         }
-        if (isset($value['to'])) {
-            $query->whereDate($this->column, '<=', $value['to']);
+        if ($dates['to']) {
+            $query->whereDate($this->column, '<=', $dates['to']);
         }
+    }
+
+    private function splitDates($string): array
+    {
+        [$result['from'], $result['to']] = explode('|', $string);
+
+        return $result;
     }
 }

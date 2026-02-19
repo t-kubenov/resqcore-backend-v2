@@ -31,8 +31,8 @@ class SearchFilter implements FilterStrategy
 
     protected function addRelationSearch(Builder $query, array $field, string $value, bool $isFirst): void
     {
-        $query->{$isFirst ? 'whereHas' : 'orWhereHas'}($field['relation'], function ($q) use ($field, $value) {
-            $q->where($field['column'], 'ILIKE', "%{$value}%");
+        $query->{$isFirst ? 'whereHas' : 'orWhereHas'}($field[0], function ($q) use ($field, $value) {
+            $q->where($field[1], 'ILIKE', "%{$value}%");
         });
     }
 }

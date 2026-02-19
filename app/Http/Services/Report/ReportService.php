@@ -2,24 +2,28 @@
 
 namespace App\Http\Services\Report;
 
-use App\Enums\FieldType;
 use App\Http\Requests\Report\StoreReportRequest;
 use App\Http\Services\CustomField\CustomFieldValueService;
 use App\Http\Services\GeneralService;
-use App\Models\CustomField\CustomFieldValue;
 use App\Models\Report\Report;
+use App\Services\Filters\Configurations\ReportFilterConfig;
 use Illuminate\Http\Exceptions\ThrottleRequestsException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\RateLimiter;
+use Illuminate\Database\Eloquent\Builder;
 
 class ReportService extends GeneralService
 {
+    public function __construct(protected ReportFilterConfig $filterConfig)
+    {
+    }
+
     public function index(Request $request)
     {
         $query = Report::orderByRaw("is_closed, COALESCE(last_update_created_at, created_at) DESC");
 
-        $query = $this->filterQuery($query, $request);
+        $this->filterQuery($query, $request);
 
         return $query->with(['transport', 'updates.transport'])->paginate();
     }
@@ -28,7 +32,7 @@ class ReportService extends GeneralService
     {
         $query = Report::orderBy("call_date");
 
-        $query = $this->filterQuery($query, $request);
+        $this->filterQuery($query, $request);
 
         return $query->with(['transport', 'updates.transport'])->paginate();
     }
@@ -78,80 +82,11 @@ class ReportService extends GeneralService
         return false;
     }
 
-    public function filterQuery($query, $request)
+    public function filterQuery($query, $request): Builder
     {
-        $data = $request->all();
+        $this->filterByRoles($query);
 
-        $query = $this->filterByRoles($query);
-
-        $filters = Report::filters();
-
-        if (isset($data['emergency_type'])) {
-            $query->whereIn('emergency_type', $data['emergency_type']);
-            unset($data['emergency_type']);
-        }
-
-        if (isset($data['branch_office'])) {
-            $query->whereIn('branch_office_id', $data['branch_office']);
-            unset($data['branch_office']);
-        }
-
-        if (isset($data['is_emergency_line'])) {
-            $query->where('is_emergency_line', $data['is_emergency_line']);
-            unset($data['is_emergency_line']);
-        }
-
-        if (isset($data['call_date'])) {
-            $this->filterDates($query, 'call_date', $data['call_date']);
-            unset($data['call_date']);
-        }
-
-        if (isset($data['is_closed'])) {
-            $query->where('is_closed', $data['is_closed']);
-            unset($data['is_closed']);
-        }
-
-        // Filter Custom Fields
-        foreach ($data as $field_name => $value) {
-            if (!array_key_exists($field_name, $filters)) {
-                continue;
-            }
-
-            $filter = $filters[$field_name];
-            $column = CustomFieldValue::getStorableColumn($filter['type']);
-            $query->whereHas('customFieldValues', function ($q) use ($filter, $field_name, $value, $column) {
-                $q->where('custom_field_id', $filter['id']);
-
-                match (true) {
-                    // Enum
-                    $filter['type']->isEnum() => $q->whereIn('value_int', $value),
-
-                    // Datetime
-                    $filter['type'] === FieldType::Datetime => function () use ($q, $value) {
-                        $this->filterDates($q,'value_datetime', $value);
-                    },
-
-                    // String/Text
-                    in_array($filter['type'], [FieldType::String, FieldType::Text]) =>
-                    $q->where($column, 'ILIKE', "%{$value}%"),
-
-                    // Boolean, Int, Float
-                    in_array($filter['type'], [FieldType::Boolean, FieldType::Int, FieldType::Float]) =>
-                    $q->where($column, $value),
-                };
-            });
-    }
-
-        if (isset($data['search'])) {
-            $search = $data['search'];
-            $query->where(function ($q) use ($search) {
-                $q->where('line_facility_owner', 'ILIKE', "%{$search}%")
-                    ->orWhere('emergency_location', 'ILIKE', "%{$search}%")
-                    ->orWhereHas('facility_owner', function ($q) use ($search) {
-                        $q->where('name', 'ILIKE', "%{$search}%");
-                    });
-            });
-        }
+        $this->filterConfig->apply($query, $request->all());
 
         return $query;
     }
