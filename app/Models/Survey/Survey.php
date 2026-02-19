@@ -139,8 +139,6 @@ class Survey extends Document
                 'required' => true,
                 'parameters' => [
                     FieldParameter::CategoryId->value => 1,
-                    FieldParameter::IsFilterable,
-                    FieldParameter::IsFilterableForCA,
                 ],
                 'subfields' => [ //todo: subfields are not validated in any way, this is also probably the case for transport.
                     'spokesman_name' =>
@@ -167,8 +165,6 @@ class Survey extends Document
                         'rules' => ['required_with:data.attributes.spokesmen'],
                         'parameters' => [
                             FieldParameter::CategoryId->value => 1,
-                            FieldParameter::IsFilterable,
-                            FieldParameter::IsFilterableForCA,
                         ],
                     ],
                 ]
@@ -184,8 +180,6 @@ class Survey extends Document
                     'rules' => ['max:1'],
                     'parameters' => [
                         FieldParameter::CategoryId->value => 1,
-                        FieldParameter::IsFilterable,
-                        FieldParameter::IsFilterableForCA,
                     ],
                     'subfields' => [
                         'reviewer_name' =>
@@ -212,8 +206,6 @@ class Survey extends Document
                                 'rules' => ['required_with:data.attributes.reviewer'],
                                 'parameters' => [
                                     FieldParameter::CategoryId->value => 1,
-                                    FieldParameter::IsFilterable,
-                                    FieldParameter::IsFilterableForCA,
                                 ],
                             ],
                     ]

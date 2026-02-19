@@ -6,20 +6,12 @@ use App\Services\Filters\Filters\DateRangeFilter;
 use App\Services\Filters\Filters\SearchFilter;
 use App\Services\Filters\Filters\WhereFilter;
 use App\Services\Filters\Filters\WhereInFilter;
-use App\Services\Filters\QueryFilterService;
-use Illuminate\Database\Eloquent\Builder;
 
-class ReportFilterConfig
+class ReportFilterConfig extends BaseFilterConfig
 {
-    public function __construct(
-        protected QueryFilterService $filterService,
-    ) {
-        $this->configure();
-    }
-
-    protected function configure(): void
+    protected function filters(): array
     {
-        $filters = [
+        return [
             'branch_office_id' => new WhereInFilter('branch_office_id'),
             'emergency_type' => new WhereInFilter('emergency_type'),
             'is_emergency_line' => new WhereFilter('is_emergency_line'),
@@ -31,16 +23,5 @@ class ReportFilterConfig
                 'emergency_location'
             ])
         ];
-
-        foreach ($filters as $field => $filter) {
-            $this->filterService->registerFilter($field, $filter);
-        }
-    }
-
-    public function apply(Builder $query, array $data): Builder
-    {
-        $this->filterService->apply($query, $data);
-
-        return $query;
     }
 }

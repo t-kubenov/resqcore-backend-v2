@@ -6,79 +6,31 @@ use App\Http\Requests\Survey\StoreSurveyRequest;
 use App\Http\Services\GeneralService;
 use App\Models\Survey\Survey;
 use App\Models\Survey\SurveyLegalEntityUnit;
+use App\Services\Filters\Configurations\SurveyFilterConfig;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 
 class SurveyService extends GeneralService
 {
+    public function __construct(protected SurveyFilterConfig $filterConfig)
+    {
+    }
+
     public function index(Request $request)
     {
         $query = Survey::query()
             ->orderBy('created_at', 'desc');
 
-        return $this->filterQuery($request, $query)->paginate();
+        $this->filterQuery($query, $request);
+
+        return $query->paginate();
     }
 
-    private function filterQuery(Request $request, Builder $query)
+    private function filterQuery(Builder $query, $request): Builder
     {
-        $data = $request->all();
-        $query = $this->filterByRoles($query);
+        $this->filterByRoles($query);
 
-        if (isset($data['branch_office_id']) && auth()->user()->isCentralOffice()) {
-            $query->whereIn('branch_office_id', $data['branch_office_id']);
-            unset($data['branch_office_id']);
-        }
-
-        if (isset($data['created_by'])) {
-            $query->whereIn('created_by', $data['created_by']);
-            unset($data['created_by']);
-        }
-
-        if (isset($data['senders'])) {
-            $query->whereHas('senders', function ($q) use ($data) {
-                $q->where('name', 'ILIKE', "%{$data['senders']}%");
-            });
-            unset($data['senders']);
-        }
-
-        if (isset($data['spokesmen'])) {
-            $query->whereHas('spokesmen', function ($q) use ($data) {
-                $q->where('name', 'ILIKE', "%{$data['spokesmen']}%");
-            });
-            unset($data['spokesmen']);
-        }
-
-        if (isset($data['reviewer'])) {
-            $query->whereHas('reviewer', function ($q) use ($data) {
-                $q->where('name', 'ILIKE', "%{$data['reviewer']}%");
-            });
-            unset($data['reviewer']);
-        }
-
-        if (isset($data['survey_date'])) {
-            $this->filterDates($query, 'survey_date', $data['survey_date']);
-            unset($data['survey_date']);
-        }
-
-        if (isset($data['search'])) {
-            $search = $data['search'];
-
-            $query->whereHas('violations', function ($q) use ($search) {
-                $q
-                    ->where('description', 'ILIKE', "%$search%")
-                    ->orWhere('clause', 'ILIKE', "%$search%");
-            })
-                ->orWhereHas('legal_entity', function ($q) use ($search) {
-                    $q->where('name', 'ILIKE',  "%$search%");
-                })
-                ->orWhereHas('legal_entity_unit', function ($q) use ($search) {
-                    $q->where('name', 'ILIKE',  "%$search%");
-                })
-                ->orWhere('hazardous_facility_name', 'ILIKE',  "%$search%")
-                ->orWhere('survey_code', 'ILIKE',  "%$search%");
-
-            unset($data['search']);
-        }
+        $this->filterConfig->apply($query, $request->all());
 
         return $query;
     }

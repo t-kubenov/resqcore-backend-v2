@@ -3,22 +3,13 @@
 namespace App\Services\Filters\Configurations;
 
 use App\Services\Filters\Filters\SearchFilter;
-use App\Services\Filters\Filters\WhereFilter;
 use App\Services\Filters\Filters\WhereInFilter;
-use App\Services\Filters\QueryFilterService;
-use Illuminate\Database\Eloquent\Builder;
 
-class VehicleFilterConfig
+class VehicleFilterConfig extends BaseFilterConfig
 {
-    public function __construct(
-        protected QueryFilterService $filterService,
-    ) {
-        $this->configure();
-    }
-
-    protected function configure(): void
+    protected function filters(): array
     {
-        $filters = [
+        return [
             'branch_office_id' => new WhereInFilter('branch_office_id'),
             'vehicle_type_id' => new WhereInFilter('vehicle_type_id'),
             'usage_type' => new WhereInFilter('usage_type'),
@@ -34,16 +25,5 @@ class VehicleFilterConfig
                 'notes',
             ])
         ];
-
-        foreach ($filters as $field => $filter) {
-            $this->filterService->registerFilter($field, $filter);
-        }
-    }
-
-    public function apply(Builder $query, array $data): Builder
-    {
-        $this->filterService->apply($query, $data);
-
-        return $query;
     }
 }
