@@ -12,6 +12,7 @@ use App\Models\Survey\Survey;
 use App\Models\Survey\Violation;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\JsonResponse;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class ViolationController
 {
@@ -42,9 +43,24 @@ class ViolationController
         return new ViolationResource($this->violationService->store($request, $survey));
     }
 
-    public function close(CloseViolationRequest $request, int $id): ViolationResource|JsonResponse
+    public function close_v2(CloseViolationRequest $request, int $id): ViolationResource|JsonResponse
     {
         $violation = Violation::findOrFail($id);
+
+        $this->authorize('create', Survey::class);
+
+        if ($violation->elimination_completion) {
+            return response()->json(['message' => __('validation.survey.violations.close.already_closed')], 422);
+        }
+
+        return new ViolationResource($this->violationService->close($request, $violation));
+    }
+
+    public function close(CloseViolationRequest $request, Survey $survey, Violation $violation): ViolationResource|JsonResponse
+    {
+        if (!$violation->belongsToSurvey($survey)){
+            throw new NotFoundHttpException(__('reports.show.not-found'));
+        }
 
         $this->authorize('create', Survey::class);
 
@@ -70,11 +86,22 @@ class ViolationController
         return new ViolationCollection($violations);
     }
 
-    public function show(int $id): ViolationResource
+    public function show_v2(int $id): ViolationResource
     {
         $violation = Violation::findOrFail($id);
 
         $this->authorize('view', $violation->survey);
+
+        return new ViolationResource($violation);
+    }
+
+    public function show(Survey $survey, Violation $violation): ViolationResource
+    {
+        if (!$violation->belongsToSurvey($survey)){
+            throw new NotFoundHttpException(__('reports.show.not-found'));
+        }
+
+        $this->authorize('view', $survey);
 
         return new ViolationResource($violation);
     }

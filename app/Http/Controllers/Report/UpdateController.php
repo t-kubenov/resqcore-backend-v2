@@ -44,10 +44,8 @@ class UpdateController extends Controller
         ]);
     }
 
-    public function store(StoreUpdateRequest $request)
+    public function store(StoreUpdateRequest $request, Report $report)
     {
-        $report = Report::findOrFail($request->id);
-
         $this->authorize('create', [Update::class, $report]);
 
         if ($report->is_closed) {

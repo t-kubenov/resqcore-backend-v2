@@ -182,6 +182,11 @@ class Violation extends Document
         return $this->belongsTo(ViolationClauseType::class);
     }
 
+    public function belongsToSurvey(Survey $survey): bool
+    {
+        return $this->survey_id === $survey->id;
+    }
+
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()

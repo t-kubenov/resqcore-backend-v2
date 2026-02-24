@@ -9,7 +9,6 @@ use App\Http\Controllers\EmailController;
 use App\Http\Controllers\ImageController;
 use App\Http\Controllers\Report\ReportController;
 use App\Http\Controllers\Report\UpdateController;
-use App\Http\Controllers\Report\UpdateLogController;
 use App\Http\Controllers\StatisticsController;
 use App\Http\Controllers\Survey\SurveyController;
 use App\Http\Controllers\Survey\ViolationController;
@@ -65,12 +64,12 @@ Route::middleware('throttle:global')->prefix('v2/')->group(function () {
             Route::get('/', [ReportController::class, 'index'])->name('index');
             Route::get('/export', [ReportController::class, 'export'])->name('export');
             Route::get('/{id}', [ReportController::class, 'show'])->name('show');
-            Route::get('/{id}/log', [UpdateController::class, 'index'])->name('id.log');
+            Route::post('/', [ReportController::class, 'store'])->name('store');
 
 
             Route::resource('updates', UpdateController::class)->only('create');
-            Route::post('/', [ReportController::class, 'store'])->name('store');
-            Route::post('/update/{id}', [UpdateController::class, 'store'])->name('updates.store');
+            Route::get('/{id}/log', [UpdateController::class, 'index'])->name('id.log');
+            Route::post('/update/{report}', [UpdateController::class, 'store'])->name('updates.store');
         });
 
         Route::resource('surveys', SurveyController::class)->only('create');
@@ -84,11 +83,11 @@ Route::middleware('throttle:global')->prefix('v2/')->group(function () {
 
             Route::resource('violations', ViolationController::class)->only('create');
             Route::name('violations.')->group(function () {
-                Route::get('/violations/{id}', [ViolationController::class, 'show'])->name('show');
+                Route::get('/violations/{id}', [ViolationController::class, 'show_v2'])->name('show');
                 Route::get('/{id}/violations', [ViolationController::class, 'index'])->name('index');
 
                 Route::post('/{id}/create-violation', [ViolationController::class, 'store'])->name('store');
-                Route::post('/close-violation/{id}', [ViolationController::class, 'close'])->name('close');
+                Route::post('/close-violation/{id}', [ViolationController::class, 'close_v2'])->name('close');
             });
         });
 
@@ -103,5 +102,27 @@ Route::middleware('throttle:global')->prefix('v2/')->group(function () {
         Route::resource('images', ImageController::class)->only('destroy');
 
     });
+});
+
+Route::middleware(['throttle:global', 'auth:sanctum'])->prefix('v3/')->name('v3')->group(function () {
+
+    Route::prefix('reports')->name('reports.')->group(function () {
+        Route::get('export', [ReportController::class, 'export'])->name('export');
+    });
+    Route::resource('reports', ReportController::class)->only(['index', 'create', 'store', 'show']);
+
+    Route::resource('reports.updates', UpdateController::class)->only(['index', 'create', 'store']);
+
+
+    Route::prefix('surveys')->name('surveys.')->group(function () {
+        Route::get('export', [SurveyController::class, 'export'])->name('export');
+        Route::get('/{survey}/print', [SurveyController::class, 'print'])->name('print');
+    });
+    Route::resource('surveys', SurveyController::class)->only(['index', 'create', 'store', 'show']);
+
+    Route::name('surveys.violations.')->group(function () {
+        Route::patch('surveys/{survey}/violations/{violation}/close', [ViolationController::class, 'close'])->name('close');
+    });
+    Route::resource('surveys.violations', ViolationController::class)->only(['index', 'create', 'store', 'show']);
 });
 
