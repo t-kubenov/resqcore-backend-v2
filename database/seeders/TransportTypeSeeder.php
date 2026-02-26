@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Models\TransportType;
+use App\Report\Transport\TransportType;
 use Illuminate\Database\Seeder;
 
 class TransportTypeSeeder extends Seeder
@@ -12,7 +12,7 @@ class TransportTypeSeeder extends Seeder
      */
     public function run(): void
     {
-        $rescueCompanies = \App\Models\RescueCompany::all();
+        $rescueCompanies = \App\Tenant\RescueCompany::all();
 
         foreach ($rescueCompanies as $rescueCompany) {
             TransportType::factory()->count(7)->create([

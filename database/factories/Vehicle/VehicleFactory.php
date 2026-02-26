@@ -2,27 +2,25 @@
 
 namespace Database\Factories\Vehicle;
 
-use App\Enums\Vehicle\ActionType;
-use App\Enums\Vehicle\DriveType;
-use App\Enums\Vehicle\FuelType;
-use App\Enums\Vehicle\GearboxType;
-use App\Enums\Vehicle\TechnicalCondition;
-use App\Enums\Vehicle\UsageType;
-use App\Models\BranchOffice;
-use App\Models\Vehicle\VehicleCompany;
-use App\Models\Vehicle\VehicleType;
+use App\Vehicle\Enums\ActionType;
+use App\Vehicle\Enums\DriveType;
+use App\Vehicle\Enums\FuelType;
+use App\Vehicle\Enums\GearboxType;
+use App\Vehicle\Enums\TechnicalCondition;
+use App\Vehicle\Enums\UsageType;
+use App\Tenant\BranchOffice;
+use App\Vehicle\Vehicle;
+use App\Vehicle\VehicleCompany;
+use App\Vehicle\VehicleType;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Vehicle\Vehicle>
+ * @extends Factory<Vehicle>
  */
 class VehicleFactory extends Factory
 {
-    /**
-     * Define the model's default state.
-     *
-     * @return array<string, mixed>
-     */
+    protected $model = Vehicle::class;
+
     public function definition(): array
     {
         return [

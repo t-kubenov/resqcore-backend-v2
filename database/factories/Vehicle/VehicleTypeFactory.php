@@ -2,19 +2,17 @@
 
 namespace Database\Factories\Vehicle;
 
-use App\Models\RescueCompany;
+use App\Tenant\RescueCompany;
+use App\Vehicle\VehicleType;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Vehicle\VehicleType>
+ * @extends Factory<VehicleType>
  */
 class VehicleTypeFactory extends Factory
 {
-    /**
-     * Define the model's default state.
-     *
-     * @return array<string, mixed>
-     */
+    protected $model = VehicleType::class;
+
     public function definition(): array
     {
         return [

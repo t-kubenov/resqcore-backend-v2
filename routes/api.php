@@ -1,19 +1,21 @@
 <?php
 
-use App\Http\Controllers\Admin\UserPermissionController;
-use App\Http\Controllers\AuthController;
-use App\Http\Controllers\AuxiliaryDataController;
-use App\Http\Controllers\CompanyController;
-use App\Http\Controllers\CustomFieldController;
-use App\Http\Controllers\EmailController;
-use App\Http\Controllers\ImageController;
-use App\Http\Controllers\Report\ReportController;
-use App\Http\Controllers\Report\UpdateController;
-use App\Http\Controllers\StatisticsController;
-use App\Http\Controllers\Survey\SurveyController;
-use App\Http\Controllers\Survey\ViolationController;
-use App\Http\Controllers\Vehicle\VehicleController;
-use App\Http\Controllers\VehicleStatisticsController;
+use App\Auth\AuthController;
+use App\Auth\UserPermissionController;
+use App\CompanyList\CompanyController;
+use App\CustomField\CustomFieldController;
+use App\Egov\AuxiliaryDataController;
+use App\FieldOption\FieldOptionController;
+use App\Filter\FilterController;
+use App\Image\ImageController;
+use App\Report\ReportController;
+use App\Report\Update\UpdateController;
+use App\Statistics\StatisticsController;
+use App\Statistics\VehicleStatisticsController;
+use App\Survey\SurveyController;
+use App\Survey\Violation\ViolationController;
+use App\UserFeedback\EmailController;
+use App\Vehicle\VehicleController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('throttle:global')->prefix('v2/')->group(function () {
@@ -36,11 +38,19 @@ Route::middleware('throttle:global')->prefix('v2/')->group(function () {
 
         Route::prefix('auxiliary')->name('auxiliary.')->controller(AuxiliaryDataController::class)
             ->group(function () {
-                Route::get('/report-filters', 'getReportFilters')->name('report-filters');
-                Route::get('/survey-filters', 'getSurveyFilters')->name('survey-filters');
                 Route::get('/mineral-fields', 'getMineralFields')->name('mineral-fields');
                 Route::get('/oil-fields', 'getOilFields')->name('oil-fields');
                 Route::get('/subsoil-contracts', 'getSubsoilContracts')->name('subsoil-contracts');
+            });
+
+        Route::prefix('auxiliary')->name('auxiliary.')->controller(FilterController::class)
+            ->group(function () {
+                Route::get('/report-filters', 'getReportFilters')->name('report-filters');
+                Route::get('/survey-filters', 'getSurveyFilters')->name('survey-filters');
+            });
+
+        Route::prefix('auxiliary')->name('auxiliary.')->controller(FieldOptionController::class)
+            ->group(function () {
                 Route::get('/field-options/{field_name}', 'getFieldOptions')->name('field-options');
             });
 

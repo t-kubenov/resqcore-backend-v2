@@ -1,10 +1,10 @@
 <?php
 
-use App\Models\BranchOffice;
-use App\Models\Survey\Survey;
-use App\Models\Survey\SurveyLegalEntity;
-use App\Models\Survey\SurveyLegalEntityUnit;
-use function Tests\Helpers\{getRandomCentralAndBranchUsers, getRandomBranchIdFromCentralOffice};
+use App\Tenant\BranchOffice;
+use App\Survey\Models\Survey;
+use App\Survey\Models\SurveyLegalEntity;
+use App\Survey\Models\SurveyLegalEntityUnit;
+use function Tests\Helpers\{getRandomBranchIdFromCentralOffice, getRandomCentralAndBranchUsers};
 
 
 function generateSurvey($user): array

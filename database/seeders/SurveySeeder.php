@@ -2,14 +2,14 @@
 
 namespace Database\Seeders;
 
-use App\Models\BranchOffice;
-use App\Models\User;
-use App\Models\Survey\Survey;
-use App\Models\Survey\SurveyFacilitySpokesman;
-use App\Models\Survey\SurveyLegalEntity;
-use App\Models\Survey\SurveyLegalEntityUnit;
-use App\Models\Survey\SurveySender;
-use App\Models\Survey\Violation;
+use App\Tenant\BranchOffice;
+use App\Tenant\User;
+use App\Survey\Models\Survey;
+use App\Survey\Models\SurveyFacilitySpokesman;
+use App\Survey\Models\SurveyLegalEntity;
+use App\Survey\Models\SurveyLegalEntityUnit;
+use App\Survey\Models\SurveySender;
+use App\Survey\Violation\Violation;
 use Illuminate\Database\Seeder;
 
 class SurveySeeder extends Seeder

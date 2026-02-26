@@ -2,22 +2,20 @@
 
 namespace Database\Factories\Report;
 
-use App\Models\BranchOffice;
-use App\Models\EmergencyType;
-use App\Models\User;
+use App\Report\Report;
+use App\Tenant\BranchOffice;
+use App\Tenant\User;
+use App\Report\EmergencyType;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Report\Report>
+ * @extends Factory<Report>
  */
 class ReportFactory extends Factory
 {
-    /**
-     * Define the model's default state.
-     *
-     * @return array<string, mixed>
-     */
+    protected $model = Report::class;
+
     public function definition(): array
     {
         $callDate = $this->faker->dateTimeBetween('-5 years', '-5 months');

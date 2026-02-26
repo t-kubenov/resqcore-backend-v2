@@ -1,8 +1,9 @@
 <?php
-use App\Models\BranchOffice;
-use App\Models\Survey\Survey;
-use App\Models\Survey\Violation;
-use function Tests\Helpers\{getRandomCentralAndBranchUsers, getRandomBranchIdFromCentralOffice};
+
+use App\Tenant\BranchOffice;
+use App\Survey\Models\Survey;
+use App\Survey\Violation\Violation;
+use function Tests\Helpers\{getRandomBranchIdFromCentralOffice, getRandomCentralAndBranchUsers};
 
 
 beforeEach(function() {

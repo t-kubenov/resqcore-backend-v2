@@ -3,8 +3,8 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
-use App\Services\FieldOptions\FieldOptionService;
-use App\Services\FieldOptions\Handlers\{
+use App\FieldOption\FieldOptionService;
+use App\FieldOption\Handlers\{
     CreatedByFieldHandler,
     CustomFieldHandler,
     Report\BranchOfficeFieldHandler,

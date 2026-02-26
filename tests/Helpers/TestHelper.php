@@ -2,9 +2,9 @@
 
 namespace Tests\Helpers;
 
-use App\Models\BranchOffice;
-use App\Models\Report\Report;
-use App\Models\User;
+use App\Tenant\BranchOffice;
+use App\Tenant\User;
+use App\Report\Report;
 use Carbon\Carbon;
 
 

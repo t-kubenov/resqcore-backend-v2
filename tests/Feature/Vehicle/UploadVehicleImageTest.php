@@ -1,6 +1,6 @@
 <?php
 
-use App\Models\Image;
+use App\Image\Image;
 use Illuminate\Http\UploadedFile;
 use Tests\Helpers\CompanyContext;
 use Tests\Helpers\VehicleContext;

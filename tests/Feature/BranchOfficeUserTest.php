@@ -1,10 +1,10 @@
 <?php
 
-use App\Models\BranchOffice;
-use App\Models\Transport;
-use App\Models\User;
-use App\Models\Report\Report;
-use App\Models\Report\Update;
+use App\Tenant\BranchOffice;
+use App\Tenant\User;
+use App\Report\Report;
+use App\Report\Transport\Transport;
+use App\Report\Update\Update;
 use Carbon\Carbon;
 use function Tests\Helpers\{generateReport};
 
@@ -22,13 +22,13 @@ function sendReportCreationRequest(P\Tests\Feature\BranchOfficeUserTest $test_ob
 }
 
 function generateEmergencyType (User $user){
-    return \App\Models\EmergencyType::where('rescue_company_id',
+    return \App\Report\EmergencyType::where('rescue_company_id',
         $user->branch_office->rescue_company_id
     )->inRandomOrder()->first()->id;
 }
 
 function generateTransportType (User $user){
-    return \App\Models\TransportType::where('rescue_company_id',
+    return \App\Report\Transport\TransportType::where('rescue_company_id',
         $user->branch_office->rescue_company_id
     )->inRandomOrder()->first()->id;
 }
@@ -69,7 +69,7 @@ test('can view all reports of own branch', function () {
 test('can view all reports with filters', function () {
 
     // get 3 of emergency type ids
-    $emergency_type = \App\Models\EmergencyType::inRandomOrder()
+    $emergency_type = \App\Report\EmergencyType::inRandomOrder()
         ->limit(3)
         ->pluck('id')
         ->toArray();
@@ -411,7 +411,7 @@ test("cannot use another company's transport type in report", function () {
         'emergency_type' => ['id' => $report['emergency_type']],
         'transport' => [
             [
-                'id' => \App\Models\TransportType::where('rescue_company_id', '!=', $this->user->branch_office->rescue_company_id)->inRandomOrder()->first()->id,
+                'id' => \App\Report\Transport\TransportType::where('rescue_company_id', '!=', $this->user->branch_office->rescue_company_id)->inRandomOrder()->first()->id,
                 'count' => fake()->numberBetween(1, 10),
             ]
         ]
@@ -434,10 +434,10 @@ test("cannot use another company's emergency type in report", function () {
     $report['work_start_date'] = Carbon::parse($report['work_start_date'])->format('Y-m-d H:i:s');
 
     $attributes = array_merge($report, [
-        'emergency_type' => ['id' => \App\Models\EmergencyType::where('rescue_company_id', '!=', $this->user->branch_office->rescue_company_id)->inRandomOrder()->first()->id],
+        'emergency_type' => ['id' => \App\Report\EmergencyType::where('rescue_company_id', '!=', $this->user->branch_office->rescue_company_id)->inRandomOrder()->first()->id],
         'transport' => [
             [
-                'id' => \App\Models\TransportType::inRandomOrder()->first()->id,
+                'id' => \App\Report\Transport\TransportType::inRandomOrder()->first()->id,
                 'count' => fake()->numberBetween(1, 10),
             ]
         ]

@@ -2,7 +2,7 @@
 
 namespace Database\Seeders\Main;
 
-use App\Models\Survey\ViolationClauseType;
+use App\Survey\Violation\ViolationClauseType;
 use Illuminate\Database\Seeder;
 
 class ViolationClauseTypeSeeder extends Seeder

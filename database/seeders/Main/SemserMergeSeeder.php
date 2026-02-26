@@ -2,13 +2,13 @@
 
 namespace Database\Seeders\Main;
 
-use App\Enums\FieldType;
-use App\Models\BranchOffice;
-use App\Models\EmergencyType;
-use App\Models\TransportType;
-use App\Models\User;
-use App\Models\CustomField\CustomField;
-use App\Models\Report\Report;
+use App\CustomField\CustomField;
+use App\CustomField\Enums\FieldType;
+use App\Tenant\BranchOffice;
+use App\Tenant\User;
+use App\Report\EmergencyType;
+use App\Report\Report;
+use App\Report\Transport\TransportType;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 

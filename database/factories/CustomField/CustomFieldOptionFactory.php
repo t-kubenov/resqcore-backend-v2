@@ -2,19 +2,17 @@
 
 namespace Database\Factories\CustomField;
 
-use App\Models\CustomField\CustomField;
+use App\CustomField\CustomField;
+use App\CustomField\CustomFieldOption;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\CustomField\CustomFieldOption>
+ * @extends Factory<CustomFieldOption>
  */
 class CustomFieldOptionFactory extends Factory
 {
-    /**
-     * Define the model's default state.
-     *
-     * @return array<string, mixed>
-     */
+    protected $model = CustomFieldOption::class;
+
     public function definition(): array
     {
         return [

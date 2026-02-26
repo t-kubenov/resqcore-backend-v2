@@ -2,10 +2,10 @@
 
 return [
     'types' => [
-        'App\Models\Report\Report'          => 'донесение',
-        'App\Models\Survey\Survey'          => 'проф. выезд',
-        'App\Models\Survey\Violation'       => 'нарушение',
-        'App\Models\Vehicle\Vehicle'        => 'транспорт',
+        'App\Report\Report' => 'донесение',
+        'App\Survey\Models\Survey' => 'проф. выезд',
+        'App\Survey\Violation\Violation' => 'нарушение',
+        'App\Vehicle\Vehicle' => 'транспорт',
     ],
 
     'show' => [

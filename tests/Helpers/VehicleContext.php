@@ -2,7 +2,7 @@
 
 namespace Tests\Helpers;
 
-use App\Models\Vehicle\Vehicle;
+use App\Vehicle\Vehicle;
 
 final class VehicleContext
 {

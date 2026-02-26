@@ -18,7 +18,7 @@ class RescueCompanySeeder extends Seeder
         ];
 
         foreach ($rescueCompanies as $rescueCompany) {
-            \App\Models\RescueCompany::create($rescueCompany);
+            \App\Tenant\RescueCompany::create($rescueCompany);
         }
     }
 }

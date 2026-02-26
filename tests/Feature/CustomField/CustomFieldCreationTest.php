@@ -1,10 +1,10 @@
 <?php
 
-use App\Enums\FieldType;
-use App\Models\RescueCompany;
-use App\Models\User;
-use App\Models\CustomField\CustomField;
-use App\Models\Report\Report;
+use App\CustomField\CustomField;
+use App\CustomField\Enums\FieldType;
+use App\Tenant\RescueCompany;
+use App\Tenant\User;
+use App\Report\Report;
 
 
 beforeEach(function () {

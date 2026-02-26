@@ -2,8 +2,8 @@
 
 namespace Database\Seeders\Egov;
 
-use App\Http\Services\ApiDataService;
-use App\Models\Egov\OilField;
+use App\Egov\ApiDataService;
+use App\Egov\OilField;
 use Illuminate\Database\Seeder;
 
 class OilFieldSeeder extends Seeder

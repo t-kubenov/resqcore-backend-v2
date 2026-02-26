@@ -2,8 +2,8 @@
 
 namespace Database\Seeders;
 
-use App\Models\BranchOffice;
-use App\Models\RescueCompany;
+use App\Tenant\BranchOffice;
+use App\Tenant\RescueCompany;
 use Illuminate\Database\Seeder;
 
 class BranchOfficeSeeder extends Seeder

@@ -2,19 +2,16 @@
 
 namespace Database\Factories\CustomField;
 
-use App\Enums\CustomFieldModel;
+use App\CustomField\CustomFieldValue;
+use App\CustomField\Enums\CustomFieldModel;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\CustomField\CustomFieldValue>
+ * @extends Factory<CustomFieldValue>
  */
 class CustomFieldValueFactory extends Factory
 {
-    /**
-     * Define the model's default state.
-     *
-     * @return array<string, mixed>
-     */
+    protected $model = CustomFieldValue::class;
 
     public function definition(): array
     {

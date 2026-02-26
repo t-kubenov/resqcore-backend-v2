@@ -1,6 +1,6 @@
 <?php
 
-use App\Models\Vehicle\Vehicle;
+use App\Vehicle\Vehicle;
 use Tests\Helpers\CompanyContext;
 use Tests\Helpers\VehicleContext;
 

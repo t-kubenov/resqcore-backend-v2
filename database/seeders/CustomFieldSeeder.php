@@ -2,11 +2,11 @@
 
 namespace Database\Seeders;
 
-use App\Enums\FieldType;
-use App\Models\RescueCompany;
-use App\Models\CustomField\CustomField;
-use App\Models\CustomField\CustomFieldOption;
-use App\Models\CustomField\CustomFieldValue;
+use App\CustomField\CustomField;
+use App\CustomField\CustomFieldOption;
+use App\CustomField\CustomFieldValue;
+use App\CustomField\Enums\FieldType;
+use App\Tenant\RescueCompany;
 use Illuminate\Database\Seeder;
 
 class CustomFieldSeeder extends Seeder

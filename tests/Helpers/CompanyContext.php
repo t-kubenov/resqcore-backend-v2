@@ -2,9 +2,9 @@
 
 namespace Tests\Helpers;
 
-use App\Models\BranchOffice;
-use App\Models\RescueCompany;
-use App\Models\User;
+use App\Tenant\BranchOffice;
+use App\Tenant\RescueCompany;
+use App\Tenant\User;
 
 final class CompanyContext
 {

@@ -2,22 +2,19 @@
 
 namespace Database\Factories\CustomField;
 
-use App\Enums\FieldType;
-use App\Models\RescueCompany;
-use App\Models\CustomField\CustomField;
+use App\CustomField\CustomField;
+use App\CustomField\Enums\FieldType;
+use App\Tenant\RescueCompany;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Str;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\CustomField\CustomField>
+ * @extends Factory<CustomField>
  */
 class CustomFieldFactory extends Factory
 {
-    /**
-     * Define the model's default state.
-     *
-     * @return array<string, mixed>
-     */
+    protected $model = CustomField::class;
+
     public function definition(): array
     {
         return [
@@ -25,7 +22,7 @@ class CustomFieldFactory extends Factory
             'parent_field' => null,
             'name' => Str::random(16),
             'label' => $this->faker->word,
-            'model' => 'App\Models\Report\Report',
+            'model' => 'App\Report\Report',
             'required' => $this->faker->boolean(20),
             'validation' => $this->faker->word,
             'type' => $this->faker->randomElement(FieldType::values()),

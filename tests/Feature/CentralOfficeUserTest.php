@@ -1,8 +1,8 @@
 <?php
 
-use App\Models\User;
-use App\Models\Report\Report;
-use App\Models\Report\Update;
+use App\Tenant\User;
+use App\Report\Report;
+use App\Report\Update\Update;
 use function Tests\Helpers\generateReport;
 
 

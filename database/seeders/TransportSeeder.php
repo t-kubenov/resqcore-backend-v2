@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Models\Transport;
+use App\Report\Transport\Transport;
 use Illuminate\Database\Seeder;
 
 class TransportSeeder extends Seeder

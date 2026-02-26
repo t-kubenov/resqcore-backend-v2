@@ -2,9 +2,9 @@
 
 namespace Database\Seeders;
 
-use App\Models\BranchOffice;
-use App\Models\Survey\SurveyLegalEntity;
-use App\Models\Survey\SurveyLegalEntityUnit;
+use App\Tenant\BranchOffice;
+use App\Survey\Models\SurveyLegalEntity;
+use App\Survey\Models\SurveyLegalEntityUnit;
 use Illuminate\Database\Seeder;
 
 class SurveyLegalEntityAndUnitSeeder extends Seeder

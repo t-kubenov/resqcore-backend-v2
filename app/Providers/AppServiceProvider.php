@@ -2,10 +2,17 @@
 
 namespace App\Providers;
 
-use App\Models\Report\Report;
-use App\Models\Survey\Survey;
-use App\Policies\ReportPolicy;
+use App\Image\Image;
+use App\Report\Report;
+use App\Report\Update\Update;
+use App\Survey\Models\Survey;
+use App\Survey\Violation\Violation;
+use App\Tenant\BranchOffice;
+use App\Tenant\RescueCompany;
+use App\Tenant\User;
+use App\Vehicle\Vehicle;
 use Illuminate\Cache\RateLimiting\Limit;
+use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
@@ -40,5 +47,17 @@ class AppServiceProvider extends ServiceProvider
                     return response()->json(['message' => __('throttle.auth')], 429);
                 });
         });
+
+        Relation::enforceMorphMap([
+            'user' => User::class,
+            'rescue_company' => RescueCompany::class,
+            'branch_office' => BranchOffice::class,
+            'report' => Report::class,
+            'update' => Update::class,
+            'survey' => Survey::class,
+            'violation' => Violation::class,
+            'vehicle' => Vehicle::class,
+            'image' => Image::class,
+        ]);
     }
 }

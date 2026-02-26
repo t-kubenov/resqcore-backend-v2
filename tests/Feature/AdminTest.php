@@ -1,6 +1,6 @@
 <?php
 
-use App\Models\User;
+use App\Tenant\User;
 use function Tests\Helpers\{loadAdmin};
 
 beforeEach(function () {

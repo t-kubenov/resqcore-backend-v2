@@ -2,8 +2,8 @@
 
 namespace Database\Seeders;
 
-use App\Models\BranchOffice;
-use App\Models\Report\Report;
+use App\Tenant\BranchOffice;
+use App\Report\Report;
 use Illuminate\Database\Seeder;
 
 class ReportSeeder extends Seeder
