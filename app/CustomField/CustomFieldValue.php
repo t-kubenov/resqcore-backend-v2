@@ -22,6 +22,7 @@ class CustomFieldValue extends Model
         'value_float',
         'value_boolean',
         'value_datetime',
+        'company_id',
     ];
 
     protected $casts = [

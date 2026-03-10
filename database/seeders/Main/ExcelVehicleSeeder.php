@@ -2,9 +2,9 @@
 
 namespace Database\Seeders\Main;
 
-use App\Enums\Vehicle\ActionType;
-use App\Enums\Vehicle\TechnicalCondition;
-use App\Enums\Vehicle\UsageType;
+use App\Vehicle\Enums\ActionType;
+use App\Vehicle\Enums\TechnicalCondition;
+use App\Vehicle\Enums\UsageType;
 use App\Vehicle\Vehicle;
 use App\Vehicle\VehicleCompany;
 use App\Vehicle\VehicleType;
