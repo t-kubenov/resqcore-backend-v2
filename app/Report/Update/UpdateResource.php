@@ -2,9 +2,9 @@
 
 namespace App\Report\Update;
 
-use App\Document\Http\GenericResource;
+use App\Document\Http\DocumentResource;
 
-class UpdateResource extends GenericResource
+class UpdateResource extends DocumentResource
 {
 
 }

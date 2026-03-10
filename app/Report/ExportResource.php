@@ -2,9 +2,9 @@
 
 namespace App\Report;
 
-use App\Document\Http\GenericResource;
+use App\Document\Http\DocumentResource;
 
-class ExportResource extends GenericResource
+class ExportResource extends DocumentResource
 {
 
 }

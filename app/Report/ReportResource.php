@@ -2,9 +2,9 @@
 
 namespace App\Report;
 
-use App\Document\Http\GenericResource;
+use App\Document\Http\DocumentResource;
 
-class ReportResource extends GenericResource
+class ReportResource extends DocumentResource
 {
     protected ?array $columnOrder = [
         'branch_office',

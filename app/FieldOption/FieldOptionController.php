@@ -2,7 +2,7 @@
 
 namespace App\FieldOption;
 
-use App\Document\Http\GenericRelationshipCollection;
+use App\Document\Http\DocumentRelationshipCollection;
 use App\FieldOption\Support\FieldOptionContext;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
@@ -29,6 +29,6 @@ class FieldOptionController extends Controller
 
         $options = $this->service->getOptions($fieldName, $search, $context);
 
-        return new GenericRelationshipCollection($options);
+        return new DocumentRelationshipCollection($options);
     }
 }

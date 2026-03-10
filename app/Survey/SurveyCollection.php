@@ -2,10 +2,10 @@
 
 namespace App\Survey;
 
-use App\Document\Http\GenericCollection;
+use App\Document\Http\DocumentCollection;
 use App\Survey\Models\Survey;
 
-class SurveyCollection extends GenericCollection
+class SurveyCollection extends DocumentCollection
 {
     protected string $modelName = Survey::class;
 

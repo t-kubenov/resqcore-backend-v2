@@ -5,7 +5,7 @@ namespace App\Document\Http;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 
-class GenericRelationshipCollection extends ResourceCollection
+class DocumentRelationshipCollection extends ResourceCollection
 {
     /**
      * Transform the resource collection into an array.

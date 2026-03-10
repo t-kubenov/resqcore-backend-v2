@@ -2,9 +2,9 @@
 
 namespace App\Vehicle;
 
-use App\Document\Http\GenericResource;
+use App\Document\Http\DocumentResource;
 
-class VehicleResource extends GenericResource
+class VehicleResource extends DocumentResource
 {
 
 }

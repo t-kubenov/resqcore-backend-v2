@@ -2,14 +2,14 @@
 
 namespace App\Survey;
 
-use App\Document\GeneralService;
+use App\Document\DocumentService;
 use App\Filter\Configurations\SurveyFilterConfig;
 use App\Survey\Models\Survey;
 use App\Survey\Models\SurveyLegalEntityUnit;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 
-class SurveyService extends GeneralService
+class SurveyService extends DocumentService
 {
     public function __construct(protected SurveyFilterConfig $filterConfig)
     {

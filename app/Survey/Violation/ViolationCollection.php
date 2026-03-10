@@ -2,9 +2,9 @@
 
 namespace App\Survey\Violation;
 
-use App\Document\Http\GenericCollection;
+use App\Document\Http\DocumentCollection;
 
-class ViolationCollection extends GenericCollection
+class ViolationCollection extends DocumentCollection
 {
     protected string $modelName = Violation::class;
 

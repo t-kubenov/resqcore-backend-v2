@@ -7,7 +7,7 @@ use App\Report\Report;
 use App\Survey\Models\Survey;
 use App\Vehicle\Vehicle;
 
-class GeneralPolicy
+class DocumentPolicy
 {
     public function view(User $user, Report|Survey|Vehicle $report): bool
     {

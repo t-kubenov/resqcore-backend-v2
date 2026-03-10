@@ -7,7 +7,7 @@ use Illuminate\Http\Exceptions\ThrottleRequestsException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\RateLimiter;
 
-abstract class GeneralService
+abstract class DocumentService
 {
     public function throttle(Request $request): void
     {

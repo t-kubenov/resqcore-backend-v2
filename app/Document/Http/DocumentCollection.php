@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 use Illuminate\Support\Collection;
 
-abstract class GenericCollection extends ResourceCollection
+abstract class DocumentCollection extends ResourceCollection
 {
     protected string $modelName;
 

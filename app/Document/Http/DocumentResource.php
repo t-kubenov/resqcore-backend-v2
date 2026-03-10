@@ -5,7 +5,7 @@ namespace App\Document\Http;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-abstract class GenericResource extends JsonResource
+abstract class DocumentResource extends JsonResource
 {
     public function toArray(Request $request): array
     {

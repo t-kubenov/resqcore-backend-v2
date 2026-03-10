@@ -3,14 +3,14 @@
 namespace App\Report\Update;
 
 use App\CustomField\CustomFieldValueService;
-use App\Document\GeneralService;
+use App\Document\DocumentService;
 use App\Report\Report;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Exceptions\ThrottleRequestsException;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\RateLimiter;
 
-class UpdateService extends GeneralService
+class UpdateService extends DocumentService
 {
     public function createUpdate($report, $attributes)
     {

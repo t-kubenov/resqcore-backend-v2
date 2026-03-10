@@ -2,12 +2,12 @@
 
 namespace App\Vehicle;
 
-use App\Document\GeneralService;
+use App\Document\DocumentService;
 use App\Filter\Configurations\VehicleFilterConfig;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 
-class VehicleService extends GeneralService
+class VehicleService extends DocumentService
 {
     public function __construct(
         protected VehicleFilterConfig $filterConfig

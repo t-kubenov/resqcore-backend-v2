@@ -3,7 +3,7 @@
 namespace App\Report;
 
 use App\CustomField\CustomFieldValueService;
-use App\Document\GeneralService;
+use App\Document\DocumentService;
 use App\Filter\Configurations\ReportFilterConfig;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Exceptions\ThrottleRequestsException;
@@ -11,7 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\RateLimiter;
 
-class ReportService extends GeneralService
+class ReportService extends DocumentService
 {
     public function __construct(protected ReportFilterConfig $filterConfig)
     {

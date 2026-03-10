@@ -2,9 +2,9 @@
 
 namespace App\Survey;
 
-use App\Document\Http\GenericResource;
+use App\Document\Http\DocumentResource;
 
-class SurveyResource extends GenericResource
+class SurveyResource extends DocumentResource
 {
 
 }

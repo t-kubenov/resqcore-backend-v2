@@ -2,10 +2,10 @@
 
 namespace App\Survey\Violation;
 
-use App\Document\GeneralService;
+use App\Document\DocumentService;
 use App\Survey\Models\Survey;
 
-class ViolationService extends GeneralService
+class ViolationService extends DocumentService
 {
     public function store(StoreViolationRequest $request, Survey $survey): Violation
     {

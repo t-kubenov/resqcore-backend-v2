@@ -2,9 +2,9 @@
 
 namespace App\Survey\Violation;
 
-use App\Document\Http\GenericResource;
+use App\Document\Http\DocumentResource;
 
-class ViolationResource extends GenericResource
+class ViolationResource extends DocumentResource
 {
 
 }

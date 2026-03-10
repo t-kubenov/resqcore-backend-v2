@@ -2,9 +2,9 @@
 
 namespace App\Survey;
 
-use App\Document\GeneralPolicy;
+use App\Document\DocumentPolicy;
 
-class SurveyPolicy extends GeneralPolicy
+class SurveyPolicy extends DocumentPolicy
 {
 
 }

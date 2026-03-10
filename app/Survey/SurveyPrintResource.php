@@ -2,11 +2,11 @@
 
 namespace App\Survey;
 
-use App\Document\Http\GenericResource;
+use App\Document\Http\DocumentResource;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
-class SurveyPrintResource extends GenericResource
+class SurveyPrintResource extends DocumentResource
 {
     public function toArray(Request $request): array
     {

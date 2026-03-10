@@ -2,9 +2,9 @@
 
 namespace App\Vehicle;
 
-use App\Document\Http\GenericCollection;
+use App\Document\Http\DocumentCollection;
 
-class VehicleCollection extends GenericCollection
+class VehicleCollection extends DocumentCollection
 {
     protected string $modelName = Vehicle::class;
 

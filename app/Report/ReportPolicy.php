@@ -2,8 +2,8 @@
 
 namespace App\Report;
 
-use App\Document\GeneralPolicy;
+use App\Document\DocumentPolicy;
 
-class ReportPolicy extends GeneralPolicy
+class ReportPolicy extends DocumentPolicy
 {
 }

@@ -2,11 +2,11 @@
 
 namespace App\Report;
 
-use App\Document\Http\GenericCollection;
+use App\Document\Http\DocumentCollection;
 use App\CustomField\Enums\FieldParameter;
 
 
-class ReportCollection extends GenericCollection
+class ReportCollection extends DocumentCollection
 {
     public $collects = ReportResource::class;
 
