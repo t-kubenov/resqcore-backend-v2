@@ -5,6 +5,7 @@ namespace App\Report\Update;
 use App\CustomField\CustomFieldValueService;
 use App\Document\DocumentService;
 use App\Report\Report;
+use App\Report\Update\Http\StoreUpdateRequest;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Exceptions\ThrottleRequestsException;
 use Illuminate\Support\Facades\Auth;

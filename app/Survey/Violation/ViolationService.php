@@ -4,6 +4,8 @@ namespace App\Survey\Violation;
 
 use App\Document\DocumentService;
 use App\Survey\Models\Survey;
+use App\Survey\Violation\Http\CloseViolationRequest;
+use App\Survey\Violation\Http\StoreViolationRequest;
 
 class ViolationService extends DocumentService
 {

@@ -2,12 +2,12 @@
 
 namespace App\Statistics;
 
-use Illuminate\Routing\Controller;
-use App\Report\FilterReportRequest;
+use App\Document\Traits\Cacheable;
+use App\Report\Http\FilterReportRequest;
 use App\Report\Report;
 use App\Report\ReportService;
-use App\Document\Traits\Cacheable;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\DB;
 
 class StatisticsController extends Controller

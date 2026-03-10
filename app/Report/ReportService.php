@@ -5,6 +5,7 @@ namespace App\Report;
 use App\CustomField\CustomFieldValueService;
 use App\Document\DocumentService;
 use App\Filter\Configurations\ReportFilterConfig;
+use App\Report\Http\StoreReportRequest;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Exceptions\ThrottleRequestsException;
 use Illuminate\Http\Request;

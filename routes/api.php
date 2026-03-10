@@ -3,19 +3,19 @@
 use App\Auth\AuthController;
 use App\Auth\UserPermissionController;
 use App\CompanyList\CompanyController;
-use App\CustomField\CustomFieldController;
+use App\CustomField\Http\CustomFieldController;
 use App\Egov\AuxiliaryDataController;
 use App\FieldOption\FieldOptionController;
 use App\Filter\FilterController;
 use App\Image\ImageController;
-use App\Report\ReportController;
-use App\Report\Update\UpdateController;
+use App\Report\Http\ReportController;
+use App\Report\Update\Http\UpdateController;
 use App\Statistics\StatisticsController;
 use App\Statistics\VehicleStatisticsController;
-use App\Survey\SurveyController;
-use App\Survey\Violation\ViolationController;
+use App\Survey\Http\SurveyController;
+use App\Survey\Violation\Http\ViolationController;
 use App\UserFeedback\EmailController;
-use App\Vehicle\VehicleController;
+use App\Vehicle\Http\VehicleController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('throttle:global')->prefix('v2/')->group(function () {

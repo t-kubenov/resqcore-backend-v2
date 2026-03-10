@@ -4,6 +4,8 @@ namespace App\Vehicle;
 
 use App\Document\DocumentService;
 use App\Filter\Configurations\VehicleFilterConfig;
+use App\Vehicle\Http\StoreVehicleRequest;
+use App\Vehicle\Http\UpdateVehicleRequest;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 
