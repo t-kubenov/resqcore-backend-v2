@@ -71,9 +71,9 @@ Route::middleware('throttle:global')->prefix('v2/')->group(function () {
 
         Route::resource('reports', ReportController::class)->only('create');
         Route::prefix('reports')->name('reports.')->group(function () {
-            Route::get('/', [ReportController::class, 'index'])->name('index');
+            Route::get('/', [ReportController::class, 'index_v2'])->name('index');
             Route::get('/export', [ReportController::class, 'export'])->name('export');
-            Route::get('/{id}', [ReportController::class, 'show'])->name('show');
+            Route::get('/{id}', [ReportController::class, 'show_v2'])->name('show');
             Route::post('/', [ReportController::class, 'store'])->name('store');
 
 
