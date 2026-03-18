@@ -6,9 +6,16 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
+    protected array $morphTableColumns = [
+        'activity_log' => ['subject_type', 'causer_type'],
+        'custom_field_values' => 'model_type',
+        'custom_fields' => 'model',
+        'images' => 'model_type',
+        'model_has_permissions' => 'model_type',
+        'model_has_roles' => 'model_type',
+        'personal_access_tokens' => 'tokenable_type',
+    ];
+
     public function up(): void
     {
         $morphMap = [
@@ -23,17 +30,7 @@ return new class extends Migration
             'App\Models\Update' => 'update',
         ];
 
-        $morphTableColumns = [
-            'activity_log' => ['subject_type', 'causer_type'],
-            'custom_field_values' => 'model_type',
-            'custom_fields' => 'model',
-            'images' => 'model_type',
-            'model_has_permissions' => 'model_type',
-            'model_has_roles' => 'model_type',
-            'personal_access_tokens' => 'tokenable_type',
-        ];
-
-        foreach ($morphTableColumns as $table => $columns){
+        foreach ($this->morphTableColumns as $table => $columns){
             foreach ($morphMap as $class => $alias) {
                 foreach ((array) $columns as $column){
                     $this->updateColumn($table, $column, $class, $alias);
@@ -54,8 +51,21 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('aliases', function (Blueprint $table) {
-            //
-        });
+        $morphMap = [
+            'user' => 'App\Models\User',
+            'vehicle' => 'App\Models\Vehicle\Vehicle',
+            'violation' => 'App\Models\Survey\Violation',
+            'survey' => 'App\Models\Survey\Survey',
+            'report' => 'App\Models\Report\Report',
+            'update' => 'App\Models\Report\Update',
+        ];
+
+        foreach ($this->morphTableColumns as $table => $columns){
+            foreach ($morphMap as $class => $alias) {
+                foreach ((array) $columns as $column){
+                    $this->updateColumn($table, $column, $class, $alias);
+                }
+            }
+        }
     }
 };
