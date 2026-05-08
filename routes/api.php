@@ -8,6 +8,7 @@ use App\Egov\AuxiliaryDataController;
 use App\FieldOption\FieldOptionController;
 use App\Filter\FilterController;
 use App\Image\ImageController;
+use App\Menu\MenuController;
 use App\Report\Http\ReportController;
 use App\Report\Update\Http\UpdateController;
 use App\Statistics\StatisticsController;
@@ -23,6 +24,9 @@ Route::middleware('throttle:global')->prefix('v2/')->group(function () {
     Route::post('/login', [AuthController::class, 'login'])->middleware('throttle:auth')->name('login');
 
     Route::middleware('auth:sanctum')->group(function () {
+
+        Route::get('/menu', MenuController::class)->name('menu');
+
         Route::get('/user', [AuthController::class, 'user'])->name('profile.show');
         Route::get('/companies', [CompanyController::class, 'index'])->name('companies.index');
         Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
