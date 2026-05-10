@@ -41,6 +41,10 @@ abstract class DocumentService
     {
         $user = auth()->user();
 
+        if (!$user) {
+            return $query;
+        }
+
         if ($user->isBranchOffice()) {
             $query->where('branch_office_id', $user->branch_id);
         }
